@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <MyType>WindowsForms</MyType>
+    <ApplicationIcon>My Project\iconApp.ico</ApplicationIcon>
+    <RemoveIntegerChecks>False</RemoveIntegerChecks>
+    <OptionStrict>On</OptionStrict>
+    <WarningLevel>4</WarningLevel>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Chris\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <OptionInfer>On</OptionInfer>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <StartupObject>SkyeTools.My.MyApplication</StartupObject>
+    <Title>Skye's ToolKit</Title>
+    <Description>Skye's WorkSpace &amp; Environment ToolKit</Description>
+    <AssemblyVersion>2.1</AssemblyVersion>
+    <FileVersion>2.1</FileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>DEBUG=1,TRACE=1</DefineConstants>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>None</DebugType>
+    <DefineConstants>TRACE=1</DefineConstants>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Balloon.Designer.vb">
+      <DependentUpon>Balloon.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Resources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="WSTClock.Designer.vb">
+      <DependentUpon>WSTClock.vb</DependentUpon>
+    </Compile>
+    <Compile Update="InfoForm.Designer.vb">
+      <DependentUpon>InfoForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="MessageForm.Designer.vb">
+      <DependentUpon>MessageForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="SplashForm.Designer.vb">
+      <DependentUpon>SplashForm.vb</DependentUpon>
+    </Compile>
+    <Compile Update="WSTStopWatch.Designer.vb">
+      <DependentUpon>WSTStopWatch.vb</DependentUpon>
+    </Compile>
+    <PackageReference Include="SkyeLibrary" Version="1.4.60" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <ItemGroup>
+    <Import Include="Microsoft" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
