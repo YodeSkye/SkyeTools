@@ -71,13 +71,13 @@ Partial Friend Class MainForm
 			.ColorDepth = ColorDepth.Depth32Bit,
 			.ImageSize = New Size(16, 16),
 			.TransparentColor = System.Drawing.Color.Transparent}
-		Me.imagelisttabcontrolSettings.Images.Add("imageAC", Resources.Resources.imageAC) 'DirectCast(My.App.AppResources.GetObject("imageAC"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageCB", Resources.Resources.imageCB) 'DirectCast(My.App.AppResources.GetObject("imageCB"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHC", Resources.Resources.imageHC) 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHK", Resources.Resources.imageHK) 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHL", Resources.Resources.imageHL) 'DirectCast(My.App.AppResources.GetObject("imageHL"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageWL", Resources.Resources.imageWL) 'DirectCast(My.App.AppResources.GetObject("imageWL"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageWST", Resources.Resources.imageWST) 'DirectCast(My.App.AppResources.GetObject("imageWST"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageAC", My.Resources.Resources.imageAC) 'DirectCast(My.App.AppResources.GetObject("imageAC"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageCB", My.Resources.Resources.imageCB) 'DirectCast(My.App.AppResources.GetObject("imageCB"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.imageHC) 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK) 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageHL", My.Resources.Resources.imageHL) 'DirectCast(My.App.AppResources.GetObject("imageHL"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageWL", My.Resources.Resources.imageWL) 'DirectCast(My.App.AppResources.GetObject("imageWL"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageWST", My.Resources.Resources.imageWST) 'DirectCast(My.App.AppResources.GetObject("imageWST"), Image))
 		Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
 		Me.tabpageAC.Text = My.App.ToolToString(My.App.Tools.AlarmChime)
 		Me.tabpageAC.ImageKey = "imageAC"
@@ -95,27 +95,27 @@ Partial Friend Class MainForm
 			.ColorDepth = ColorDepth.Depth32Bit,
 			.ImageSize = New Size(16, 16),
 			.TransparentColor = System.Drawing.Color.Transparent}
-		Me.imagelistlistviewHL.Images.Add("imageHLApp", Resources.Resources.imageHLApp) '(My.App.AppResources.GetObject("imageHLApp"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLDoc", Resources.Resources.imageHLDoc) 'DirectCast(My.App.AppResources.GetObject("imageHLDoc"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLGroup", Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLScript", Resources.Resources.imageHLScript) 'DirectCast(My.App.AppResources.GetObject("imageHLScript"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLSeparator", Resources.Resources.imageHLSeparator) 'DirectCast(My.App.AppResources.GetObject("imageHLSeparator"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLWeb", Resources.Resources.imageHLWeb) 'DirectCast(My.App.AppResources.GetObject("imageHLWeb"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLApp", My.Resources.Resources.imageHLApp) '(My.App.AppResources.GetObject("imageHLApp"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLDoc", My.Resources.Resources.imageHLDoc) 'DirectCast(My.App.AppResources.GetObject("imageHLDoc"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLGroup", My.Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLScript", My.Resources.Resources.imageHLScript) 'DirectCast(My.App.AppResources.GetObject("imageHLScript"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLSeparator", My.Resources.Resources.imageHLSeparator) 'DirectCast(My.App.AppResources.GetObject("imageHLSeparator"), Image))
+		Me.imagelistlistviewHL.Images.Add("imageHLWeb", My.Resources.Resources.imageHLWeb) 'DirectCast(My.App.AppResources.GetObject("imageHLWeb"), Image))
 		Me.lvHL.SmallImageList = Me.imagelistlistviewHL
 
 		'Initialize Globals
-		My.App.ToolToImage(My.App.Tools.SkyeTools) = Resources.Resources.imageApp 'DirectCast(My.App.AppResources.GetObject("imageApp"), Image)
-		My.App.ToolToImage(My.App.Tools.HotClicks) = Resources.Resources.imageHC 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image)
-		My.App.ToolToImage(My.App.Tools.HotKeys) = Resources.Resources.imageHK 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image)
-		My.App.ToolToImage(My.App.Tools.WorkSpaceTools) = Resources.Resources.iconWST.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWST"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.HotLinks) = Resources.Resources.iconHL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconHL"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.WinLinks) = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.ScreenSaver) = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+		My.App.ToolToImage(My.App.Tools.SkyeTools) = My.Resources.Resources.imageApp 'DirectCast(My.App.AppResources.GetObject("imageApp"), Image)
+		My.App.ToolToImage(My.App.Tools.HotClicks) = My.Resources.Resources.imageHC 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image)
+		My.App.ToolToImage(My.App.Tools.HotKeys) = My.Resources.Resources.imageHK 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image)
+		My.App.ToolToImage(My.App.Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWST"), Icon).ToBitmap
+		My.App.ToolToImage(My.App.Tools.HotLinks) = My.Resources.Resources.iconHL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconHL"), Icon).ToBitmap
+		My.App.ToolToImage(My.App.Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+		My.App.ToolToImage(My.App.Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 		My.App.ToolToImage(My.App.Tools.AlarmChime) = Me.cmiWSTAC.Image
-		My.App.ToolToImage(My.App.Tools.StopWatch) = Resources.Resources.imageWSTStopWatch 'DirectCast(My.App.AppResources.GetObject("imageWSTStopWatch"), Image)
-		My.App.ToolToImage(My.App.Tools.Clock) = Resources.Resources.imageWSTClock 'DirectCast(My.App.AppResources.GetObject("imageWSTClock"), Image)
+		My.App.ToolToImage(My.App.Tools.StopWatch) = My.Resources.Resources.imageWSTStopWatch 'DirectCast(My.App.AppResources.GetObject("imageWSTStopWatch"), Image)
+		My.App.ToolToImage(My.App.Tools.Clock) = My.Resources.Resources.imageWSTClock 'DirectCast(My.App.AppResources.GetObject("imageWSTClock"), Image)
 		'My.App.ACChime = CType(My.Resources.Resources.soundChime, MemoryStream) 'DirectCast(My.App.AppResources.GetObject("Chime"), Byte())
-		Dim ums As System.IO.UnmanagedMemoryStream = Resources.Resources.soundChime
+		Dim ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
 		Dim audioBytes(CInt(ums.Length) - 1) As Byte
 		ums.Read(audioBytes, 0, audioBytes.Length)
 		My.App.ACChime = audioBytes
@@ -134,8 +134,8 @@ Partial Friend Class MainForm
 		Me.notifyiconWSTScreenSaver = New NotifyIcon(Me.components) With {
 			.Tag = "notifyiconWSTScreenSaver",
 			.ContextMenuStrip = cmWSTScreenSaver}
-		Me.cmiWSTScreenSaverActivate.Image = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
-		Me.cmiScreenSaverActivate.Image = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+		Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+		Me.cmiScreenSaverActivate.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 #Disable Warning CA2263
 		For Each s As String In [Enum].GetNames(GetType(My.App.WSTSSStartUpMode))
 			Me.comboboxWSTSSStartUp.Items.Add(s)
@@ -144,7 +144,7 @@ Partial Friend Class MainForm
 		Me.tipInfo.SetToolTip(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
 		Me.notifyiconHL = New NotifyIcon(Me.components) With {
 			.Tag = "notifyiconHL",
-			.Icon = Resources.Resources.iconHL,
+			.Icon = My.Resources.Resources.iconHL,
 			.ContextMenuStrip = Me.cmHLTray}
 		Me.cmiWSTHLMenu.DropDown = Me.cmHLMenu
 		Me.tipInfo.SetToolTip(Me.checkboxHLUseAlternateStartMethod, My.App.UseAlternateStartMethodToolTipText)
@@ -430,7 +430,7 @@ Partial Friend Class MainForm
 					'Debug.Print(p.MainModule.FileName)
 					cpl.FileName = p.MainModule.FileName.TrimStart(New Char() {CChar("\"), CChar("?"), CChar("?"), CChar("\")}) 'This string,"\??\", gets inserted sometimes for some unknown reason.
 					cpl.Icon = Skye.WinAPI.GetApplicationIcon(cpl.FileName)
-					If cpl.Icon.Equals(Nothing) Then cpl.Icon = Resources.Resources.iconProcess 'DirectCast(My.App.AppResources.GetObject("iconProcess"), Icon)
+					If cpl.Icon.Equals(Nothing) Then cpl.Icon = My.Resources.Resources.iconProcess 'DirectCast(My.App.AppResources.GetObject("iconProcess"), Icon)
 					ProcessList.Add(cpl)
 				End If
 			Catch
@@ -767,7 +767,7 @@ Partial Friend Class MainForm
 			Me.textboxHKWSTCommandPrompt.Enabled = True
 			Me.btnHKWSTCommandPromptDisable.Enabled = True
 			Me.btnHKEnabled.Text = "Disable"
-			Me.btnHKEnabled.Image = Resources.Resources.imageHKDisable 'DirectCast(My.App.AppResources.GetObject("imageHKDisable"), Image)
+			Me.btnHKEnabled.Image = My.Resources.Resources.imageHKDisable 'DirectCast(My.App.AppResources.GetObject("imageHKDisable"), Image)
 		Else
 			Me.lblHKWSTLockWorkSpace.Enabled = False
 			Me.textboxHKWSTLockWorkSpace.Enabled = False
@@ -815,7 +815,7 @@ Partial Friend Class MainForm
 			Me.textboxHKWSTCommandPrompt.Enabled = False
 			Me.btnHKWSTCommandPromptDisable.Enabled = False
 			Me.btnHKEnabled.Text = "Enable"
-			Me.btnHKEnabled.Image = Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
+			Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
 		End If
 		WSTSetHKToolTipText()
 	End Sub
@@ -1957,7 +1957,7 @@ Partial Friend Class MainForm
 		If ErrorWarning Then Me.tipInfo.SetToolTip(Me.btnLog, Me.tipInfo.GetToolTip(Me.btnLog) + Chr(13) + "An Application Error Has Occured. View Log For Details.")
 		'WorkSpace Tools
 		If My.App.WSTEnabled Then
-			Me.notifyiconWST.Icon = Resources.Resources.iconWST 'CType(My.App.AppResources.GetObject("iconWST"), Icon)
+			Me.notifyiconWST.Icon = My.Resources.Resources.iconWST 'CType(My.App.AppResources.GetObject("iconWST"), Icon)
 			Me.notifyiconWST.Text = My.App.WSTName
 			Me.cmiWSTLog.ToolTipText = "RightClick = Show Maximized"
 			Me.cmiWSTLog.ResetFont()
@@ -1965,7 +1965,7 @@ Partial Friend Class MainForm
 			Me.notifyiconHL.Text = My.App.HLName
 			If ErrorWarning Then
 				Me.notifyiconWST.Text += Chr(13) + "** ERROR **"
-				Me.notifyiconWST.Icon = Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
+				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
 				Me.cmiWSTLog.Font = New Font(Me.Font, FontStyle.Bold)
 				Me.cmiWSTLog.ForeColor = Color.Firebrick
 				Me.cmiWSTLog.ToolTipText += Chr(13) + "An Application Error Has Occured. View Log For Details."
@@ -1978,7 +1978,7 @@ Partial Friend Class MainForm
 			End If
 			If ACAlarmTripped And ACChimeCount = Byte.MaxValue Then
 				Me.notifyiconWST.Text += Chr(13) + "** ALARM **"
-				Me.notifyiconWST.Icon = Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
+				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
 				Me.cmiWSTAC.ToolTipText = Me.tipInfo.GetToolTip(Me.btnACAlarmCancel) '"THE ALARM HAS SOUNDED"
 				Me.cmiWSTAC.Checked = True
 				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Bold)
@@ -2194,28 +2194,28 @@ Partial Friend Class MainForm
 		If My.App.WSTSSToolEnabled Then
 			If WSTSSEnabled Then
 				Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
-				Me.cmiWSTScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap '(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+				Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap '(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 				Me.cmiWSTScreenSaverEnabled.ForeColor = Color.Teal
 				Me.cmiWSTScreenSaverEnabled.Text = "Screen Saver ENABLED"
-				Me.notifyiconWSTScreenSaver.Icon = Resources.Resources.iconWSTScreenSaverEnabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon)
+				Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.iconWSTScreenSaverEnabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon)
 				Me.notifyiconWSTScreenSaver.Text = "Screen Saver ENABLED"
-				Me.cmiScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+				Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 				Me.cmiScreenSaverEnabled.ForeColor = Color.Teal
 				Me.cmiScreenSaverEnabled.Text = "Screen Saver ENABLED"
-				Me.btnWSTScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+				Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 				Me.btnWSTScreenSaverEnabled.Checked = True
 				Me.tipInfo.SetToolTip(Me.btnWSTScreenSaverEnabled, "Screen Saver ENABLED")
 			Else
 				Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_DISPLAY_REQUIRED Or Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
-				Me.cmiWSTScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+				Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
 				Me.cmiWSTScreenSaverEnabled.ForeColor = Color.Maroon
 				Me.cmiWSTScreenSaverEnabled.Text = "Screen Saver DISABLED"
-				Me.notifyiconWSTScreenSaver.Icon = Resources.Resources.iconWSTScreenSaverDisabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon)
+				Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.iconWSTScreenSaverDisabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon)
 				Me.notifyiconWSTScreenSaver.Text = "Screen Saver DISABLED"
-				Me.cmiScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+				Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
 				Me.cmiScreenSaverEnabled.ForeColor = Color.Maroon
 				Me.cmiScreenSaverEnabled.Text = "Screen Saver DISABLED"
-				Me.btnWSTScreenSaverEnabled.Image = Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+				Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
 				Me.btnWSTScreenSaverEnabled.Checked = False
 				Me.tipInfo.SetToolTip(Me.btnWSTScreenSaverEnabled, "Screen Saver DISABLED")
 			End If
@@ -2593,10 +2593,10 @@ Partial Friend Class MainForm
 	End Sub
 	Private Sub UpdateACMute()
 		If ACMute Then
-			Me.btnACMute.Image = Resources.Resources.imageACMute 'CType(My.App.AppResources.GetObject("imageACMute"), Image)
+			Me.btnACMute.Image = My.Resources.Resources.imageACMute 'CType(My.App.AppResources.GetObject("imageACMute"), Image)
 			Me.tipInfo.SetToolTip(Me.btnACMute, "Sound All Chimes")
 		Else
-			Me.btnACMute.Image = Resources.Resources.imageACSound 'CType(My.App.AppResources.GetObject("imageACSound"), Image)
+			Me.btnACMute.Image = My.Resources.Resources.imageACSound 'CType(My.App.AppResources.GetObject("imageACSound"), Image)
 			Me.tipInfo.SetToolTip(Me.btnACMute, "Mute All Chimes")
 		End If
 	End Sub
@@ -2686,17 +2686,17 @@ Partial Friend Class MainForm
 				cmHLItem.Items.Add(cmi)
 				cms = New ToolStripSeparator
 				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("ReStart", Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
+				cmi = New ToolStripMenuItem("ReStart", My.Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLItemReStartMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("Close", Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
+				cmi = New ToolStripMenuItem("Close", My.Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLItemCloseMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
 				cms = New ToolStripSeparator
 				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("Edit", Resources.Resources.imageEdit) 'DirectCast(My.App.AppResources.GetObject("imageEdit"), Image))
+				cmi = New ToolStripMenuItem("Edit", My.Resources.Resources.imageEdit) 'DirectCast(My.App.AppResources.GetObject("imageEdit"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLItemEditMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
@@ -2722,21 +2722,21 @@ Partial Friend Class MainForm
 			Case MouseButtons.Right
 				cmHLItem.Items.Clear()
 				Dim cmi As ToolStripMenuItem
-				cmi = New ToolStripMenuItem(senderCMI.Tag.ToString, Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
+				cmi = New ToolStripMenuItem(senderCMI.Tag.ToString, My.Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLGroupMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
 				Dim cms As New ToolStripSeparator
 				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("Start All", Resources.Resources.imageGoStart) 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image))
+				cmi = New ToolStripMenuItem("Start All", My.Resources.Resources.imageGoStart) 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLStartAllMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("ReStart All", Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
+				cmi = New ToolStripMenuItem("ReStart All", My.Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLReStartAllMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("Close All", Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
+				cmi = New ToolStripMenuItem("Close All", My.Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
 				AddHandler cmi.MouseUp, AddressOf CMIHLCloseAllMouseUp
 				cmi.Tag = senderCMI.Tag
 				cmHLItem.Items.Add(cmi)
@@ -3040,20 +3040,20 @@ Partial Friend Class MainForm
 			Next
 			Me.cmHLTray.Items.Add(New ToolStripSeparator)
 			Dim mi As New ToolStripMenuItem("Refresh")
-			If My.App.HLShowMenuIcons Then mi.Image = Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
+			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
 			AddHandler mi.MouseUp, AddressOf CMIHLRefreshMouseUp
 			Me.cmHLTray.Items.Add(mi)
 			mi = New ToolStripMenuItem("Settings")
-			If My.App.HLShowMenuIcons Then mi.Image = Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
+			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
 			AddHandler mi.MouseUp, AddressOf CMIHLSettingsMouseUp
 			Me.cmHLTray.Items.Add(mi)
 			Me.cmHLTray.Items.Add(New ToolStripSeparator)
 			mi = New ToolStripMenuItem("Close HotLinks Tray")
-			If My.App.HLShowMenuIcons Then mi.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
 			AddHandler mi.MouseUp, AddressOf CMIHLTrayCloseMouseUp
 			Me.cmHLTray.Items.Add(mi)
 			mi = New ToolStripMenuItem("Exit SkyeTools") With {.ToolTipText = My.App.CloseAllToolTipText}
-			If My.App.HLShowMenuIcons Then mi.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
 			AddHandler mi.MouseUp, AddressOf CMICloseAllMouseUp
 			Me.cmHLTray.Items.Add(mi)
 		End If
@@ -3241,7 +3241,7 @@ Partial Friend Class MainForm
 		Me.btnClose.Select()
 	End Sub
 	Private Sub HLUpdateEditType()
-		Me.btnHLTest.Image = Resources.Resources.imageHLTest 'DirectCast(My.App.AppResources.GetObject("imageHLTest"), Image)
+		Me.btnHLTest.Image = My.Resources.Resources.imageHLTest 'DirectCast(My.App.AppResources.GetObject("imageHLTest"), Image)
 		If Me.comboboxHLType.Text = My.App.HLType.Group.ToString Then
 			Me.textboxHLName.Enabled = True
 			Me.textboxHLDescription.Enabled = True
@@ -3374,17 +3374,17 @@ Partial Friend Class MainForm
 		If Not cm.Items.Item(0).Text = My.App.HLEmptyText And cm.Items.Count > 1 Then
 			cm.Items.Add(New ToolStripSeparator)
 			Dim cmiClick As New ToolStripMenuItem("Start All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = Resources.Resources.imageGoStart 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image)
+			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageGoStart 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image)
 			cmiClick.Tag = link.Name
 			AddHandler cmiClick.MouseUp, AddressOf CMIHLStartAllMouseUp
 			cm.Items.Add(cmiClick)
 			cmiClick = New ToolStripMenuItem("ReStart All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = Resources.Resources.imageGoReStart 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image)
+			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageGoReStart 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image)
 			cmiClick.Tag = link.Name
 			AddHandler cmiClick.MouseUp, AddressOf CMIHLReStartAllMouseUp
 			cm.Items.Add(cmiClick)
 			cmiClick = New ToolStripMenuItem("Close All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
 			cmiClick.Tag = link.Name
 			AddHandler cmiClick.MouseUp, AddressOf CMIHLCloseAllMouseUp
 			cm.Items.Add(cmiClick)
@@ -3496,16 +3496,16 @@ Partial Friend Class MainForm
 				Case My.App.HLType.Auto
 					Try
 						HLGetIcon = Skye.WinAPI.GetApplicationIcon(link.Link)?.ToBitmap
-						If HLGetIcon Is Nothing Then HLGetIcon = Resources.Resources.imageHLApp
+						If HLGetIcon Is Nothing Then HLGetIcon = My.Resources.Resources.imageHLApp
 					Catch
-						HLGetIcon = Resources.Resources.imageHLApp
+						HLGetIcon = My.Resources.Resources.imageHLApp
 						My.App.WriteToLog(My.App.Tools.HotLinks, "GetHotLinkIcon : Unable to get process info for '" + link.Name + "'. Defaults will be used.")
 					End Try
-				Case My.App.HLType.Group : HLGetIcon = Resources.Resources.imageHLGroup
-				Case My.App.HLType.WebLink : HLGetIcon = Resources.Resources.imageHLWeb
-				Case My.App.HLType.Document : HLGetIcon = Resources.Resources.imageHLDoc
-				Case My.App.HLType.Script : HLGetIcon = Resources.Resources.imageHLScript
-				Case Else : HLGetIcon = Resources.Resources.imageHLApp
+				Case My.App.HLType.Group : HLGetIcon = My.Resources.Resources.imageHLGroup
+				Case My.App.HLType.WebLink : HLGetIcon = My.Resources.Resources.imageHLWeb
+				Case My.App.HLType.Document : HLGetIcon = My.Resources.Resources.imageHLDoc
+				Case My.App.HLType.Script : HLGetIcon = My.Resources.Resources.imageHLScript
+				Case Else : HLGetIcon = My.Resources.Resources.imageHLApp
 			End Select
 		End If
 	End Function
@@ -3952,8 +3952,8 @@ Partial Friend Class MainForm
                                     If Not link.ShowNoMenu Then
                                         If menu.Items.Count = 0 Then
                                             cmitem = New ToolStripMenuItem(My.App.WLEmptyText)
-                                            If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-                                            AddHandler cmitem.MouseUp, AddressOf CMIWLMenusMouseUp
+											If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+											AddHandler cmitem.MouseUp, AddressOf CMIWLMenusMouseUp
                                             menu.Items.Add(cmitem)
                                         End If
                                         cmi.DropDown.Items.Add(New ToolStripSeparator)
@@ -3972,16 +3972,16 @@ Partial Friend Class MainForm
                                         'Copy Root FolderName
                                         cm.Items.Add(New ToolStripSeparator)
                                         cmitem = New ToolStripMenuItem("Copy Root FolderName")
-                                        If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
-                                        Dim split As String() = My.App.WLData(CInt(cmi.Tag)).Root.Split(CChar("\"))
+										If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
+										Dim split As String() = My.App.WLData(CInt(cmi.Tag)).Root.Split(CChar("\"))
                                         cmitem.Tag = split(split.Length - 1)
                                         cmitem.ToolTipText = cmitem.Tag.ToString
                                         AddHandler cmitem.MouseUp, AddressOf CMIWLCopyPathMouseUp
                                         cm.Items.Add(cmitem)
                                         'Copy Full Root Path
                                         cmitem = New ToolStripMenuItem("Copy Full Root Path")
-                                        If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
-                                        cmitem.Tag = My.App.WLData(CInt(cmi.Tag)).Root
+										If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
+										cmitem.Tag = My.App.WLData(CInt(cmi.Tag)).Root
                                         cmitem.ToolTipText = cmitem.Tag.ToString
                                         AddHandler cmitem.MouseUp, AddressOf CMIWLCopyPathMouseUp
                                         cm.Items.Add(cmitem)
@@ -3989,16 +3989,16 @@ Partial Friend Class MainForm
                                         If Not link.ShowNoMenu Then
                                             cm.Items.Add(New ToolStripSeparator)
                                             cmitem = New ToolStripMenuItem("Refresh")
-                                            If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
-                                            cmitem.Tag = cmi.Tag
+											If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
+											cmitem.Tag = cmi.Tag
                                             AddHandler cmitem.MouseUp, AddressOf CMIWLRefreshMouseUp
                                             cm.Items.Add(cmitem)
                                         End If
                                         'Delete
                                         If My.Computer.FileSystem.DirectoryExists(My.App.WLData(CInt(cmi.Tag)).Root) Then
                                             cm.Items.Add(New ToolStripSeparator)
-                                            cmitem = New ToolStripMenuItem("Delete", Resources.Resources.imageRemove) With {.Tag = My.App.WLData(CInt(cmi.Tag)).Root}
-                                            AddHandler cmitem.MouseUp, AddressOf CMIWLDeleteItemMouseUp
+											cmitem = New ToolStripMenuItem("Delete", My.Resources.Resources.imageRemove) With {.Tag = My.App.WLData(CInt(cmi.Tag)).Root}
+											AddHandler cmitem.MouseUp, AddressOf CMIWLDeleteItemMouseUp
                                             cm.Items.Add(cmitem)
                                         End If
                                         'Finalize
@@ -4023,8 +4023,8 @@ Partial Friend Class MainForm
                                     If Not link.ShowNoMenu Then
                                         If traymenu.Items.Count = 0 Then
                                             cmitem = New ToolStripMenuItem(My.App.WLEmptyText)
-                                            If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-                                            AddHandler cmitem.MouseUp, AddressOf CMIWLMenusMouseUp
+											If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+											AddHandler cmitem.MouseUp, AddressOf CMIWLMenusMouseUp
                                             traymenu.Items.Add(cmitem)
                                         End If
                                         traymenu.Items.Add(New ToolStripSeparator)
@@ -4042,16 +4042,16 @@ Partial Friend Class MainForm
                                     'Copy Root FolderName
                                     cm.Items.Add(New ToolStripSeparator)
                                     cmitem = New ToolStripMenuItem("Copy Root FolderName")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
-                                    Dim split As String() = My.App.WLData(CInt(trayicon.Tag)).Root.Split(CChar("\"))
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
+									Dim split As String() = My.App.WLData(CInt(trayicon.Tag)).Root.Split(CChar("\"))
                                     cmitem.Tag = split(split.Length - 1)
                                     cmitem.ToolTipText = cmitem.Tag.ToString
                                     AddHandler cmitem.MouseUp, AddressOf CMIWLCopyPathMouseUp
                                     cm.Items.Add(cmitem)
                                     'Copy Full Root Path
                                     cmitem = New ToolStripMenuItem("Copy Full Root Path")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
-                                    cmitem.Tag = My.App.WLData(CInt(trayicon.Tag)).Root
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageCopy 'DirectCast(My.App.AppResources.GetObject("imageCopy"), Image)
+									cmitem.Tag = My.App.WLData(CInt(trayicon.Tag)).Root
                                     cmitem.ToolTipText = cmitem.Tag.ToString
                                     AddHandler cmitem.MouseUp, AddressOf CMIWLCopyPathMouseUp
                                     cm.Items.Add(cmitem)
@@ -4059,22 +4059,22 @@ Partial Friend Class MainForm
                                     If Not link.ShowNoMenu Then
                                         cm.Items.Add(New ToolStripSeparator)
                                         cmitem = New ToolStripMenuItem("Refresh")
-                                        If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
-                                        cmitem.Tag = trayicon.Tag
+										If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
+										cmitem.Tag = trayicon.Tag
                                         AddHandler cmitem.MouseUp, AddressOf CMIWLRefreshMouseUp
                                         cm.Items.Add(cmitem)
                                     End If
                                     cm.Items.Add(New ToolStripSeparator)
                                     cmitem = New ToolStripMenuItem("Remove From Tray")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-                                    cmitem.Tag = trayicon.Tag
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									cmitem.Tag = trayicon.Tag
                                     AddHandler cmitem.MouseUp, AddressOf CMIWLRemoveFromTrayMouseUp
                                     cm.Items.Add(cmitem)
                                     'Delete
                                     If My.Computer.FileSystem.DirectoryExists(My.App.WLData(CInt(trayicon.Tag)).Root) Then
                                         cm.Items.Add(New ToolStripSeparator)
-                                        cmitem = New ToolStripMenuItem("Delete", Resources.Resources.imageRemove) With {.Tag = My.App.WLData(CInt(trayicon.Tag)).Root}
-                                        AddHandler cmitem.MouseUp, AddressOf CMIWLDeleteItemMouseUp
+										cmitem = New ToolStripMenuItem("Delete", My.Resources.Resources.imageRemove) With {.Tag = My.App.WLData(CInt(trayicon.Tag)).Root}
+										AddHandler cmitem.MouseUp, AddressOf CMIWLDeleteItemMouseUp
                                         cm.Items.Add(cmitem)
                                     End If
                                     'Finalize
@@ -4086,17 +4086,17 @@ Partial Friend Class MainForm
                                     traymenu.Items.Add(mi)
                                     'Menu Options
                                     cmitem = New ToolStripMenuItem("Settings")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
-                                    AddHandler cmitem.MouseUp, AddressOf CMIWLSettingsMouseUp
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
+									AddHandler cmitem.MouseUp, AddressOf CMIWLSettingsMouseUp
                                     traymenu.Items.Add(cmitem)
                                     traymenu.Items.Add(New ToolStripSeparator)
                                     cmitem = New ToolStripMenuItem("Close WinLinks Tray")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-                                    AddHandler cmitem.MouseUp, AddressOf CMIWLCloseMouseUp
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									AddHandler cmitem.MouseUp, AddressOf CMIWLCloseMouseUp
                                     traymenu.Items.Add(cmitem)
                                     cmitem = New ToolStripMenuItem("Exit SkyeTools")
-                                    If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-                                    cmitem.ToolTipText = My.App.CloseAllToolTipText
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									cmitem.ToolTipText = My.App.CloseAllToolTipText
                                     AddHandler cmitem.MouseUp, AddressOf CMICloseAllMouseUp
                                     traymenu.Items.Add(cmitem)
                                     traymenu.Tag = trayicon.Tag
@@ -4180,7 +4180,7 @@ Partial Friend Class MainForm
 							If Not My.App.WLData(CInt(cmi.Tag)).ShowNoMenu Then
 								Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
 								Dim mi As New ToolStripMenuItem("Loading...")
-								If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then : mi.Image = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+								If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
 								Else : cm.ShowImageMargin = False
 								End If
 								mi.Tag = cmi.Tag
@@ -4188,10 +4188,10 @@ Partial Friend Class MainForm
 								cm.Items.Add(mi)
 								cmi.DropDown = cm
 							End If
-							If My.App.WLData(CInt(cmi.Tag)).UseDefaultIcon Then : cmi.Image = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+							If My.App.WLData(CInt(cmi.Tag)).UseDefaultIcon Then : cmi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
 							Else
 								Try : cmi.Image = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(cmi.Tag)).Root).ToBitmap
-								Catch : cmi.Image = Resources.Resources.iconWL.ToBitmap
+								Catch : cmi.Image = My.Resources.Resources.iconWL.ToBitmap
 								End Try
 							End If
 						End If
@@ -4203,7 +4203,7 @@ Partial Friend Class MainForm
 							If Not My.App.WLData(CInt(trayicon.Tag)).ShowNoMenu Then
 								If Not trayicon.Text.EndsWith("Loading...") Then trayicon.Text += Chr(13) + "Loading..."
 								Dim mi As New ToolStripMenuItem("Loading...")
-								If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then : mi.Image = Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+								If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
 								Else : traymenu.ShowImageMargin = False
 								End If
 								mi.Tag = trayicon.Tag
@@ -4212,19 +4212,19 @@ Partial Friend Class MainForm
 								traymenu.Items.Add(New ToolStripSeparator)
 							End If
 							Dim cmi As New ToolStripMenuItem("Settings")
-							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = Resources.Resources.imageSettings
+							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageSettings
 							AddHandler cmi.MouseUp, AddressOf CMIWLSettingsMouseUp
 							traymenu.Items.Add(cmi)
 							traymenu.Items.Add(New ToolStripSeparator)
 							cmi = New ToolStripMenuItem("Exit SkyeTools")
-							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = Resources.Resources.imageClose
+							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageClose
 							cmi.ToolTipText = My.App.CloseAllToolTipText
 							AddHandler cmi.MouseUp, AddressOf CMICloseAllMouseUp
 							traymenu.Items.Add(cmi)
-							If My.App.WLData(CInt(trayicon.Tag)).UseDefaultIcon Then : trayicon.Icon = Resources.Resources.iconWL
+							If My.App.WLData(CInt(trayicon.Tag)).UseDefaultIcon Then : trayicon.Icon = My.Resources.Resources.iconWL
 							Else
 								trayicon.Icon = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(trayicon.Tag)).Root)
-								If trayicon.Icon Is Nothing Then trayicon.Icon = Resources.Resources.iconWL
+								If trayicon.Icon Is Nothing Then trayicon.Icon = My.Resources.Resources.iconWL
 							End If
 							trayicon.ContextMenuStrip = traymenu
 						End If
@@ -4243,7 +4243,7 @@ Partial Friend Class MainForm
 		cmWLItem.Items.Clear()
 		Dim cmi As New ToolStripMenuItem(text)
 		Try : cmi.Image = Skye.WinAPI.GetApplicationIcon(tag).ToBitmap
-		Catch : cmi.Image = Resources.Resources.iconWL.ToBitmap
+		Catch : cmi.Image = My.Resources.Resources.iconWL.ToBitmap
 		End Try
 		cmi.Tag = tag
 		AddHandler cmi.MouseUp, AddressOf CMIWLMouseUp
@@ -4255,7 +4255,7 @@ Partial Friend Class MainForm
 			Dim splitname As String() = splitpath(splitpath.Length - 1).Split(CChar("."))
 			If splitname.Length > 1 Then
 				cmi = New ToolStripMenuItem With {
-					.Image = Resources.Resources.imageCopy,
+					.Image = My.Resources.Resources.imageCopy,
 					.Text = "Copy FileName"}
 				Dim s As String = splitname(0)
 				For index As Integer = 1 To splitname.Length - 2 : s += "." + splitname(index) : Next
@@ -4266,7 +4266,7 @@ Partial Friend Class MainForm
 			End If
 
 			cmi = New ToolStripMenuItem With {
-				.Image = Resources.Resources.imageCopy,
+				.Image = My.Resources.Resources.imageCopy,
 				.Text = "Copy Full FileName",
 				.Tag = splitpath(splitpath.Length - 1)}
 			cmi.ToolTipText = cmi.Tag.ToString
@@ -4275,7 +4275,7 @@ Partial Friend Class MainForm
 			splitname = Nothing
 		ElseIf IO.Directory.Exists(tag) Then
 			cmi = New ToolStripMenuItem With {
-				.Image = Resources.Resources.imageCopy,
+				.Image = My.Resources.Resources.imageCopy,
 				.Text = "Copy FolderName",
 				.Tag = splitpath(splitpath.Length - 1)}
 			cmi.ToolTipText = cmi.Tag.ToString
@@ -4284,12 +4284,12 @@ Partial Friend Class MainForm
 		End If
 		splitpath = Nothing
 		'Copy Full Path
-		cmi = New ToolStripMenuItem("Copy Full Path", Resources.Resources.imageCopy) With {.Tag = tag, .ToolTipText = tag}
+		cmi = New ToolStripMenuItem("Copy Full Path", My.Resources.Resources.imageCopy) With {.Tag = tag, .ToolTipText = tag}
 		AddHandler cmi.MouseUp, AddressOf CMIWLCopyPathMouseUp
 		cmWLItem.Items.Add(cmi)
 		'Delete
 		cmWLItem.Items.Add(New ToolStripSeparator)
-		cmi = New ToolStripMenuItem("Delete", Resources.Resources.imageRemove) With {.Tag = tag}
+		cmi = New ToolStripMenuItem("Delete", My.Resources.Resources.imageRemove) With {.Tag = tag}
 		AddHandler cmi.MouseUp, AddressOf CMIWLDeleteItemMouseUp
 		If BackgroundworkerWL.IsBusy Then cmi.Enabled = False
 		cmWLItem.Items.Add(cmi)
@@ -4470,13 +4470,13 @@ Partial Friend Class MainForm
 			Me.btnSettingsRestore.Enabled = True
 			Me.btnWLRefresh.Text = "Full Refresh"
 			Me.tipInfo.SetToolTip(Me.btnWLRefresh, "Refresh ALL Data & Menus")
-			Me.btnWLRefresh.Image = Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
+			Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
 			Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
 		Else
 			Me.btnSettingsRestore.Enabled = False
 			Me.btnWLRefresh.Text = "CANCEL"
 			Me.tipInfo.SetToolTip(Me.btnWLRefresh, "Cancel File Search")
-			Me.btnWLRefresh.Image = Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+			Me.btnWLRefresh.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
 			Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
 		End If
 	End Sub
@@ -4534,13 +4534,13 @@ Partial Friend Class MainForm
 						mi = New WLMenuDataItem With {.Text = menuname, .File = file}
 						If link.ShowMenuIcons Then
 							If IO.Directory.Exists(file) Then
-								mi.Icon = CType(Resources.Resources.ImageFolder.Clone(), Image)
+								mi.Icon = CType(My.Resources.Resources.ImageFolder.Clone(), Image)
 							Else
 								Dim ico As Icon = Skye.WinAPI.GetApplicationIcon(file)
 								If ico IsNot Nothing Then
 									mi.Icon = IconToHighQualityImage(ico)
 								Else
-									mi.Icon = CType(Resources.Resources.iconWL.Clone(), Icon).ToBitmap()
+									mi.Icon = CType(My.Resources.Resources.iconWL.Clone(), Icon).ToBitmap()
 								End If
 							End If
 						End If

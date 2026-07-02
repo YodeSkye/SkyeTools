@@ -61,7 +61,7 @@
     <Compile Update="WSTStopWatch.Designer.vb">
       <DependentUpon>WSTStopWatch.vb</DependentUpon>
     </Compile>
-    <PackageReference Include="SkyeLibrary" Version="1.4.60" />
+    <PackageReference Include="SkyeLibrary" Version="1.5.0" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <FileAlignment>4096</FileAlignment>
