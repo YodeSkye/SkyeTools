@@ -53,12 +53,6 @@ Partial Friend Class MainForm
 		uiACOpenFile.Filter = "WAV Files|*.wav"
 		uiACOpenFile.InitialDirectory = "C:\WINDOWS\Media"
 		uiACOpenFile.Title = "Select a WAV File..."
-		uiHLOpenFile.Title = "Select a File..."
-		uiHLFolderBrowser.Description = "Select a StartUp Folder for your Program..."
-		uiHLFolderBrowser.ShowNewFolderButton = False
-		Me.cmHLMenu.Font = New Font(Me.Font, FontStyle.Regular)
-		Me.cmHLTray.Font = New Font(Me.Font, FontStyle.Regular)
-		Me.cmHLItem.Font = New Font(Me.Font, FontStyle.Regular)
 		uiWLFolderBrowser.Description = "Select a Folder with ShortCuts or Programs..."
 		uiWLFileBrowser.Title = "Select The YMFM App..."
 		uiWLFileBrowser.DefaultExt = "exe"
@@ -84,36 +78,20 @@ Partial Friend Class MainForm
 		Me.tabpageHC.ImageKey = "imageHC"
 		Me.tabpageHK.Text = My.App.ToolToString(My.App.Tools.HotKeys)
 		Me.tabpageHK.ImageKey = "imageHK"
-		Me.tabpageHL.Text = My.App.ToolToString(My.App.Tools.HotLinks)
-		Me.tabpageHL.ImageKey = "imageHL"
 		Me.tabpageWL.Text = My.App.ToolToString(My.App.Tools.WinLinks)
 		Me.tabpageWL.ImageKey = "imageWL"
 		Me.tabpageWST.Text = My.App.ToolToString(My.App.Tools.WorkSpaceTools)
 		Me.tabpageWST.ImageKey = "imageWST"
-		Me.imagelistlistviewHL = New ImageList(Me.components) With {
-			.ColorDepth = ColorDepth.Depth32Bit,
-			.ImageSize = New Size(16, 16),
-			.TransparentColor = System.Drawing.Color.Transparent}
-		Me.imagelistlistviewHL.Images.Add("imageHLApp", My.Resources.Resources.imageHLApp) '(My.App.AppResources.GetObject("imageHLApp"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLDoc", My.Resources.Resources.imageHLDoc) 'DirectCast(My.App.AppResources.GetObject("imageHLDoc"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLGroup", My.Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLScript", My.Resources.Resources.imageHLScript) 'DirectCast(My.App.AppResources.GetObject("imageHLScript"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLSeparator", My.Resources.Resources.imageHLSeparator) 'DirectCast(My.App.AppResources.GetObject("imageHLSeparator"), Image))
-		Me.imagelistlistviewHL.Images.Add("imageHLWeb", My.Resources.Resources.imageHLWeb) 'DirectCast(My.App.AppResources.GetObject("imageHLWeb"), Image))
-		Me.lvHL.SmallImageList = Me.imagelistlistviewHL
 
 		'Initialize Globals
 		My.App.ToolToImage(My.App.Tools.SkyeTools) = My.Resources.Resources.imageApp 'DirectCast(My.App.AppResources.GetObject("imageApp"), Image)
 		My.App.ToolToImage(My.App.Tools.HotClicks) = My.Resources.Resources.imageHC 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image)
 		My.App.ToolToImage(My.App.Tools.HotKeys) = My.Resources.Resources.imageHK 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image)
 		My.App.ToolToImage(My.App.Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWST"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.HotLinks) = My.Resources.Resources.iconHL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconHL"), Icon).ToBitmap
 		My.App.ToolToImage(My.App.Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
 		My.App.ToolToImage(My.App.Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 		My.App.ToolToImage(My.App.Tools.AlarmChime) = Me.cmiWSTAC.Image
-		My.App.ToolToImage(My.App.Tools.StopWatch) = My.Resources.Resources.imageWSTStopWatch 'DirectCast(My.App.AppResources.GetObject("imageWSTStopWatch"), Image)
 		My.App.ToolToImage(My.App.Tools.Clock) = My.Resources.Resources.imageWSTClock 'DirectCast(My.App.AppResources.GetObject("imageWSTClock"), Image)
-		'My.App.ACChime = CType(My.Resources.Resources.soundChime, MemoryStream) 'DirectCast(My.App.AppResources.GetObject("Chime"), Byte())
 		Dim ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
 		Dim audioBytes(CInt(ums.Length) - 1) As Byte
 		ums.Read(audioBytes, 0, audioBytes.Length)
@@ -124,7 +102,6 @@ Partial Friend Class MainForm
 
 		'Initialize Form
 		Me.Text = "Settings For " + My.Application.Info.ProductName + " v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
-		'Me.cmiAppListUseAlt.ToolTipText = My.App.UseAlternateCloseMethodToolTipText
 		Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText
 		Me.cmiScreenSaverCloseAll.ToolTipText = My.App.CloseAllToolTipText
 		Me.notifyiconWST = New NotifyIcon(Me.components) With {
@@ -141,16 +118,8 @@ Partial Friend Class MainForm
 		Next
 #Enable Warning CA2263
 		Me.tipInfo.SetToolTip(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
-		Me.notifyiconHL = New NotifyIcon(Me.components) With {
-			.Tag = "notifyiconHL",
-			.Icon = My.Resources.Resources.iconHL,
-			.ContextMenuStrip = Me.cmHLTray}
-		Me.cmiWSTHLMenu.DropDown = Me.cmHLMenu
-		Me.tipInfo.SetToolTip(Me.checkboxHLUseAlternateStartMethod, My.App.UseAlternateStartMethodToolTipText)
 		AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
 		AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
-		AddHandler Me.notifyiconHL.MouseDown, AddressOf NotifyiconMouseDown
-		AddHandler Me.cmHLTray.Opening, AddressOf CMHLTrayOpening
 		WLSetSettingsState(True)
 #If DEBUG Then
 		BackgroundworkerWL.WorkerReportsProgress = True
@@ -211,17 +180,12 @@ Partial Friend Class MainForm
 		If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then WLStartUp = True
 		If Not My.Application.AlternateStart AndAlso (My.App.WSTShowWLMenu And Not My.App.WSTShowWLTray) Then ShowWL()
 		ShowTools()
-		ShowHL()
 
-		If Not My.Application.AlternateStart AndAlso My.App.HLStartUp AndAlso sender IsNot Me.btnSettingsRestore Then
-			TimerHLStartUp.Interval = My.App.HLStartUpDelay * 1000
-			TimerHLStartUp.Start()
-		End If
 		If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then
 			TimerWLStartUp.Interval = My.App.WLStartUpDelay * 1000
 			TimerWLStartUp.Start()
 		End If
-		If Not My.Application.AlternateStart AndAlso (My.App.HLStartUp Or ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0)) AndAlso sender IsNot Me.btnSettingsRestore Then
+		If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) AndAlso sender IsNot Me.btnSettingsRestore Then
 			Me.cmiWSTCancelStartUp.Visible = True
 			Me.cmseparatorWSTCancel.Visible = True
 		End If
@@ -257,11 +221,10 @@ Partial Friend Class MainForm
 		My.App.Finalize()
 	End Sub
 	Private Sub FrmClosingTasks()
-		TimerHLStartUp.Stop()
 		HKRegister(True)
 		WLClose(True)
 	End Sub
-	Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, panelHLEdit.MouseDown, MyBase.MouseDown
+	Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, MyBase.MouseDown
 		Static senderTB As Control
 		If e.Button = MouseButtons.Left And WindowState = FormWindowState.Normal Then
 			mMove = True
@@ -269,13 +232,11 @@ Partial Friend Class MainForm
 				senderTB = DirectCast(sender, Control)
 				mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width - tabcontrolSettings.Left - senderTB.Left, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight - tabcontrolSettings.Top - senderTB.Top)
 				senderTB = Nothing
-			ElseIf sender Is panelHLEdit Then
-				mOffset = New Point(-e.X - panelHLEdit.Left - tabpageHL.Left - tabcontrolSettings.Left - SystemInformation.FrameBorderSize.Width, -e.Y - panelHLEdit.Top - tabpageHL.Top - tabcontrolSettings.Top - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
 			Else : mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
 			End If
 		End If
 	End Sub
-	Private Sub FrmMouseMove(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseMove, tabpageWL.MouseMove, tabpageHL.MouseMove, tabpageHK.MouseMove, tabpageHC.MouseMove, tabpageAC.MouseMove, panelHLEdit.MouseMove, MyBase.MouseMove
+	Private Sub FrmMouseMove(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseMove, tabpageWL.MouseMove, tabpageHK.MouseMove, tabpageHC.MouseMove, tabpageAC.MouseMove, MyBase.MouseMove
 		If mMove Then
 			mPosition = MousePosition
 			mPosition.Offset(mOffset.X, mOffset.Y)
@@ -283,7 +244,7 @@ Partial Friend Class MainForm
 			Location = mPosition
 		End If
 	End Sub
-	Private Sub FrmMouseUp(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseUp, tabpageWL.MouseUp, tabpageHL.MouseUp, tabpageHK.MouseUp, tabpageHC.MouseUp, tabpageAC.MouseUp, panelHLEdit.MouseUp, MyBase.MouseUp
+	Private Sub FrmMouseUp(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseUp, tabpageWL.MouseUp, tabpageHK.MouseUp, tabpageHC.MouseUp, tabpageAC.MouseUp, MyBase.MouseUp
 		mMove = False
 	End Sub
 	Private Sub FrmMove(sender As Object, e As EventArgs) Handles MyBase.Move
@@ -369,14 +330,14 @@ Partial Friend Class MainForm
 		UpdateWST()
 	End Sub
 	Friend Function InUseApp() As Boolean
-		If Me.cmWST.Visible Or Me.cmWSTScreenSaver.Visible Or Me.cmHLMenu.Visible Or Me.cmHLTray.Visible Or Me.cmHLItem.Visible Then Return True
+		If Me.cmWST.Visible Or Me.cmWSTScreenSaver.Visible Then Return True
 		If InUseWL() Then Return True
 		If InUseForms() Then Return True
 		If InUseSettings() Then Return True
 		Return False
 	End Function
 	Private Sub ShowTools()
-		If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowHLTray Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
+		If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
 		Else 'Any One or More Tools Running(That Have A Tray Icon)
 			If My.App.WSTEnabled Then
 				UpdateWST()
@@ -397,11 +358,6 @@ Partial Friend Class MainForm
 			Else : If Me.notifyiconWSTScreenSaver.Visible Then Me.notifyiconWSTScreenSaver.Visible = False
 			End If
 
-			HLSetSettingsTab()
-
-			If My.App.WSTShowHLTray Then : Me.notifyiconHL.Visible = True
-			Else : Me.notifyiconHL.Visible = False
-			End If
 			WLSetSettingsTab()
 
 			If Not My.Application.AlternateStart AndAlso My.App.WSTShowWLTray Then : If WLTrayIcons.Count = 0 Then ShowWL()
@@ -442,7 +398,6 @@ Partial Friend Class MainForm
 	End Function
 	Private Sub HideForm()
 		Me.Hide()
-		If Not Me.lvHL.Visible Then ShowSettings(My.App.Tools.HotLinks)
 		If Me.listviewWL.SelectedIndices.Count > 0 Then ShowSettings(My.App.Tools.WinLinks)
 	End Sub
 	Private Sub CheckMove(ByRef location As Point)
@@ -533,10 +488,10 @@ Partial Friend Class MainForm
 		FrmLoad(btnSettingsRestore, New EventArgs)
 		FrmShown(btnSettingsRestore, New EventArgs)
 	End Sub
-	Private Sub TextboxShortcutKeysPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHLWorkingDirectory.PreviewKeyDown, textboxHLName.PreviewKeyDown, textboxHLLink.PreviewKeyDown, textboxHLDescription.PreviewKeyDown, textboxHLArguments.PreviewKeyDown
+	Private Sub TextboxShortcutKeysPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs)
 		If e.KeyData = Keys.A + Keys.Control Then CType(sender, TextBox).SelectAll()
 	End Sub
-	Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown, textboxHLUseAlternateStartTimeOut.KeyDown, textboxHLStartUpDelay.KeyDown, textboxHLLoadTimeOut.KeyDown, textboxHLCloseTimeOut.KeyDown
+	Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown
 		nonNumberEntered = False
 		If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
 			If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
@@ -544,7 +499,7 @@ Partial Friend Class MainForm
 			End If
 		End If
 	End Sub
-	Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress, textboxHLUseAlternateStartTimeOut.KeyPress, textboxHLStartUpDelay.KeyPress, textboxHLLoadTimeOut.KeyPress, textboxHLCloseTimeOut.KeyPress, textboxACAlarmTimer.KeyPress, textboxACAlarmTime.KeyPress
+	Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress, textboxACAlarmTimer.KeyPress, textboxACAlarmTime.KeyPress
 		If nonNumberEntered Then e.Handled = True
 	End Sub
 	Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs) Handles txbxWSTTaskManagerArgs.KeyDown, txbxWSTCommandPromptArgs.KeyDown, txbxLoadOnOSStartupArgs.KeyDown
@@ -560,7 +515,6 @@ Partial Friend Class MainForm
 		ShowSettingsWST()
 		ShowSettingsSS()
 		ShowSettingsAC()
-		ShowSettingsHL()
 		ShowSettingsWL()
 		Me.ResumeLayout()
 		Me.btnClose.Select()
@@ -577,7 +531,6 @@ Partial Friend Class MainForm
 				Case My.App.Tools.WorkSpaceTools : ShowSettingsWST()
 				Case My.App.Tools.ScreenSaver : ShowSettingsSS()
 				Case My.App.Tools.AlarmChime : ShowSettingsAC()
-				Case My.App.Tools.HotLinks : ShowSettingsHL()
 				Case My.App.Tools.WinLinks : ShowSettingsWL()
 			End Select
 			Me.ResumeLayout()
@@ -615,62 +568,6 @@ Partial Friend Class MainForm
 		Me.textboxHKWSTClock.Tag = My.App.HKWSTClock
 		Me.textboxHKWSTClock.Font = New Font(Me.Font, FontStyle.Bold)
 		Me.textboxHKWSTClock.ForeColor = Color.Teal
-		Me.lblHKHLA.Text = My.App.HKHLA.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLA, My.App.GenerateHKHLTip(My.App.HLHotKey.A))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLA, Me.tipInfo.GetToolTip(Me.lblHKHLA))
-		Me.textboxHKHLA.Text = My.App.HKHLA.Key.ToString
-		Me.textboxHKHLA.Tag = My.App.HKHLA
-		Me.textboxHKHLA.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLA.ForeColor = Color.Teal
-		Me.lblHKHLB.Text = My.App.HKHLB.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLB, My.App.GenerateHKHLTip(My.App.HLHotKey.B))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLB, Me.tipInfo.GetToolTip(Me.lblHKHLB))
-		Me.textboxHKHLB.Text = My.App.HKHLB.Key.ToString
-		Me.textboxHKHLB.Tag = My.App.HKHLB
-		Me.textboxHKHLB.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLB.ForeColor = Color.Teal
-		Me.lblHKHLC.Text = My.App.HKHLC.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLC, My.App.GenerateHKHLTip(My.App.HLHotKey.C))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLC, Me.tipInfo.GetToolTip(Me.lblHKHLC))
-		Me.textboxHKHLC.Text = My.App.HKHLC.Key.ToString
-		Me.textboxHKHLC.Tag = My.App.HKHLC
-		Me.textboxHKHLC.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLC.ForeColor = Color.Teal
-		Me.lblHKHLD.Text = My.App.HKHLD.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLD, My.App.GenerateHKHLTip(My.App.HLHotKey.D))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLD, Me.tipInfo.GetToolTip(Me.lblHKHLD))
-		Me.textboxHKHLD.Text = My.App.HKHLD.Key.ToString
-		Me.textboxHKHLD.Tag = My.App.HKHLD
-		Me.textboxHKHLD.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLD.ForeColor = Color.Teal
-		Me.lblHKHLE.Text = My.App.HKHLE.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLE, My.App.GenerateHKHLTip(My.App.HLHotKey.E))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLE, Me.tipInfo.GetToolTip(Me.lblHKHLE))
-		Me.textboxHKHLE.Text = My.App.HKHLE.Key.ToString
-		Me.textboxHKHLE.Tag = My.App.HKHLE
-		Me.textboxHKHLE.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLE.ForeColor = Color.Teal
-		Me.lblHKHLF.Text = My.App.HKHLF.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLF, My.App.GenerateHKHLTip(My.App.HLHotKey.F))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLF, Me.tipInfo.GetToolTip(Me.lblHKHLF))
-		Me.textboxHKHLF.Text = My.App.HKHLF.Key.ToString
-		Me.textboxHKHLF.Tag = My.App.HKHLF
-		Me.textboxHKHLF.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLF.ForeColor = Color.Teal
-		Me.lblHKHLG.Text = My.App.HKHLG.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLG, My.App.GenerateHKHLTip(My.App.HLHotKey.G))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLG, Me.tipInfo.GetToolTip(Me.lblHKHLG))
-		Me.textboxHKHLG.Text = My.App.HKHLG.Key.ToString
-		Me.textboxHKHLG.Tag = My.App.HKHLG
-		Me.textboxHKHLG.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLG.ForeColor = Color.Teal
-		Me.lblHKHLH.Text = My.App.HKHLH.Description
-		Me.tipInfo.SetToolTip(Me.lblHKHLH, My.App.GenerateHKHLTip(My.App.HLHotKey.H))
-		Me.tipInfo.SetToolTip(Me.textboxHKHLH, Me.tipInfo.GetToolTip(Me.lblHKHLH))
-		Me.textboxHKHLH.Text = My.App.HKHLH.Key.ToString
-		Me.textboxHKHLH.Tag = My.App.HKHLH
-		Me.textboxHKHLH.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKHLH.ForeColor = Color.Teal
 		Me.lblHKWL.Text = My.App.HKWL.Description
 		Me.textboxHKWL.Text = My.App.HKWL.Key.ToString
 		Me.textboxHKWL.Tag = My.App.HKWL
@@ -704,41 +601,6 @@ Partial Friend Class MainForm
 			End If
 			Me.textboxHKWSTClock.Enabled = True
 			Me.btnHKWSTClockDisable.Enabled = True
-			If My.App.WSTShowHLMenu Or My.App.WSTShowHLTray Then
-				Me.lblHKHLA.Enabled = True
-				Me.lblHKHLB.Enabled = True
-				Me.lblHKHLC.Enabled = True
-				Me.lblHKHLD.Enabled = True
-				Me.lblHKHLE.Enabled = True
-				Me.lblHKHLF.Enabled = True
-				Me.lblHKHLG.Enabled = True
-				Me.lblHKHLH.Enabled = True
-			Else
-				Me.lblHKHLA.Enabled = False
-				Me.lblHKHLB.Enabled = False
-				Me.lblHKHLC.Enabled = False
-				Me.lblHKHLD.Enabled = False
-				Me.lblHKHLE.Enabled = False
-				Me.lblHKHLF.Enabled = False
-				Me.lblHKHLG.Enabled = False
-				Me.lblHKHLH.Enabled = False
-			End If
-			Me.textboxHKHLA.Enabled = True
-			Me.btnHKHLADisable.Enabled = True
-			Me.textboxHKHLB.Enabled = True
-			Me.btnHKHLBDisable.Enabled = True
-			Me.textboxHKHLC.Enabled = True
-			Me.btnHKHLCDisable.Enabled = True
-			Me.textboxHKHLD.Enabled = True
-			Me.btnHKHLDDisable.Enabled = True
-			Me.textboxHKHLE.Enabled = True
-			Me.btnHKHLEDisable.Enabled = True
-			Me.textboxHKHLF.Enabled = True
-			Me.btnHKHLFDisable.Enabled = True
-			Me.textboxHKHLG.Enabled = True
-			Me.btnHKHLGDisable.Enabled = True
-			Me.textboxHKHLH.Enabled = True
-			Me.btnHKHLHDisable.Enabled = True
 			If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.lblHKWL.Enabled = True
 			Else : Me.lblHKWL.Enabled = False
 			End If
@@ -767,30 +629,6 @@ Partial Friend Class MainForm
 			Me.lblHKWSTClock.Enabled = False
 			Me.textboxHKWSTClock.Enabled = False
 			Me.btnHKWSTClockDisable.Enabled = False
-			Me.lblHKHLA.Enabled = False
-			Me.textboxHKHLA.Enabled = False
-			Me.btnHKHLADisable.Enabled = False
-			Me.lblHKHLB.Enabled = False
-			Me.textboxHKHLB.Enabled = False
-			Me.btnHKHLBDisable.Enabled = False
-			Me.lblHKHLC.Enabled = False
-			Me.textboxHKHLC.Enabled = False
-			Me.btnHKHLCDisable.Enabled = False
-			Me.lblHKHLD.Enabled = False
-			Me.textboxHKHLD.Enabled = False
-			Me.btnHKHLDDisable.Enabled = False
-			Me.lblHKHLE.Enabled = False
-			Me.textboxHKHLE.Enabled = False
-			Me.btnHKHLEDisable.Enabled = False
-			Me.lblHKHLF.Enabled = False
-			Me.textboxHKHLF.Enabled = False
-			Me.btnHKHLFDisable.Enabled = False
-			Me.lblHKHLG.Enabled = False
-			Me.textboxHKHLG.Enabled = False
-			Me.btnHKHLGDisable.Enabled = False
-			Me.lblHKHLH.Enabled = False
-			Me.textboxHKHLH.Enabled = False
-			Me.btnHKHLHDisable.Enabled = False
 			Me.lblHKWL.Enabled = False
 			Me.textboxHKWL.Enabled = False
 			Me.btnHKWLDisable.Enabled = False
@@ -868,15 +706,6 @@ Partial Friend Class MainForm
 		Me.txbxWSTCommandPromptArgs.Text = My.App.WSTCommandPrompt.Arguments
 		Me.txbxWSTCommandPromptArgs.SelectionLength = 0
 		Me.txbxWSTCommandPromptArgs.SelectionStart = Me.txbxWSTCommandPromptArgs.Text.Length
-		If My.App.WSTShowHLMenu Then : Me.checkboxWSTShowHLMenu.Checked = True
-		Else : Me.checkboxWSTShowHLMenu.Checked = False
-		End If
-		If My.App.WSTShowHLTray Then : Me.checkboxWSTShowHLTray.Checked = True
-		Else : Me.checkboxWSTShowHLTray.Checked = False
-		End If
-		If My.App.HLStartUp Then : Me.checkboxWSTHLStartUp.Checked = True
-		Else : Me.checkboxWSTHLStartUp.Checked = False
-		End If
 		If My.App.WSTShowWLMenu Then : Me.checkboxWSTShowWLMenu.Checked = True
 		Else : Me.checkboxWSTShowWLMenu.Checked = False
 		End If
@@ -1025,86 +854,6 @@ Partial Friend Class MainForm
 			Me.tipInfo.SetToolTip(Me.lblACOffHourChimePath, My.App.ACOffHourChimePath)
 		End If
 	End Sub
-	Private Sub ShowSettingsHL()
-		HLUpdateEditType()
-		Me.lvHL.Clear()
-		Me.lvHL.Groups.Clear()
-		Me.panelHLEdit.Visible = False
-		Me.lvHL.Visible = True
-		Me.checkboxHLShowMenuIcons.Checked = My.App.HLShowMenuIcons
-		Me.checkboxHLShowToolTips.Checked = My.App.HLShowToolTips
-		Me.comboboxHLStartUpMode.SelectedIndex = My.App.HLStartUpMode
-		Me.comboboxHLGroupMode.SelectedIndex = My.App.HLGroupMode
-		Me.comboboxHLHotKeyMode.SelectedIndex = My.App.HLHotKeyMode
-		Me.textboxHLLoadTimeOut.Text = My.App.HLLoadTimeOut.ToString
-		Me.textboxHLCloseTimeOut.Text = My.App.HLCloseTimeOut.ToString
-		Me.textboxHLStartUpDelay.Text = My.App.HLStartUpDelay.ToString
-		Me.textboxHLName.ResetText()
-		Me.textboxHLDescription.ResetText()
-		Me.textboxHLLink.ResetText()
-		Me.textboxHLArguments.ResetText()
-		Me.textboxHLWorkingDirectory.ResetText()
-		Me.checkboxHLSingleInstance.Checked = False
-		Me.checkboxHLUseAlternateStartMethod.Checked = False
-		Me.textboxHLUseAlternateStartTimeOut.Text = "0"
-		'Me.checkboxHLUseAlternateCloseMethod.Checked = False
-		Me.checkboxHLHideInMenu.Checked = False
-		Me.checkboxHLDisabled.Checked = False
-		Me.comboboxHLGroup.Items.Clear()
-		Me.comboboxHLType.Items.Clear()
-		Me.comboboxHLWindowState.SelectedIndex = -1
-		Me.comboboxHLPriority.SelectedIndex = -1
-		Me.comboboxHLHotKey.SelectedIndex = -1
-		'Me.comboboxHLCloseAppProcessList.Items.Clear()
-		'Me.listboxHLCloseAppList.Items.Clear()
-		Dim groups As New Collections.Generic.List(Of String) From {
-			""}
-		Me.lvHL.Groups.Add("", "Main Menu")
-		Me.comboboxHLGroup.Items.Add("Main Menu")
-		For Each link As My.App.HLItemType In My.App.HLData
-			If link.Type = My.App.HLType.Group Then
-				groups.Add(link.Name)
-				Me.lvHL.Groups.Add(link.Name, link.Name)
-				Me.comboboxHLGroup.Items.Add(link.Name)
-			End If
-		Next
-		For Each item As String In My.App.GetEnumMembers(My.App.HLType.Auto) : Me.comboboxHLType.Items.Add(item)
-		Next
-		For index As Integer = 0 To My.App.HLData.Count - 1
-			Dim link As My.App.HLItemType = My.App.HLData.Item(index)
-			Dim item As New ListViewItem With {
-				.Group = Me.lvHL.Groups.Item(groups.IndexOf(link.Group)),
-				.Font = New Font(Me.Font, FontStyle.Regular)}
-			If link.HideInMenu Then : item.ForeColor = Color.LightGray
-			ElseIf Not link.Type = My.App.HLType.Separator Then : item.ForeColor = Color.Teal
-			End If
-			If link.Disabled Then : item.Font = New Font(item.Font, FontStyle.Strikeout)
-			ElseIf Not link.Type = My.App.HLType.Separator Then : item.Font = New Font(item.Font, FontStyle.Bold)
-			End If
-			'			If link.Name.Length > 17 Then
-			'				item.Text = link.Name.Substring(0, 17)
-			'				item.ToolTipText = link.Name
-			'			Else : item.Text = link.Name
-			'			End If
-			item.Text = link.Name
-			If Not String.IsNullOrEmpty(item.ToolTipText) And Not String.IsNullOrEmpty(link.Description) Then item.ToolTipText += Chr(13)
-			item.ToolTipText += link.Description
-			Select Case link.Type
-				Case My.App.HLType.Auto, My.App.HLType.Application : item.ImageKey = "imageHLApp"
-				Case My.App.HLType.Script : item.ImageKey = "imageHLScript"
-				Case My.App.HLType.Document : item.ImageKey = "imageHLDoc"
-				Case My.App.HLType.WebLink : item.ImageKey = "imageHLWeb"
-				Case My.App.HLType.Group : item.ImageKey = "imageHLGroup"
-				Case My.App.HLType.Separator
-					item.ImageKey = "imageHLSeparator"
-					item.Text = "Separator"
-			End Select
-			item.Tag = index
-			Me.lvHL.Items.Add(item)
-		Next
-		If HLScrollIndex > Me.lvHL.Items.Count - 1 Then HLScrollIndex = Me.lvHL.Items.Count - 1
-		If Me.lvHL.Items.Count > 0 Then Try : Me.lvHL.EnsureVisible(HLScrollIndex + 1) : Catch : Me.lvHL.EnsureVisible(HLScrollIndex) : End Try
-	End Sub
 	Private Sub ShowSettingsWL()
 		Me.panelWL.Hide()
 		Me.listviewWL.Clear()
@@ -1204,14 +953,12 @@ Partial Friend Class MainForm
 				Select Case senderName
 					Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTMiddle)
 					Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverMiddle)
-					Case Me.notifyiconHL.Tag.ToString : HCPerformAction(My.App.HCHLMiddle)
 					Case Else : HCPerformAction(My.App.HCWLMiddle, CType(sender, NotifyIcon).Tag)
 				End Select
 			Case MouseButtons.Right
 				Select Case senderName
 					Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTRight)
 					Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverRight)
-					Case Me.notifyiconHL.Tag.ToString : HCPerformAction(My.App.HCHLRight)
 					Case Else : HCPerformAction(My.App.HCWLRight)
 				End Select
 		End Select
@@ -1219,18 +966,14 @@ Partial Friend Class MainForm
 	Private Sub CMWSTOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmWST.Opening
 		If Not My.App.HCWSTRight = My.App.HCAction.Menu Then e.Cancel = True
 	End Sub
-	Private Sub CMHLTrayOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-		If Not My.App.HCHLRight = My.App.HCAction.Menu Then e.Cancel = True
-	End Sub
 	Private Sub CMCBTrayOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
 		If Not My.App.HCCBRight = My.App.HCAction.Menu Then e.Cancel = True
 	End Sub
 	Private Sub CMWSTSSOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmWSTScreenSaver.Opening
 		If Not My.App.HCWSTScreenSaverRight = My.App.HCAction.Menu Then e.Cancel = True
 	End Sub
-	Private Sub RadiobtnHCSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles radiobtnHCWSTSS.Click, radiobtnHCWST.Click, radiobtnHCWL.Click, radiobtnHCHL.Click
+	Private Sub RadiobtnHCSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles radiobtnHCWSTSS.Click, radiobtnHCWST.Click, radiobtnHCWL.Click
 		If radiobtnHCWST.Checked Then : HCShowActions(TrayTools.WorkSpaceTools)
-		ElseIf radiobtnHCHL.Checked Then : HCShowActions(TrayTools.HotLinks)
 		ElseIf radiobtnHCWL.Checked Then : HCShowActions(TrayTools.WinLinks)
 		ElseIf radiobtnHCWSTSS.Checked Then : HCShowActions(TrayTools.ScreenSaver)
 		End If
@@ -1239,25 +982,21 @@ Partial Friend Class MainForm
 		Select Case CType(sender, ComboBox).Name
 			Case Me.comboboxHCLeft.Name
 				If Me.radiobtnHCWST.Checked Then : My.App.HCWSTLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
-				ElseIf Me.radiobtnHCHL.Checked Then : My.App.HCHLLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
 				End If
 			Case Me.comboboxHCDouble.Name
 				If Me.radiobtnHCWST.Checked Then : My.App.HCWSTDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
-				ElseIf Me.radiobtnHCHL.Checked Then : My.App.HCHLDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
 				End If
 			Case Me.comboboxHCMiddle.Name
 				If Me.radiobtnHCWST.Checked Then : My.App.HCWSTMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-				ElseIf Me.radiobtnHCHL.Checked Then : My.App.HCHLMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
 				End If
 			Case Me.comboboxHCRight.Name
 				If Me.radiobtnHCWST.Checked Then : My.App.HCWSTRight = CType(HCFindActionIndex(Me.comboboxHCRight.SelectedItem.ToString), My.App.HCAction)
-				ElseIf Me.radiobtnHCHL.Checked Then : My.App.HCHLRight = CType(HCFindActionIndex(Me.comboboxHCRight.SelectedItem.ToString), My.App.HCAction)
 				ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverRight = CType(HCFindActionIndex(Me.comboboxHCRight.SelectedItem.ToString), My.App.HCAction)
 				End If
 		End Select
@@ -1273,14 +1012,12 @@ Partial Friend Class MainForm
 				Select Case HCSender
 					Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTDouble)
 					Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverDouble)
-					Case Me.notifyiconHL.Tag.ToString : HCPerformAction(My.App.HCHLDouble)
 					Case Else : Try : HCPerformAction(My.App.HCWLDouble, CType(HCSender, Integer)) : Catch : End Try
 				End Select
 			Else
 				Select Case HCSender
 					Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTLeft)
 					Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverLeft)
-					Case Me.notifyiconHL.Tag.ToString : HCPerformAction(My.App.HCHLLeft)
 					Case Else : Try : HCPerformAction(My.App.HCWLLeft, CType(HCSender, Integer)) : Catch : End Try
 				End Select
 			End If
@@ -1291,12 +1028,6 @@ Partial Friend Class MainForm
 	'Procedures
 	Private Sub HCPerformAction(action As My.App.HCAction, Optional argument As Object = Nothing)
 		Select Case action
-			Case My.App.HCAction.HLNew
-				If My.App.WSTShowHLMenu Or My.App.WSTShowHLTray Then
-					Me.lvHL.SelectedItems.Clear()
-					HLNew()
-					Me.SelectTab(Me.tabpageHL, True)
-				End If
 			Case My.App.HCAction.WLNew
 				If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
 					Me.listviewWL.SelectedIndices.Clear()
@@ -1328,7 +1059,6 @@ Partial Friend Class MainForm
 			Case My.App.HCAction.WSTClock : WSTShowClock()
 			Case My.App.HCAction.ShowSettings : SelectTab(Nothing)
 			Case My.App.HCAction.ShowSettingsWST : SelectTab(Me.tabpageWST)
-			Case My.App.HCAction.ShowSettingsHL : SelectTab(Me.tabpageHL)
 			Case My.App.HCAction.ShowSettingsWL : SelectTab(Me.tabpageWL)
 			Case My.App.HCAction.ShowSettingsWSTSS : SelectTab(Me.tabpageWST)
 			Case My.App.HCAction.ShowSettingsAC : ACActivateTimer()
@@ -1344,11 +1074,6 @@ Partial Friend Class MainForm
 				Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTDouble).Description)
 				Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTMiddle).Description)
 				Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTRight).Description)
-			Case My.App.TrayTools.HotLinks
-				Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCHLLeft).Description)
-				Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCHLDouble).Description)
-				Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCHLMiddle).Description)
-				Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCHLRight).Description)
 			Case My.App.TrayTools.WinLinks
 				Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWLLeft).Description)
 				Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWLDouble).Description)
@@ -1360,11 +1085,6 @@ Partial Friend Class MainForm
 				Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverDouble).Description)
 				Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverMiddle).Description)
 				Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverRight).Description)
-			Case My.App.TrayTools.OnlineAlerter
-				Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCOALeft).Description)
-				Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCOADouble).Description)
-				Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCOAMiddle).Description)
-				Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCOARight).Description)
 		End Select
 	End Sub
 	Private Sub HCResetTimer()
@@ -1385,126 +1105,94 @@ Partial Friend Class MainForm
 	'Declarations
 	Private HKInUse As New Collections.Generic.List(Of Keys)
 
-    'Control Events
-    Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTTaskManager.PreviewKeyDown, textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTCommandPrompt.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown, textboxHKHLH.PreviewKeyDown, textboxHKHLG.PreviewKeyDown, textboxHKHLF.PreviewKeyDown, textboxHKHLE.PreviewKeyDown, textboxHKHLD.PreviewKeyDown, textboxHKHLC.PreviewKeyDown, textboxHKHLB.PreviewKeyDown, textboxHKHLA.PreviewKeyDown
-        Dim senderTextBox = CType(sender, TextBox)
-        Dim senderTag = CType(senderTextBox.Tag, HKType)
-        If e.KeyData <> senderTag.Key Then
+	'Control Events
+	Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTTaskManager.PreviewKeyDown, textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTCommandPrompt.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown
+		Dim senderTextBox = CType(sender, TextBox)
+		Dim senderTag = CType(senderTextBox.Tag, HKType)
+		If e.KeyData <> senderTag.Key Then
 
-            'Setup New HotKey
-            Dim newhotkey As New HKType
-            Dim modifiers = 0
-            Dim match = False
-            If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
-            If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
-            If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
-            newhotkey.Description = senderTag.Description
-            newhotkey.WinID = senderTag.WinID
-            newhotkey.Key = e.KeyData
-            newhotkey.KeyCode = CByte(e.KeyValue)
-            newhotkey.KeyMod = CByte(modifiers)
+			'Setup New HotKey
+			Dim newhotkey As New HKType
+			Dim modifiers = 0
+			Dim match = False
+			If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
+			If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
+			If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
+			newhotkey.Description = senderTag.Description
+			newhotkey.WinID = senderTag.WinID
+			newhotkey.Key = e.KeyData
+			newhotkey.KeyCode = CByte(e.KeyValue)
+			newhotkey.KeyMod = CByte(modifiers)
 
-            'Check If Already In-Use
-            HKGenerateUsedKeyList
-            If Not CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key)
-            If Not CType(textboxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(textboxHKWSTScreenSaver.Tag, HKType).Key)
-            If Not CType(textboxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(textboxHKWSTClock.Tag, HKType).Key)
-            If Not CType(textboxHKWSTTaskManager.Tag, HKType).Key = HKWSTTaskManager.Key Then HKInUse.Add(CType(textboxHKWSTTaskManager.Tag, HKType).Key)
-            If Not CType(textboxHKWSTCommandPrompt.Tag, HKType).Key = HKWSTCommandPrompt.Key Then HKInUse.Add(CType(textboxHKWSTCommandPrompt.Tag, HKType).Key)
-            If Not CType(textboxHKHLA.Tag, HKType).Key = HKHLA.Key Then HKInUse.Add(CType(textboxHKHLA.Tag, HKType).Key)
-            If Not CType(textboxHKHLB.Tag, HKType).Key = HKHLB.Key Then HKInUse.Add(CType(textboxHKHLB.Tag, HKType).Key)
-            If Not CType(textboxHKHLC.Tag, HKType).Key = HKHLC.Key Then HKInUse.Add(CType(textboxHKHLC.Tag, HKType).Key)
-            If Not CType(textboxHKHLD.Tag, HKType).Key = HKHLD.Key Then HKInUse.Add(CType(textboxHKHLD.Tag, HKType).Key)
-            If Not CType(textboxHKHLE.Tag, HKType).Key = HKHLE.Key Then HKInUse.Add(CType(textboxHKHLE.Tag, HKType).Key)
-            If Not CType(textboxHKHLF.Tag, HKType).Key = HKHLF.Key Then HKInUse.Add(CType(textboxHKHLF.Tag, HKType).Key)
-            If Not CType(textboxHKHLG.Tag, HKType).Key = HKHLG.Key Then HKInUse.Add(CType(textboxHKHLG.Tag, HKType).Key)
-            If Not CType(textboxHKHLH.Tag, HKType).Key = HKHLH.Key Then HKInUse.Add(CType(textboxHKHLH.Tag, HKType).Key)
-            If Not CType(textboxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(textboxHKWL.Tag, HKType).Key)
-            For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
-            Next
+			'Check If Already In-Use
+			HKGenerateUsedKeyList()
+			If Not CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key)
+			If Not CType(textboxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(textboxHKWSTScreenSaver.Tag, HKType).Key)
+			If Not CType(textboxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(textboxHKWSTClock.Tag, HKType).Key)
+			If Not CType(textboxHKWSTTaskManager.Tag, HKType).Key = HKWSTTaskManager.Key Then HKInUse.Add(CType(textboxHKWSTTaskManager.Tag, HKType).Key)
+			If Not CType(textboxHKWSTCommandPrompt.Tag, HKType).Key = HKWSTCommandPrompt.Key Then HKInUse.Add(CType(textboxHKWSTCommandPrompt.Tag, HKType).Key)
+			If Not CType(textboxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(textboxHKWL.Tag, HKType).Key)
+			For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
+			Next
 
-            'Display New HotKey If Not Already In-Use
-            If Not match Then
-                senderTextBox.Font = New Font(Font, FontStyle.Regular)
-                senderTextBox.ForeColor = Color.Maroon
-                senderTextBox.Text = e.KeyData.ToString
-                senderTextBox.Tag = newhotkey
-                btnHKReset.Enabled = True
-                btnHKSet.Enabled = True
-            End If
-        End If
-    End Sub
-    Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTTaskManager.KeyPress, textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTCommandPrompt.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress, textboxHKHLH.KeyPress, textboxHKHLG.KeyPress, textboxHKHLF.KeyPress, textboxHKHLE.KeyPress, textboxHKHLD.KeyPress, textboxHKHLC.KeyPress, textboxHKHLB.KeyPress, textboxHKHLA.KeyPress
-        e.Handled = True
-    End Sub
-    Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Click, btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTCommandPromptDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click, btnHKHLHDisable.Click, btnHKHLGDisable.Click, btnHKHLFDisable.Click, btnHKHLEDisable.Click, btnHKHLDDisable.Click, btnHKHLCDisable.Click, btnHKHLBDisable.Click, btnHKHLADisable.Click
-        Dim senderTextBox As New TextBox
-        Dim senderTag As New HKType
-        Select Case CType(sender, Button).Name
-            Case btnHKWSTLockWorkSpaceDisable.Name
-                senderTextBox = textboxHKWSTLockWorkSpace
-                senderTag = CType(textboxHKWSTLockWorkSpace.Tag, HKType)
-            Case btnHKWSTScreenSaverDisable.Name
-                senderTextBox = textboxHKWSTScreenSaver
-                senderTag = CType(textboxHKWSTScreenSaver.Tag, HKType)
+			'Display New HotKey If Not Already In-Use
+			If Not match Then
+				senderTextBox.Font = New Font(Font, FontStyle.Regular)
+				senderTextBox.ForeColor = Color.Maroon
+				senderTextBox.Text = e.KeyData.ToString
+				senderTextBox.Tag = newhotkey
+				btnHKReset.Enabled = True
+				btnHKSet.Enabled = True
+			End If
+		End If
+	End Sub
+	Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTTaskManager.KeyPress, textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTCommandPrompt.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress
+		e.Handled = True
+	End Sub
+	Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Click, btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTCommandPromptDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click
+		Dim senderTextBox As New TextBox
+		Dim senderTag As New HKType
+		Select Case CType(sender, Button).Name
+			Case btnHKWSTLockWorkSpaceDisable.Name
+				senderTextBox = textboxHKWSTLockWorkSpace
+				senderTag = CType(textboxHKWSTLockWorkSpace.Tag, HKType)
+			Case btnHKWSTScreenSaverDisable.Name
+				senderTextBox = textboxHKWSTScreenSaver
+				senderTag = CType(textboxHKWSTScreenSaver.Tag, HKType)
 			Case btnHKWSTClockDisable.Name
 				senderTextBox = textboxHKWSTClock
-                senderTag = CType(textboxHKWSTClock.Tag, HKType)
-            Case btnHKWSTTaskManagerDisable.Name
-                senderTextBox = textboxHKWSTTaskManager
-                senderTag = CType(textboxHKWSTTaskManager.Tag, HKType)
-            Case btnHKWSTCommandPromptDisable.Name
-                senderTextBox = textboxHKWSTCommandPrompt
-                senderTag = CType(textboxHKWSTCommandPrompt.Tag, HKType)
-            Case btnHKHLADisable.Name
-                senderTextBox = textboxHKHLA
-                senderTag = CType(textboxHKHLA.Tag, HKType)
-            Case btnHKHLBDisable.Name
-                senderTextBox = textboxHKHLB
-                senderTag = CType(textboxHKHLB.Tag, HKType)
-            Case btnHKHLCDisable.Name
-                senderTextBox = textboxHKHLC
-                senderTag = CType(textboxHKHLC.Tag, HKType)
-            Case btnHKHLDDisable.Name
-                senderTextBox = textboxHKHLD
-                senderTag = CType(textboxHKHLD.Tag, HKType)
-            Case btnHKHLEDisable.Name
-                senderTextBox = textboxHKHLE
-                senderTag = CType(textboxHKHLE.Tag, HKType)
-            Case btnHKHLFDisable.Name
-                senderTextBox = textboxHKHLF
-                senderTag = CType(textboxHKHLF.Tag, HKType)
-            Case btnHKHLGDisable.Name
-                senderTextBox = textboxHKHLG
-                senderTag = CType(textboxHKHLG.Tag, HKType)
-            Case btnHKHLHDisable.Name
-                senderTextBox = textboxHKHLH
-                senderTag = CType(textboxHKHLH.Tag, HKType)
-            Case btnHKWLDisable.Name
-                senderTextBox = textboxHKWL
-                senderTag = CType(textboxHKWL.Tag, HKType)
-        End Select
+				senderTag = CType(textboxHKWSTClock.Tag, HKType)
+			Case btnHKWSTTaskManagerDisable.Name
+				senderTextBox = textboxHKWSTTaskManager
+				senderTag = CType(textboxHKWSTTaskManager.Tag, HKType)
+			Case btnHKWSTCommandPromptDisable.Name
+				senderTextBox = textboxHKWSTCommandPrompt
+				senderTag = CType(textboxHKWSTCommandPrompt.Tag, HKType)
+			Case btnHKWLDisable.Name
+				senderTextBox = textboxHKWL
+				senderTag = CType(textboxHKWL.Tag, HKType)
+		End Select
 
-        Dim newhotkey As New HKType With {
-            .Description = senderTag.Description,
-            .WinID = senderTag.WinID,
-            .Key = Keys.None,
-            .KeyCode = 0,
-            .KeyMod = 0}
-        senderTextBox.Font = New Font(Font, FontStyle.Regular)
-        senderTextBox.ForeColor = Color.Maroon
-        senderTextBox.Text = newhotkey.Key.ToString
-        senderTextBox.Tag = newhotkey
-        btnHKReset.Enabled = True
-        btnHKSet.Enabled = True
-        btnHKSet.Focus
-    End Sub
-    Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Enter, btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTCommandPromptDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter, btnHKHLHDisable.Enter, btnHKHLGDisable.Enter, btnHKHLFDisable.Enter, btnHKHLEDisable.Enter, btnHKHLDDisable.Enter, btnHKHLCDisable.Enter, btnHKHLBDisable.Enter, btnHKHLADisable.Enter
-        If btnHKSet.Enabled Then : btnHKSet.Focus
-        Else : btnClose.Focus
-        End If
-    End Sub
-    Private Sub BtnHKEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
+		Dim newhotkey As New HKType With {
+			.Description = senderTag.Description,
+			.WinID = senderTag.WinID,
+			.Key = Keys.None,
+			.KeyCode = 0,
+			.KeyMod = 0}
+		senderTextBox.Font = New Font(Font, FontStyle.Regular)
+		senderTextBox.ForeColor = Color.Maroon
+		senderTextBox.Text = newhotkey.Key.ToString
+		senderTextBox.Tag = newhotkey
+		btnHKReset.Enabled = True
+		btnHKSet.Enabled = True
+		btnHKSet.Focus()
+	End Sub
+	Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Enter, btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTCommandPromptDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter
+		If btnHKSet.Enabled Then : btnHKSet.Focus()
+		Else : btnClose.Focus()
+		End If
+	End Sub
+	Private Sub BtnHKEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
 		My.App.HKEnabled = Not My.App.HKEnabled
 		HKRegister()
 		ShowSettings(My.App.Tools.HotKeys)
@@ -1515,14 +1203,6 @@ Partial Friend Class MainForm
 		If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then My.App.HKWSTClock = CType(Me.textboxHKWSTClock.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key = My.App.HKWSTTaskManager.Key Then My.App.HKWSTTaskManager = CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key = My.App.HKWSTCommandPrompt.Key Then My.App.HKWSTCommandPrompt = CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLA.Tag, My.App.HKType).Key = My.App.HKHLA.Key Then My.App.HKHLA = CType(Me.textboxHKHLA.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLB.Tag, My.App.HKType).Key = My.App.HKHLB.Key Then My.App.HKHLB = CType(Me.textboxHKHLB.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLC.Tag, My.App.HKType).Key = My.App.HKHLC.Key Then My.App.HKHLC = CType(Me.textboxHKHLC.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLD.Tag, My.App.HKType).Key = My.App.HKHLD.Key Then My.App.HKHLD = CType(Me.textboxHKHLD.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLE.Tag, My.App.HKType).Key = My.App.HKHLE.Key Then My.App.HKHLE = CType(Me.textboxHKHLE.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLF.Tag, My.App.HKType).Key = My.App.HKHLF.Key Then My.App.HKHLF = CType(Me.textboxHKHLF.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLG.Tag, My.App.HKType).Key = My.App.HKHLG.Key Then My.App.HKHLG = CType(Me.textboxHKHLG.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKHLH.Tag, My.App.HKType).Key = My.App.HKHLH.Key Then My.App.HKHLH = CType(Me.textboxHKHLH.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWL.Tag, My.App.HKType).Key = My.App.HKWL.Key Then My.App.HKWL = CType(Me.textboxHKWL.Tag, My.App.HKType)
 		My.App.HKGenerateKeyList()
 		HKRegister()
@@ -1557,14 +1237,6 @@ Partial Friend Class MainForm
 			Case My.App.HKWSTClock.WinID : WSTShowClock()
 			Case My.App.HKWSTTaskManager.WinID : WSTTaskManagerToggle()
 			Case My.App.HKWSTCommandPrompt.WinID : My.App.StartFile(My.App.WSTCommandPrompt)
-			Case My.App.HKHLA.WinID : HLStartLinksByHotKey(My.App.HLHotKey.A)
-			Case My.App.HKHLB.WinID : HLStartLinksByHotKey(My.App.HLHotKey.B)
-			Case My.App.HKHLC.WinID : HLStartLinksByHotKey(My.App.HLHotKey.C)
-			Case My.App.HKHLD.WinID : HLStartLinksByHotKey(My.App.HLHotKey.D)
-			Case My.App.HKHLE.WinID : HLStartLinksByHotKey(My.App.HLHotKey.E)
-			Case My.App.HKHLF.WinID : HLStartLinksByHotKey(My.App.HLHotKey.F)
-			Case My.App.HKHLG.WinID : HLStartLinksByHotKey(My.App.HLHotKey.G)
-			Case My.App.HKHLH.WinID : HLStartLinksByHotKey(My.App.HLHotKey.H)
 			Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then WLStartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
 		End Select
 	End Sub
@@ -1592,8 +1264,6 @@ Partial Friend Class MainForm
 	' Control Events
 	Private Sub CMIWSTCancelStartUpMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCancelStartUp.MouseUp
 		If e.Button = MouseButtons.Left Then
-			If Me.TimerHLStartUp.Enabled Then Me.TimerHLStartUp.Stop()
-
 			If Me.TimerWLStartUp.Enabled Then
 				Me.TimerWLStartUp.Stop()
 				WLStartUp = False
@@ -1694,12 +1364,8 @@ Partial Friend Class MainForm
 		My.App.WSTEnabled = Not My.App.WSTEnabled
 		ShowTools()
 	End Sub
-	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowTaskManager.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHLMenu.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowCommandPrompt.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
+	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowTaskManager.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowCommandPrompt.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
 		Select Case CType(sender, CheckBox).Name
-			Case checkboxWSTShowHLMenu.Name
-				WSTShowHLMenu = Not WSTShowHLMenu
-				If WSTShowHLMenu Then ShowHL()
-				HLSetSettingsTab()
 			Case checkboxWSTShowWLMenu.Name
 				WSTShowWLMenu = Not WSTShowWLMenu
 				WLSetSettingsTab()
@@ -1740,7 +1406,7 @@ Partial Friend Class MainForm
 		End Select
 		ShowWST()
 	End Sub
-	Private Sub CheckboxWSTShowIconClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTSSToolEnabled.Click, checkboxWSTShowWLTray.Click, checkboxWSTShowScreenSaverIcon.Click, checkboxWSTShowHLTray.Click
+	Private Sub CheckboxWSTShowIconClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTSSToolEnabled.Click, checkboxWSTShowWLTray.Click, checkboxWSTShowScreenSaverIcon.Click
 		Select Case CType(sender, CheckBox).Name
 			Case checkboxWSTShowWLTray.Name
 				WSTShowWLTray = Not WSTShowWLTray
@@ -1751,9 +1417,6 @@ Partial Friend Class MainForm
 						WLData(index) = link
 					End If
 				Next
-			Case checkboxWSTShowHLTray.Name
-				WSTShowHLTray = Not WSTShowHLTray
-				If WSTShowHLTray Then ShowHL()
 			Case checkboxWSTShowScreenSaverIcon.Name : WSTShowSSIcon = Not WSTShowSSIcon
 			Case checkboxWSTSSToolEnabled.Name
 				If WSTSSToolEnabled AndAlso Not WSTSSEnabled Then
@@ -1764,9 +1427,6 @@ Partial Friend Class MainForm
 				ShowSettingsSS()
 		End Select
 		ShowTools()
-	End Sub
-	Private Sub CheckboxWSTHLStartUpClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTHLStartUp.Click
-		My.App.HLStartUp = Not My.App.HLStartUp
 	End Sub
 	Private Sub BtnLoadOnOSStartupPathClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnLoadOnOSStartupPath.Click
 		If Not String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then Me.openfiledialogLoadOnOSStartup.InitialDirectory = My.App.WSTLoadOnOSStartupPath.Path
@@ -1855,7 +1515,6 @@ Partial Friend Class MainForm
 			Me.cmiWSTLog.ToolTipText = "RightClick = Show Maximized"
 			Me.cmiWSTLog.ResetFont()
 			Me.cmiWSTLog.ResetForeColor()
-			Me.notifyiconHL.Text = My.App.HLName
 			If ErrorWarning Then
 				Me.notifyiconWST.Text += Chr(13) + "** ERROR **"
 				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
@@ -1863,7 +1522,6 @@ Partial Friend Class MainForm
 				Me.cmiWSTLog.ForeColor = Color.Firebrick
 				Me.cmiWSTLog.ToolTipText += Chr(13) + "An Application Error Has Occured. View Log For Details."
 			End If
-			If TimerHLStartUp.Enabled Or WLStartUp Then Me.notifyiconWST.Text += Chr(13) + "StartUp Pending..."
 			If My.App.WSTSSToolEnabled Then
 				If WSTSSEnabled Then : If My.App.WSTShowSSEnabled Then Me.notifyiconWST.Text += Chr(13) + "Screen Saver ENABLED"
 				Else : If My.App.WSTShowSSEnabled Then Me.notifyiconWST.Text += Chr(13) + "Screen Saver DISABLED"
@@ -1876,8 +1534,6 @@ Partial Friend Class MainForm
 				Me.cmiWSTAC.Checked = True
 				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Bold)
 			ElseIf ACAlarmActive Then
-				'Me.notifyiconWST.Text += Chr(13) + "Alarm Set for " + My.App.ACAlarmTime.ToString.Substring(0, My.App.ACAlarmTime.ToString.Length - 3)
-				'Me.cmiWSTAC.ToolTipText = "Alarm Set for " + My.App.ACAlarmTime.ToString.Substring(0, My.App.ACAlarmTime.ToString.Length - 3)
 				Dim alarmText As String = My.App.ACAlarmTime.ToString()
 				Dim prefix As String = String.Concat(Me.notifyiconWST.Text, ChrW(13), "Alarm Set for ")
 				Me.notifyiconWST.Text = String.Concat(prefix, alarmText.AsSpan(0, alarmText.Length - 3))
@@ -1895,9 +1551,9 @@ Partial Friend Class MainForm
 		End If
 	End Sub
 	Private Sub UpdateWSTCancelState()
-		If Not TimerHLStartUp.Enabled And Not WLStartUp Then Me.cmiWSTCancelStartUp.Visible = False
+		If Not WLStartUp Then Me.cmiWSTCancelStartUp.Visible = False
+		If Not WLStartUp And Not BackgroundworkerAC.IsBusy Then Me.cmseparatorWSTCancel.Visible = False
 		If Not BackgroundworkerAC.IsBusy Then Me.cmiWSTACAlarmCancel.Visible = False
-		If Not TimerHLStartUp.Enabled And Not WLStartUp And Not BackgroundworkerAC.IsBusy Then Me.cmseparatorWSTCancel.Visible = False
 		UpdateWST()
 	End Sub
 	Private Sub ShowWST()
@@ -1914,11 +1570,8 @@ Partial Friend Class MainForm
 		If My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate Then : Me.cmiWSTScreenSaverActivate.Visible = True
 		Else : Me.cmiWSTScreenSaverActivate.Visible = False
 		End If
-		If My.App.WSTShowHLMenu Then : Me.cmiWSTHLMenu.Visible = True
-		Else : Me.cmiWSTHLMenu.Visible = False
-		End If
 		If My.App.WSTShowWLMenu Then
-			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu Then : Me.cmseparatorWSTWLTop.Visible = True
+			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) Then : Me.cmseparatorWSTWLTop.Visible = True
 			Else : Me.cmseparatorWSTWLTop.Visible = False
 			End If
 			If My.App.WSTShowClock OrElse My.App.WSTShowAC Then : Me.cmseparatorWSTWLBottom.Visible = True
@@ -1954,10 +1607,10 @@ Partial Friend Class MainForm
 		Else : Me.cmiWSTShutDown.Visible = False
 		End If
 		If My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown Then
-			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu _
-				OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC _
-				Then : Me.cmseparatorWSTShutDownOptions.Visible = True
-			Else : Me.cmseparatorWSTShutDownOptions.Visible = False
+			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC Then
+				Me.cmseparatorWSTShutDownOptions.Visible = True
+			Else
+				Me.cmseparatorWSTShutDownOptions.Visible = False
 			End If
 		Else : Me.cmseparatorWSTShutDownOptions.Visible = False
 		End If
@@ -1968,7 +1621,7 @@ Partial Friend Class MainForm
 		If My.App.WSTShowLog Then : Me.cmiWSTLog.Visible = True
 		Else : Me.cmiWSTLog.Visible = False
 		End If
-		If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu _
+		If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) _
 			OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC _
 			OrElse My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown _
 			Then : Me.cmseparatorWSTSettings.Visible = True
@@ -2488,947 +2141,6 @@ Partial Friend Class MainForm
 	End Sub
 
 #End Region
-#Region "HotLinks(HL)"
-
-	'Declarations
-	Private notifyiconHL As NotifyIcon
-	Private WithEvents TimerHLStartUp As New Timer
-	Private cmHLMenu As New ContextMenuStrip
-	Private cmHLTray As New ContextMenuStrip
-	Private cmHLItem As New ContextMenuStrip
-	Private imagelistlistviewHL As ImageList
-	Private Enum HLEditModes
-		NewAtIndex
-		NewInGroup
-		Edit
-	End Enum
-	Private HLEditIndex As Integer
-	Private HLEditGroupIndex As Integer
-	Private HLEditMode As HLEditModes
-	Private HLEditName As String
-	Private HLScrollIndex As Integer = 0
-	Private uiHLOpenFile As New OpenFileDialog
-	Private uiHLFolderBrowser As New FolderBrowserDialog
-
-	'Control Events
-	Private Sub TabpageHLPaint(sender As Object, e As PaintEventArgs) Handles tabpageHL.Paint
-		e.Graphics.DrawLine(SystemPens.WindowFrame, 0, Me.textboxHLCloseTimeOut.Bottom + 8, Me.tabpageHL.Width - 4, Me.textboxHLCloseTimeOut.Bottom + 8)
-	End Sub
-	Private Sub CMlistviewHLOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmlvHL.Opening
-		Me.cmiHLMoveTop.Enabled = False
-		Me.cmiHLMoveUp.Enabled = False
-		Me.cmiHLMoveDown.Enabled = False
-		Me.cmiHLMoveBottom.Enabled = False
-		If Me.lvHL.SelectedItems.Count = 0 Then
-			Me.cmiHLNew.Text = "New (Insert Last)"
-			Me.cmiHLEdit.Enabled = False
-			Me.cmiHLCopy.Enabled = False
-			Me.cmiHLDelete.Enabled = False
-		Else
-			If CInt(Me.lvHL.SelectedItems(0).Tag) > HLFindFirstIndex(My.App.HLData(CInt(Me.lvHL.SelectedItems(0).Tag)).Group, CInt(Me.lvHL.SelectedItems(0).Tag)) Then
-				Me.cmiHLMoveTop.Enabled = True
-				Me.cmiHLMoveUp.Enabled = True
-			End If
-			If CInt(Me.lvHL.SelectedItems(0).Tag) < HLFindLastIndex(My.App.HLData(CInt(Me.lvHL.SelectedItems(0).Tag)).Group, CInt(Me.lvHL.SelectedItems(0).Tag)) Then
-				Me.cmiHLMoveDown.Enabled = True
-				Me.cmiHLMoveBottom.Enabled = True
-			End If
-			Me.cmiHLNew.Text = "New In " + IIf(String.IsNullOrEmpty(My.App.HLData(CInt(Me.lvHL.SelectedItems(0).Tag)).Group), "Main Menu", My.App.HLData(CInt(Me.lvHL.SelectedItems(0).Tag)).Group).ToString + " (Insert Above)"
-			Me.cmiHLEdit.Enabled = True
-			Me.cmiHLCopy.Enabled = True
-			Me.cmiHLDelete.Enabled = True
-		End If
-	End Sub
-	Private Sub CMIHLMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		Dim senderCMI As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-		Select Case e.Button
-			Case MouseButtons.Left : HLStartLink(My.App.HLData.Item(CInt(senderCMI.Tag)))
-			Case MouseButtons.Right
-				cmHLItem.Items.Clear()
-				Dim cms As ToolStripSeparator
-				Dim cmi As New ToolStripMenuItem(My.App.HLData(CInt(senderCMI.Tag)).Name, HLGetIcon(My.App.HLData(CInt(senderCMI.Tag))))
-				AddHandler cmi.MouseUp, AddressOf CMIHLItemMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cms = New ToolStripSeparator
-				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("ReStart", My.Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLItemReStartMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("Close", My.Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLItemCloseMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cms = New ToolStripSeparator
-				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("Edit", My.Resources.Resources.imageEdit) 'DirectCast(My.App.AppResources.GetObject("imageEdit"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLItemEditMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cmHLItem.Show(MousePosition)
-		End Select
-		senderCMI = Nothing
-	End Sub
-	Private Sub CMIHLGroupMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		Dim senderCMI As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-		Select Case e.Button
-			Case MouseButtons.Left
-				If (My.Computer.Keyboard.CtrlKeyDown Or senderCMI.Owner Is Me.cmHLItem) AndAlso Not My.App.HLGroupMode = My.App.HLMode.NoAction Then
-					If Me.cmHLTray.Visible Then Me.cmHLTray.Close()
-					If Me.cmWST.Visible Then Me.cmWST.Close()
-
-					Select Case My.App.HLGroupMode
-						Case My.App.HLMode.Start : HLStartGroup(senderCMI.Tag.ToString)
-						Case My.App.HLMode.ReStart : HLReStartGroup(senderCMI.Tag.ToString)
-						Case My.App.HLMode.StartAndClose : HLStartAndCloseGroup(senderCMI.Tag.ToString)
-						Case My.App.HLMode.Close : HLCloseGroup(senderCMI.Tag.ToString)
-					End Select
-				End If
-			Case MouseButtons.Right
-				cmHLItem.Items.Clear()
-				Dim cmi As ToolStripMenuItem
-				cmi = New ToolStripMenuItem(senderCMI.Tag.ToString, My.Resources.Resources.imageHLGroup) 'DirectCast(My.App.AppResources.GetObject("imageHLGroup"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLGroupMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				Dim cms As New ToolStripSeparator
-				cmHLItem.Items.Add(cms)
-				cmi = New ToolStripMenuItem("Start All", My.Resources.Resources.imageGoStart) 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLStartAllMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("ReStart All", My.Resources.Resources.imageGoReStart) 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLReStartAllMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cmi = New ToolStripMenuItem("Close All", My.Resources.Resources.imageClose) 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image))
-				AddHandler cmi.MouseUp, AddressOf CMIHLCloseAllMouseUp
-				cmi.Tag = senderCMI.Tag
-				cmHLItem.Items.Add(cmi)
-				cmHLItem.Show(MousePosition)
-		End Select
-		senderCMI = Nothing
-	End Sub
-	Private Sub CMIHLStartAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then HLStartGroup(CType(sender, ToolStripMenuItem).Tag.ToString)
-	End Sub
-	Private Sub CMIHLReStartAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then HLReStartGroup(CType(sender, ToolStripMenuItem).Tag.ToString)
-	End Sub
-	Private Sub CMIHLCloseAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then HLCloseGroup(CType(sender, ToolStripMenuItem).Tag.ToString)
-	End Sub
-	Private Sub CMIHLRefreshMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then ShowHL()
-	End Sub
-	Private Sub CMIHLSettingsMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then SelectTab(Me.tabpageHL, True)
-	End Sub
-	Private Sub CMIHLTrayCloseMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then
-			My.App.WSTShowHLTray = False
-			ShowTools()
-			ShowSettings(My.App.Tools.WorkSpaceTools)
-		End If
-	End Sub
-	Private Sub CMIHLItemMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then HLStartLink(My.App.HLData.Item(DirectCast(CType(sender, ToolStripMenuItem).Tag, Integer)))
-	End Sub
-	Private Sub CMIHLItemEditMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then
-			ShowSettings(My.App.Tools.HotLinks)
-			SelectTab(Me.tabpageHL, True)
-			HLEditMode = HLEditModes.Edit
-			HLEditIndex = DirectCast(CType(sender, ToolStripMenuItem).Tag, Integer)
-			HLEdit()
-		End If
-	End Sub
-	Private Sub CMIHLItemReStartMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then
-			HLCloseLink(My.App.HLData.Item(DirectCast(CType(sender, ToolStripMenuItem).Tag, Integer)))
-			My.App.AppSleep(1)
-			HLStartLink(My.App.HLData.Item(DirectCast(CType(sender, ToolStripMenuItem).Tag, Integer)))
-		End If
-	End Sub
-	Private Sub CMIHLItemCloseMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-		If e.Button = MouseButtons.Left Then HLCloseLink(My.App.HLData.Item(DirectCast(CType(sender, ToolStripMenuItem).Tag, Integer)))
-	End Sub
-	Private Sub CMIHLMoveMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiHLMoveUp.MouseUp, cmiHLMoveTop.MouseUp, cmiHLMoveDown.MouseUp, cmiHLMoveBottom.MouseUp
-		If e.Button = MouseButtons.Left Then
-			HLScrollIndex = Me.lvHL.SelectedIndices.Item(0)
-
-			Dim link As My.App.HLItemType = My.App.HLData.Item(CInt(Me.lvHL.SelectedItems.Item(0).Tag))
-			My.App.HLData.RemoveAt(CInt(Me.lvHL.SelectedItems.Item(0).Tag))
-			Select Case CType(sender, ToolStripMenuItem).Name
-				Case Me.cmiHLMoveTop.Name : My.App.HLData.Insert(HLFindFirstIndex(link.Group, CInt(Me.lvHL.SelectedItems(0).Tag)), link)
-				Case Me.cmiHLMoveUp.Name : My.App.HLData.Insert(CInt(Me.lvHL.SelectedItems.Item(0).Tag) - 1, link)
-				Case Me.cmiHLMoveDown.Name : My.App.HLData.Insert(CInt(Me.lvHL.SelectedItems.Item(0).Tag) + 1, link)
-				Case Me.cmiHLMoveBottom.Name : My.App.HLData.Insert(HLFindLastIndex(link.Group, CInt(Me.lvHL.SelectedItems(0).Tag)) + 1, link)
-			End Select
-			ShowHL()
-			ShowSettings(My.App.Tools.HotLinks)
-		End If
-	End Sub
-	Private Sub CMIHLNewMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiHLNew.MouseUp
-		If e.Button = MouseButtons.Left Then HLNew()
-	End Sub
-	Private Sub CMIHLEditMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiHLEdit.MouseUp
-		If e.Button = MouseButtons.Left Then
-			HLScrollIndex = Me.lvHL.SelectedIndices.Item(0)
-			HLEditMode = HLEditModes.Edit
-			HLEditIndex = CInt(Me.lvHL.SelectedItems.Item(0).Tag)
-			HLEdit()
-		End If
-	End Sub
-	Private Sub CMIHLCopyMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiHLCopy.MouseUp
-		If e.Button = MouseButtons.Left And Me.lvHL.SelectedIndices.Count > 0 Then
-			Dim link As My.App.HLItemType = My.App.HLData(CInt(Me.lvHL.SelectedItems.Item(0).Tag))
-			If link.Type = My.App.HLType.Group Then
-				Dim linklist As Collections.Generic.List(Of My.App.HLItemType) = HLGenerateGroupList(link.Name)
-
-				'Rename & Copy Link
-				HLEditName = link.Name
-				Dim increment As Integer = 1
-				Do
-					increment += 1
-					link.Name = HLEditName + increment.ToString
-				Loop While HLDuplicateGroupExists(link.Name)
-				My.App.HLData.Insert(CInt(Me.lvHL.SelectedItems.Item(0).Tag) + 1, link)
-
-				'ReGroup & Copy All Group Links @ End Of HotLinks
-				For Each grouplink As My.App.HLItemType In linklist
-					grouplink.Group = link.Name
-					My.App.HLData.Insert(My.App.HLData.Count, grouplink)
-				Next
-
-			Else : My.App.HLData.Insert(CInt(Me.lvHL.SelectedItems.Item(0).Tag) + 1, link)
-			End If
-			Me.ShowSettings(My.App.Tools.HotLinks)
-			ShowHL()
-		End If
-	End Sub
-	Private Sub CMIHLDeleteMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiHLDelete.MouseUp
-		If e.Button = MouseButtons.Left Then
-			HLScrollIndex = Me.lvHL.SelectedIndices.Item(0)
-			Dim removelist As New Collections.Generic.List(Of Integer) From {CInt(Me.lvHL.SelectedItems.Item(0).Tag)}
-			If My.App.HLData.Item(CInt(Me.lvHL.SelectedItems.Item(0).Tag)).Type = My.App.HLType.Group Then HLGenerateRemoveList(My.App.HLData.Item(CInt(Me.lvHL.SelectedItems.Item(0).Tag)).Name, removelist)
-			removelist.Sort()
-			removelist.Reverse()
-			For Each index As Integer In removelist : My.App.HLData.RemoveAt(index) : Next
-			ShowHL()
-			ShowSettings(My.App.Tools.HotLinks)
-		End If
-	End Sub
-	Private Sub BtnHLSelectLinkClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHLSelectLink.Click
-		If Not String.IsNullOrEmpty(Me.textboxHLLink.Text) Then Me.uiHLOpenFile.InitialDirectory = Me.textboxHLLink.Text
-		Dim r As DialogResult = Me.uiHLOpenFile.ShowDialog(Me)
-		If r = System.Windows.Forms.DialogResult.OK And Not Me.uiHLOpenFile.FileName = "" Then : Me.textboxHLLink.Text = Me.uiHLOpenFile.FileName
-		ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then : Me.textboxHLLink.Text = ""
-		End If
-		Me.textboxHLLink.Select(Me.textboxHLLink.Text.Length, 0)
-		Me.textboxHLLink.Focus()
-	End Sub
-	Private Sub BtnHLSelectWorkingDirectoryClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHLSelectWorkingDirectory.Click
-		If Not String.IsNullOrEmpty(Me.textboxHLWorkingDirectory.Text) Then Me.uiHLFolderBrowser.SelectedPath = Me.textboxHLWorkingDirectory.Text
-		Dim r As DialogResult = Me.uiHLFolderBrowser.ShowDialog(Me)
-		If r = System.Windows.Forms.DialogResult.OK And Not Me.uiHLFolderBrowser.SelectedPath = "" Then : Me.textboxHLWorkingDirectory.Text = Me.uiHLFolderBrowser.SelectedPath
-		ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then : Me.textboxHLWorkingDirectory.Text = ""
-		End If
-		Me.textboxHLWorkingDirectory.Select(Me.textboxHLWorkingDirectory.Text.Length, 0)
-		Me.textboxHLWorkingDirectory.Focus()
-	End Sub
-	Private Sub BtnHLSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHLSet.Click
-		Dim link As My.App.HLItemType = HLGenerateNewLink()
-
-		If String.IsNullOrEmpty(link.Name) And Not link.Type = My.App.HLType.Group And Not link.Type = My.App.HLType.Separator Then
-			Me.textboxHLName.Text = "**ENTER_LINK_NAME**"
-			My.App.ShowBalloon(My.App.Tools.HotLinks, "Please Enter A Link NaMe...", My.App.BalloonDelay.Short)
-		ElseIf link.Type = My.App.HLType.Group And HLDuplicateGroupExists(link.Name) Then : My.App.ShowBalloon(My.App.Tools.HotLinks, "Duplicate Group Name", My.App.BalloonDelay.Short)
-		Else
-			Select Case HLEditMode
-				Case HLEditModes.NewAtIndex : My.App.HLData.Insert(HLEditIndex, link)
-				Case HLEditModes.NewInGroup
-					Dim indexMax As Integer = My.App.HLData.Count - 1
-					For indexCounter As Integer = 0 To My.App.HLData.Count - 1 : If My.App.HLData.Item(indexCounter).Group = link.Group Then indexMax = indexCounter
-					Next
-					My.App.HLData.Insert(indexMax + 1, link)
-				Case HLEditModes.Edit
-					If link.Type = My.App.HLType.Group And Not link.Name = My.App.HLData(HLEditIndex).Name Then 'If group type, change all members of group
-						For index As Integer = 0 To My.App.HLData.Count - 1
-							Dim updatelink As My.App.HLItemType = My.App.HLData(index)
-							If updatelink.Group = My.App.HLData(HLEditIndex).Name Then
-								My.App.HLData.RemoveAt(index)
-								updatelink.Group = link.Name
-								My.App.HLData.Insert(index, updatelink)
-							End If
-						Next
-					End If
-					If Me.comboboxHLGroup.SelectedIndex = HLEditGroupIndex Then 'If group is the same
-						My.App.HLData.RemoveAt(HLEditIndex)
-						My.App.HLData.Insert(HLEditIndex, link)
-					Else 'If group has changed
-						My.App.HLData.RemoveAt(HLEditIndex)
-						Dim indexMax As Integer = My.App.HLData.Count - 1
-						For indexCounter As Integer = 0 To My.App.HLData.Count - 1 : If My.App.HLData.Item(indexCounter).Group = link.Group Then indexMax = indexCounter
-						Next
-						My.App.HLData.Insert(indexMax + 1, link)
-					End If
-			End Select
-			ShowSettings(My.App.Tools.HotLinks)
-			ShowHL()
-		End If
-	End Sub
-	Private Sub BtnHLCancelClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHLCancel.Click
-		ShowSettings(My.App.Tools.HotLinks)
-	End Sub
-	Private Sub BtnHLTestClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHLTest.Click
-		Dim link As My.App.HLItemType = HLGenerateNewLink()
-		Me.btnHLTest.Image = HLGetIcon(link)
-		HLStartLink(link)
-	End Sub
-	Private Sub CheckboxHLShowMenuIconsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxHLShowMenuIcons.Click
-		My.App.HLShowMenuIcons = Not My.App.HLShowMenuIcons
-		ShowHL()
-	End Sub
-	Private Sub CheckboxHLShowToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxHLShowToolTips.Click
-		My.App.HLShowToolTips = Not My.App.HLShowToolTips
-		ShowHL()
-	End Sub
-	Private Sub CheckboxHLDisabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxHLDisabled.Click
-		If Me.checkboxHLDisabled.Checked And Not Me.checkboxHLHideInMenu.Checked Then Me.checkboxHLHideInMenu.Checked = True
-	End Sub
-	Private Sub ComboboxHLStartUpModeSelectionChangeCommitted(sender As Object, e As EventArgs) Handles comboboxHLStartUpMode.SelectionChangeCommitted
-		My.App.HLStartUpMode = CType(Me.comboboxHLStartUpMode.SelectedIndex, My.App.HLMode)
-	End Sub
-	Private Sub ComboboxHLGroupModeSelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles comboboxHLGroupMode.SelectionChangeCommitted
-		My.App.HLGroupMode = CType(Me.comboboxHLGroupMode.SelectedIndex, My.App.HLMode)
-	End Sub
-	Private Sub ComboboxHLHotKeyModeSelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles comboboxHLHotKeyMode.SelectionChangeCommitted
-		My.App.HLHotKeyMode = CType(Me.comboboxHLHotKeyMode.SelectedIndex, My.App.HLMode)
-	End Sub
-	Private Sub ComboboxHLPriorityDrawItem(sender As Object, e As DrawItemEventArgs) Handles comboboxHLPriority.DrawItem
-		If e.Index < 0 Then 'The system sometimes calls this method with an index of -1. This produces an error if not handled.
-			e.DrawBackground()
-			e.DrawFocusRectangle()
-		Else
-			Dim brush As SolidBrush
-			Dim font As Font
-			If Me.comboboxHLPriority.Enabled Then
-				Me.comboboxHLPriority.ResetForeColor()
-				Me.comboboxHLPriority.ResetBackColor()
-			Else
-				Me.comboboxHLPriority.ForeColor = SystemColors.GrayText
-				Me.comboboxHLPriority.BackColor = SystemColors.Control
-			End If
-			e.DrawBackground()
-			e.DrawFocusRectangle()
-
-			If e.Index = 0 Then
-				brush = New SolidBrush(Color.Firebrick)
-				font = New Font(Me.comboboxHLPriority.Font, FontStyle.Italic)
-			Else
-				brush = New SolidBrush(Me.comboboxHLPriority.ForeColor)
-				font = New Font(Me.comboboxHLPriority.Font, FontStyle.Regular)
-			End If
-			e.Graphics.DrawString(Me.comboboxHLPriority.Items(e.Index).ToString, font, brush, New PointF(e.Bounds.X - 1, e.Bounds.Y + 1))
-		End If
-	End Sub
-	Private Sub ComboboxHLTypeSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles comboboxHLType.SelectedIndexChanged
-		HLUpdateEditType()
-	End Sub
-	Private Sub TextboxHLLoadTimeOutValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxHLLoadTimeOut.Validating
-		Dim senderTXBX As TextBox = CType(sender, TextBox)
-		If Int(Val(senderTXBX.Text)) < 1 Then senderTXBX.Text = "1"
-		If Int(Val(senderTXBX.Text)) > 120 Then senderTXBX.Text = "120"
-	End Sub
-	Private Sub TextboxHLLoadTimeOutValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxHLLoadTimeOut.Validated
-		My.App.HLLoadTimeOut = CByte(Val(Me.textboxHLLoadTimeOut.Text))
-		Me.textboxHLLoadTimeOut.SelectAll()
-	End Sub
-	Private Sub TextboxHLCloseTimeOutValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxHLCloseTimeOut.Validating
-		Dim senderTXBX As TextBox = CType(sender, TextBox)
-		If Int(Val(senderTXBX.Text)) < 1 Then senderTXBX.Text = "1"
-		If Int(Val(senderTXBX.Text)) > 120 Then senderTXBX.Text = "120"
-	End Sub
-	Private Sub TextboxHLCloseTimeOutValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxHLCloseTimeOut.Validated
-		My.App.HLCloseTimeOut = CByte(Val(Me.textboxHLCloseTimeOut.Text))
-		Me.textboxHLCloseTimeOut.SelectAll()
-	End Sub
-	Private Sub TextboxHLStartUpDelayValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxHLStartUpDelay.Validating
-		Dim senderTXBX As TextBox = CType(sender, TextBox)
-		If Int(Val(senderTXBX.Text)) < 5 Then senderTXBX.Text = "5"
-		If Int(Val(senderTXBX.Text)) > 300 Then senderTXBX.Text = "300"
-	End Sub
-	Private Sub TextboxHLStartUpDelayValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxHLStartUpDelay.Validated
-		My.App.HLStartUpDelay = CShort(Val(Me.textboxHLStartUpDelay.Text))
-		Me.textboxHLStartUpDelay.SelectAll()
-	End Sub
-	Private Sub TextboxHLUseAlternateStartTimeOutValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxHLUseAlternateStartTimeOut.Validating
-		Dim senderTXBX As TextBox = CType(sender, TextBox)
-		If Int(Val(senderTXBX.Text)) < 0 Or String.IsNullOrEmpty(senderTXBX.Text) Then senderTXBX.Text = "0"
-		If Int(Val(senderTXBX.Text)) > 120 Then senderTXBX.Text = "120"
-	End Sub
-	Private Sub TextboxHLUseAlternateStartTimeOutValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxHLUseAlternateStartTimeOut.Validated
-		If CType(sender, TextBox).Text = "0" Then : Me.checkboxHLUseAlternateStartMethod.Checked = False
-		Else : Me.checkboxHLUseAlternateStartMethod.Checked = True
-		End If
-		Me.textboxHLUseAlternateStartTimeOut.SelectAll()
-	End Sub
-
-	'Handlers
-	Private Sub TimerHLStartUpTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerHLStartUp.Tick
-		If (Not WLStartUp Or My.App.HLStartUpDelay < My.App.WLStartUpDelay) And Not BackgroundworkerWL.IsBusy And Not InUseApp() Then
-			Me.TimerHLStartUp.Stop()
-			UpdateWSTCancelState()
-
-			Select Case My.App.HLStartUpMode
-				Case My.App.HLMode.Start : HLStartGroup("StartUp")
-				Case My.App.HLMode.ReStart : HLReStartGroup("StartUp")
-			End Select
-			My.App.WriteToLog(My.App.Tools.HotLinks, "HotLinks StartUp Executed")
-		End If
-		If TimerHLStartUp.Enabled Then Me.TimerHLStartUp.Interval = My.App.HLStartUpDelay * 100
-	End Sub
-
-	'Procedures
-	Private Sub ShowHL()
-		If My.App.WSTShowHLMenu Then
-			Me.cmHLMenu.Items.Clear()
-			Me.cmHLMenu.ShowImageMargin = My.App.HLShowMenuIcons
-			For Each t As ToolStripItem In HLGenerateMenuItems("") : Me.cmHLMenu.Items.Add(t)
-			Next
-		End If
-		If My.App.WSTShowHLTray Then
-			Me.cmHLTray.Items.Clear()
-			Me.cmHLTray.ShowImageMargin = My.App.HLShowMenuIcons
-			For Each t As ToolStripItem In HLGenerateMenuItems("") : Me.cmHLTray.Items.Add(t)
-			Next
-			Me.cmHLTray.Items.Add(New ToolStripSeparator)
-			Dim mi As New ToolStripMenuItem("Refresh")
-			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
-			AddHandler mi.MouseUp, AddressOf CMIHLRefreshMouseUp
-			Me.cmHLTray.Items.Add(mi)
-			mi = New ToolStripMenuItem("Settings")
-			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
-			AddHandler mi.MouseUp, AddressOf CMIHLSettingsMouseUp
-			Me.cmHLTray.Items.Add(mi)
-			Me.cmHLTray.Items.Add(New ToolStripSeparator)
-			mi = New ToolStripMenuItem("Close HotLinks Tray")
-			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-			AddHandler mi.MouseUp, AddressOf CMIHLTrayCloseMouseUp
-			Me.cmHLTray.Items.Add(mi)
-			mi = New ToolStripMenuItem("Exit SkyeTools") With {.ToolTipText = My.App.CloseAllToolTipText}
-			If My.App.HLShowMenuIcons Then mi.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-			AddHandler mi.MouseUp, AddressOf CMICloseAllMouseUp
-			Me.cmHLTray.Items.Add(mi)
-		End If
-	End Sub
-	Private Sub HLStartLink(ByRef link As My.App.HLItemType, Optional waitforinputidle As Boolean = False)
-		Try
-			If Not link.Disabled Then
-				If Not String.IsNullOrEmpty(link.Link) Then
-					If Not HLIsSingleInstance(link) Then
-						If waitforinputidle Then My.App.ShowBalloon(My.App.Tools.HotLinks, "Starting " + link.Name.ToUpper, My.App.BalloonDelay.WaitForUser)
-						Dim pInfo As New Diagnostics.ProcessStartInfo With {
-								.FileName = link.Link,
-								.Arguments = link.Arguments,
-								.WorkingDirectory = link.WorkingDirectory,
-								.WindowStyle = link.WindowState,
-								.UseShellExecute = True}
-						Dim p As Diagnostics.Process = Diagnostics.Process.Start(pInfo)
-						Try : p.PriorityClass = link.Priority : Catch : End Try
-						If waitforinputidle Then
-							Try
-								If link.UseAlternateStartMethod Then : p.WaitForExit(CInt(IIf(link.UseAlternateStartTimeOut = 0, My.App.HLLoadTimeOut, link.UseAlternateStartTimeOut)) * 1000)
-								Else : p.WaitForInputIdle(My.App.HLLoadTimeOut * 1000)
-								End If
-							Catch : End Try
-						End If
-						Try : p.Dispose() : Catch : Finally : p = Nothing : End Try
-					End If
-				End If
-			End If
-		Catch ex As Exception
-			My.App.WriteToLog(My.App.Tools.HotLinks, "Cannot Start '" + link.Name + "'" + " (" + link.Link + ")" + Chr(13) + ex.ToString)
-			My.App.ShowMessage(My.App.Tools.HotLinks, "Cannot Start '" + link.Name + "'", ex.Message + Chr(13) + Chr(13) + link.Link, "Please Check Your Settings And Try Again")
-		Finally : My.App.HideBalloon()
-		End Try
-	End Sub
-	Private Sub HLStartLinks(ByRef links As Collections.Generic.List(Of My.App.HLItemType), Optional displayname As String = Nothing)
-		For Each link As My.App.HLItemType In links : HLStartLink(link, True) : Next
-		If Not String.IsNullOrEmpty(displayname) Then My.App.ShowBalloon(My.App.Tools.HotLinks, displayname.ToUpper + " Started", My.App.BalloonDelay.Short)
-	End Sub
-	Private Sub HLStartLinksByHotKey(key As My.App.HLHotKey)
-		If My.App.WSTShowHLMenu Or My.App.WSTShowHLTray And Not My.App.HLHotKeyMode = My.App.HLMode.NoAction Then
-			Dim linklist As New Collections.Generic.List(Of My.App.HLItemType)
-			For Each link As My.App.HLItemType In My.App.HLData
-				If link.HotKey = key Then
-					If link.Type = My.App.HLType.Group Then : linklist.AddRange(HLGenerateGroupList(link.Name))
-					Else : linklist.Add(link)
-					End If
-				End If
-			Next
-			If linklist.Count > 0 Then
-				Select Case My.App.HLHotKeyMode
-					Case My.App.HLMode.Start : HLStartLinks(linklist)
-					Case My.App.HLMode.ReStart
-						HLCloseLinks(linklist)
-						HLStartLinks(linklist)
-					Case My.App.HLMode.StartAndClose : HLStartAndCloseLinks(linklist)
-					Case My.App.HLMode.Close : HLCloseLinks(linklist)
-				End Select
-				linklist.Clear()
-			End If
-		End If
-	End Sub
-	Private Sub HLStartAndCloseLinks(ByRef links As Collections.Generic.List(Of My.App.HLItemType))
-		If links.Count > 0 Then
-			Dim startlist As New Collections.Generic.List(Of My.App.HLItemType)
-			Dim closelist As New Collections.Generic.List(Of String)
-			Dim closelistcount As Integer
-			ProcessListGenerate()
-
-			For Each link As My.App.HLItemType In links
-				closelistcount = closelist.Count
-				For Each p As ProcessListType In ProcessList
-					'					If p.FileNaMe.Equals(link.Link, StringComparison.CurrentCultureIgnoreCase) And Not closelist.Contains(p.ProcessName) And Not closelist.Contains("*" + p.ProcessName) Then
-					If p.FileName.Equals(link.Link, StringComparison.CurrentCultureIgnoreCase) Then
-						'If link.UseAlternateCloseMethod Then : closelist.Add("*" + p.ProcessName)
-						'Else : closelist.Add(p.ProcessName)
-						'End If
-						closelist.Add(p.ProcessName)
-					End If
-				Next
-				If Not closelist.Count > closelistcount Then startlist.Add(link)
-			Next
-			'My.Debug.ShowMessage(My.SkyeTools.Tools.HotLinks, "HLStartAndCloseLinks", closelist.Count.ToString)
-			CloseApplications(My.App.Tools.HotLinks, closelist, My.App.HLCloseTimeOut)
-			For Each link As My.App.HLItemType In startlist : HLStartLink(link, True) : Next
-			startlist.Clear()
-			closelist.Clear()
-		End If
-	End Sub
-	Private Sub HLCloseLink(ByRef link As My.App.HLItemType)
-		Dim list As New Collections.Generic.List(Of My.App.HLItemType) From {link}
-		HLCloseLinks(list)
-		list.Clear()
-	End Sub
-	Private Sub HLCloseLinks(ByRef links As Collections.Generic.List(Of My.App.HLItemType))
-		If links.Count > 0 Then
-			Dim closelist As New Collections.Generic.List(Of String)
-			Dim link As My.App.HLItemType
-			ProcessListGenerate()
-			For index As Integer = links.Count - 1 To 0 Step -1
-				link = links(index)
-				For Each p As ProcessListType In ProcessList
-					'Debug.Print(p.FileName)
-					If p.FileName.Equals(link.Link, StringComparison.CurrentCultureIgnoreCase) And Not closelist.Contains(p.ProcessName) Then
-						'If link.UseAlternateCloseMethod Then : closelist.Add("*" + p.ProcessName)
-						'Else : closelist.Add(p.ProcessName)
-						'End If
-						closelist.Add(p.ProcessName)
-					End If
-				Next
-			Next
-			CloseApplications(My.App.Tools.HotLinks, closelist, My.App.HLCloseTimeOut)
-		End If
-	End Sub
-	Private Sub HLStartGroup(groupname As String)
-		HLStartLinks(HLGenerateGroupList(groupname), groupname)
-	End Sub
-	Private Sub HLReStartGroup(groupname As String)
-		Dim links As Collections.Generic.List(Of My.App.HLItemType) = HLGenerateGroupList(groupname)
-		HLCloseLinks(links)
-		HLStartLinks(links, groupname)
-		links.Clear()
-		links = Nothing
-	End Sub
-	Private Sub HLStartAndCloseGroup(groupname As String)
-		HLStartAndCloseLinks(HLGenerateGroupList(groupname))
-	End Sub
-	Private Sub HLCloseGroup(groupname As String)
-		HLCloseLinks(HLGenerateGroupList(groupname))
-	End Sub
-	Private Sub HLSetSettingsTab()
-		If My.App.WSTShowHLMenu Or My.App.WSTShowHLTray Then : Me.tabpageHL.Enabled = True
-		Else : Me.tabpageHL.Enabled = False
-		End If
-	End Sub
-	Private Sub HLNew()
-		If Me.lvHL.SelectedItems.Count = 0 Then
-			HLEditMode = HLEditModes.NewInGroup
-			HLEditIndex = 0
-			Me.comboboxHLGroup.Enabled = True
-		Else
-			HLScrollIndex = Me.lvHL.SelectedIndices.Item(0)
-			HLEditMode = HLEditModes.NewAtIndex
-			HLEditIndex = CInt(Me.lvHL.SelectedItems.Item(0).Tag)
-			If My.App.HLData(HLEditIndex).Group = "" Then : Me.comboboxHLGroup.SelectedIndex = 0
-			Else : Me.comboboxHLGroup.SelectedItem = My.App.HLData(HLEditIndex).Group
-			End If
-			Me.comboboxHLGroup.Enabled = False
-		End If
-		HLEditName = ""
-		Me.lvHL.Visible = False
-		Me.panelHLEdit.Visible = True
-		Me.btnClose.Select()
-	End Sub
-	Private Sub HLEdit()
-		HLEditName = My.App.HLData.Item(HLEditIndex).Name
-		Me.textboxHLName.Text = My.App.HLData.Item(HLEditIndex).Name
-		Me.textboxHLDescription.Text = My.App.HLData.Item(HLEditIndex).Description
-		Me.textboxHLLink.Text = My.App.HLData.Item(HLEditIndex).Link
-		Me.textboxHLArguments.Text = My.App.HLData.Item(HLEditIndex).Arguments
-		Me.textboxHLWorkingDirectory.Text = My.App.HLData.Item(HLEditIndex).WorkingDirectory
-		Me.checkboxHLSingleInstance.Checked = My.App.HLData.Item(HLEditIndex).SingleInstance
-		Me.checkboxHLUseAlternateStartMethod.Checked = My.App.HLData(HLEditIndex).UseAlternateStartMethod
-		Me.textboxHLUseAlternateStartTimeOut.Text = My.App.HLData(HLEditIndex).UseAlternateStartTimeOut.ToString
-		'Me.checkboxHLUseAlternateCloseMethod.Checked = My.App.HLData(HLEditIndex).UseAlternateCloseMethod
-		Me.checkboxHLHideInMenu.Checked = My.App.HLData(HLEditIndex).HideInMenu
-		Me.checkboxHLDisabled.Checked = My.App.HLData(HLEditIndex).Disabled
-		If My.App.HLData.Item(HLEditIndex).Group = "" Then : Me.comboboxHLGroup.SelectedIndex = 0
-		Else : Me.comboboxHLGroup.SelectedItem = My.App.HLData.Item(HLEditIndex).Group
-		End If
-		HLEditGroupIndex = Me.comboboxHLGroup.SelectedIndex
-		Me.comboboxHLGroup.Enabled = True
-		If Not My.App.HLData.Item(HLEditIndex).Type = My.App.HLType.Group And Not My.App.HLData.Item(HLEditIndex).Type = My.App.HLType.Separator Then
-			Me.comboboxHLType.Items.RemoveAt(My.App.HLType.Separator)
-			Me.comboboxHLType.Items.RemoveAt(My.App.HLType.Group)
-		End If
-		Me.comboboxHLType.SelectedIndex = My.App.HLData(HLEditIndex).Type
-		Me.comboboxHLPriority.SelectedItem = My.App.HLData(HLEditIndex).Priority.ToString
-		Me.comboboxHLWindowState.SelectedItem = My.App.HLData(HLEditIndex).WindowState.ToString
-		Me.comboboxHLHotKey.SelectedIndex = My.App.HLData(HLEditIndex).HotKey
-		'For Each item As String In My.App.HLData.Item(HLEditIndex).CloseAppList : Me.listboxHLCloseAppList.Items.Add(item) : Next
-		HLUpdateEditType()
-		Me.lvHL.Visible = False
-		Me.panelHLEdit.Visible = True
-		Me.btnClose.Select()
-	End Sub
-	Private Sub HLUpdateEditType()
-		Me.btnHLTest.Image = My.Resources.Resources.imageHLTest 'DirectCast(My.App.AppResources.GetObject("imageHLTest"), Image)
-		If Me.comboboxHLType.Text = My.App.HLType.Group.ToString Then
-			Me.textboxHLName.Enabled = True
-			Me.textboxHLDescription.Enabled = True
-			Me.textboxHLLink.Enabled = False
-			Me.btnHLSelectLink.Enabled = False
-			If HLEditMode = HLEditModes.Edit Then : Me.comboboxHLType.Enabled = False
-			Else : Me.comboboxHLType.Enabled = True
-			End If
-			Me.textboxHLArguments.Enabled = False
-			Me.checkboxHLSingleInstance.Enabled = False
-			Me.checkboxHLUseAlternateStartMethod.Enabled = False
-			Me.textboxHLUseAlternateStartTimeOut.Enabled = False
-			Me.lblHLUseAlternateStartTimeOutA.Enabled = False
-			Me.lblHLUseAlternateStartTimeOutB.Enabled = False
-			'Me.checkboxHLUseAlternateCloseMethod.Enabled = False
-			Me.textboxHLWorkingDirectory.Enabled = False
-			Me.btnHLSelectWorkingDirectory.Enabled = False
-			Me.comboboxHLWindowState.Enabled = False
-			Me.comboboxHLPriority.Enabled = False
-			Me.comboboxHLHotKey.Enabled = True
-			Me.checkboxHLHideInMenu.Enabled = True
-			Me.checkboxHLDisabled.Enabled = True
-			'Me.listboxHLCloseAppList.Enabled = False
-			'Me.comboboxHLCloseAppProcessList.Enabled = False
-			Me.btnHLTest.Enabled = False
-		ElseIf Me.comboboxHLType.Text = My.App.HLType.Separator.ToString Then
-			Me.textboxHLName.Enabled = False
-			Me.textboxHLDescription.Enabled = False
-			Me.textboxHLLink.Enabled = False
-			Me.btnHLSelectLink.Enabled = False
-			If HLEditMode = HLEditModes.Edit Then : Me.comboboxHLType.Enabled = False
-			Else : Me.comboboxHLType.Enabled = True
-			End If
-			Me.textboxHLArguments.Enabled = False
-			Me.checkboxHLSingleInstance.Enabled = False
-			Me.checkboxHLUseAlternateStartMethod.Enabled = False
-			Me.textboxHLUseAlternateStartTimeOut.Enabled = False
-			Me.lblHLUseAlternateStartTimeOutA.Enabled = False
-			Me.lblHLUseAlternateStartTimeOutB.Enabled = False
-			'Me.checkboxHLUseAlternateCloseMethod.Enabled = False
-			Me.textboxHLWorkingDirectory.Enabled = False
-			Me.btnHLSelectWorkingDirectory.Enabled = False
-			Me.comboboxHLWindowState.Enabled = False
-			Me.comboboxHLPriority.Enabled = False
-			Me.comboboxHLHotKey.Enabled = False
-			Me.checkboxHLHideInMenu.Enabled = False
-			Me.checkboxHLDisabled.Enabled = False
-			'Me.listboxHLCloseAppList.Enabled = False
-			'Me.comboboxHLCloseAppProcessList.Enabled = False
-			Me.btnHLTest.Enabled = False
-		Else
-			Me.textboxHLName.Enabled = True
-			Me.textboxHLDescription.Enabled = True
-			Me.textboxHLLink.Enabled = True
-			Me.btnHLSelectLink.Enabled = True
-			Me.comboboxHLType.Enabled = True
-			Me.textboxHLArguments.Enabled = True
-			Me.checkboxHLSingleInstance.Enabled = True
-			Me.checkboxHLUseAlternateStartMethod.Enabled = True
-			Me.textboxHLUseAlternateStartTimeOut.Enabled = True
-			Me.lblHLUseAlternateStartTimeOutA.Enabled = True
-			Me.lblHLUseAlternateStartTimeOutB.Enabled = True
-			'Me.checkboxHLUseAlternateCloseMethod.Enabled = True
-			Me.textboxHLWorkingDirectory.Enabled = True
-			Me.btnHLSelectWorkingDirectory.Enabled = True
-			Me.comboboxHLWindowState.Enabled = True
-			Me.comboboxHLPriority.Enabled = True
-			Me.comboboxHLHotKey.Enabled = True
-			Me.checkboxHLHideInMenu.Enabled = True
-			Me.checkboxHLDisabled.Enabled = True
-			'Me.listboxHLCloseAppList.Enabled = True
-			'Me.comboboxHLCloseAppProcessList.Enabled = True
-			Me.btnHLTest.Enabled = True
-		End If
-	End Sub
-	Private Sub HLGenerateRemoveList(ByRef groupname As String, ByRef removelist As Collections.Generic.List(Of Integer))
-		For index As Integer = 0 To My.App.HLData.Count - 1
-			If My.App.HLData.Item(index).Group = groupname Then
-				removelist.Add(index)
-				If My.App.HLData.Item(index).Type = My.App.HLType.Group Then HLGenerateRemoveList(My.App.HLData.Item(index).Name, removelist)
-			End If
-		Next
-	End Sub
-	Private Function HLGenerateMenuItems(ByRef group As String) As Collections.Generic.List(Of ToolStripItem)
-		Dim list As New Collections.Generic.List(Of ToolStripItem)
-		For index As Integer = 0 To My.App.HLData.Count - 1
-			Dim link As My.App.HLItemType = My.App.HLData.Item(index)
-			If link.Group = group And Not link.HideInMenu Then
-				If link.Type = My.App.HLType.Separator Then : list.Add(New ToolStripSeparator)
-				Else
-					Dim cmi As New ToolStripMenuItem
-					If link.Type = My.App.HLType.Group Then : cmi = HLGenerateSubMenu(link)
-					Else
-						If link.Name.Length > 50 Then
-							cmi.Text = link.Name.Substring(0, 50)
-							If My.App.HLShowToolTips Then cmi.ToolTipText = link.Name + Chr(13) + link.Link
-						Else
-							cmi.Text = link.Name
-							If My.App.HLShowToolTips Then cmi.ToolTipText = link.Link
-						End If
-						If Not String.IsNullOrEmpty(link.Arguments) And My.App.HLShowToolTips Then cmi.ToolTipText += Chr(13) + link.Arguments
-						If Not link.HotKey = My.App.HLHotKey.None Then
-							cmi.Text += "  (" + link.HotKey.ToString + ")"
-							cmi.ToolTipText = My.App.HLHotKeyToStringLong(link.HotKey) + IIf(String.IsNullOrEmpty(cmi.ToolTipText), String.Empty, Chr(13) + cmi.ToolTipText).ToString
-						End If
-						If Not String.IsNullOrEmpty(link.Description) Then cmi.ToolTipText = link.Description + IIf(String.IsNullOrEmpty(cmi.ToolTipText), String.Empty, Chr(13) + cmi.ToolTipText).ToString
-						cmi.Tag = index
-						AddHandler cmi.MouseUp, AddressOf CMIHLMouseUp
-					End If
-					If My.App.HLShowMenuIcons Then cmi.Image = HLGetIcon(link)
-					If link.Disabled Then cmi.Enabled = False
-					list.Add(cmi)
-				End If
-			End If
-		Next
-		If list.Count = 0 Then
-			Dim cmi As New ToolStripMenuItem(My.App.HLEmptyText)
-			If My.App.HLShowMenuIcons Then cmi.Image = Me.cmiWSTHLMenu.Image
-			list.Add(cmi)
-		End If
-		Return list
-		list.Clear()
-	End Function
-	Private Function HLGenerateSubMenu(ByRef link As My.App.HLItemType) As ToolStripMenuItem '
-		Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
-		Dim cmi As New ToolStripMenuItem
-		cm.ShowImageMargin = My.App.HLShowMenuIcons
-		For Each t As ToolStripItem In HLGenerateMenuItems(link.Name) : cm.Items.Add(t)
-		Next
-		If Not cm.Items.Item(0).Text = My.App.HLEmptyText And cm.Items.Count > 1 Then
-			cm.Items.Add(New ToolStripSeparator)
-			Dim cmiClick As New ToolStripMenuItem("Start All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageGoStart 'DirectCast(My.App.AppResources.GetObject("imageGoStart"), Image)
-			cmiClick.Tag = link.Name
-			AddHandler cmiClick.MouseUp, AddressOf CMIHLStartAllMouseUp
-			cm.Items.Add(cmiClick)
-			cmiClick = New ToolStripMenuItem("ReStart All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageGoReStart 'DirectCast(My.App.AppResources.GetObject("imageGoReStart"), Image)
-			cmiClick.Tag = link.Name
-			AddHandler cmiClick.MouseUp, AddressOf CMIHLReStartAllMouseUp
-			cm.Items.Add(cmiClick)
-			cmiClick = New ToolStripMenuItem("Close All")
-			If My.App.HLShowMenuIcons Then cmiClick.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
-			cmiClick.Tag = link.Name
-			AddHandler cmiClick.MouseUp, AddressOf CMIHLCloseAllMouseUp
-			cm.Items.Add(cmiClick)
-		End If
-		cmi.DropDown = cm
-		cmi.Text = link.Name
-		If Not link.HotKey = My.App.HLHotKey.None Then
-			cmi.Text += "  (" + link.HotKey.ToString + ")"
-			cmi.ToolTipText = My.App.HLHotKeyToStringLong(link.HotKey)
-		End If
-		If Not String.IsNullOrEmpty(link.Description) Then cmi.ToolTipText = link.Description + IIf(String.IsNullOrEmpty(cmi.ToolTipText), String.Empty, Chr(13) + cmi.ToolTipText).ToString
-		cmi.Tag = link.Name
-		AddHandler cmi.MouseUp, AddressOf CMIHLGroupMouseUp
-		Return cmi
-		cm.Dispose()
-		cmi.Dispose()
-	End Function
-	Private Function HLGenerateGroupList(ByRef group As String) As Collections.Generic.List(Of My.App.HLItemType) '
-		HLGenerateGroupList = New Collections.Generic.List(Of My.App.HLItemType)
-		If HLGroupEnabled(group) Then
-			For Each link As My.App.HLItemType In My.App.HLData : If String.Equals(link.Group, group, StringComparison.CurrentCultureIgnoreCase) And Not link.Type = My.App.HLType.Group And Not link.Disabled Then HLGenerateGroupList.Add(link)
-			Next
-		End If
-	End Function
-	Private Function HLGenerateNewLink() As My.App.HLItemType '
-		If Me.comboboxHLType.SelectedIndex = My.App.HLType.Group Then
-			Me.textboxHLLink.ResetText()
-			Me.textboxHLArguments.ResetText()
-			Me.checkboxHLSingleInstance.Checked = False
-			Me.checkboxHLUseAlternateStartMethod.Checked = False
-			Me.textboxHLUseAlternateStartTimeOut.Text = "0"
-			'Me.checkboxHLUseAlternateCloseMethod.Checked = False
-			Me.textboxHLWorkingDirectory.ResetText()
-			Me.comboboxHLWindowState.SelectedIndex = -1
-			Me.comboboxHLPriority.SelectedIndex = -1
-			'Me.listboxHLCloseAppList.Items.Clear()
-		ElseIf Me.comboboxHLType.SelectedIndex = My.App.HLType.Separator Then
-			Me.textboxHLDescription.ResetText()
-			Me.textboxHLLink.ResetText()
-			Me.textboxHLArguments.ResetText()
-			Me.checkboxHLSingleInstance.Checked = False
-			Me.checkboxHLUseAlternateStartMethod.Checked = False
-			Me.textboxHLUseAlternateStartTimeOut.Text = "0"
-			'Me.checkboxHLUseAlternateCloseMethod.Checked = False
-			Me.textboxHLWorkingDirectory.ResetText()
-			Me.comboboxHLWindowState.SelectedIndex = -1
-			Me.comboboxHLPriority.SelectedIndex = -1
-			Me.comboboxHLHotKey.SelectedIndex = -1
-			Me.checkboxHLHideInMenu.Checked = False
-			Me.checkboxHLDisabled.Checked = False
-			'Me.listboxHLCloseAppList.Items.Clear()
-		End If
-		If Me.comboboxHLType.SelectedIndex = My.App.HLType.Separator Then Me.textboxHLName.ResetText()
-		Dim link As New My.App.HLItemType With {
-			.Name = Me.textboxHLName.Text,
-			.Description = Me.textboxHLDescription.Text,
-			.Link = Me.textboxHLLink.Text,
-			.Arguments = Me.textboxHLArguments.Text,
-			.WorkingDirectory = Me.textboxHLWorkingDirectory.Text,
-			.SingleInstance = Me.checkboxHLSingleInstance.Checked,
-			.UseAlternateStartMethod = Me.checkboxHLUseAlternateStartMethod.Checked,
-			.UseAlternateStartTimeOut = CByte(Val(Me.textboxHLUseAlternateStartTimeOut.Text)),
-			.HideInMenu = Me.checkboxHLHideInMenu.Checked,
-			.Disabled = Me.checkboxHLDisabled.Checked}
-		Select Case Me.comboboxHLGroup.SelectedIndex
-			Case -1
-				Me.comboboxHLGroup.SelectedIndex = 0
-				link.Group = ""
-			Case 0 : link.Group = ""
-			Case > 0 : link.Group = Me.comboboxHLGroup.Text
-		End Select
-		Select Case Me.comboboxHLType.SelectedIndex
-			Case -1
-				Me.comboboxHLType.SelectedIndex = 0
-				link.Type = My.App.HLType.Auto
-			Case > -1 : link.Type = CType(Me.comboboxHLType.SelectedIndex, My.App.HLType)
-		End Select
-		Select Case Me.comboboxHLPriority.SelectedIndex
-			Case -1
-				Me.comboboxHLPriority.SelectedIndex = 3
-				link.Priority = Diagnostics.ProcessPriorityClass.Normal
-			Case 0 : link.Priority = Diagnostics.ProcessPriorityClass.RealTime
-			Case 1 : link.Priority = Diagnostics.ProcessPriorityClass.High
-			Case 2 : link.Priority = Diagnostics.ProcessPriorityClass.AboveNormal
-			Case 3 : link.Priority = Diagnostics.ProcessPriorityClass.Normal
-			Case 4 : link.Priority = Diagnostics.ProcessPriorityClass.BelowNormal
-			Case 5 : link.Priority = Diagnostics.ProcessPriorityClass.Idle
-		End Select
-		Select Case Me.comboboxHLWindowState.SelectedIndex
-			Case -1
-				Me.comboboxHLWindowState.SelectedIndex = 0
-				link.WindowState = Diagnostics.ProcessWindowStyle.Normal
-			Case 0 : link.WindowState = Diagnostics.ProcessWindowStyle.Normal
-			Case 1 : link.WindowState = Diagnostics.ProcessWindowStyle.Minimized
-			Case 2 : link.WindowState = Diagnostics.ProcessWindowStyle.Maximized
-		End Select
-		Select Case Me.comboboxHLHotKey.SelectedIndex
-			Case -1
-				Me.comboboxHLHotKey.SelectedIndex = 0
-				link.HotKey = My.App.HLHotKey.None
-			Case > -1 : link.HotKey = CType(Me.comboboxHLHotKey.SelectedIndex, My.App.HLHotKey)
-		End Select
-		Return link
-	End Function
-	Private Function HLGetIcon(ByRef link As My.App.HLItemType) As Image
-		If String.IsNullOrEmpty(link.Link) And Not link.Type = My.App.HLType.Group Then : HLGetIcon = Me.cmiWSTHLMenu.Image
-		Else
-			Select Case link.Type
-				Case My.App.HLType.Auto
-					Try
-						HLGetIcon = Skye.WinAPI.GetApplicationIcon(link.Link)?.ToBitmap
-						If HLGetIcon Is Nothing Then HLGetIcon = My.Resources.Resources.imageHLApp
-					Catch
-						HLGetIcon = My.Resources.Resources.imageHLApp
-						My.App.WriteToLog(My.App.Tools.HotLinks, "GetHotLinkIcon : Unable to get process info for '" + link.Name + "'. Defaults will be used.")
-					End Try
-				Case My.App.HLType.Group : HLGetIcon = My.Resources.Resources.imageHLGroup
-				Case My.App.HLType.WebLink : HLGetIcon = My.Resources.Resources.imageHLWeb
-				Case My.App.HLType.Document : HLGetIcon = My.Resources.Resources.imageHLDoc
-				Case My.App.HLType.Script : HLGetIcon = My.Resources.Resources.imageHLScript
-				Case Else : HLGetIcon = My.Resources.Resources.imageHLApp
-			End Select
-		End If
-	End Function
-	Private Function HLFindFirstIndex(ByRef groupname As String, ByRef sourceindex As Integer) As Integer '
-		For index As Integer = 0 To My.App.HLData.Count - 1 : If My.App.HLData(index).Group = groupname Then Return index
-		Next
-		Return sourceindex
-	End Function
-	Private Function HLFindLastIndex(ByRef groupname As String, ByRef sourceindex As Integer) As Integer '
-		Dim foundindex As Integer = -1
-		For index As Integer = 0 To My.App.HLData.Count - 1 : If My.App.HLData(index).Group = groupname Then foundindex = index
-		Next
-		If foundindex = -1 Then : Return sourceindex
-		Else : Return foundindex
-		End If
-	End Function
-	Private Function HLIsSingleInstance(ByRef link As My.App.HLItemType) As Boolean '
-		If link.SingleInstance Then
-			Try
-				ProcessListGenerate()
-
-				For Each pitem As ProcessListType In ProcessList
-					If pitem.FileName.Equals(link.Link, StringComparison.CurrentCultureIgnoreCase) Then
-						Try
-							Dim plist As Diagnostics.Process() = Diagnostics.Process.GetProcessesByName(pitem.ProcessName)
-							For Each p As System.Diagnostics.Process In plist : Skye.WinAPI.SetForegroundWindow(p.MainWindowHandle) : Next
-						Catch
-						End Try
-						Return True
-					End If
-				Next
-				Return False
-			Catch : Return False
-			End Try
-		Else : Return False
-		End If
-	End Function
-	Private Function HLDuplicateGroupExists(ByRef groupname As String) As Boolean '
-		If My.App.HLData.Count > 0 And Not HLEditName = groupname Then
-			For index As Integer = 0 To My.App.HLData.Count - 1 : If My.App.HLData(index).Type = My.App.HLType.Group And String.Equals(My.App.HLData(index).Name, groupname, StringComparison.CurrentCultureIgnoreCase) Then Return True
-			Next
-			Return False
-		Else : Return False
-		End If
-	End Function
-	Private Function HLGroupEnabled(ByRef group As String) As Boolean '
-		For Each link As My.App.HLItemType In My.App.HLData
-			If link.Type = My.App.HLType.Group And String.Equals(link.Name, group, StringComparison.CurrentCultureIgnoreCase) Then
-				If link.Disabled Then : Return False
-				Else : Return True
-				End If
-			End If
-		Next
-		Return False
-	End Function
-
-#End Region
 #Region "WinLinks(WL)"
 
 	' Declarations
@@ -3743,13 +2455,13 @@ Partial Friend Class MainForm
 
 	' Handlers
 	Private Sub TimerWLStartUpTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWLStartUp.Tick
-		If Not InUseSettings() And Not InUseWL() And Not (Me.TimerHLStartUp.Enabled And My.App.HLStartUpDelay < My.App.WLStartUpDelay) Then
+		If Not InUseSettings() And Not InUseWL() Then
 			Me.TimerWLStartUp.Stop()
 			WLStartUp = False
 			UpdateWSTCancelState()
 			ShowWL()
 		End If
-		If Me.TimerWLStartUp.Enabled Then Me.TimerWLStartUp.Interval = My.App.WLStartUpDelay * 100
+		If Me.TimerWLStartUp.Enabled Then Me.TimerWLStartUp.Interval = My.App.WLStartUpDelay * 1000
 	End Sub
 	Private Sub TimerWLAutoRefreshTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWLAutoRefresh.Tick
 		If WLAutoRefreshUpdate Then TimerWLAutoRefreshIdle.Start()

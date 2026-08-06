@@ -9,7 +9,6 @@ Namespace My
 		Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
 			NoAction
 			Menu
-			HLNew
 			WLNew
 			WLEdit
 			WLOpenRoot
@@ -22,7 +21,6 @@ Namespace My
 			ShowSettingsHC
 			ShowSettingsHK
 			ShowSettingsWST
-			ShowSettingsHL
 			ShowSettingsWL
 			ShowSettingsWSTSS
 			ShowSettingsAC
@@ -39,7 +37,6 @@ Namespace My
 			HCActions.Clear()
 			HCActions.Add(New HCActionType(HCAction.NoAction, "No Action"))
 			HCActions.Add(New HCActionType(HCAction.Menu, "Context Menu"))
-			HCActions.Add(New HCActionType(HCAction.HLNew, "New HotLink"))
 			HCActions.Add(New HCActionType(HCAction.WLNew, "New WinLink"))
 			HCActions.Add(New HCActionType(HCAction.WLEdit, "Edit WinLink"))
 			HCActions.Add(New HCActionType(HCAction.WLOpenRoot, "Open WinLink Root Folder"))
@@ -52,7 +49,6 @@ Namespace My
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsHC, "Show HotClick Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsHK, "Show HotKey Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsWST, "Show WorkSpace Tool Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsHL, "Show HotLink Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsWL, "Show WinLink Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsWSTSS, "Show Screen Saver Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsAC, "Show Alarm & Chime Settings"))
@@ -62,10 +58,8 @@ Namespace My
 		Friend HCActions As New Collections.Generic.List(Of HCActionType)
 		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
 		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
-		Friend HCHLLeft, HCHLDouble, HCHLMiddle, HCHLRight As HCAction
 		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
 		Friend HCCBLeft, HCCBDouble, HCCBMiddle, HCCBRight As HCAction
-		Friend HCOALeft, HCOADouble, HCOAMiddle, HCOARight As HCAction
 
 #End Region
 #Region "HotKeys (HK)"
@@ -85,26 +79,8 @@ Namespace My
 			HKKeys.Add(HKWSTClock)
 			HKKeys.Add(HKWSTTaskManager)
 			HKKeys.Add(HKWSTCommandPrompt)
-			HKKeys.Add(HKHLA)
-			HKKeys.Add(HKHLB)
-			HKKeys.Add(HKHLC)
-			HKKeys.Add(HKHLD)
-			HKKeys.Add(HKHLE)
-			HKKeys.Add(HKHLF)
-			HKKeys.Add(HKHLG)
-			HKKeys.Add(HKHLH)
 			HKKeys.Add(HKWL)
 		End Sub
-		Friend Function GenerateHKHLTip(hk As HLHotKey) As String
-			Dim s As String = String.Empty
-			For Each link As HLItemType In HLData
-				If link.HotKey = hk Then s += link.Name + vbCr
-			Next
-			If String.IsNullOrEmpty(s) Then : s = "< Not Assigned >"
-			Else : s = s.TrimEnd
-			End If
-			GenerateHKHLTip = s
-		End Function
 
 		'Saved Settings
 		Friend HKWSTLockWorkSpace As New HKType
@@ -112,14 +88,6 @@ Namespace My
 		Friend HKWSTClock As New HKType
 		Friend HKWSTTaskManager As New HKType
 		Friend HKWSTCommandPrompt As New HKType
-		Friend HKHLA As New HKType
-		Friend HKHLB As New HKType
-		Friend HKHLC As New HKType
-		Friend HKHLD As New HKType
-		Friend HKHLE As New HKType
-		Friend HKHLF As New HKType
-		Friend HKHLG As New HKType
-		Friend HKHLH As New HKType
 		Friend HKWL As New HKType
 		Friend HKKeys As New Collections.Generic.List(Of HKType)
 		Friend HKEnabled As Boolean
@@ -222,100 +190,6 @@ Namespace My
 		Friend ACThirdQuarterHourChimeEnabled As Boolean
 		Friend ACThirdQuarterHourBeforeChimeEnabled As Boolean
 		Friend ACThirdQuarterHourAfterChimeEnabled As Boolean
-#End Region
-#Region "HotLinks (HL)"
-		Friend WSTShowHLMenu As Boolean
-		Friend WSTShowHLTray As Boolean
-
-		Friend Const HLName As String = "HotLinks"
-		Friend Const HLEmptyText As String = "< No Links >"
-		Friend Enum HLType
-			Auto
-			Application
-			Script
-			Document
-			WebLink
-			Group
-			Separator
-		End Enum
-		Friend Enum HLMode
-			Start
-			ReStart
-			StartAndClose
-			Close
-			NoAction
-		End Enum
-		Friend Enum HLHotKey
-			None
-			A
-			B
-			C
-			D
-			E
-			F
-			G
-			H
-		End Enum
-		Friend Function HLHotKeyToStringLong(hotkey As HLHotKey) As String '
-			Select Case hotkey
-				Case HLHotKey.A : Return "HotKey A"
-				Case HLHotKey.B : Return "HotKey B"
-				Case HLHotKey.C : Return "HotKey C"
-				Case HLHotKey.D : Return "HotKey D"
-				Case HLHotKey.E : Return "HotKey E"
-				Case HLHotKey.F : Return "HotKey F"
-				Case HLHotKey.G : Return "HotKey G"
-				Case HLHotKey.H : Return "HotKey H"
-				Case Else : Return "No HotKey Assigned"
-			End Select
-		End Function
-		Friend Structure HLItemType
-			Dim Type As HLType
-			Dim Group As String
-			Dim Name As String
-			Dim Description As String
-			Dim Link As String
-			Dim Arguments As String
-			Dim WorkingDirectory As String
-			Dim SingleInstance As Boolean
-			Dim UseAlternateStartMethod As Boolean
-			Dim UseAlternateStartTimeOut As Byte 'Range 0-120, Default 0
-			'Dim UseAlternateCloseMethod As Boolean
-			Dim Priority As Diagnostics.ProcessPriorityClass
-			Dim WindowState As Diagnostics.ProcessWindowStyle
-			Dim HotKey As HLHotKey
-			Dim HideInMenu As Boolean
-			Dim Disabled As Boolean
-			Sub New(name As String)
-				Me.Type = HLType.Auto
-				Me.Group = String.Empty
-				Me.Name = name
-				Me.Description = String.Empty
-				Me.Link = String.Empty
-				Me.Arguments = String.Empty
-				Me.WorkingDirectory = String.Empty
-				Me.SingleInstance = False
-				Me.UseAlternateStartMethod = False
-				Me.UseAlternateStartTimeOut = 0
-				'Me.UseAlternateCloseMethod = False
-				Me.Priority = Diagnostics.ProcessPriorityClass.Normal
-				Me.WindowState = Diagnostics.ProcessWindowStyle.Normal
-				Me.HotKey = HLHotKey.None
-				Me.HideInMenu = False
-				Me.Disabled = False
-			End Sub
-		End Structure
-
-		Friend HLData As New Collections.Generic.List(Of HLItemType)
-		Friend HLShowMenuIcons As Boolean
-		Friend HLShowToolTips As Boolean
-		Friend HLStartUpMode As HLMode
-		Friend HLGroupMode As HLMode
-		Friend HLHotKeyMode As HLMode
-		Friend HLLoadTimeOut As Byte 'Range 1-120, Default 10
-		Friend HLCloseTimeOut As Byte 'Range 1-120, Default 30
-		Friend HLStartUp As Boolean
-		Friend HLStartUpDelay As Short 'Range 5-300, Default 30
 #End Region
 #Region "WinLinks (WL)"
 
@@ -441,11 +315,9 @@ Namespace My
 			ScreenSaver
 			Clock
 			AlarmChime
-			StopWatch
-			HotLinks
 			WinLinks
 		End Enum
-		Friend ToolToImage(9) As Image
+		Friend ToolToImage(7) As Image
 		Friend Function ToolToString(tool As Tools) As String '
 			Select Case tool
 				Case Tools.SkyeTools : Return "SkyeTools"
@@ -520,7 +392,6 @@ Namespace My
 			GetSettingsHK()
 			GetSettingsWST()
 			GetSettingsAC()
-			GetSettingsHL()
 			GetSettingsWL()
 
 			RegKey.Close()
@@ -539,7 +410,6 @@ Namespace My
 			SaveSettingsHK()
 			SaveSettingsWST()
 			SaveSettingsAC()
-			SaveSettingsHL()
 			SaveSettingsWL()
 
 			RegKey.Flush()
@@ -655,19 +525,6 @@ Namespace My
 			logtext += Chr(13) + Chr(13) + "HotKeys -- The InfoTip of the HotKey Header will display which HotLinks are assigned to that HotKey."
 			logtext += Chr(13) + Chr(13) + "HotKeys -- The 'Open WinLink Root Folder' HotKey will open the last WinLink folder. This folder is also used as the AutoRefresh folder."
 			logtext += Chr(13) + Chr(13) + "WorkSpace Tools -- Disabling the ScreenSaver does not affect any Windoze settings, it merely activates a 'keep alive' function for the App that will prevent Windoze from going idle relative to display and power functions. Activating the Screen Saver from the HotKey will not enable the Screen Saver even if the 'Enable On Activate' option is set. This is so the HotKey can be used for emergency purposes and not interfere with normal WorkSpace functioning."
-			logtext += Chr(13) + Chr(13) + "StopWatch -- If window is opening, but StopWatch is not running, StopWatch will automatically start."
-			logtext += Chr(13) + Chr(13) + "StopWatch -- RightClick on Menu or Window will toggle window, but not otherwise change StopWatch state."
-			logtext += Chr(13) + Chr(13) + "StopWatch -- Using the HotKey will toggle the window and stop the StopWatch upon close."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- Link Start Methods -- When a single HotLink is started, no TimeOut is used. The HotLink is simply started and passed to Windows."
-			logtext += " When a group of HotLinks is started, SkyeTools waits for each HotLink to load, or until the Load TimeOut is reached, before starting the next HotLink in the group."
-			logtext += " Use Alternate Start Method means that SkyeTools will wait the specified time after starting the HotLink before starting the next HotLink in the group, regardless of whether or not the application reports that it is loaded(ready for input). This is a useful means of avoiding bottlenecks because sometimes applications report to Windows that they are loaded(ready for input), but are still loading in the background, consuming system resources."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- 'Hide In Menu' means hidden from view in the menu, however the HotLink may be executed by group or another function. 'Disabled' means a HotLink will not be executed by menu, group, or any other function."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- When a HotLink is set to close certain applications, this will happen first, even before Single Instance is considered. This will allow you to perform application closures even if the application is already running, as well as handle multi-function applications that can start different functions from the Command Line but all run under the same Process NaMe."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- When a Single Instance HotLink is started and the application is already running, HotLinks will attempt to switch to the application."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- LeftControlClick on a HotLink group will start that group according the Group Mode setting. RightClick will show a menu of group start options."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- The 'Link' of a HotLink may be left blank. Nothing will happen when executed, except for closing certain applications."
-			logtext += Chr(13) + Chr(13) + "HotLinks -- If 'Enable HotLinks StartUp' is selected, the HotLinks group 'StartUp' will execute, if it exists, even if the HotLinks module is not enabled, but only after WinLinks are finished loading. StartUp will not execute if the Settings Window is in use or any SkyeTools menus are active. StartUp will not execute when Settings are Restored."
-			logtext += Chr(13) + Chr(13) + "HotLinks & WinLinks -- Both have a StartUp Delay option. By changing the delays, one can be set to start before the other. This is recommended, appropriate to your specific needs, because HotLinks StartUp can lock SkyeTools while it is loading and WinLinks can slow the system while it is loading. The delays are independent from each other and start counting when SkyeTools finishes loading."
 			logtext += Chr(13) + Chr(13) + "WinLinks -- AutoRefresh will refresh the last WinLink folder."
 			logtext += Chr(13) + Chr(13) + "WinLinks -- AutoRefresh will not engage if No Menu Items is selected for the last WinLink."
 			logtext += Chr(13) + Chr(13) + "WinLinks -- AutoRefresh, StartUp, & Online Alerter Refresh WinLinks Action will not execute if the Settings Window is in use or any WinLink menus are active."
@@ -775,18 +632,6 @@ Namespace My
 			End Try
 			Try : HCWSTRight = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTRight", "Menu").ToString), HCAction)
 			Catch : HCWSTRight = HCAction.Menu
-			End Try
-			Try : HCHLLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCHLLeft", "NoAction").ToString), HCAction)
-			Catch : HCHLLeft = HCAction.NoAction
-			End Try
-			Try : HCHLDouble = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCHLDouble", "NoAction").ToString), HCAction)
-			Catch : HCHLDouble = HCAction.NoAction
-			End Try
-			Try : HCHLMiddle = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCHLMiddle", "NoAction").ToString), HCAction)
-			Catch : HCHLMiddle = HCAction.NoAction
-			End Try
-			Try : HCHLRight = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCHLRight", "Menu").ToString), HCAction)
-			Catch : HCHLRight = HCAction.Menu
 			End Try
 			Try : HCWLLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWLLeft", "NoAction").ToString), HCAction)
 			Catch : HCWLLeft = HCAction.NoAction
@@ -928,166 +773,6 @@ Namespace My
 			Catch
 				HKWSTCommandPrompt.KeyMod = 0
 			End Try
-			HKHLA.Description = "HotLinks A"
-			HKHLA.WinID = 7
-			Try
-				HKHLA.Key = CType(Val(RegKey.GetValue("HKHLAKey", "0")), Keys)
-				If HKHLA.Key < 0 Or HKHLA.Key > Integer.MaxValue Then HKHLA.Key = 0
-			Catch
-				HKHLA.Key = 0
-			End Try
-			Try
-				HKHLA.KeyCode = CByte(Val(RegKey.GetValue("HKHLAKeyCode", "0")))
-				If HKHLA.KeyCode < Byte.MinValue Or HKHLA.KeyCode > Byte.MaxValue Then HKHLA.KeyCode = 0
-			Catch
-				HKHLA.KeyCode = 0
-			End Try
-			Try
-				HKHLA.KeyMod = CByte(Val(RegKey.GetValue("HKHLAKeyMod", "0")))
-				If HKHLA.KeyMod < Byte.MinValue Or HKHLA.KeyMod > Byte.MaxValue Then HKHLA.KeyMod = 0
-			Catch
-				HKHLA.KeyMod = 0
-			End Try
-			HKHLB.Description = "HotLinks B"
-			HKHLB.WinID = 8
-			Try
-				HKHLB.Key = CType(Val(RegKey.GetValue("HKHLBKey", "0")), Keys)
-				If HKHLB.Key < 0 Or HKHLB.Key > Integer.MaxValue Then HKHLB.Key = 0
-			Catch
-				HKHLB.Key = 0
-			End Try
-			Try
-				HKHLB.KeyCode = CByte(Val(RegKey.GetValue("HKHLBKeyCode", "0")))
-				If HKHLB.KeyCode < Byte.MinValue Or HKHLB.KeyCode > Byte.MaxValue Then HKHLB.KeyCode = 0
-			Catch
-				HKHLB.KeyCode = 0
-			End Try
-			Try
-				HKHLB.KeyMod = CByte(Val(RegKey.GetValue("HKHLBKeyMod", "0")))
-				If HKHLB.KeyMod < Byte.MinValue Or HKHLB.KeyMod > Byte.MaxValue Then HKHLB.KeyMod = 0
-			Catch
-				HKHLB.KeyMod = 0
-			End Try
-			HKHLC.Description = "HotLinks C"
-			HKHLC.WinID = 9
-			Try
-				HKHLC.Key = CType(Val(RegKey.GetValue("HKHLCKey", "0")), Keys)
-				If HKHLC.Key < 0 Or HKHLC.Key > Integer.MaxValue Then HKHLC.Key = 0
-			Catch
-				HKHLC.Key = 0
-			End Try
-			Try
-				HKHLC.KeyCode = CByte(Val(RegKey.GetValue("HKHLCKeyCode", "0")))
-				If HKHLC.KeyCode < Byte.MinValue Or HKHLC.KeyCode > Byte.MaxValue Then HKHLC.KeyCode = 0
-			Catch
-				HKHLC.KeyCode = 0
-			End Try
-			Try
-				HKHLC.KeyMod = CByte(Val(RegKey.GetValue("HKHLCKeyMod", "0")))
-				If HKHLC.KeyMod < Byte.MinValue Or HKHLC.KeyMod > Byte.MaxValue Then HKHLC.KeyMod = 0
-			Catch
-				HKHLC.KeyMod = 0
-			End Try
-			HKHLD.Description = "HotLinks D"
-			HKHLD.WinID = 10
-			Try
-				HKHLD.Key = CType(Val(RegKey.GetValue("HKHLDKey", "0")), Keys)
-				If HKHLD.Key < 0 Or HKHLD.Key > Integer.MaxValue Then HKHLD.Key = 0
-			Catch
-				HKHLD.Key = 0
-			End Try
-			Try
-				HKHLD.KeyCode = CByte(Val(RegKey.GetValue("HKHLDKeyCode", "0")))
-				If HKHLD.KeyCode < Byte.MinValue Or HKHLD.KeyCode > Byte.MaxValue Then HKHLD.KeyCode = 0
-			Catch
-				HKHLD.KeyCode = 0
-			End Try
-			Try
-				HKHLD.KeyMod = CByte(Val(RegKey.GetValue("HKHLDKeyMod", "0")))
-				If HKHLD.KeyMod < Byte.MinValue Or HKHLD.KeyMod > Byte.MaxValue Then HKHLD.KeyMod = 0
-			Catch
-				HKHLD.KeyMod = 0
-			End Try
-			HKHLE.Description = "HotLinks E"
-			HKHLE.WinID = 11
-			Try
-				HKHLE.Key = CType(Val(RegKey.GetValue("HKHLEKey", "0")), Keys)
-				If HKHLE.Key < 0 Or HKHLE.Key > Integer.MaxValue Then HKHLE.Key = 0
-			Catch
-				HKHLE.Key = 0
-			End Try
-			Try
-				HKHLE.KeyCode = CByte(Val(RegKey.GetValue("HKHLEKeyCode", "0")))
-				If HKHLE.KeyCode < Byte.MinValue Or HKHLE.KeyCode > Byte.MaxValue Then HKHLE.KeyCode = 0
-			Catch
-				HKHLE.KeyCode = 0
-			End Try
-			Try
-				HKHLE.KeyMod = CByte(Val(RegKey.GetValue("HKHLEKeyMod", "0")))
-				If HKHLE.KeyMod < Byte.MinValue Or HKHLE.KeyMod > Byte.MaxValue Then HKHLE.KeyMod = 0
-			Catch
-				HKHLE.KeyMod = 0
-			End Try
-			HKHLF.Description = "HotLinks F"
-			HKHLF.WinID = 12
-			Try
-				HKHLF.Key = CType(Val(RegKey.GetValue("HKHLFKey", "0")), Keys)
-				If HKHLF.Key < 0 Or HKHLF.Key > Integer.MaxValue Then HKHLF.Key = 0
-			Catch
-				HKHLF.Key = 0
-			End Try
-			Try
-				HKHLF.KeyCode = CByte(Val(RegKey.GetValue("HKHLFKeyCode", "0")))
-				If HKHLF.KeyCode < Byte.MinValue Or HKHLF.KeyCode > Byte.MaxValue Then HKHLF.KeyCode = 0
-			Catch
-				HKHLF.KeyCode = 0
-			End Try
-			Try
-				HKHLF.KeyMod = CByte(Val(RegKey.GetValue("HKHLFKeyMod", "0")))
-				If HKHLF.KeyMod < Byte.MinValue Or HKHLF.KeyMod > Byte.MaxValue Then HKHLF.KeyMod = 0
-			Catch
-				HKHLF.KeyMod = 0
-			End Try
-			HKHLG.Description = "HotLinks G"
-			HKHLG.WinID = 13
-			Try
-				HKHLG.Key = CType(Val(RegKey.GetValue("HKHLGKey", "0")), Keys)
-				If HKHLG.Key < 0 Or HKHLG.Key > Integer.MaxValue Then HKHLG.Key = 0
-			Catch
-				HKHLG.Key = 0
-			End Try
-			Try
-				HKHLG.KeyCode = CByte(Val(RegKey.GetValue("HKHLGKeyCode", "0")))
-				If HKHLG.KeyCode < Byte.MinValue Or HKHLG.KeyCode > Byte.MaxValue Then HKHLG.KeyCode = 0
-			Catch
-				HKHLG.KeyCode = 0
-			End Try
-			Try
-				HKHLG.KeyMod = CByte(Val(RegKey.GetValue("HKHLGKeyMod", "0")))
-				If HKHLG.KeyMod < Byte.MinValue Or HKHLG.KeyMod > Byte.MaxValue Then HKHLG.KeyMod = 0
-			Catch
-				HKHLG.KeyMod = 0
-			End Try
-			HKHLH.Description = "HotLinks H"
-			HKHLH.WinID = 14
-			Try
-				HKHLH.Key = CType(Val(RegKey.GetValue("HKHLHKey", "0")), Keys)
-				If HKHLH.Key < 0 Or HKHLH.Key > Integer.MaxValue Then HKHLH.Key = 0
-			Catch
-				HKHLH.Key = 0
-			End Try
-			Try
-				HKHLH.KeyCode = CByte(Val(RegKey.GetValue("HKHLHKeyCode", "0")))
-				If HKHLH.KeyCode < Byte.MinValue Or HKHLH.KeyCode > Byte.MaxValue Then HKHLH.KeyCode = 0
-			Catch
-				HKHLH.KeyCode = 0
-			End Try
-			Try
-				HKHLH.KeyMod = CByte(Val(RegKey.GetValue("HKHLHKeyMod", "0")))
-				If HKHLH.KeyMod < Byte.MinValue Or HKHLH.KeyMod > Byte.MaxValue Then HKHLH.KeyMod = 0
-			Catch
-				HKHLH.KeyMod = 0
-			End Try
 			HKWL.Description = "Open WinLink Root Folder"
 			HKWL.WinID = 15
 			Try
@@ -1205,14 +890,6 @@ Namespace My
 				Case "False", "0" : WSTShowAC = False
 				Case Else : WSTShowAC = True
 			End Select
-			Select Case RegKey.GetValue("WSTShowHLMenu", "True").ToString
-				Case "False", "0" : WSTShowHLMenu = False
-				Case Else : WSTShowHLMenu = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowHLTray", "False").ToString
-				Case "False", "0" : WSTShowHLTray = False
-				Case Else : WSTShowHLTray = True
-			End Select
 			Select Case RegKey.GetValue("WSTShowWLMenu", "False").ToString
 				Case "True", "1" : WSTShowWLMenu = True
 				Case Else : WSTShowWLMenu = False
@@ -1296,103 +973,6 @@ Namespace My
 				Case "True", "1" : ACThirdQuarterHourAfterChimeEnabled = True
 				Case Else : ACThirdQuarterHourAfterChimeEnabled = False
 			End Select
-		End Sub
-		Private Sub GetSettingsHL()
-			Select Case RegKey.GetValue("HLShowMenuIcons", "True").ToString
-				Case "False", "0" : HLShowMenuIcons = False
-				Case Else : HLShowMenuIcons = True
-			End Select
-			Select Case RegKey.GetValue("HLShowToolTips", "True").ToString
-				Case "False", "0" : HLShowToolTips = False
-				Case Else : HLShowToolTips = True
-			End Select
-			Dim HLModeType As Type = GetType(HLMode)
-			Try : HLStartUpMode = DirectCast(HLMode.Parse(HLModeType, RegKey.GetValue("HLStartUpMode", "Start").ToString), HLMode)
-			Catch : HLStartUpMode = HLMode.Start
-			End Try
-			Try : HLGroupMode = DirectCast(HLMode.Parse(HLModeType, RegKey.GetValue("HLGroupMode", "Start").ToString), HLMode)
-			Catch : HLGroupMode = HLMode.Start
-			End Try
-			Try : HLHotKeyMode = DirectCast(HLMode.Parse(HLModeType, RegKey.GetValue("HLHotKeyMode", "Start").ToString), HLMode)
-			Catch : HLHotKeyMode = HLMode.Start
-			End Try
-			Try
-				HLLoadTimeOut = CByte(Val(RegKey.GetValue("HLLoadTimeOut", "10")))
-				If HLLoadTimeOut < 1 Or HLLoadTimeOut > 120 Then HLLoadTimeOut = 10
-			Catch
-				HLLoadTimeOut = 10
-			End Try
-			Try
-				HLCloseTimeOut = CByte(Val(RegKey.GetValue("HLCloseTimeOut", "30")))
-				If HLCloseTimeOut < 1 Or HLCloseTimeOut > 120 Then HLCloseTimeOut = 30
-			Catch
-				HLCloseTimeOut = 30
-			End Try
-			Select Case RegKey.GetValue("HLStartUp", "False").ToString
-				Case "True", "1" : HLStartUp = True
-				Case Else : HLStartUp = False
-			End Select
-			Try
-				HLStartUpDelay = CShort(Val(RegKey.GetValue("HLStartUpDelay", "30")))
-				If HLStartUpDelay < 5 Or HLStartUpDelay > 300 Then HLStartUpDelay = 30
-			Catch
-				HLStartUpDelay = 30
-			End Try
-			HLData.Clear()
-			RegSubKey = RegKey.CreateSubKey("HL")
-			Dim HLTypeType As Type = GetType(HLType)
-			Dim HLPriorityType As Type = GetType(Diagnostics.ProcessPriorityClass)
-			Dim HLWindowStateType As Type = GetType(Diagnostics.ProcessWindowStyle)
-			Dim HLHotKeyType As Type = GetType(HLHotKey)
-			For index As Integer = 1 To RegSubKey.SubKeyCount
-				RegItemKey = RegSubKey.OpenSubKey("Link" + (index).ToString.Trim, True)
-				Dim link As New HLItemType With {
-					.Name = RegItemKey.GetValue("", "").ToString}
-				If Not link.Name = "" Then
-					link.Group = RegItemKey.GetValue("Group", "").ToString
-					link.Description = RegItemKey.GetValue("Description", "").ToString
-					link.Link = RegItemKey.GetValue("Link", "").ToString
-					link.Arguments = RegItemKey.GetValue("Arguments", "").ToString
-					link.WorkingDirectory = RegItemKey.GetValue("WorkingDirectory", "").ToString
-					Select Case RegItemKey.GetValue("SingleInstance", "False").ToString
-						Case "True", "1" : link.SingleInstance = True
-						Case Else : link.SingleInstance = False
-					End Select
-					Select Case RegItemKey.GetValue("UseAlternateStartMethod", "False").ToString
-						Case "True", "1" : link.UseAlternateStartMethod = True
-						Case Else : link.UseAlternateStartMethod = False
-					End Select
-					Try
-						link.UseAlternateStartTimeOut = CByte(Val(RegItemKey.GetValue("UseAlternateStartTimeOut", "0")))
-						If link.UseAlternateStartTimeOut < 0 Or link.UseAlternateStartTimeOut > 120 Then link.UseAlternateStartTimeOut = 0
-					Catch
-						link.UseAlternateStartTimeOut = 0
-					End Try
-					Try : link.Type = DirectCast(HLType.Parse(HLTypeType, RegItemKey.GetValue("Type", "Auto").ToString), HLType)
-					Catch : link.Type = HLType.Auto
-					End Try
-					Try : link.Priority = DirectCast(Diagnostics.ProcessPriorityClass.Parse(HLPriorityType, RegItemKey.GetValue("Priority", "Normal").ToString), Diagnostics.ProcessPriorityClass)
-					Catch : link.Priority = Diagnostics.ProcessPriorityClass.Normal
-					End Try
-					Try : link.WindowState = DirectCast(Diagnostics.ProcessWindowStyle.Parse(HLWindowStateType, RegItemKey.GetValue("WindowState", "Normal").ToString), Diagnostics.ProcessWindowStyle)
-					Catch : link.WindowState = Diagnostics.ProcessWindowStyle.Normal
-					End Try
-					Try : link.HotKey = DirectCast(HLHotKey.Parse(HLHotKeyType, RegItemKey.GetValue("HotKey", "None").ToString), HLHotKey)
-					Catch : link.HotKey = HLHotKey.None
-					End Try
-					Select Case RegItemKey.GetValue("HideInMenu", "False").ToString
-						Case "True", "1" : link.HideInMenu = True
-						Case Else : link.HideInMenu = False
-					End Select
-					Select Case RegItemKey.GetValue("Disabled", "False").ToString
-						Case "True", "1" : link.Disabled = True
-						Case Else : link.Disabled = False
-					End Select
-					HLData.Add(link)
-				End If
-				RegItemKey.Close()
-			Next
-			RegSubKey.Close()
 		End Sub
 		Private Sub GetSettingsWL()
 			Select Case RegKey.GetValue("WLShowFilePathToolTips", "False").ToString
@@ -1485,10 +1065,6 @@ Namespace My
 			RegKey.SetValue("HCWSTDouble", HCWSTDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWSTMiddle", HCWSTMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWSTRight", HCWSTRight.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCHLLeft", HCHLLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCHLDouble", HCHLDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCHLMiddle", HCHLMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCHLRight", HCHLRight.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWLLeft", HCWLLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWLDouble", HCWLDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWLMiddle", HCWLMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1518,30 +1094,6 @@ Namespace My
 			RegKey.SetValue("HKWSTCommandPromptKey", Val(HKWSTCommandPrompt.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTCommandPromptKeyCode", HKWSTCommandPrompt.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTCommandPromptKeyMod", HKWSTCommandPrompt.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLAKey", Val(HKHLA.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLAKeyCode", HKHLA.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLAKeyMod", HKHLA.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLBKey", Val(HKHLB.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLBKeyCode", HKHLB.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLBKeyMod", HKHLB.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLCKey", Val(HKHLC.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLCKeyCode", HKHLC.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLCKeyMod", HKHLC.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLDKey", Val(HKHLD.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLDKeyCode", HKHLD.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLDKeyMod", HKHLD.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLEKey", Val(HKHLE.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLEKeyCode", HKHLE.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLEKeyMod", HKHLE.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLFKey", Val(HKHLF.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLFKeyCode", HKHLF.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLFKeyMod", HKHLF.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLGKey", Val(HKHLG.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLGKeyCode", HKHLG.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLGKeyMod", HKHLG.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLHKey", Val(HKHLH.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLHKeyCode", HKHLH.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKHLHKeyMod", HKHLH.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWLKey", Val(HKWL.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWLKeyCode", HKWL.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWLKeyMod", HKWL.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1576,8 +1128,6 @@ Namespace My
 			RegKey.SetValue("WSTShowHelp", WSTShowHelp.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowLog", WSTShowLog.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowAC", WSTShowAC.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowHLMenu", WSTShowHLMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowHLTray", WSTShowHLTray.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowWLMenu", WSTShowWLMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowWLTray", WSTShowWLTray.ToString, Microsoft.Win32.RegistryValueKind.String)
 		End Sub
@@ -1601,43 +1151,6 @@ Namespace My
 			RegKey.SetValue("ACThirdQuarterHourChimeEnabled", ACThirdQuarterHourChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("ACThirdQuarterHourBeforeChimeEnabled", ACThirdQuarterHourBeforeChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("ACThirdQuarterHourAfterChimeEnabled", ACThirdQuarterHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-		End Sub
-		Private Sub SaveSettingsHL()
-			RegKey.SetValue("HLShowMenuIcons", HLShowMenuIcons.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLShowToolTips", HLShowToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLStartUpMode", HLStartUpMode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLGroupMode", HLGroupMode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLHotKeyMode", HLHotKeyMode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLLoadTimeOut", HLLoadTimeOut.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLCloseTimeOut", HLCloseTimeOut.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLStartUp", HLStartUp.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HLStartUpDelay", HLStartUpDelay.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegSubKey = RegKey.OpenSubKey("HL", True)
-			For Each s As String In RegSubKey.GetSubKeyNames : RegSubKey.DeleteSubKeyTree(s) : Next
-			If HLData.Count > 0 Then
-				For index As Integer = 0 To HLData.Count - 1
-					RegItemKey = RegSubKey.CreateSubKey("Link" + (index + 1).ToString.Trim)
-					If HLData(index).Type = HLType.Separator Then : RegItemKey.SetValue("", "Separator", Microsoft.Win32.RegistryValueKind.String)
-					Else : RegItemKey.SetValue("", HLData(index).Name, Microsoft.Win32.RegistryValueKind.String)
-					End If
-					RegItemKey.SetValue("Group", HLData(index).Group, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Description", HLData(index).Description, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Link", HLData(index).Link, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Arguments", HLData(index).Arguments, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("WorkingDirectory", HLData(index).WorkingDirectory, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("SingleInstance", HLData(index).SingleInstance.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("UseAlternateStartMethod", HLData(index).UseAlternateStartMethod.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("UseAlternateStartTimeOut", HLData(index).UseAlternateStartTimeOut.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Type", HLData(index).Type.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Priority", HLData(index).Priority.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("WindowState", HLData(index).WindowState.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("HotKey", HLData(index).HotKey.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("HideInMenu", HLData(index).HideInMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Disabled", HLData(index).Disabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.Close()
-				Next
-			End If
-			RegSubKey.Close()
 		End Sub
 		Private Sub SaveSettingsWL()
 			RegKey.SetValue("WLShowFilePathToolTips", WLShowFilePathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1697,16 +1210,10 @@ Namespace My
 			'Alarm & Chime (AC)
 			WSTShowAC = False
 			ACAlarmRecurring = False
-			'"HotLinks (HL)
-			WSTShowHLMenu = False
-			WSTShowHLTray = False
-			HLStartUp = False
-			HLStartUpDelay = 5
-			GetSettingsDebugHL()
 			'WinLinks (WL)
-			WSTShowWLMenu = False
-			WSTShowWLTray = False
-			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
+			WSTShowWLMenu = True
+			WSTShowWLTray = True
+			WLStartUpDelay = 5 '0 = Disable Delay, Load Immediately
 			GetSettingsDebugWL()
 		End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHK()
@@ -1714,60 +1221,10 @@ Namespace My
 				'HotKeyRefreshWorkSpace.HotKey = Keys.R
 				'HotKeyRefreshWorkSpace.HotKeyCode = 82
 				'HotKeyRefreshWorkSpace.HotKeyMod = 0
-				HKHLA.Key = Keys.A
-				HKHLA.KeyCode = 65
-				HKHLA.KeyMod = 0
-				'HotKeyHotLinksB.HotKey = Keys.B
-				'HotKeyHotLinksB.HotKeyCode = 66
-				'HotKeyHotLinksB.HotKeyMod = 0
-				'HotKeyHotLinksC.HotKey = Keys.C
-				'HotKeyHotLinksC.HotKeyCode = 67
-				'HotKeyHotLinksC.HotKeyMod = 0
-				'HotKeyHotLinksD.HotKey = Keys.D
-				'HotKeyHotLinksD.HotKeyCode = 68
-				'HotKeyHotLinksD.HotKeyMod = 0
 				'HotKeyWinLinks.HotKey = Keys.W
 				'HotKeyWinLinks.HotKeyCode = 87
 				'HotKeyWinLinks.HotKeyMod = 0
 			End If
-		End Sub
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHL()
-
-			HLData.Clear()
-
-			Dim h As HLItemType
-
-			h = New HLItemType("Calculator") With {
-				.Description = "2 + 2 = 4",
-				.Link = "C:\Windows\system32\calc.exe",
-				.HotKey = HLHotKey.A}
-			HLData.Add(h)
-
-			h = New HLItemType("Notepad") With {
-				.Link = "C:\Windows\notepad.exe",
-				.Type = HLType.Auto}
-			'h.HotKey = HLHotKey.B
-			HLData.Add(h)
-
-			h = New HLItemType("Ant Renamer") With {
-				.Link = "C:\Program Files (x86)\Ant Renamer\Renamer.exe",
-				.Type = HLType.Auto}
-			HLData.Add(h)
-
-			h = New HLItemType("StartUp") With {
-				.Description = "GO!!!",
-				.Type = HLType.Group}
-			HLData.Add(h)
-
-			h = New HLItemType(String.Empty) With {
-				.Type = HLType.Separator}
-			HLData.Add(h)
-
-			h = New HLItemType("Yahoo!") With {
-				.Link = "http://www.yahoo.com",
-				.Type = HLType.WebLink}
-			HLData.Add(h)
-
 		End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugWL()
 

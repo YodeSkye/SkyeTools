@@ -9,8 +9,6 @@
     End Sub
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        label8 = New Label()
-        label7 = New Label()
         lblWLAutoRefreshIdleInterval = New Label()
         lblWLAutoRefreshInterval = New Label()
         lblWLMaxLinksPerFolder = New Label()
@@ -24,7 +22,6 @@
         cmiWSTCommandPrompt = New ToolStripMenuItem()
         cmiWSTScreenSaverActivate = New ToolStripMenuItem()
         cmiWSTScreenSaverEnabled = New ToolStripMenuItem()
-        cmiWSTHLMenu = New ToolStripMenuItem()
         cmseparatorWSTWLTop = New ToolStripSeparator()
         cmseparatorWSTWLBottom = New ToolStripSeparator()
         cmiWSTClock = New ToolStripMenuItem()
@@ -64,7 +61,6 @@
         lblLoadOnOSStartupPath = New Label()
         checkboxWSTShowWLTray = New CheckBox()
         checkboxWSTShowWLMenu = New CheckBox()
-        checkboxWSTHLStartUp = New CheckBox()
         groupboxWSTSS = New GroupBox()
         btnWSTScreenSaverEnabled = New RadioButton()
         comboboxWSTSSStartUp = New ComboBox()
@@ -81,8 +77,6 @@
         checkboxLoadOnOSStartup = New CheckBox()
         txbxLoadOnOSStartupArgs = New TextBox()
         checkboxWSTEnabled = New CheckBox()
-        checkboxWSTShowHLTray = New CheckBox()
-        checkboxWSTShowHLMenu = New CheckBox()
         btnWSTTaskManager = New Button()
         btnWSTCommandPrompt = New Button()
         tabpageAC = New TabPage()
@@ -130,64 +124,6 @@
         btnACAlarmChimeDefault = New Button()
         btnACAlarmChimePlay = New Button()
         btnACAlarmChimeManual = New Button()
-        tabpageHL = New TabPage()
-        textboxHLStartUpDelay = New TextBox()
-        comboboxHLStartUpMode = New ComboBox()
-        panelHLEdit = New Panel()
-        textboxHLDescription = New TextBox()
-        comboboxHLHotKey = New ComboBox()
-        label3 = New Label()
-        checkboxHLDisabled = New CheckBox()
-        checkboxHLHideInMenu = New CheckBox()
-        textboxHLUseAlternateStartTimeOut = New TextBox()
-        lblHLUseAlternateStartTimeOutA = New Label()
-        checkboxHLUseAlternateStartMethod = New CheckBox()
-        lblHLUseAlternateStartTimeOutB = New Label()
-        checkboxHLSingleInstance = New CheckBox()
-        comboboxHLPriority = New ComboBox()
-        textboxHLWorkingDirectory = New TextBox()
-        btnHLTest = New Button()
-        btnHLCancel = New Button()
-        btnHLSet = New Button()
-        comboboxHLGroup = New ComboBox()
-        comboboxHLWindowState = New ComboBox()
-        textboxHLLink = New TextBox()
-        textboxHLName = New TextBox()
-        comboboxHLType = New ComboBox()
-        textboxHLArguments = New TextBox()
-        label19 = New Label()
-        label26 = New Label()
-        label25 = New Label()
-        btnHLSelectLink = New Button()
-        btnHLSelectWorkingDirectory = New Button()
-        label21 = New Label()
-        label24 = New Label()
-        label22 = New Label()
-        label23 = New Label()
-        label1 = New Label()
-        label35 = New Label()
-        checkboxHLShowToolTips = New CheckBox()
-        checkboxHLShowMenuIcons = New CheckBox()
-        comboboxHLGroupMode = New ComboBox()
-        comboboxHLHotKeyMode = New ComboBox()
-        textboxHLLoadTimeOut = New TextBox()
-        textboxHLCloseTimeOut = New TextBox()
-        label5 = New Label()
-        label34 = New Label()
-        label33 = New Label()
-        label6 = New Label()
-        lvHL = New ListView()
-        cmlvHL = New ContextMenuStrip(components)
-        cmiHLMoveTop = New ToolStripMenuItem()
-        cmiHLMoveUp = New ToolStripMenuItem()
-        cmiHLMoveDown = New ToolStripMenuItem()
-        cmiHLMoveBottom = New ToolStripMenuItem()
-        toolStripSeparator3 = New ToolStripSeparator()
-        cmiHLNew = New ToolStripMenuItem()
-        cmiHLEdit = New ToolStripMenuItem()
-        cmiHLCopy = New ToolStripMenuItem()
-        toolStripSeparator4 = New ToolStripSeparator()
-        cmiHLDelete = New ToolStripMenuItem()
         tabpageWL = New TabPage()
         panelWL = New Panel()
         checkboxWLShowNoMenu = New CheckBox()
@@ -233,7 +169,6 @@
         comboboxHCLeft = New ComboBox()
         groupBox2 = New GroupBox()
         radiobtnHCWL = New RadioButton()
-        radiobtnHCHL = New RadioButton()
         radiobtnHCWSTSS = New RadioButton()
         radiobtnHCWST = New RadioButton()
         label17 = New Label()
@@ -241,39 +176,15 @@
         label16 = New Label()
         label15 = New Label()
         tabpageHK = New TabPage()
-        textboxHKHLH = New TextBox()
-        textboxHKHLF = New TextBox()
-        textboxHKHLG = New TextBox()
-        textboxHKHLE = New TextBox()
         textboxHKWSTCommandPrompt = New TextBox()
         textboxHKWSTTaskManager = New TextBox()
         textboxHKWL = New TextBox()
-        textboxHKHLD = New TextBox()
-        textboxHKHLB = New TextBox()
-        textboxHKHLC = New TextBox()
-        textboxHKHLA = New TextBox()
         textboxHKWSTClock = New TextBox()
         textboxHKWSTLockWorkSpace = New TextBox()
         btnHKSet = New Button()
         btnHKReset = New Button()
         textboxHKWSTScreenSaver = New TextBox()
         btnHKEnabled = New Button()
-        lblHKHLH = New Label()
-        lblHKHLF = New Label()
-        lblHKHLG = New Label()
-        lblHKHLE = New Label()
-        lblHKHLD = New Label()
-        lblHKHLB = New Label()
-        lblHKHLC = New Label()
-        lblHKHLA = New Label()
-        btnHKHLHDisable = New Button()
-        btnHKHLFDisable = New Button()
-        btnHKHLGDisable = New Button()
-        btnHKHLEDisable = New Button()
-        btnHKHLDDisable = New Button()
-        btnHKHLBDisable = New Button()
-        btnHKHLCDisable = New Button()
-        btnHKHLADisable = New Button()
         lblHKWSTCommandPrompt = New Label()
         lblHKWSTTaskManager = New Label()
         lblHKWL = New Label()
@@ -311,9 +222,6 @@
         groupboxACTopHourChimeType.SuspendLayout()
         groupboxACAlarmChimeType.SuspendLayout()
         CType(picboxACClock, ComponentModel.ISupportInitialize).BeginInit()
-        tabpageHL.SuspendLayout()
-        panelHLEdit.SuspendLayout()
-        cmlvHL.SuspendLayout()
         tabpageWL.SuspendLayout()
         panelWL.SuspendLayout()
         cmlistviewWL.SuspendLayout()
@@ -322,28 +230,6 @@
         tabpageHK.SuspendLayout()
         cmWSTScreenSaver.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' label8
-        ' 
-        label8.CausesValidation = False
-        label8.Location = New Point(356, 10)
-        label8.Name = "label8"
-        label8.Size = New Size(100, 21)
-        label8.TabIndex = 160
-        label8.Text = "StartUp Delay"
-        label8.TextAlign = ContentAlignment.MiddleRight
-        tipInfo.SetToolTip(label8, "5-300")
-        ' 
-        ' label7
-        ' 
-        label7.CausesValidation = False
-        label7.Location = New Point(484, 36)
-        label7.Name = "label7"
-        label7.Size = New Size(98, 21)
-        label7.TabIndex = 158
-        label7.Text = "Close TimeOut"
-        label7.TextAlign = ContentAlignment.MiddleRight
-        tipInfo.SetToolTip(label7, "1-120")
         ' 
         ' lblWLAutoRefreshIdleInterval
         ' 
@@ -398,9 +284,9 @@
         ' cmWST
         ' 
         cmWST.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTTaskManager, cmiWSTCommandPrompt, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmiWSTHLMenu, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
+        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTTaskManager, cmiWSTCommandPrompt, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(213, 468)
+        cmWST.Size = New Size(213, 446)
         ' 
         ' cmiWSTCancelStartUp
         ' 
@@ -456,13 +342,6 @@
         ' 
         cmiWSTScreenSaverEnabled.Name = "cmiWSTScreenSaverEnabled"
         cmiWSTScreenSaverEnabled.Size = New Size(212, 22)
-        ' 
-        ' cmiWSTHLMenu
-        ' 
-        cmiWSTHLMenu.Image = My.Resources.Resources.imageHL
-        cmiWSTHLMenu.Name = "cmiWSTHLMenu"
-        cmiWSTHLMenu.Size = New Size(212, 22)
-        cmiWSTHLMenu.Text = "HotLinks"
         ' 
         ' cmseparatorWSTWLTop
         ' 
@@ -655,7 +534,6 @@
         ' 
         tabcontrolSettings.Controls.Add(tabpageWST)
         tabcontrolSettings.Controls.Add(tabpageAC)
-        tabcontrolSettings.Controls.Add(tabpageHL)
         tabcontrolSettings.Controls.Add(tabpageWL)
         tabcontrolSettings.Controls.Add(tabpageHC)
         tabcontrolSettings.Controls.Add(tabpageHK)
@@ -688,7 +566,6 @@
         tabpageWST.Controls.Add(lblLoadOnOSStartupPath)
         tabpageWST.Controls.Add(checkboxWSTShowWLTray)
         tabpageWST.Controls.Add(checkboxWSTShowWLMenu)
-        tabpageWST.Controls.Add(checkboxWSTHLStartUp)
         tabpageWST.Controls.Add(groupboxWSTSS)
         tabpageWST.Controls.Add(checkboxWSTShowTaskManager)
         tabpageWST.Controls.Add(btnLoadOnOSStartupPath)
@@ -698,8 +575,6 @@
         tabpageWST.Controls.Add(checkboxLoadOnOSStartup)
         tabpageWST.Controls.Add(txbxLoadOnOSStartupArgs)
         tabpageWST.Controls.Add(checkboxWSTEnabled)
-        tabpageWST.Controls.Add(checkboxWSTShowHLTray)
-        tabpageWST.Controls.Add(checkboxWSTShowHLMenu)
         tabpageWST.Controls.Add(btnWSTTaskManager)
         tabpageWST.Controls.Add(btnWSTCommandPrompt)
         tabpageWST.Location = New Point(4, 26)
@@ -852,15 +727,6 @@
         checkboxWSTShowWLMenu.TabIndex = 30
         checkboxWSTShowWLMenu.Text = "Show 'WinLinks'"
         checkboxWSTShowWLMenu.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTHLStartUp
-        ' 
-        checkboxWSTHLStartUp.Location = New Point(5, 120)
-        checkboxWSTHLStartUp.Name = "checkboxWSTHLStartUp"
-        checkboxWSTHLStartUp.Size = New Size(167, 21)
-        checkboxWSTHLStartUp.TabIndex = 29
-        checkboxWSTHLStartUp.Text = "Enable HotLinks StartUp"
-        checkboxWSTHLStartUp.UseVisualStyleBackColor = True
         ' 
         ' groupboxWSTSS
         ' 
@@ -1031,24 +897,6 @@
         checkboxWSTEnabled.TabIndex = 10
         checkboxWSTEnabled.Text = "Show Tray Icon"
         checkboxWSTEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowHLTray
-        ' 
-        checkboxWSTShowHLTray.Location = New Point(5, 102)
-        checkboxWSTShowHLTray.Name = "checkboxWSTShowHLTray"
-        checkboxWSTShowHLTray.Size = New Size(155, 21)
-        checkboxWSTShowHLTray.TabIndex = 28
-        checkboxWSTShowHLTray.Text = "Show HotLinks Tray Icon"
-        checkboxWSTShowHLTray.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowHLMenu
-        ' 
-        checkboxWSTShowHLMenu.Location = New Point(5, 84)
-        checkboxWSTShowHLMenu.Name = "checkboxWSTShowHLMenu"
-        checkboxWSTShowHLMenu.Size = New Size(126, 21)
-        checkboxWSTShowHLMenu.TabIndex = 27
-        checkboxWSTShowHLMenu.Text = "Show 'HotLinks'"
-        checkboxWSTShowHLMenu.UseVisualStyleBackColor = True
         ' 
         ' btnWSTTaskManager
         ' 
@@ -1641,575 +1489,6 @@
         tipInfo.SetToolTip(btnACAlarmChimeManual, "Select WAV File")
         btnACAlarmChimeManual.UseVisualStyleBackColor = True
         ' 
-        ' tabpageHL
-        ' 
-        tabpageHL.Controls.Add(textboxHLStartUpDelay)
-        tabpageHL.Controls.Add(comboboxHLStartUpMode)
-        tabpageHL.Controls.Add(panelHLEdit)
-        tabpageHL.Controls.Add(checkboxHLShowToolTips)
-        tabpageHL.Controls.Add(checkboxHLShowMenuIcons)
-        tabpageHL.Controls.Add(comboboxHLGroupMode)
-        tabpageHL.Controls.Add(comboboxHLHotKeyMode)
-        tabpageHL.Controls.Add(textboxHLLoadTimeOut)
-        tabpageHL.Controls.Add(textboxHLCloseTimeOut)
-        tabpageHL.Controls.Add(label5)
-        tabpageHL.Controls.Add(label34)
-        tabpageHL.Controls.Add(label33)
-        tabpageHL.Controls.Add(label7)
-        tabpageHL.Controls.Add(label6)
-        tabpageHL.Controls.Add(label8)
-        tabpageHL.Controls.Add(lvHL)
-        tabpageHL.Location = New Point(4, 24)
-        tabpageHL.Name = "tabpageHL"
-        tabpageHL.Size = New Size(618, 375)
-        tabpageHL.TabIndex = 7
-        tabpageHL.Text = """HotLinks"""
-        tabpageHL.UseVisualStyleBackColor = True
-        ' 
-        ' textboxHLStartUpDelay
-        ' 
-        textboxHLStartUpDelay.Location = New Point(452, 9)
-        textboxHLStartUpDelay.MaxLength = 3
-        textboxHLStartUpDelay.Name = "textboxHLStartUpDelay"
-        textboxHLStartUpDelay.Size = New Size(32, 25)
-        textboxHLStartUpDelay.TabIndex = 8
-        textboxHLStartUpDelay.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' comboboxHLStartUpMode
-        ' 
-        comboboxHLStartUpMode.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLStartUpMode.FormattingEnabled = True
-        comboboxHLStartUpMode.Items.AddRange(New Object() {"Start", "ReStart"})
-        comboboxHLStartUpMode.Location = New Point(20, 34)
-        comboboxHLStartUpMode.Name = "comboboxHLStartUpMode"
-        comboboxHLStartUpMode.Size = New Size(65, 25)
-        comboboxHLStartUpMode.TabIndex = 20
-        ' 
-        ' panelHLEdit
-        ' 
-        panelHLEdit.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        panelHLEdit.Controls.Add(textboxHLDescription)
-        panelHLEdit.Controls.Add(comboboxHLHotKey)
-        panelHLEdit.Controls.Add(label3)
-        panelHLEdit.Controls.Add(checkboxHLDisabled)
-        panelHLEdit.Controls.Add(checkboxHLHideInMenu)
-        panelHLEdit.Controls.Add(textboxHLUseAlternateStartTimeOut)
-        panelHLEdit.Controls.Add(lblHLUseAlternateStartTimeOutA)
-        panelHLEdit.Controls.Add(checkboxHLUseAlternateStartMethod)
-        panelHLEdit.Controls.Add(lblHLUseAlternateStartTimeOutB)
-        panelHLEdit.Controls.Add(checkboxHLSingleInstance)
-        panelHLEdit.Controls.Add(comboboxHLPriority)
-        panelHLEdit.Controls.Add(textboxHLWorkingDirectory)
-        panelHLEdit.Controls.Add(btnHLTest)
-        panelHLEdit.Controls.Add(btnHLCancel)
-        panelHLEdit.Controls.Add(btnHLSet)
-        panelHLEdit.Controls.Add(comboboxHLGroup)
-        panelHLEdit.Controls.Add(comboboxHLWindowState)
-        panelHLEdit.Controls.Add(textboxHLLink)
-        panelHLEdit.Controls.Add(textboxHLName)
-        panelHLEdit.Controls.Add(comboboxHLType)
-        panelHLEdit.Controls.Add(textboxHLArguments)
-        panelHLEdit.Controls.Add(label19)
-        panelHLEdit.Controls.Add(label26)
-        panelHLEdit.Controls.Add(label25)
-        panelHLEdit.Controls.Add(btnHLSelectLink)
-        panelHLEdit.Controls.Add(btnHLSelectWorkingDirectory)
-        panelHLEdit.Controls.Add(label21)
-        panelHLEdit.Controls.Add(label24)
-        panelHLEdit.Controls.Add(label22)
-        panelHLEdit.Controls.Add(label23)
-        panelHLEdit.Controls.Add(label1)
-        panelHLEdit.Controls.Add(label35)
-        panelHLEdit.Location = New Point(0, 69)
-        panelHLEdit.Name = "panelHLEdit"
-        panelHLEdit.Size = New Size(618, 266)
-        panelHLEdit.TabIndex = 100
-        panelHLEdit.Visible = False
-        ' 
-        ' textboxHLDescription
-        ' 
-        textboxHLDescription.Location = New Point(5, 60)
-        textboxHLDescription.Name = "textboxHLDescription"
-        textboxHLDescription.Size = New Size(307, 25)
-        textboxHLDescription.TabIndex = 51
-        ' 
-        ' comboboxHLHotKey
-        ' 
-        comboboxHLHotKey.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLHotKey.FormattingEnabled = True
-        comboboxHLHotKey.Items.AddRange(New Object() {"None", "HotKey A", "HotKey B", "HotKey C", "HotKey D", "HotKey E", "HotKey F", "HotKey G", "HotKey H"})
-        comboboxHLHotKey.Location = New Point(414, 18)
-        comboboxHLHotKey.Name = "comboboxHLHotKey"
-        comboboxHLHotKey.Size = New Size(80, 25)
-        comboboxHLHotKey.TabIndex = 95
-        ' 
-        ' label3
-        ' 
-        label3.Location = New Point(414, -2)
-        label3.Name = "label3"
-        label3.Size = New Size(74, 21)
-        label3.TabIndex = 212
-        label3.Text = "HotKey"
-        label3.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' checkboxHLDisabled
-        ' 
-        checkboxHLDisabled.Location = New Point(536, 188)
-        checkboxHLDisabled.Name = "checkboxHLDisabled"
-        checkboxHLDisabled.Size = New Size(87, 21)
-        checkboxHLDisabled.TabIndex = 78
-        checkboxHLDisabled.Text = "Disabled?"
-        checkboxHLDisabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxHLHideInMenu
-        ' 
-        checkboxHLHideInMenu.Location = New Point(414, 188)
-        checkboxHLHideInMenu.Name = "checkboxHLHideInMenu"
-        checkboxHLHideInMenu.Size = New Size(111, 21)
-        checkboxHLHideInMenu.TabIndex = 77
-        checkboxHLHideInMenu.Text = "Hide In Menu?"
-        checkboxHLHideInMenu.UseVisualStyleBackColor = True
-        ' 
-        ' textboxHLUseAlternateStartTimeOut
-        ' 
-        textboxHLUseAlternateStartTimeOut.Location = New Point(245, 241)
-        textboxHLUseAlternateStartTimeOut.MaxLength = 3
-        textboxHLUseAlternateStartTimeOut.Name = "textboxHLUseAlternateStartTimeOut"
-        textboxHLUseAlternateStartTimeOut.Size = New Size(32, 25)
-        textboxHLUseAlternateStartTimeOut.TabIndex = 72
-        textboxHLUseAlternateStartTimeOut.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' lblHLUseAlternateStartTimeOutA
-        ' 
-        lblHLUseAlternateStartTimeOutA.Location = New Point(210, 244)
-        lblHLUseAlternateStartTimeOutA.Name = "lblHLUseAlternateStartTimeOutA"
-        lblHLUseAlternateStartTimeOutA.Size = New Size(39, 21)
-        lblHLUseAlternateStartTimeOutA.TabIndex = 209
-        lblHLUseAlternateStartTimeOutA.Text = "Wait"
-        lblHLUseAlternateStartTimeOutA.TextAlign = ContentAlignment.TopRight
-        tipInfo.SetToolTip(lblHLUseAlternateStartTimeOutA, "0-120" & vbCrLf & "0 = Use Load TimeOut")
-        ' 
-        ' checkboxHLUseAlternateStartMethod
-        ' 
-        checkboxHLUseAlternateStartMethod.Location = New Point(5, 243)
-        checkboxHLUseAlternateStartMethod.Name = "checkboxHLUseAlternateStartMethod"
-        checkboxHLUseAlternateStartMethod.Size = New Size(195, 21)
-        checkboxHLUseAlternateStartMethod.TabIndex = 71
-        checkboxHLUseAlternateStartMethod.Text = "Use Alternate Start Method?"
-        checkboxHLUseAlternateStartMethod.UseVisualStyleBackColor = True
-        ' 
-        ' lblHLUseAlternateStartTimeOutB
-        ' 
-        lblHLUseAlternateStartTimeOutB.Location = New Point(275, 244)
-        lblHLUseAlternateStartTimeOutB.Name = "lblHLUseAlternateStartTimeOutB"
-        lblHLUseAlternateStartTimeOutB.Size = New Size(61, 21)
-        lblHLUseAlternateStartTimeOutB.TabIndex = 210
-        lblHLUseAlternateStartTimeOutB.Text = "seconds"
-        tipInfo.SetToolTip(lblHLUseAlternateStartTimeOutB, "0-120" & vbCrLf & "0 = Use Load TimeOut")
-        ' 
-        ' checkboxHLSingleInstance
-        ' 
-        checkboxHLSingleInstance.Location = New Point(5, 225)
-        checkboxHLSingleInstance.Name = "checkboxHLSingleInstance"
-        checkboxHLSingleInstance.Size = New Size(153, 21)
-        checkboxHLSingleInstance.TabIndex = 70
-        checkboxHLSingleInstance.Text = "Single Instance?"
-        checkboxHLSingleInstance.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxHLPriority
-        ' 
-        comboboxHLPriority.DrawMode = DrawMode.OwnerDrawFixed
-        comboboxHLPriority.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLPriority.ItemHeight = 19
-        comboboxHLPriority.Items.AddRange(New Object() {"RealTime", "High", "AboveNormal", "Normal", "BelowNormal", "Idle"})
-        comboboxHLPriority.Location = New Point(500, 60)
-        comboboxHLPriority.Name = "comboboxHLPriority"
-        comboboxHLPriority.Size = New Size(110, 25)
-        comboboxHLPriority.TabIndex = 92
-        ' 
-        ' textboxHLWorkingDirectory
-        ' 
-        textboxHLWorkingDirectory.Location = New Point(5, 186)
-        textboxHLWorkingDirectory.Name = "textboxHLWorkingDirectory"
-        textboxHLWorkingDirectory.Size = New Size(307, 25)
-        textboxHLWorkingDirectory.TabIndex = 62
-        ' 
-        ' btnHLTest
-        ' 
-        btnHLTest.ForeColor = Color.Navy
-        btnHLTest.ImageAlign = ContentAlignment.MiddleLeft
-        btnHLTest.Location = New Point(546, 212)
-        btnHLTest.Name = "btnHLTest"
-        btnHLTest.Size = New Size(66, 32)
-        btnHLTest.TabIndex = 152
-        btnHLTest.Text = "Test"
-        btnHLTest.TextAlign = ContentAlignment.MiddleRight
-        btnHLTest.UseVisualStyleBackColor = True
-        ' 
-        ' btnHLCancel
-        ' 
-        btnHLCancel.Font = New Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        btnHLCancel.ForeColor = Color.Navy
-        btnHLCancel.Image = My.Resources.Resources.imageRemove
-        btnHLCancel.ImageAlign = ContentAlignment.BottomCenter
-        btnHLCancel.Location = New Point(412, 212)
-        btnHLCancel.Name = "btnHLCancel"
-        btnHLCancel.Size = New Size(133, 65)
-        btnHLCancel.TabIndex = 150
-        btnHLCancel.Text = "Cancel"
-        btnHLCancel.TextImageRelation = TextImageRelation.ImageAboveText
-        btnHLCancel.UseVisualStyleBackColor = True
-        ' 
-        ' btnHLSet
-        ' 
-        btnHLSet.Font = New Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        btnHLSet.ForeColor = Color.Navy
-        btnHLSet.Image = My.Resources.Resources.imageGoStart
-        btnHLSet.ImageAlign = ContentAlignment.MiddleLeft
-        btnHLSet.Location = New Point(546, 245)
-        btnHLSet.Name = "btnHLSet"
-        btnHLSet.Size = New Size(66, 32)
-        btnHLSet.TabIndex = 155
-        btnHLSet.Text = "Set"
-        btnHLSet.TextAlign = ContentAlignment.MiddleRight
-        btnHLSet.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxHLGroup
-        ' 
-        comboboxHLGroup.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLGroup.FormattingEnabled = True
-        comboboxHLGroup.Location = New Point(228, 18)
-        comboboxHLGroup.Name = "comboboxHLGroup"
-        comboboxHLGroup.Size = New Size(180, 25)
-        comboboxHLGroup.TabIndex = 80
-        ' 
-        ' comboboxHLWindowState
-        ' 
-        comboboxHLWindowState.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLWindowState.FormattingEnabled = True
-        comboboxHLWindowState.Items.AddRange(New Object() {"Normal", "Minimized", "Maximized"})
-        comboboxHLWindowState.Location = New Point(500, 18)
-        comboboxHLWindowState.Name = "comboboxHLWindowState"
-        comboboxHLWindowState.Size = New Size(110, 25)
-        comboboxHLWindowState.TabIndex = 91
-        ' 
-        ' textboxHLLink
-        ' 
-        textboxHLLink.Location = New Point(5, 102)
-        textboxHLLink.Name = "textboxHLLink"
-        textboxHLLink.Size = New Size(307, 25)
-        textboxHLLink.TabIndex = 55
-        ' 
-        ' textboxHLName
-        ' 
-        textboxHLName.Location = New Point(5, 18)
-        textboxHLName.MaxLength = 50
-        textboxHLName.Name = "textboxHLName"
-        textboxHLName.Size = New Size(217, 25)
-        textboxHLName.TabIndex = 50
-        ' 
-        ' comboboxHLType
-        ' 
-        comboboxHLType.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLType.FormattingEnabled = True
-        comboboxHLType.Location = New Point(318, 60)
-        comboboxHLType.Name = "comboboxHLType"
-        comboboxHLType.Size = New Size(90, 25)
-        comboboxHLType.TabIndex = 90
-        ' 
-        ' textboxHLArguments
-        ' 
-        textboxHLArguments.Location = New Point(5, 144)
-        textboxHLArguments.Name = "textboxHLArguments"
-        textboxHLArguments.Size = New Size(307, 25)
-        textboxHLArguments.TabIndex = 59
-        ' 
-        ' label19
-        ' 
-        label19.Location = New Point(500, 40)
-        label19.Name = "label19"
-        label19.Size = New Size(97, 21)
-        label19.TabIndex = 158
-        label19.Text = "Priority"
-        label19.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label26
-        ' 
-        label26.Location = New Point(500, -2)
-        label26.Name = "label26"
-        label26.Size = New Size(89, 21)
-        label26.TabIndex = 26
-        label26.Text = "Window State"
-        label26.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label25
-        ' 
-        label25.Location = New Point(318, 40)
-        label25.Name = "label25"
-        label25.Size = New Size(38, 21)
-        label25.TabIndex = 116
-        label25.Text = "Type"
-        label25.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' btnHLSelectLink
-        ' 
-        btnHLSelectLink.FlatAppearance.BorderSize = 0
-        btnHLSelectLink.FlatStyle = FlatStyle.Flat
-        btnHLSelectLink.Image = My.Resources.Resources.imageRestore
-        btnHLSelectLink.Location = New Point(310, 104)
-        btnHLSelectLink.Name = "btnHLSelectLink"
-        btnHLSelectLink.Size = New Size(21, 21)
-        btnHLSelectLink.TabIndex = 56
-        btnHLSelectLink.UseVisualStyleBackColor = True
-        ' 
-        ' btnHLSelectWorkingDirectory
-        ' 
-        btnHLSelectWorkingDirectory.FlatAppearance.BorderSize = 0
-        btnHLSelectWorkingDirectory.FlatStyle = FlatStyle.Flat
-        btnHLSelectWorkingDirectory.Image = My.Resources.Resources.imageRestore
-        btnHLSelectWorkingDirectory.Location = New Point(310, 188)
-        btnHLSelectWorkingDirectory.Name = "btnHLSelectWorkingDirectory"
-        btnHLSelectWorkingDirectory.Size = New Size(21, 21)
-        btnHLSelectWorkingDirectory.TabIndex = 63
-        btnHLSelectWorkingDirectory.UseVisualStyleBackColor = True
-        ' 
-        ' label21
-        ' 
-        label21.Location = New Point(5, -2)
-        label21.Name = "label21"
-        label21.Size = New Size(46, 21)
-        label21.TabIndex = 112
-        label21.Text = "Name"
-        label21.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label24
-        ' 
-        label24.Location = New Point(228, -2)
-        label24.Name = "label24"
-        label24.Size = New Size(50, 21)
-        label24.TabIndex = 115
-        label24.Text = "Group"
-        label24.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label22
-        ' 
-        label22.Location = New Point(5, 82)
-        label22.Name = "label22"
-        label22.Size = New Size(69, 21)
-        label22.TabIndex = 113
-        label22.Text = "Link"
-        label22.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label23
-        ' 
-        label23.Location = New Point(5, 124)
-        label23.Name = "label23"
-        label23.Size = New Size(100, 21)
-        label23.TabIndex = 114
-        label23.Text = "Arguments"
-        label23.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label1
-        ' 
-        label1.Location = New Point(5, 166)
-        label1.Name = "label1"
-        label1.Size = New Size(139, 21)
-        label1.TabIndex = 157
-        label1.Text = "Working Directory"
-        label1.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' label35
-        ' 
-        label35.Location = New Point(5, 40)
-        label35.Name = "label35"
-        label35.Size = New Size(80, 21)
-        label35.TabIndex = 214
-        label35.Text = "Description"
-        label35.TextAlign = ContentAlignment.BottomLeft
-        ' 
-        ' checkboxHLShowToolTips
-        ' 
-        checkboxHLShowToolTips.Location = New Point(144, 5)
-        checkboxHLShowToolTips.Name = "checkboxHLShowToolTips"
-        checkboxHLShowToolTips.Size = New Size(185, 21)
-        checkboxHLShowToolTips.TabIndex = 6
-        checkboxHLShowToolTips.Text = "Show Link Info In ToolTip"
-        tipInfo.SetToolTip(checkboxHLShowToolTips, "Show Extended Link Info")
-        checkboxHLShowToolTips.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxHLShowMenuIcons
-        ' 
-        checkboxHLShowMenuIcons.Location = New Point(5, 5)
-        checkboxHLShowMenuIcons.Name = "checkboxHLShowMenuIcons"
-        checkboxHLShowMenuIcons.Size = New Size(137, 21)
-        checkboxHLShowMenuIcons.TabIndex = 5
-        checkboxHLShowMenuIcons.Text = "Show Menu Icons"
-        tipInfo.SetToolTip(checkboxHLShowMenuIcons, "Load Windows Icons?")
-        checkboxHLShowMenuIcons.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxHLGroupMode
-        ' 
-        comboboxHLGroupMode.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLGroupMode.FormattingEnabled = True
-        comboboxHLGroupMode.Items.AddRange(New Object() {"Start / SwitchTo", "ReStart", "Start / Close", "Close", "No Action"})
-        comboboxHLGroupMode.Location = New Point(107, 34)
-        comboboxHLGroupMode.Name = "comboboxHLGroupMode"
-        comboboxHLGroupMode.Size = New Size(115, 25)
-        comboboxHLGroupMode.TabIndex = 22
-        ' 
-        ' comboboxHLHotKeyMode
-        ' 
-        comboboxHLHotKeyMode.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHLHotKeyMode.FormattingEnabled = True
-        comboboxHLHotKeyMode.Items.AddRange(New Object() {"Start / SwitchTo", "ReStart", "Start / Close", "Close", "No Action"})
-        comboboxHLHotKeyMode.Location = New Point(245, 34)
-        comboboxHLHotKeyMode.Name = "comboboxHLHotKeyMode"
-        comboboxHLHotKeyMode.Size = New Size(115, 25)
-        comboboxHLHotKeyMode.TabIndex = 24
-        ' 
-        ' textboxHLLoadTimeOut
-        ' 
-        textboxHLLoadTimeOut.Location = New Point(578, 9)
-        textboxHLLoadTimeOut.MaxLength = 3
-        textboxHLLoadTimeOut.Name = "textboxHLLoadTimeOut"
-        textboxHLLoadTimeOut.Size = New Size(32, 25)
-        textboxHLLoadTimeOut.TabIndex = 10
-        textboxHLLoadTimeOut.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' textboxHLCloseTimeOut
-        ' 
-        textboxHLCloseTimeOut.Location = New Point(578, 34)
-        textboxHLCloseTimeOut.MaxLength = 3
-        textboxHLCloseTimeOut.Name = "textboxHLCloseTimeOut"
-        textboxHLCloseTimeOut.Size = New Size(32, 25)
-        textboxHLCloseTimeOut.TabIndex = 15
-        textboxHLCloseTimeOut.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' label5
-        ' 
-        label5.Image = My.Resources.Resources.imageHK
-        label5.Location = New Point(224, 35)
-        label5.Name = "label5"
-        label5.Size = New Size(24, 24)
-        label5.TabIndex = 214
-        label5.TextAlign = ContentAlignment.MiddleCenter
-        tipInfo.SetToolTip(label5, "HotKey Mode")
-        ' 
-        ' label34
-        ' 
-        label34.Image = My.Resources.Resources.imageGoStart
-        label34.Location = New Point(0, 35)
-        label34.Name = "label34"
-        label34.Size = New Size(24, 24)
-        label34.TabIndex = 218
-        label34.TextAlign = ContentAlignment.MiddleCenter
-        tipInfo.SetToolTip(label34, "StartUp Mode")
-        ' 
-        ' label33
-        ' 
-        label33.Image = My.Resources.Resources.imageHLGroup
-        label33.Location = New Point(87, 35)
-        label33.Name = "label33"
-        label33.Size = New Size(24, 24)
-        label33.TabIndex = 216
-        label33.TextAlign = ContentAlignment.MiddleCenter
-        tipInfo.SetToolTip(label33, "Group Mode (On CtrlLeftClick)")
-        ' 
-        ' label6
-        ' 
-        label6.CausesValidation = False
-        label6.Location = New Point(484, 10)
-        label6.Name = "label6"
-        label6.Size = New Size(98, 21)
-        label6.TabIndex = 156
-        label6.Text = "Load TimeOut"
-        label6.TextAlign = ContentAlignment.MiddleRight
-        tipInfo.SetToolTip(label6, "1-120")
-        ' 
-        ' lvHL
-        ' 
-        lvHL.BorderStyle = BorderStyle.None
-        lvHL.ContextMenuStrip = cmlvHL
-        lvHL.Location = New Point(0, 69)
-        lvHL.Name = "lvHL"
-        lvHL.Size = New Size(618, 283)
-        lvHL.TabIndex = 50
-        lvHL.UseCompatibleStateImageBehavior = False
-        lvHL.View = View.SmallIcon
-        ' 
-        ' cmlvHL
-        ' 
-        cmlvHL.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmlvHL.Items.AddRange(New ToolStripItem() {cmiHLMoveTop, cmiHLMoveUp, cmiHLMoveDown, cmiHLMoveBottom, toolStripSeparator3, cmiHLNew, cmiHLEdit, cmiHLCopy, toolStripSeparator4, cmiHLDelete})
-        cmlvHL.Margin = New Padding(0, 4, 0, 0)
-        cmlvHL.Name = "contextmenulistviewHotLinks"
-        cmlvHL.Size = New Size(119, 192)
-        ' 
-        ' cmiHLMoveTop
-        ' 
-        cmiHLMoveTop.Image = My.Resources.Resources.imageMoveToTop
-        cmiHLMoveTop.Name = "cmiHLMoveTop"
-        cmiHLMoveTop.Size = New Size(118, 22)
-        cmiHLMoveTop.Text = "Top"
-        ' 
-        ' cmiHLMoveUp
-        ' 
-        cmiHLMoveUp.Image = My.Resources.Resources.imageMoveUp
-        cmiHLMoveUp.Name = "cmiHLMoveUp"
-        cmiHLMoveUp.Size = New Size(118, 22)
-        cmiHLMoveUp.Text = "Up"
-        ' 
-        ' cmiHLMoveDown
-        ' 
-        cmiHLMoveDown.Image = My.Resources.Resources.imageMoveDown
-        cmiHLMoveDown.Name = "cmiHLMoveDown"
-        cmiHLMoveDown.Size = New Size(118, 22)
-        cmiHLMoveDown.Text = "Down"
-        ' 
-        ' cmiHLMoveBottom
-        ' 
-        cmiHLMoveBottom.Image = My.Resources.Resources.imageMoveToBottom
-        cmiHLMoveBottom.Name = "cmiHLMoveBottom"
-        cmiHLMoveBottom.Size = New Size(118, 22)
-        cmiHLMoveBottom.Text = "Bottom"
-        ' 
-        ' toolStripSeparator3
-        ' 
-        toolStripSeparator3.Name = "toolStripSeparator3"
-        toolStripSeparator3.Size = New Size(115, 6)
-        ' 
-        ' cmiHLNew
-        ' 
-        cmiHLNew.Image = My.Resources.Resources.imageHLNew
-        cmiHLNew.Name = "cmiHLNew"
-        cmiHLNew.Size = New Size(118, 22)
-        ' 
-        ' cmiHLEdit
-        ' 
-        cmiHLEdit.Image = My.Resources.Resources.imageEdit
-        cmiHLEdit.Name = "cmiHLEdit"
-        cmiHLEdit.Size = New Size(118, 22)
-        cmiHLEdit.Text = "Edit"
-        ' 
-        ' cmiHLCopy
-        ' 
-        cmiHLCopy.Image = My.Resources.Resources.imageCopy
-        cmiHLCopy.Name = "cmiHLCopy"
-        cmiHLCopy.Size = New Size(118, 22)
-        cmiHLCopy.Text = "Copy"
-        ' 
-        ' toolStripSeparator4
-        ' 
-        toolStripSeparator4.Name = "toolStripSeparator4"
-        toolStripSeparator4.Size = New Size(115, 6)
-        ' 
-        ' cmiHLDelete
-        ' 
-        cmiHLDelete.Image = My.Resources.Resources.imageRemove
-        cmiHLDelete.Name = "cmiHLDelete"
-        cmiHLDelete.Size = New Size(118, 22)
-        cmiHLDelete.Text = "Delete"
-        ' 
         ' tabpageWL
         ' 
         tabpageWL.Controls.Add(panelWL)
@@ -2619,10 +1898,10 @@
         tabpageHC.Controls.Add(label12)
         tabpageHC.Controls.Add(label16)
         tabpageHC.Controls.Add(label15)
-        tabpageHC.Location = New Point(4, 26)
+        tabpageHC.Location = New Point(4, 24)
         tabpageHC.Name = "tabpageHC"
         tabpageHC.Padding = New Padding(3)
-        tabpageHC.Size = New Size(618, 373)
+        tabpageHC.Size = New Size(618, 375)
         tabpageHC.TabIndex = 6
         tabpageHC.Text = """HotClicks"""
         tabpageHC.UseVisualStyleBackColor = True
@@ -2670,7 +1949,6 @@
         ' groupBox2
         ' 
         groupBox2.Controls.Add(radiobtnHCWL)
-        groupBox2.Controls.Add(radiobtnHCHL)
         groupBox2.Controls.Add(radiobtnHCWSTSS)
         groupBox2.Controls.Add(radiobtnHCWST)
         groupBox2.Location = New Point(172, 28)
@@ -2691,19 +1969,6 @@
         radiobtnHCWL.TextAlign = ContentAlignment.MiddleCenter
         tipHC.SetToolTip(radiobtnHCWL, "WinLinks")
         radiobtnHCWL.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnHCHL
-        ' 
-        radiobtnHCHL.Image = My.Resources.Resources.imageHL
-        radiobtnHCHL.ImageAlign = ContentAlignment.MiddleLeft
-        radiobtnHCHL.Location = New Point(157, 11)
-        radiobtnHCHL.Name = "radiobtnHCHL"
-        radiobtnHCHL.Size = New Size(40, 24)
-        radiobtnHCHL.TabIndex = 3
-        radiobtnHCHL.TabStop = True
-        radiobtnHCHL.TextAlign = ContentAlignment.MiddleCenter
-        tipHC.SetToolTip(radiobtnHCHL, "HotLinks")
-        radiobtnHCHL.UseVisualStyleBackColor = True
         ' 
         ' radiobtnHCWSTSS
         ' 
@@ -2782,39 +2047,15 @@
         ' 
         ' tabpageHK
         ' 
-        tabpageHK.Controls.Add(textboxHKHLH)
-        tabpageHK.Controls.Add(textboxHKHLF)
-        tabpageHK.Controls.Add(textboxHKHLG)
-        tabpageHK.Controls.Add(textboxHKHLE)
         tabpageHK.Controls.Add(textboxHKWSTCommandPrompt)
         tabpageHK.Controls.Add(textboxHKWSTTaskManager)
         tabpageHK.Controls.Add(textboxHKWL)
-        tabpageHK.Controls.Add(textboxHKHLD)
-        tabpageHK.Controls.Add(textboxHKHLB)
-        tabpageHK.Controls.Add(textboxHKHLC)
-        tabpageHK.Controls.Add(textboxHKHLA)
         tabpageHK.Controls.Add(textboxHKWSTClock)
         tabpageHK.Controls.Add(textboxHKWSTLockWorkSpace)
         tabpageHK.Controls.Add(btnHKSet)
         tabpageHK.Controls.Add(btnHKReset)
         tabpageHK.Controls.Add(textboxHKWSTScreenSaver)
         tabpageHK.Controls.Add(btnHKEnabled)
-        tabpageHK.Controls.Add(lblHKHLH)
-        tabpageHK.Controls.Add(lblHKHLF)
-        tabpageHK.Controls.Add(lblHKHLG)
-        tabpageHK.Controls.Add(lblHKHLE)
-        tabpageHK.Controls.Add(lblHKHLD)
-        tabpageHK.Controls.Add(lblHKHLB)
-        tabpageHK.Controls.Add(lblHKHLC)
-        tabpageHK.Controls.Add(lblHKHLA)
-        tabpageHK.Controls.Add(btnHKHLHDisable)
-        tabpageHK.Controls.Add(btnHKHLFDisable)
-        tabpageHK.Controls.Add(btnHKHLGDisable)
-        tabpageHK.Controls.Add(btnHKHLEDisable)
-        tabpageHK.Controls.Add(btnHKHLDDisable)
-        tabpageHK.Controls.Add(btnHKHLBDisable)
-        tabpageHK.Controls.Add(btnHKHLCDisable)
-        tabpageHK.Controls.Add(btnHKHLADisable)
         tabpageHK.Controls.Add(lblHKWSTCommandPrompt)
         tabpageHK.Controls.Add(lblHKWSTTaskManager)
         tabpageHK.Controls.Add(lblHKWL)
@@ -2828,61 +2069,13 @@
         tabpageHK.Controls.Add(btnHKWSTClockDisable)
         tabpageHK.Controls.Add(btnHKWSTLockWorkSpaceDisable)
         tabpageHK.Controls.Add(btnHKWSTScreenSaverDisable)
-        tabpageHK.Location = New Point(4, 26)
+        tabpageHK.Location = New Point(4, 24)
         tabpageHK.Name = "tabpageHK"
         tabpageHK.Padding = New Padding(3)
-        tabpageHK.Size = New Size(618, 373)
+        tabpageHK.Size = New Size(618, 375)
         tabpageHK.TabIndex = 5
         tabpageHK.Text = """HotKeys"""
         tabpageHK.UseVisualStyleBackColor = True
-        ' 
-        ' textboxHKHLH
-        ' 
-        textboxHKHLH.Anchor = AnchorStyles.Top
-        textboxHKHLH.Location = New Point(234, 311)
-        textboxHKHLH.Name = "textboxHKHLH"
-        textboxHKHLH.ShortcutsEnabled = False
-        textboxHKHLH.Size = New Size(143, 25)
-        textboxHKHLH.TabIndex = 1031
-        textboxHKHLH.TabStop = False
-        textboxHKHLH.TextAlign = HorizontalAlignment.Center
-        textboxHKHLH.WordWrap = False
-        ' 
-        ' textboxHKHLF
-        ' 
-        textboxHKHLF.Anchor = AnchorStyles.Top
-        textboxHKHLF.Location = New Point(234, 229)
-        textboxHKHLF.Name = "textboxHKHLF"
-        textboxHKHLF.ShortcutsEnabled = False
-        textboxHKHLF.Size = New Size(143, 25)
-        textboxHKHLF.TabIndex = 1028
-        textboxHKHLF.TabStop = False
-        textboxHKHLF.TextAlign = HorizontalAlignment.Center
-        textboxHKHLF.WordWrap = False
-        ' 
-        ' textboxHKHLG
-        ' 
-        textboxHKHLG.Anchor = AnchorStyles.Top
-        textboxHKHLG.Location = New Point(234, 270)
-        textboxHKHLG.Name = "textboxHKHLG"
-        textboxHKHLG.ShortcutsEnabled = False
-        textboxHKHLG.Size = New Size(143, 25)
-        textboxHKHLG.TabIndex = 1025
-        textboxHKHLG.TabStop = False
-        textboxHKHLG.TextAlign = HorizontalAlignment.Center
-        textboxHKHLG.WordWrap = False
-        ' 
-        ' textboxHKHLE
-        ' 
-        textboxHKHLE.Anchor = AnchorStyles.Top
-        textboxHKHLE.Location = New Point(234, 188)
-        textboxHKHLE.Name = "textboxHKHLE"
-        textboxHKHLE.ShortcutsEnabled = False
-        textboxHKHLE.Size = New Size(143, 25)
-        textboxHKHLE.TabIndex = 1022
-        textboxHKHLE.TabStop = False
-        textboxHKHLE.TextAlign = HorizontalAlignment.Center
-        textboxHKHLE.WordWrap = False
         ' 
         ' textboxHKWSTCommandPrompt
         ' 
@@ -2919,54 +2112,6 @@
         textboxHKWL.TabStop = False
         textboxHKWL.TextAlign = HorizontalAlignment.Center
         textboxHKWL.WordWrap = False
-        ' 
-        ' textboxHKHLD
-        ' 
-        textboxHKHLD.Anchor = AnchorStyles.Top
-        textboxHKHLD.Location = New Point(234, 147)
-        textboxHKHLD.Name = "textboxHKHLD"
-        textboxHKHLD.ShortcutsEnabled = False
-        textboxHKHLD.Size = New Size(143, 25)
-        textboxHKHLD.TabIndex = 115
-        textboxHKHLD.TabStop = False
-        textboxHKHLD.TextAlign = HorizontalAlignment.Center
-        textboxHKHLD.WordWrap = False
-        ' 
-        ' textboxHKHLB
-        ' 
-        textboxHKHLB.Anchor = AnchorStyles.Top
-        textboxHKHLB.Location = New Point(234, 65)
-        textboxHKHLB.Name = "textboxHKHLB"
-        textboxHKHLB.ShortcutsEnabled = False
-        textboxHKHLB.Size = New Size(143, 25)
-        textboxHKHLB.TabIndex = 112
-        textboxHKHLB.TabStop = False
-        textboxHKHLB.TextAlign = HorizontalAlignment.Center
-        textboxHKHLB.WordWrap = False
-        ' 
-        ' textboxHKHLC
-        ' 
-        textboxHKHLC.Anchor = AnchorStyles.Top
-        textboxHKHLC.Location = New Point(234, 106)
-        textboxHKHLC.Name = "textboxHKHLC"
-        textboxHKHLC.ShortcutsEnabled = False
-        textboxHKHLC.Size = New Size(143, 25)
-        textboxHKHLC.TabIndex = 109
-        textboxHKHLC.TabStop = False
-        textboxHKHLC.TextAlign = HorizontalAlignment.Center
-        textboxHKHLC.WordWrap = False
-        ' 
-        ' textboxHKHLA
-        ' 
-        textboxHKHLA.Anchor = AnchorStyles.Top
-        textboxHKHLA.Location = New Point(234, 24)
-        textboxHKHLA.Name = "textboxHKHLA"
-        textboxHKHLA.ShortcutsEnabled = False
-        textboxHKHLA.Size = New Size(143, 25)
-        textboxHKHLA.TabIndex = 106
-        textboxHKHLA.TabStop = False
-        textboxHKHLA.TextAlign = HorizontalAlignment.Center
-        textboxHKHLA.WordWrap = False
         ' 
         ' textboxHKWSTClock
         ' 
@@ -3041,190 +2186,6 @@
         btnHKEnabled.TabIndex = 1020
         btnHKEnabled.TextAlign = ContentAlignment.MiddleRight
         btnHKEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' lblHKHLH
-        ' 
-        lblHKHLH.Anchor = AnchorStyles.Top
-        lblHKHLH.ForeColor = SystemColors.ControlText
-        lblHKHLH.Location = New Point(234, 295)
-        lblHKHLH.Name = "lblHKHLH"
-        lblHKHLH.Size = New Size(143, 14)
-        lblHKHLH.TabIndex = 1030
-        lblHKHLH.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLF
-        ' 
-        lblHKHLF.Anchor = AnchorStyles.Top
-        lblHKHLF.ForeColor = SystemColors.ControlText
-        lblHKHLF.Location = New Point(234, 213)
-        lblHKHLF.Name = "lblHKHLF"
-        lblHKHLF.Size = New Size(143, 14)
-        lblHKHLF.TabIndex = 1027
-        lblHKHLF.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLG
-        ' 
-        lblHKHLG.Anchor = AnchorStyles.Top
-        lblHKHLG.ForeColor = SystemColors.ControlText
-        lblHKHLG.Location = New Point(234, 254)
-        lblHKHLG.Name = "lblHKHLG"
-        lblHKHLG.Size = New Size(143, 14)
-        lblHKHLG.TabIndex = 1024
-        lblHKHLG.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLE
-        ' 
-        lblHKHLE.Anchor = AnchorStyles.Top
-        lblHKHLE.ForeColor = SystemColors.ControlText
-        lblHKHLE.Location = New Point(234, 172)
-        lblHKHLE.Name = "lblHKHLE"
-        lblHKHLE.Size = New Size(143, 14)
-        lblHKHLE.TabIndex = 1021
-        lblHKHLE.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLD
-        ' 
-        lblHKHLD.Anchor = AnchorStyles.Top
-        lblHKHLD.ForeColor = SystemColors.ControlText
-        lblHKHLD.Location = New Point(234, 131)
-        lblHKHLD.Name = "lblHKHLD"
-        lblHKHLD.Size = New Size(143, 14)
-        lblHKHLD.TabIndex = 114
-        lblHKHLD.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLB
-        ' 
-        lblHKHLB.Anchor = AnchorStyles.Top
-        lblHKHLB.ForeColor = SystemColors.ControlText
-        lblHKHLB.Location = New Point(234, 49)
-        lblHKHLB.Name = "lblHKHLB"
-        lblHKHLB.Size = New Size(143, 14)
-        lblHKHLB.TabIndex = 111
-        lblHKHLB.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLC
-        ' 
-        lblHKHLC.Anchor = AnchorStyles.Top
-        lblHKHLC.ForeColor = SystemColors.ControlText
-        lblHKHLC.Location = New Point(234, 90)
-        lblHKHLC.Name = "lblHKHLC"
-        lblHKHLC.Size = New Size(143, 14)
-        lblHKHLC.TabIndex = 108
-        lblHKHLC.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKHLA
-        ' 
-        lblHKHLA.Anchor = AnchorStyles.Top
-        lblHKHLA.ForeColor = SystemColors.ControlText
-        lblHKHLA.Location = New Point(234, 8)
-        lblHKHLA.Name = "lblHKHLA"
-        lblHKHLA.Size = New Size(143, 14)
-        lblHKHLA.TabIndex = 105
-        lblHKHLA.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' btnHKHLHDisable
-        ' 
-        btnHKHLHDisable.Anchor = AnchorStyles.Top
-        btnHKHLHDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLHDisable.ForeColor = Color.Transparent
-        btnHKHLHDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLHDisable.Location = New Point(374, 313)
-        btnHKHLHDisable.Name = "btnHKHLHDisable"
-        btnHKHLHDisable.Size = New Size(20, 20)
-        btnHKHLHDisable.TabIndex = 1032
-        btnHKHLHDisable.TabStop = False
-        btnHKHLHDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLFDisable
-        ' 
-        btnHKHLFDisable.Anchor = AnchorStyles.Top
-        btnHKHLFDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLFDisable.ForeColor = Color.Transparent
-        btnHKHLFDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLFDisable.Location = New Point(374, 231)
-        btnHKHLFDisable.Name = "btnHKHLFDisable"
-        btnHKHLFDisable.Size = New Size(20, 20)
-        btnHKHLFDisable.TabIndex = 1029
-        btnHKHLFDisable.TabStop = False
-        btnHKHLFDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLGDisable
-        ' 
-        btnHKHLGDisable.Anchor = AnchorStyles.Top
-        btnHKHLGDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLGDisable.ForeColor = Color.Transparent
-        btnHKHLGDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLGDisable.Location = New Point(374, 272)
-        btnHKHLGDisable.Name = "btnHKHLGDisable"
-        btnHKHLGDisable.Size = New Size(20, 20)
-        btnHKHLGDisable.TabIndex = 1026
-        btnHKHLGDisable.TabStop = False
-        btnHKHLGDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLEDisable
-        ' 
-        btnHKHLEDisable.Anchor = AnchorStyles.Top
-        btnHKHLEDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLEDisable.ForeColor = Color.Transparent
-        btnHKHLEDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLEDisable.Location = New Point(374, 190)
-        btnHKHLEDisable.Name = "btnHKHLEDisable"
-        btnHKHLEDisable.Size = New Size(20, 20)
-        btnHKHLEDisable.TabIndex = 1023
-        btnHKHLEDisable.TabStop = False
-        btnHKHLEDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLDDisable
-        ' 
-        btnHKHLDDisable.Anchor = AnchorStyles.Top
-        btnHKHLDDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLDDisable.ForeColor = Color.Transparent
-        btnHKHLDDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLDDisable.Location = New Point(374, 149)
-        btnHKHLDDisable.Name = "btnHKHLDDisable"
-        btnHKHLDDisable.Size = New Size(20, 20)
-        btnHKHLDDisable.TabIndex = 116
-        btnHKHLDDisable.TabStop = False
-        btnHKHLDDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLBDisable
-        ' 
-        btnHKHLBDisable.Anchor = AnchorStyles.Top
-        btnHKHLBDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLBDisable.ForeColor = Color.Transparent
-        btnHKHLBDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLBDisable.Location = New Point(374, 67)
-        btnHKHLBDisable.Name = "btnHKHLBDisable"
-        btnHKHLBDisable.Size = New Size(20, 20)
-        btnHKHLBDisable.TabIndex = 113
-        btnHKHLBDisable.TabStop = False
-        btnHKHLBDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLCDisable
-        ' 
-        btnHKHLCDisable.Anchor = AnchorStyles.Top
-        btnHKHLCDisable.FlatStyle = FlatStyle.Flat
-        btnHKHLCDisable.ForeColor = Color.Transparent
-        btnHKHLCDisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLCDisable.Location = New Point(374, 108)
-        btnHKHLCDisable.Name = "btnHKHLCDisable"
-        btnHKHLCDisable.Size = New Size(20, 20)
-        btnHKHLCDisable.TabIndex = 110
-        btnHKHLCDisable.TabStop = False
-        btnHKHLCDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKHLADisable
-        ' 
-        btnHKHLADisable.Anchor = AnchorStyles.Top
-        btnHKHLADisable.FlatStyle = FlatStyle.Flat
-        btnHKHLADisable.ForeColor = Color.Transparent
-        btnHKHLADisable.Image = My.Resources.Resources.imageRemove
-        btnHKHLADisable.Location = New Point(374, 26)
-        btnHKHLADisable.Name = "btnHKHLADisable"
-        btnHKHLADisable.Size = New Size(20, 20)
-        btnHKHLADisable.TabIndex = 107
-        btnHKHLADisable.TabStop = False
-        btnHKHLADisable.UseVisualStyleBackColor = True
         ' 
         ' lblHKWSTCommandPrompt
         ' 
@@ -3567,11 +2528,6 @@
         groupboxACTopHourChimeType.ResumeLayout(False)
         groupboxACAlarmChimeType.ResumeLayout(False)
         CType(picboxACClock, ComponentModel.ISupportInitialize).EndInit()
-        tabpageHL.ResumeLayout(False)
-        tabpageHL.PerformLayout()
-        panelHLEdit.ResumeLayout(False)
-        panelHLEdit.PerformLayout()
-        cmlvHL.ResumeLayout(False)
         tabpageWL.ResumeLayout(False)
         tabpageWL.PerformLayout()
         panelWL.ResumeLayout(False)
@@ -3587,8 +2543,6 @@
     End Sub
     Private toolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
     Private toolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents lvHL As System.Windows.Forms.ListView
-    Private WithEvents cmlvHL As System.Windows.Forms.ContextMenuStrip
     Private WithEvents txbxLoadOnOSStartupArgs As System.Windows.Forms.TextBox
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnClockTest As System.Windows.Forms.Button
@@ -3601,25 +2555,10 @@
     Private WithEvents lblWLMaxLinksPerFolder As System.Windows.Forms.Label
     Private WithEvents lblWLAutoRefreshInterval As System.Windows.Forms.Label
     Private WithEvents lblWLAutoRefreshIdleInterval As System.Windows.Forms.Label
-    Private label6 As System.Windows.Forms.Label
-    Private label7 As System.Windows.Forms.Label
-    Private label8 As System.Windows.Forms.Label
     Private label36 As System.Windows.Forms.Label
     Private WithEvents comboboxWSTSSStartUp As System.Windows.Forms.ComboBox
     Private WithEvents checkboxWSTSSToolEnabled As System.Windows.Forms.CheckBox
     Private WithEvents groupboxWSTSS As System.Windows.Forms.GroupBox
-    Private WithEvents textboxHKHLH As System.Windows.Forms.TextBox
-    Private WithEvents textboxHKHLF As System.Windows.Forms.TextBox
-    Private WithEvents textboxHKHLG As System.Windows.Forms.TextBox
-    Private WithEvents textboxHKHLE As System.Windows.Forms.TextBox
-    Private WithEvents lblHKHLH As System.Windows.Forms.Label
-    Private WithEvents lblHKHLF As System.Windows.Forms.Label
-    Private WithEvents lblHKHLG As System.Windows.Forms.Label
-    Private WithEvents lblHKHLE As System.Windows.Forms.Label
-    Private WithEvents btnHKHLHDisable As System.Windows.Forms.Button
-    Private WithEvents btnHKHLFDisable As System.Windows.Forms.Button
-    Private WithEvents btnHKHLGDisable As System.Windows.Forms.Button
-    Private WithEvents btnHKHLEDisable As System.Windows.Forms.Button
     Private WithEvents textboxHKWSTCommandPrompt As System.Windows.Forms.TextBox
     Private WithEvents lblHKWSTCommandPrompt As System.Windows.Forms.Label
     Private WithEvents btnHKWSTCommandPromptDisable As System.Windows.Forms.Button
@@ -3664,44 +2603,6 @@
     Private WithEvents textboxWLAutoRefreshIdleInterval As System.Windows.Forms.TextBox
     Private WithEvents lblWLAutoRefresh As System.Windows.Forms.Label
     Private WithEvents textboxWLStartUpDelay As System.Windows.Forms.TextBox
-    Private WithEvents cmiHLNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLEdit As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLMoveUp As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLMoveDown As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLMoveTop As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLMoveBottom As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiHLCopy As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents tabpageHL As System.Windows.Forms.TabPage
-    Private WithEvents comboboxHLGroup As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHLWindowState As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHLType As System.Windows.Forms.ComboBox
-    Private WithEvents textboxHLName As System.Windows.Forms.TextBox
-    Private WithEvents textboxHLLink As System.Windows.Forms.TextBox
-    Private WithEvents btnHLSelectLink As System.Windows.Forms.Button
-    Private WithEvents textboxHLArguments As System.Windows.Forms.TextBox
-    Private WithEvents btnHLSet As System.Windows.Forms.Button
-    Private WithEvents btnHLCancel As System.Windows.Forms.Button
-    Private WithEvents btnHLTest As System.Windows.Forms.Button
-    Private WithEvents textboxHLWorkingDirectory As System.Windows.Forms.TextBox
-    Private WithEvents btnHLSelectWorkingDirectory As System.Windows.Forms.Button
-    Private WithEvents comboboxHLPriority As System.Windows.Forms.ComboBox
-    Private WithEvents checkboxHLSingleInstance As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxHLUseAlternateStartMethod As System.Windows.Forms.CheckBox
-    Private WithEvents textboxHLCloseTimeOut As System.Windows.Forms.TextBox
-    Private WithEvents textboxHLUseAlternateStartTimeOut As System.Windows.Forms.TextBox
-    Private WithEvents textboxHLLoadTimeOut As System.Windows.Forms.TextBox
-    Private WithEvents textboxHLStartUpDelay As System.Windows.Forms.TextBox
-    Private WithEvents checkboxHLShowMenuIcons As System.Windows.Forms.CheckBox
-    Private WithEvents panelHLEdit As System.Windows.Forms.Panel
-    Private WithEvents checkboxHLShowToolTips As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxHLHideInMenu As System.Windows.Forms.CheckBox
-    Private WithEvents lblHLUseAlternateStartTimeOutB As System.Windows.Forms.Label
-    Private WithEvents lblHLUseAlternateStartTimeOutA As System.Windows.Forms.Label
-    Private WithEvents checkboxHLDisabled As System.Windows.Forms.CheckBox
-    Private WithEvents comboboxHLHotKey As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHLHotKeyMode As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHLGroupMode As System.Windows.Forms.ComboBox
     Private WithEvents tabpageWST As System.Windows.Forms.TabPage
     Private WithEvents cmiWSTACAlarmCancel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents textboxACAlarmTimer As System.Windows.Forms.TextBox
@@ -3740,7 +2641,6 @@
     Private WithEvents cmseparatorWSTShutDownOptions As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmiWSTReStart As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTAC As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWSTHLMenu As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTLog As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTHelp As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTCancelStartUp As System.Windows.Forms.ToolStripMenuItem
@@ -3756,9 +2656,6 @@
     Private WithEvents checkboxWSTShowCommandPrompt As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowReStart As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowAC As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowHLTray As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowHLMenu As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTHLStartUp As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowWLTray As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowWLMenu As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowLog As System.Windows.Forms.CheckBox
@@ -3786,34 +2683,14 @@
     Private WithEvents comboboxHCRight As System.Windows.Forms.ComboBox
     Private WithEvents radiobtnHCWST As System.Windows.Forms.RadioButton
     Private WithEvents radiobtnHCWSTSS As System.Windows.Forms.RadioButton
-    Private WithEvents radiobtnHCHL As System.Windows.Forms.RadioButton
     Private WithEvents radiobtnHCWL As System.Windows.Forms.RadioButton
-    Private WithEvents textboxHLDescription As System.Windows.Forms.TextBox
-    Private label35 As System.Windows.Forms.Label
-    Private label34 As System.Windows.Forms.Label
-    Private WithEvents comboboxHLStartUpMode As System.Windows.Forms.ComboBox
     Private WithEvents cmlistviewWL As System.Windows.Forms.ContextMenuStrip
     Private WithEvents tipHC As System.Windows.Forms.ToolTip
     Private WithEvents cmWST As System.Windows.Forms.ContextMenuStrip
     Private toolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
-    Private label33 As System.Windows.Forms.Label
     Private WithEvents btnHKWLDisable As System.Windows.Forms.Button
     Private WithEvents textboxHKWL As System.Windows.Forms.TextBox
     Private WithEvents lblHKWL As System.Windows.Forms.Label
-    Private label5 As System.Windows.Forms.Label
-    Private WithEvents btnHKHLADisable As System.Windows.Forms.Button
-    Private WithEvents btnHKHLCDisable As System.Windows.Forms.Button
-    Private WithEvents lblHKHLA As System.Windows.Forms.Label
-    Private WithEvents textboxHKHLA As System.Windows.Forms.TextBox
-    Private WithEvents lblHKHLC As System.Windows.Forms.Label
-    Private WithEvents textboxHKHLC As System.Windows.Forms.TextBox
-    Private WithEvents btnHKHLBDisable As System.Windows.Forms.Button
-    Private WithEvents lblHKHLB As System.Windows.Forms.Label
-    Private WithEvents textboxHKHLB As System.Windows.Forms.TextBox
-    Private WithEvents btnHKHLDDisable As System.Windows.Forms.Button
-    Private WithEvents lblHKHLD As System.Windows.Forms.Label
-    Private WithEvents textboxHKHLD As System.Windows.Forms.TextBox
-    Private label3 As System.Windows.Forms.Label
     Private label2 As System.Windows.Forms.Label
     Private WithEvents lblACOffHourChimePath As System.Windows.Forms.Label
     Private WithEvents lblACTopHourChimePath As System.Windows.Forms.Label
@@ -3832,16 +2709,6 @@
     Private label28 As System.Windows.Forms.Label
     Private toolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents radiobtnACAlarmChimeForever As System.Windows.Forms.RadioButton
-    Private label19 As System.Windows.Forms.Label
-    Private label1 As System.Windows.Forms.Label
-    Private toolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
-    Private toolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Private label26 As System.Windows.Forms.Label
-    Private label24 As System.Windows.Forms.Label
-    Private label25 As System.Windows.Forms.Label
-    Private label23 As System.Windows.Forms.Label
-    Private label22 As System.Windows.Forms.Label
-    Private label21 As System.Windows.Forms.Label
     Private WithEvents groupBox2 As System.Windows.Forms.GroupBox
     Private WithEvents tableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private label12 As System.Windows.Forms.Label
