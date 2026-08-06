@@ -6,7 +6,7 @@ Namespace My
 #Region "HotClicks (HC)"
 
 		'Declarations
-		Friend Enum HCAction 'MUST KEEP SAME ORDER AS GenerateHotClickActionList SUB
+		Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
 			NoAction
 			Menu
 			HLNew
@@ -18,7 +18,6 @@ Namespace My
 			WSTScreenSaverActivate
 			WSTScreenSaverDisable
 			WSTClock
-			WSTStopWatch
 			ShowSettings
 			ShowSettingsHC
 			ShowSettingsHK
@@ -49,7 +48,6 @@ Namespace My
 			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverActivate, "Activate Screen Saver"))
 			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverDisable, "Enable/Disable Screen Saver"))
 			HCActions.Add(New HCActionType(HCAction.WSTClock, "Toggle Clock"))
-			HCActions.Add(New HCActionType(HCAction.WSTStopWatch, "Start StopWatch"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettings, "Show Settings Window (Last Page)"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsHC, "Show HotClick Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsHK, "Show HotKey Settings"))
@@ -84,7 +82,6 @@ Namespace My
 			HKKeys.Clear()
 			HKKeys.Add(HKWSTLockWorkSpace)
 			HKKeys.Add(HKWSTScreenSaver)
-			HKKeys.Add(HKWSTStopWatch)
 			HKKeys.Add(HKWSTClock)
 			HKKeys.Add(HKWSTTaskManager)
 			HKKeys.Add(HKWSTCommandPrompt)
@@ -112,7 +109,6 @@ Namespace My
 		'Saved Settings
 		Friend HKWSTLockWorkSpace As New HKType
 		Friend HKWSTScreenSaver As New HKType
-		Friend HKWSTStopWatch As New HKType
 		Friend HKWSTClock As New HKType
 		Friend HKWSTTaskManager As New HKType
 		Friend HKWSTCommandPrompt As New HKType
@@ -132,7 +128,7 @@ Namespace My
 
 #Region "WorkSpace Tools (WST)"
 
-		'Saved Settings
+		' Saved Settings
 		Friend WSTLoadOnOSStartup As Boolean
 		Friend WSTLoadOnOSStartupPath As FileType
 		Friend WSTEnabled As Boolean
@@ -143,8 +139,6 @@ Namespace My
 		Friend WSTShowClock As Boolean
 		Friend WSTClockLocation As Point
 		Friend WSTClockSize As ClockSize
-		Friend WSTShowStopWatch As Boolean
-		Friend WSTStopWatchLocation As Point
 		Friend WSTShowLockWorkSpace As Boolean
 		Friend WSTShowLogOff As Boolean
 		Friend WSTShowSleep As Boolean
@@ -154,7 +148,7 @@ Namespace My
 		Friend WSTShowHelp As Boolean
 		Friend WSTShowLog As Boolean
 
-		'Declarations
+		' Declarations
 		Friend Enum ClockSize
 			Small
 			Medium
@@ -182,16 +176,21 @@ Namespace My
 
 #End Region
 #Region "ScreenSaver (SS)"
-		Friend Enum WSTSSStartUpMode
-			Enabled
-			Disabled
-		End Enum
+
+		' Saved Settings
 		Friend WSTSSToolEnabled As Boolean
 		Friend WSTSSStartUp As WSTSSStartUpMode
 		Friend WSTSSEnableOnActivate As Boolean
 		Friend WSTShowSSIcon As Boolean
 		Friend WSTShowSSActivate As Boolean
-		Friend WSTShowSSEnabled As Boolean
+        Friend WSTShowSSEnabled As Boolean
+
+		' Declarations
+		Friend Enum WSTSSStartUpMode
+			Enabled
+			Disabled
+		End Enum
+
 #End Region
 #Region "Alarm & Chime (AC)"
 		Friend WSTShowAC As Boolean
@@ -384,7 +383,7 @@ Namespace My
 
 #End Region
 
-#Region "Declarations"
+		' Declarations
 		Friend Const UseAlternateStartMethodToolTipText As String = "Will start the Application and wait the specified TimeOut before starting the next Application." _
 				+ vbCr + "This will allow an Application to fully load before starting the next one, to avoid causing traffic jams like Windows does!"
 		Friend Const UseAlternateCloseMethodToolTipText As String = "Will try to close the Application using the Standard Windows Close Method." _
@@ -487,25 +486,20 @@ Namespace My
 			End If
 			Return False
 		End Function
-
-		Friend ReadOnly UserPath As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments + "\Skye\" 'UserPath is the base path for user-specific files.
 #If DEBUG Then
 		Friend ReadOnly LogPath As String = My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "LogDEV.txt" 'LogPath is the path to the log file.
 		Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName + "DEV" 'RegPath is the path to the registry key where application settings are stored.
-		Friend ReadOnly CBPath As String = UserPath + My.Application.Info.ProductName + "CBDEV.bin" 'CBPath is the path to the Clipboard Data file.
 #Else
         Friend ReadOnly LogPath As String = My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "Log.txt" 'LogPath is the path to the log file.
         Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName 'RegPath is the path to the registry key where application settings are stored.
-		Friend ReadOnly CBPath As String = UserPath + My.Application.Info.ProductName + "CB.bin" 'CBPath is the path to the Clipboard Data file.
 #End If
-
 		Private RegKey As Microsoft.Win32.RegistryKey
 		Private RegSubKey As Microsoft.Win32.RegistryKey
 		Private RegItemKey As Microsoft.Win32.RegistryKey
 		Private BalloonHideEnabled As Boolean
 		Private WithEvents TimerBalloon As New Timer
-#End Region
-#Region "Procedures"
+
+		' Methods
 		Friend Sub Initialize()
 			WriteToLog(My.App.Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
@@ -874,26 +868,6 @@ Namespace My
 			Catch
 				HKWSTScreenSaver.KeyMod = 0
 			End Try
-			HKWSTStopWatch.Description = "StopWatch"
-			HKWSTStopWatch.WinID = 3
-			Try
-				HKWSTStopWatch.Key = CType(Val(RegKey.GetValue("HKWSTStopWatchKey", "393299")), Keys) 'S, Control, Alt
-				If HKWSTStopWatch.Key < 0 Or HKWSTStopWatch.Key > Integer.MaxValue Then HKWSTStopWatch.Key = CType(393299, Keys)
-			Catch
-				HKWSTStopWatch.Key = CType(393299, Keys)
-			End Try
-			Try
-				HKWSTStopWatch.KeyCode = CByte(Val(RegKey.GetValue("HKWSTStopWatchKeyCode", "83"))) 'S, Control, Alt
-				If HKWSTStopWatch.KeyCode < Byte.MinValue Or HKWSTStopWatch.KeyCode > Byte.MaxValue Then HKWSTStopWatch.KeyCode = 83
-			Catch
-				HKWSTStopWatch.KeyCode = 83
-			End Try
-			Try
-				HKWSTStopWatch.KeyMod = CByte(Val(RegKey.GetValue("HKWSTStopWatchKeyMod", "3"))) 'S, Control, Alt
-				If HKWSTStopWatch.KeyMod < Byte.MinValue Or HKWSTStopWatch.KeyMod > Byte.MaxValue Then HKWSTStopWatch.KeyMod = 3
-			Catch
-				HKWSTStopWatch.KeyMod = 3
-			End Try
 			HKWSTClock.Description = "Clock"
 			HKWSTClock.WinID = 4
 			Try
@@ -1195,12 +1169,6 @@ Namespace My
 			Else
 				WSTClockSize = ClockSize.Medium
 			End If
-			Select Case RegKey.GetValue("WSTShowStopWatch", "True").ToString
-				Case "False", "0" : WSTShowStopWatch = False
-				Case Else : WSTShowStopWatch = True
-			End Select
-			WSTStopWatchLocation.X = CInt(Val(RegKey.GetValue("WSTStopWatchLocationX", "0")))
-			WSTStopWatchLocation.Y = CInt(Val(RegKey.GetValue("WSTStopWatchLocationY", "0")))
 			Select Case RegKey.GetValue("WSTShowLockWorkSpace", "True").ToString
 				Case "False", "0" : WSTShowLockWorkSpace = False
 				Case Else : WSTShowLockWorkSpace = True
@@ -1541,9 +1509,6 @@ Namespace My
 			RegKey.SetValue("HKWSTScreenSaverKey", Val(HKWSTScreenSaver.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTScreenSaverKeyCode", HKWSTScreenSaver.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTScreenSaverKeyMod", HKWSTScreenSaver.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTStopWatchKey", Val(HKWSTStopWatch.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTStopWatchKeyCode", HKWSTStopWatch.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTStopWatchKeyMod", HKWSTStopWatch.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTClockKey", Val(HKWSTClock.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTClockKeyCode", HKWSTClock.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HKWSTClockKeyMod", HKWSTClock.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1602,9 +1567,6 @@ Namespace My
 			RegKey.SetValue("WSTClockLocationX", WSTClockLocation.X.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTClockLocationY", WSTClockLocation.Y.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTClockSize", WSTClockSize.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowStopWatch", WSTShowStopWatch.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTStopWatchLocationX", WSTStopWatchLocation.X.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTStopWatchLocationY", WSTStopWatchLocation.Y.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowLockWorkSpace", WSTShowLockWorkSpace.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowLogOff", WSTShowLogOff.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("WSTShowSleep", WSTShowSleep.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1717,8 +1679,6 @@ Namespace My
 			WSTShowCommandPrompt = False
 			WSTShowClock = True
 			'WSTClockSize = ClockSize.Medium
-			WSTShowStopWatch = True
-			'WSTStopWatchLocation = New Point(900, 300)
 			WSTShowLockWorkSpace = False
 			WSTShowLogOff = False
 			WSTShowSleep = False
@@ -1839,7 +1799,6 @@ Namespace My
 			WLData.Add(link)
 
 		End Sub
-#End Region
 
 	End Module
 

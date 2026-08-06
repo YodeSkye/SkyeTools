@@ -59,7 +59,6 @@
         checkboxWSTShowHibernate = New CheckBox()
         checkboxWSTShowLogOff = New CheckBox()
         checkboxWSTShowLockWorkSpace = New CheckBox()
-        checkboxWSTShowStopWatch = New CheckBox()
         checkboxWSTShowAC = New CheckBox()
         checkboxWSTShowHelp = New CheckBox()
         checkboxWSTShowClock = New CheckBox()
@@ -694,7 +693,6 @@
         tabpageWST.Controls.Add(checkboxWSTShowHibernate)
         tabpageWST.Controls.Add(checkboxWSTShowLogOff)
         tabpageWST.Controls.Add(checkboxWSTShowLockWorkSpace)
-        tabpageWST.Controls.Add(checkboxWSTShowStopWatch)
         tabpageWST.Controls.Add(checkboxWSTShowAC)
         tabpageWST.Controls.Add(checkboxWSTShowHelp)
         tabpageWST.Controls.Add(checkboxWSTShowClock)
@@ -811,15 +809,6 @@
         checkboxWSTShowLockWorkSpace.TabIndex = 50
         checkboxWSTShowLockWorkSpace.Text = "Show 'Lock WorkSpace'"
         checkboxWSTShowLockWorkSpace.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowStopWatch
-        ' 
-        checkboxWSTShowStopWatch.Location = New Point(5, 218)
-        checkboxWSTShowStopWatch.Name = "checkboxWSTShowStopWatch"
-        checkboxWSTShowStopWatch.Size = New Size(137, 21)
-        checkboxWSTShowStopWatch.TabIndex = 34
-        checkboxWSTShowStopWatch.Text = "Show 'StopWatch'"
-        checkboxWSTShowStopWatch.UseVisualStyleBackColor = True
         ' 
         ' checkboxWSTShowAC
         ' 
@@ -3512,7 +3501,7 @@
         cmWSTScreenSaver.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmWSTScreenSaver.Items.AddRange(New ToolStripItem() {cmiScreenSaverActivate, cmiScreenSaverEnabled, toolStripSeparator1, cmiScreenSaverSettings, toolStripSeparator12, cmiScreenSaverClose, cmiScreenSaverCloseAll})
         cmWSTScreenSaver.Name = "contextmenuWorkSpaceTools"
-        cmWSTScreenSaver.Size = New Size(217, 148)
+        cmWSTScreenSaver.Size = New Size(217, 126)
         ' 
         ' cmiScreenSaverActivate
         ' 
@@ -3803,7 +3792,6 @@
     Private WithEvents checkboxWSTShowTaskManager As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowCommandPrompt As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowReStart As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowStopWatch As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowAC As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowHLTray As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowHLMenu As System.Windows.Forms.CheckBox

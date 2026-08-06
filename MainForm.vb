@@ -38,7 +38,6 @@ Partial Friend Class MainForm
 
 		'Initialize Locals
 		InitializeComponent()
-		TimerWSTStopWatchReset.Interval = 5400000
 		TimerAC.Interval = 1000
 		BackgroundworkerWL.WorkerSupportsCancellation = True
 		BackgroundworkerAC.WorkerSupportsCancellation = True
@@ -202,7 +201,6 @@ Partial Friend Class MainForm
 		If sender Is Me.btnSettingsRestore Then My.App.WriteToLog(My.App.Tools.SkyeTools, "Settings Restored...") 'This must be here because it is called by btnRestoreSettings.
 		WSTClockSet()
 		UpdateACMute()
-		WSTStopWatchSet()
 		ShowSettings()
 		ACSet()
 		HKRegister()
@@ -612,9 +610,6 @@ Partial Friend Class MainForm
 		Me.textboxHKWSTScreenSaver.Tag = My.App.HKWSTScreenSaver
 		Me.textboxHKWSTScreenSaver.Font = New Font(Me.Font, FontStyle.Bold)
 		Me.textboxHKWSTScreenSaver.ForeColor = Color.Teal
-		Me.lblHKWSTStopWatch.Text = My.App.HKWSTStopWatch.Description
-		Me.textboxHKWSTStopWatch.Text = My.App.HKWSTStopWatch.Key.ToString
-		Me.textboxHKWSTStopWatch.Tag = My.App.HKWSTStopWatch
 		Me.textboxHKWSTStopWatch.Font = New Font(Me.Font, FontStyle.Bold)
 		Me.textboxHKWSTStopWatch.ForeColor = Color.Teal
 		Me.lblHKWSTClock.Text = My.App.HKWSTClock.Description
@@ -706,9 +701,6 @@ Partial Friend Class MainForm
 			End If
 			Me.textboxHKWSTScreenSaver.Enabled = True
 			Me.btnHKWSTScreenSaverDisable.Enabled = True
-			If My.App.WSTShowStopWatch Then : Me.lblHKWSTStopWatch.Enabled = True
-			Else : Me.lblHKWSTStopWatch.Enabled = False
-			End If
 			Me.textboxHKWSTStopWatch.Enabled = True
 			Me.btnHKWSTStopWatchDisable.Enabled = True
 			If My.App.WSTShowClock Then : Me.lblHKWSTClock.Enabled = True
@@ -902,9 +894,6 @@ Partial Friend Class MainForm
 		End If
 		If My.App.WSTShowClock Then : Me.checkboxWSTShowClock.Checked = True
 		Else : Me.checkboxWSTShowClock.Checked = False
-		End If
-		If My.App.WSTShowStopWatch Then : Me.checkboxWSTShowStopWatch.Checked = True
-		Else : Me.checkboxWSTShowStopWatch.Checked = False
 		End If
 		If My.App.WSTShowLockWorkSpace Then : Me.checkboxWSTShowLockWorkSpace.Checked = True
 		Else : Me.checkboxWSTShowLockWorkSpace.Checked = False
@@ -1343,7 +1332,6 @@ Partial Friend Class MainForm
 				WSTSSEnabled = Not WSTSSEnabled
 				WSTSSSet()
 			Case My.App.HCAction.WSTClock : WSTShowClock()
-			Case My.App.HCAction.WSTStopWatch : WSTStopWatchToggleWindow()
 			Case My.App.HCAction.ShowSettings : SelectTab(Nothing)
 			Case My.App.HCAction.ShowSettingsWST : SelectTab(Me.tabpageWST)
 			Case My.App.HCAction.ShowSettingsHL : SelectTab(Me.tabpageHL)
@@ -1426,7 +1414,6 @@ Partial Friend Class MainForm
 			HKGenerateUsedKeyList()
 			If Not CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key = My.App.HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key)
 			If Not CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key = My.App.HKWSTScreenSaver.Key Then HKInUse.Add(CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWSTStopWatch.Tag, My.App.HKType).Key = My.App.HKWSTStopWatch.Key Then HKInUse.Add(CType(Me.textboxHKWSTStopWatch.Tag, My.App.HKType).Key)
 			If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then HKInUse.Add(CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key)
 			If Not CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key = My.App.HKWSTTaskManager.Key Then HKInUse.Add(CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key)
 			If Not CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key = My.App.HKWSTCommandPrompt.Key Then HKInUse.Add(CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key)
@@ -1534,7 +1521,6 @@ Partial Friend Class MainForm
 	Private Sub BtnHKSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKSet.Click
 		If Not CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key = My.App.HKWSTLockWorkSpace.Key Then My.App.HKWSTLockWorkSpace = CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key = My.App.HKWSTScreenSaver.Key Then My.App.HKWSTScreenSaver = CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKWSTStopWatch.Tag, My.App.HKType).Key = My.App.HKWSTStopWatch.Key Then My.App.HKWSTStopWatch = CType(Me.textboxHKWSTStopWatch.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then My.App.HKWSTClock = CType(Me.textboxHKWSTClock.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key = My.App.HKWSTTaskManager.Key Then My.App.HKWSTTaskManager = CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key = My.App.HKWSTCommandPrompt.Key Then My.App.HKWSTCommandPrompt = CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType)
@@ -1577,11 +1563,6 @@ Partial Friend Class MainForm
 		Select Case hotkey
 			Case My.App.HKWSTLockWorkSpace.WinID : WSTLockWorkSpace()
 			Case My.App.HKWSTScreenSaver.WinID : WSTSSActivate(True)
-			Case My.App.HKWSTStopWatch.WinID
-				If My.App.WSTShowStopWatch Then
-					If Me.frmWSTStopWatch.Visible Then WSTToggleStopWatch(True)
-					WSTStopWatchToggleWindow()
-				End If
 			Case My.App.HKWSTClock.WinID : WSTShowClock()
 			Case My.App.HKWSTTaskManager.WinID : WSTTaskManagerToggle()
 			Case My.App.HKWSTCommandPrompt.WinID : My.App.StartFile(My.App.WSTCommandPrompt)
@@ -1611,17 +1592,13 @@ Partial Friend Class MainForm
 
 #Region "WorkSpace Tools (WST)"
 
-	'Declarations
+	' Declarations
 	Private notifyiconWST As NotifyIcon
 	Private notifyiconWSTScreenSaver As NotifyIcon
-	Private WithEvents TimerWSTStopWatch As New Timer
-	Private WithEvents TimerWSTStopWatchReset As New Timer
 	Private frmWSTClock As WSTClock
-	Private frmWSTStopWatch As WSTStopWatch
-	Private WSTStopWatch As DateTime
 	Private openfiledialogWST As New OpenFileDialog
 
-	'Control Events
+	' Control Events
 	Private Sub CMIWSTCancelStartUpMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCancelStartUp.MouseUp
 		If e.Button = MouseButtons.Left Then
 			If Me.TimerHLStartUp.Enabled Then Me.TimerHLStartUp.Stop()
@@ -1646,12 +1623,6 @@ Partial Friend Class MainForm
 	End Sub
 	Private Sub CMIWSTClockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTClock.MouseUp
 		If e.Button = MouseButtons.Left Then WSTShowClock()
-	End Sub
-	Private Sub CMIWSTStopWatchMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTStopWatch.MouseUp
-		Select Case e.Button
-			Case MouseButtons.Left : WSTToggleStopWatch()
-			Case MouseButtons.Right : WSTStopWatchToggleWindow()
-		End Select
 	End Sub
 	Private Sub CMIWSTLockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLock.MouseUp
 		If e.Button = MouseButtons.Left Then WSTLockWorkSpace()
@@ -1732,7 +1703,7 @@ Partial Friend Class MainForm
 		My.App.WSTEnabled = Not My.App.WSTEnabled
 		ShowTools()
 	End Sub
-	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowTaskManager.Click, checkboxWSTShowStopWatch.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHLMenu.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowCommandPrompt.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
+	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowTaskManager.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHLMenu.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowCommandPrompt.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
 		Select Case CType(sender, CheckBox).Name
 			Case checkboxWSTShowHLMenu.Name
 				WSTShowHLMenu = Not WSTShowHLMenu
@@ -1767,15 +1738,6 @@ Partial Friend Class MainForm
 			Case checkboxWSTShowAC.Name
 				WSTShowAC = Not WSTShowAC
 				ACSet()
-			Case checkboxWSTShowStopWatch.Name
-				If WSTShowStopWatch Then
-					WSTShowStopWatch = False
-					WSTStopWatchToggleWindow()
-					WSTToggleStopWatch()
-					WSTStopWatchReSet()
-				Else : WSTShowStopWatch = True
-				End If
-				WSTStopWatchSet()
 			Case checkboxWSTShowLockWorkSpace.Name : WSTShowLockWorkSpace = Not WSTShowLockWorkSpace
 			Case checkboxWSTShowLogOff.Name : WSTShowLogOff = Not WSTShowLogOff
 			Case checkboxWSTShowSleep.Name : WSTShowSleep = Not WSTShowSleep
@@ -1864,29 +1826,7 @@ Partial Friend Class MainForm
 		End If
 	End Sub
 
-	'Handlers
-	Private Sub TimerWSTStopWatchTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWSTStopWatch.Tick
-		Dim t As TimeSpan = My.Computer.Clock.LocalTime.Subtract(WSTStopWatch)
-		Dim h As String = Int(t.TotalHours).ToString
-		If h.Length = 1 Then h = "0" + h
-		Dim m As String = t.Minutes.ToString
-		If m.Length = 1 Then m = "0" + m
-		Dim s As String = t.Seconds.ToString
-		If s.Length = 1 Then s = "0" + s
-		Dim ms As String = t.Milliseconds.ToString
-		Select Case ms.Length
-			Case 1 : ms = "00" + ms
-			Case 2 : ms = "0" + ms
-		End Select
-		Me.cmiWSTStopWatch.Text = h + ":" + m + ":" + s + "." + ms
-		If frmWSTStopWatch.Visible Then frmWSTStopWatch.labelStopWatch.Text = h + ":" + m + ":" + s + "." + ms
-		If Int(t.TotalHours) = 36 Then WSTToggleStopWatch()
-	End Sub
-	Private Sub TimerWSTStopWatchResetTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWSTStopWatchReset.Tick
-		WSTStopWatchReSet()
-	End Sub
-
-	'Procedures
+	' Methods
 	Friend Sub WSTShowClock()
 		If My.App.WSTShowClock Then
 			If frmWSTClock?.Visible Then
@@ -1912,44 +1852,6 @@ Partial Friend Class MainForm
 				frmWSTClock.Size = New Size(244, 67)
 				frmWSTClock.CheckMove()
 		End Select
-	End Sub
-	Friend Sub WSTStopWatchToggleWindow()
-		If My.App.WSTShowStopWatch Then
-			If frmWSTStopWatch.Visible Then : frmWSTStopWatch.Hide()
-			Else
-				If Not Me.TimerWSTStopWatch.Enabled Then WSTToggleStopWatch()
-				frmWSTStopWatch.Show()
-			End If
-			UpdateWST()
-		Else : If frmWSTStopWatch.Visible Then frmWSTStopWatch.Hide()
-		End If
-	End Sub
-	Friend Sub WSTToggleStopWatch(Optional forcestop As Boolean = False)
-		If My.App.WSTShowStopWatch Then
-			If Me.TimerWSTStopWatch.Enabled Then
-				Me.TimerWSTStopWatch.Stop()
-				Me.cmiWSTStopWatch.ResetForeColor()
-				frmWSTStopWatch.labelStopWatch.ResetForeColor()
-
-				If Not Me.TimerWSTStopWatchReset.Enabled Then
-					Me.TimerWSTStopWatchReset.Start()
-					Debug.Print("WSTStopWatchToggle: timerStopWatchReset Started")
-				End If
-			ElseIf Not forcestop Then
-				Me.TimerWSTStopWatchReset.Stop()
-				WSTStopWatch = My.Computer.Clock.LocalTime
-				Me.cmiWSTStopWatch.Font = New Font(Me.Font, FontStyle.Bold)
-				Me.cmiWSTStopWatch.ForeColor = Color.Maroon
-				frmWSTStopWatch.labelStopWatch.ForeColor = Color.Maroon
-				Me.TimerWSTStopWatch.Start()
-			End If
-			UpdateWST()
-		Else
-			If Me.TimerWSTStopWatch.Enabled Then
-				Me.TimerWSTStopWatch.Stop()
-				Me.cmiWSTStopWatch.ResetForeColor()
-			End If
-		End If
 	End Sub
 	Friend Sub UpdateWST()
 		'Settings Window
@@ -1999,15 +1901,6 @@ Partial Friend Class MainForm
 			If Me.frmWSTClock?.Visible Then : Me.cmiWSTClock.Checked = True
 			Else : Me.cmiWSTClock.Checked = False
 			End If
-			If My.App.WSTShowStopWatch Then
-				If Me.TimerWSTStopWatch.Enabled OrElse Me.frmWSTStopWatch?.Visible Then : Me.cmiWSTStopWatch.Checked = True
-				Else : Me.cmiWSTStopWatch.Checked = False
-				End If
-				If Me.TimerWSTStopWatch.Enabled Then : Me.notifyiconWST.Text += Chr(13) + "StopWatch Running..."
-				ElseIf WSTStopWatch <> DateTime.MinValue Then : Me.notifyiconWST.Text += Chr(13) + "StopWatch - " + Me.cmiWSTStopWatch.Text
-				End If
-			Else : Me.cmiWSTStopWatch.Checked = False
-			End If
 		End If
 	End Sub
 	Private Sub UpdateWSTCancelState()
@@ -2037,7 +1930,7 @@ Partial Friend Class MainForm
 			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu Then : Me.cmseparatorWSTWLTop.Visible = True
 			Else : Me.cmseparatorWSTWLTop.Visible = False
 			End If
-			If My.App.WSTShowClock OrElse My.App.WSTShowAC OrElse My.App.WSTShowStopWatch Then : Me.cmseparatorWSTWLBottom.Visible = True
+			If My.App.WSTShowClock OrElse My.App.WSTShowAC Then : Me.cmseparatorWSTWLBottom.Visible = True
 			Else : Me.cmseparatorWSTWLBottom.Visible = False
 			End If
 		Else
@@ -2049,9 +1942,6 @@ Partial Friend Class MainForm
 		End If
 		If My.App.WSTShowAC Then : Me.cmiWSTAC.Visible = True
 		Else : Me.cmiWSTAC.Visible = False
-		End If
-		If My.App.WSTShowStopWatch Then : Me.cmiWSTStopWatch.Visible = True
-		Else : Me.cmiWSTStopWatch.Visible = False
 		End If
 		'ShutDown Options Section
 		If My.App.WSTShowLockWorkSpace Then : Me.cmiWSTLock.Visible = True
@@ -2074,7 +1964,7 @@ Partial Friend Class MainForm
 		End If
 		If My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown Then
 			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu _
-				OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC OrElse My.App.WSTShowStopWatch _
+				OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC _
 				Then : Me.cmseparatorWSTShutDownOptions.Visible = True
 			Else : Me.cmseparatorWSTShutDownOptions.Visible = False
 			End If
@@ -2088,7 +1978,7 @@ Partial Friend Class MainForm
 		Else : Me.cmiWSTLog.Visible = False
 		End If
 		If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowHLMenu _
-			OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC OrElse My.App.WSTShowStopWatch _
+			OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC _
 			OrElse My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown _
 			Then : Me.cmseparatorWSTSettings.Visible = True
 		Else : Me.cmseparatorWSTSettings.Visible = False
@@ -2122,21 +2012,6 @@ Partial Friend Class MainForm
 		frmWSTClock = Nothing
 		UpdateWST()
 		If My.App.WSTShowClock Then frmWSTClock = New WSTClock
-	End Sub
-	Private Sub WSTStopWatchSet()
-		Debug.Print("WSTStopWatchSet: " + My.App.WSTShowStopWatch.ToString)
-		If frmWSTStopWatch IsNot Nothing Then
-			frmWSTStopWatch.Close()
-			frmWSTStopWatch = Nothing
-		End If
-		If My.App.WSTShowStopWatch Then frmWSTStopWatch = New WSTStopWatch
-	End Sub
-	Private Sub WSTStopWatchReSet()
-		Me.TimerWSTStopWatchReset.Stop()
-		Me.cmiWSTStopWatch.ResetFont()
-		Me.cmiWSTStopWatch.Text = "StopWatch"
-		WSTStopWatch = DateTime.MinValue
-		UpdateWST()
 	End Sub
 	Private Sub WSTLockWorkSpace(Optional hcmode As Boolean = False)
 		If My.App.WSTShowLockWorkSpace Then
