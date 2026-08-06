@@ -610,8 +610,6 @@ Partial Friend Class MainForm
 		Me.textboxHKWSTScreenSaver.Tag = My.App.HKWSTScreenSaver
 		Me.textboxHKWSTScreenSaver.Font = New Font(Me.Font, FontStyle.Bold)
 		Me.textboxHKWSTScreenSaver.ForeColor = Color.Teal
-		Me.textboxHKWSTStopWatch.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKWSTStopWatch.ForeColor = Color.Teal
 		Me.lblHKWSTClock.Text = My.App.HKWSTClock.Description
 		Me.textboxHKWSTClock.Text = My.App.HKWSTClock.Key.ToString
 		Me.textboxHKWSTClock.Tag = My.App.HKWSTClock
@@ -701,8 +699,6 @@ Partial Friend Class MainForm
 			End If
 			Me.textboxHKWSTScreenSaver.Enabled = True
 			Me.btnHKWSTScreenSaverDisable.Enabled = True
-			Me.textboxHKWSTStopWatch.Enabled = True
-			Me.btnHKWSTStopWatchDisable.Enabled = True
 			If My.App.WSTShowClock Then : Me.lblHKWSTClock.Enabled = True
 			Else : Me.lblHKWSTClock.Enabled = False
 			End If
@@ -768,8 +764,6 @@ Partial Friend Class MainForm
 			Me.textboxHKWSTScreenSaver.Enabled = False
 			Me.btnHKWSTScreenSaverDisable.Enabled = False
 			Me.lblHKWSTStopWatch.Enabled = False
-			Me.textboxHKWSTStopWatch.Enabled = False
-			Me.btnHKWSTStopWatchDisable.Enabled = False
 			Me.lblHKWSTClock.Enabled = False
 			Me.textboxHKWSTClock.Enabled = False
 			Me.btnHKWSTClockDisable.Enabled = False
@@ -1391,129 +1385,126 @@ Partial Friend Class MainForm
 	'Declarations
 	Private HKInUse As New Collections.Generic.List(Of Keys)
 
-	'Control Events
-	Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTTaskManager.PreviewKeyDown, textboxHKWSTStopWatch.PreviewKeyDown, textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTCommandPrompt.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown, textboxHKHLH.PreviewKeyDown, textboxHKHLG.PreviewKeyDown, textboxHKHLF.PreviewKeyDown, textboxHKHLE.PreviewKeyDown, textboxHKHLD.PreviewKeyDown, textboxHKHLC.PreviewKeyDown, textboxHKHLB.PreviewKeyDown, textboxHKHLA.PreviewKeyDown
-		Dim senderTextBox As TextBox = CType(sender, TextBox)
-		Dim senderTag As My.App.HKType = CType(senderTextBox.Tag, My.App.HKType)
-		If e.KeyData <> senderTag.Key Then
+    'Control Events
+    Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTTaskManager.PreviewKeyDown, textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTCommandPrompt.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown, textboxHKHLH.PreviewKeyDown, textboxHKHLG.PreviewKeyDown, textboxHKHLF.PreviewKeyDown, textboxHKHLE.PreviewKeyDown, textboxHKHLD.PreviewKeyDown, textboxHKHLC.PreviewKeyDown, textboxHKHLB.PreviewKeyDown, textboxHKHLA.PreviewKeyDown
+        Dim senderTextBox = CType(sender, TextBox)
+        Dim senderTag = CType(senderTextBox.Tag, HKType)
+        If e.KeyData <> senderTag.Key Then
 
-			'Setup New HotKey
-			Dim newhotkey As New My.App.HKType
-			Dim modifiers As Integer = 0
-			Dim match As Boolean = False
-			If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
-			If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
-			If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
-			newhotkey.Description = senderTag.Description
-			newhotkey.WinID = senderTag.WinID
-			newhotkey.Key = e.KeyData
-			newhotkey.KeyCode = CByte(e.KeyValue)
-			newhotkey.KeyMod = CByte(modifiers)
+            'Setup New HotKey
+            Dim newhotkey As New HKType
+            Dim modifiers = 0
+            Dim match = False
+            If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
+            If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
+            If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
+            newhotkey.Description = senderTag.Description
+            newhotkey.WinID = senderTag.WinID
+            newhotkey.Key = e.KeyData
+            newhotkey.KeyCode = CByte(e.KeyValue)
+            newhotkey.KeyMod = CByte(modifiers)
 
-			'Check If Already In-Use
-			HKGenerateUsedKeyList()
-			If Not CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key = My.App.HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key = My.App.HKWSTScreenSaver.Key Then HKInUse.Add(CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then HKInUse.Add(CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key = My.App.HKWSTTaskManager.Key Then HKInUse.Add(CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key = My.App.HKWSTCommandPrompt.Key Then HKInUse.Add(CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLA.Tag, My.App.HKType).Key = My.App.HKHLA.Key Then HKInUse.Add(CType(Me.textboxHKHLA.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLB.Tag, My.App.HKType).Key = My.App.HKHLB.Key Then HKInUse.Add(CType(Me.textboxHKHLB.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLC.Tag, My.App.HKType).Key = My.App.HKHLC.Key Then HKInUse.Add(CType(Me.textboxHKHLC.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLD.Tag, My.App.HKType).Key = My.App.HKHLD.Key Then HKInUse.Add(CType(Me.textboxHKHLD.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLE.Tag, My.App.HKType).Key = My.App.HKHLE.Key Then HKInUse.Add(CType(Me.textboxHKHLE.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLF.Tag, My.App.HKType).Key = My.App.HKHLF.Key Then HKInUse.Add(CType(Me.textboxHKHLF.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLG.Tag, My.App.HKType).Key = My.App.HKHLG.Key Then HKInUse.Add(CType(Me.textboxHKHLG.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKHLH.Tag, My.App.HKType).Key = My.App.HKHLH.Key Then HKInUse.Add(CType(Me.textboxHKHLH.Tag, My.App.HKType).Key)
-			If Not CType(Me.textboxHKWL.Tag, My.App.HKType).Key = My.App.HKWL.Key Then HKInUse.Add(CType(Me.textboxHKWL.Tag, My.App.HKType).Key)
-			For Each usedkey As Keys In HKInUse : If usedkey = newhotkey.Key Then match = True
-			Next
+            'Check If Already In-Use
+            HKGenerateUsedKeyList
+            If Not CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key)
+            If Not CType(textboxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(textboxHKWSTScreenSaver.Tag, HKType).Key)
+            If Not CType(textboxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(textboxHKWSTClock.Tag, HKType).Key)
+            If Not CType(textboxHKWSTTaskManager.Tag, HKType).Key = HKWSTTaskManager.Key Then HKInUse.Add(CType(textboxHKWSTTaskManager.Tag, HKType).Key)
+            If Not CType(textboxHKWSTCommandPrompt.Tag, HKType).Key = HKWSTCommandPrompt.Key Then HKInUse.Add(CType(textboxHKWSTCommandPrompt.Tag, HKType).Key)
+            If Not CType(textboxHKHLA.Tag, HKType).Key = HKHLA.Key Then HKInUse.Add(CType(textboxHKHLA.Tag, HKType).Key)
+            If Not CType(textboxHKHLB.Tag, HKType).Key = HKHLB.Key Then HKInUse.Add(CType(textboxHKHLB.Tag, HKType).Key)
+            If Not CType(textboxHKHLC.Tag, HKType).Key = HKHLC.Key Then HKInUse.Add(CType(textboxHKHLC.Tag, HKType).Key)
+            If Not CType(textboxHKHLD.Tag, HKType).Key = HKHLD.Key Then HKInUse.Add(CType(textboxHKHLD.Tag, HKType).Key)
+            If Not CType(textboxHKHLE.Tag, HKType).Key = HKHLE.Key Then HKInUse.Add(CType(textboxHKHLE.Tag, HKType).Key)
+            If Not CType(textboxHKHLF.Tag, HKType).Key = HKHLF.Key Then HKInUse.Add(CType(textboxHKHLF.Tag, HKType).Key)
+            If Not CType(textboxHKHLG.Tag, HKType).Key = HKHLG.Key Then HKInUse.Add(CType(textboxHKHLG.Tag, HKType).Key)
+            If Not CType(textboxHKHLH.Tag, HKType).Key = HKHLH.Key Then HKInUse.Add(CType(textboxHKHLH.Tag, HKType).Key)
+            If Not CType(textboxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(textboxHKWL.Tag, HKType).Key)
+            For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
+            Next
 
-			'Display New HotKey If Not Already In-Use
-			If Not match Then
-				senderTextBox.Font = New Font(Me.Font, FontStyle.Regular)
-				senderTextBox.ForeColor = Color.Maroon
-				senderTextBox.Text = e.KeyData.ToString
-				senderTextBox.Tag = newhotkey
-				Me.btnHKReset.Enabled = True
-				Me.btnHKSet.Enabled = True
-			End If
-		End If
-	End Sub
-	Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTTaskManager.KeyPress, textboxHKWSTStopWatch.KeyPress, textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTCommandPrompt.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress, textboxHKHLH.KeyPress, textboxHKHLG.KeyPress, textboxHKHLF.KeyPress, textboxHKHLE.KeyPress, textboxHKHLD.KeyPress, textboxHKHLC.KeyPress, textboxHKHLB.KeyPress, textboxHKHLA.KeyPress
-		e.Handled = True
-	End Sub
-	Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Click, btnHKWSTStopWatchDisable.Click, btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTCommandPromptDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click, btnHKHLHDisable.Click, btnHKHLGDisable.Click, btnHKHLFDisable.Click, btnHKHLEDisable.Click, btnHKHLDDisable.Click, btnHKHLCDisable.Click, btnHKHLBDisable.Click, btnHKHLADisable.Click
-		Dim senderTextBox As New TextBox
-		Dim senderTag As New My.App.HKType
-		Select Case CType(sender, Button).Name
-			Case Me.btnHKWSTLockWorkSpaceDisable.Name
-				senderTextBox = Me.textboxHKWSTLockWorkSpace
-				senderTag = CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType)
-			Case Me.btnHKWSTScreenSaverDisable.Name
-				senderTextBox = Me.textboxHKWSTScreenSaver
-				senderTag = CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType)
-			Case Me.btnHKWSTStopWatchDisable.Name
-				senderTextBox = Me.textboxHKWSTStopWatch
-				senderTag = CType(Me.textboxHKWSTStopWatch.Tag, My.App.HKType)
-			Case Me.btnHKWSTClockDisable.Name
-				senderTextBox = Me.textboxHKWSTClock
-				senderTag = CType(Me.textboxHKWSTClock.Tag, My.App.HKType)
-			Case Me.btnHKWSTTaskManagerDisable.Name
-				senderTextBox = Me.textboxHKWSTTaskManager
-				senderTag = CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType)
-			Case Me.btnHKWSTCommandPromptDisable.Name
-				senderTextBox = Me.textboxHKWSTCommandPrompt
-				senderTag = CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType)
-			Case Me.btnHKHLADisable.Name
-				senderTextBox = Me.textboxHKHLA
-				senderTag = CType(Me.textboxHKHLA.Tag, My.App.HKType)
-			Case Me.btnHKHLBDisable.Name
-				senderTextBox = Me.textboxHKHLB
-				senderTag = CType(Me.textboxHKHLB.Tag, My.App.HKType)
-			Case Me.btnHKHLCDisable.Name
-				senderTextBox = Me.textboxHKHLC
-				senderTag = CType(Me.textboxHKHLC.Tag, My.App.HKType)
-			Case Me.btnHKHLDDisable.Name
-				senderTextBox = Me.textboxHKHLD
-				senderTag = CType(Me.textboxHKHLD.Tag, My.App.HKType)
-			Case Me.btnHKHLEDisable.Name
-				senderTextBox = Me.textboxHKHLE
-				senderTag = CType(Me.textboxHKHLE.Tag, My.App.HKType)
-			Case Me.btnHKHLFDisable.Name
-				senderTextBox = Me.textboxHKHLF
-				senderTag = CType(Me.textboxHKHLF.Tag, My.App.HKType)
-			Case Me.btnHKHLGDisable.Name
-				senderTextBox = Me.textboxHKHLG
-				senderTag = CType(Me.textboxHKHLG.Tag, My.App.HKType)
-			Case Me.btnHKHLHDisable.Name
-				senderTextBox = Me.textboxHKHLH
-				senderTag = CType(Me.textboxHKHLH.Tag, My.App.HKType)
-			Case Me.btnHKWLDisable.Name
-				senderTextBox = Me.textboxHKWL
-				senderTag = CType(Me.textboxHKWL.Tag, My.App.HKType)
-		End Select
+            'Display New HotKey If Not Already In-Use
+            If Not match Then
+                senderTextBox.Font = New Font(Font, FontStyle.Regular)
+                senderTextBox.ForeColor = Color.Maroon
+                senderTextBox.Text = e.KeyData.ToString
+                senderTextBox.Tag = newhotkey
+                btnHKReset.Enabled = True
+                btnHKSet.Enabled = True
+            End If
+        End If
+    End Sub
+    Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTTaskManager.KeyPress, textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTCommandPrompt.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress, textboxHKHLH.KeyPress, textboxHKHLG.KeyPress, textboxHKHLF.KeyPress, textboxHKHLE.KeyPress, textboxHKHLD.KeyPress, textboxHKHLC.KeyPress, textboxHKHLB.KeyPress, textboxHKHLA.KeyPress
+        e.Handled = True
+    End Sub
+    Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Click, btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTCommandPromptDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click, btnHKHLHDisable.Click, btnHKHLGDisable.Click, btnHKHLFDisable.Click, btnHKHLEDisable.Click, btnHKHLDDisable.Click, btnHKHLCDisable.Click, btnHKHLBDisable.Click, btnHKHLADisable.Click
+        Dim senderTextBox As New TextBox
+        Dim senderTag As New HKType
+        Select Case CType(sender, Button).Name
+            Case btnHKWSTLockWorkSpaceDisable.Name
+                senderTextBox = textboxHKWSTLockWorkSpace
+                senderTag = CType(textboxHKWSTLockWorkSpace.Tag, HKType)
+            Case btnHKWSTScreenSaverDisable.Name
+                senderTextBox = textboxHKWSTScreenSaver
+                senderTag = CType(textboxHKWSTScreenSaver.Tag, HKType)
+			Case btnHKWSTClockDisable.Name
+				senderTextBox = textboxHKWSTClock
+                senderTag = CType(textboxHKWSTClock.Tag, HKType)
+            Case btnHKWSTTaskManagerDisable.Name
+                senderTextBox = textboxHKWSTTaskManager
+                senderTag = CType(textboxHKWSTTaskManager.Tag, HKType)
+            Case btnHKWSTCommandPromptDisable.Name
+                senderTextBox = textboxHKWSTCommandPrompt
+                senderTag = CType(textboxHKWSTCommandPrompt.Tag, HKType)
+            Case btnHKHLADisable.Name
+                senderTextBox = textboxHKHLA
+                senderTag = CType(textboxHKHLA.Tag, HKType)
+            Case btnHKHLBDisable.Name
+                senderTextBox = textboxHKHLB
+                senderTag = CType(textboxHKHLB.Tag, HKType)
+            Case btnHKHLCDisable.Name
+                senderTextBox = textboxHKHLC
+                senderTag = CType(textboxHKHLC.Tag, HKType)
+            Case btnHKHLDDisable.Name
+                senderTextBox = textboxHKHLD
+                senderTag = CType(textboxHKHLD.Tag, HKType)
+            Case btnHKHLEDisable.Name
+                senderTextBox = textboxHKHLE
+                senderTag = CType(textboxHKHLE.Tag, HKType)
+            Case btnHKHLFDisable.Name
+                senderTextBox = textboxHKHLF
+                senderTag = CType(textboxHKHLF.Tag, HKType)
+            Case btnHKHLGDisable.Name
+                senderTextBox = textboxHKHLG
+                senderTag = CType(textboxHKHLG.Tag, HKType)
+            Case btnHKHLHDisable.Name
+                senderTextBox = textboxHKHLH
+                senderTag = CType(textboxHKHLH.Tag, HKType)
+            Case btnHKWLDisable.Name
+                senderTextBox = textboxHKWL
+                senderTag = CType(textboxHKWL.Tag, HKType)
+        End Select
 
-		Dim newhotkey As New My.App.HKType With {
-			.Description = senderTag.Description,
-			.WinID = senderTag.WinID,
-			.Key = Keys.None,
-			.KeyCode = 0,
-			.KeyMod = 0}
-		senderTextBox.Font = New Font(Me.Font, FontStyle.Regular)
-		senderTextBox.ForeColor = Color.Maroon
-		senderTextBox.Text = newhotkey.Key.ToString
-		senderTextBox.Tag = newhotkey
-		Me.btnHKReset.Enabled = True
-		Me.btnHKSet.Enabled = True
-		Me.btnHKSet.Focus()
-	End Sub
-	Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Enter, btnHKWSTStopWatchDisable.Enter, btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTCommandPromptDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter, btnHKHLHDisable.Enter, btnHKHLGDisable.Enter, btnHKHLFDisable.Enter, btnHKHLEDisable.Enter, btnHKHLDDisable.Enter, btnHKHLCDisable.Enter, btnHKHLBDisable.Enter, btnHKHLADisable.Enter
-		If Me.btnHKSet.Enabled Then : Me.btnHKSet.Focus()
-		Else : Me.btnClose.Focus()
-		End If
-	End Sub
-	Private Sub BtnHKEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
+        Dim newhotkey As New HKType With {
+            .Description = senderTag.Description,
+            .WinID = senderTag.WinID,
+            .Key = Keys.None,
+            .KeyCode = 0,
+            .KeyMod = 0}
+        senderTextBox.Font = New Font(Font, FontStyle.Regular)
+        senderTextBox.ForeColor = Color.Maroon
+        senderTextBox.Text = newhotkey.Key.ToString
+        senderTextBox.Tag = newhotkey
+        btnHKReset.Enabled = True
+        btnHKSet.Enabled = True
+        btnHKSet.Focus
+    End Sub
+    Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Enter, btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTCommandPromptDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter, btnHKHLHDisable.Enter, btnHKHLGDisable.Enter, btnHKHLFDisable.Enter, btnHKHLEDisable.Enter, btnHKHLDDisable.Enter, btnHKHLCDisable.Enter, btnHKHLBDisable.Enter, btnHKHLADisable.Enter
+        If btnHKSet.Enabled Then : btnHKSet.Focus
+        Else : btnClose.Focus
+        End If
+    End Sub
+    Private Sub BtnHKEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
 		My.App.HKEnabled = Not My.App.HKEnabled
 		HKRegister()
 		ShowSettings(My.App.Tools.HotKeys)

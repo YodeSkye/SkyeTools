@@ -29,7 +29,6 @@
         cmseparatorWSTWLBottom = New ToolStripSeparator()
         cmiWSTClock = New ToolStripMenuItem()
         cmiWSTAC = New ToolStripMenuItem()
-        cmiWSTStopWatch = New ToolStripMenuItem()
         cmseparatorWSTShutDownOptions = New ToolStripSeparator()
         cmiWSTShutDown = New ToolStripMenuItem()
         cmiWSTHibernate = New ToolStripMenuItem()
@@ -254,7 +253,6 @@
         textboxHKHLC = New TextBox()
         textboxHKHLA = New TextBox()
         textboxHKWSTClock = New TextBox()
-        textboxHKWSTStopWatch = New TextBox()
         textboxHKWSTLockWorkSpace = New TextBox()
         btnHKSet = New Button()
         btnHKReset = New Button()
@@ -288,7 +286,6 @@
         btnHKWLDisable = New Button()
         btnHKWSTClockDisable = New Button()
         btnHKWSTLockWorkSpaceDisable = New Button()
-        btnHKWSTStopWatchDisable = New Button()
         btnHKWSTScreenSaverDisable = New Button()
         tipInfo = New ToolTip(components)
         btnBalloonTest = New Button()
@@ -401,9 +398,9 @@
         ' cmWST
         ' 
         cmWST.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTTaskManager, cmiWSTCommandPrompt, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmiWSTHLMenu, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmiWSTStopWatch, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
+        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTTaskManager, cmiWSTCommandPrompt, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmiWSTHLMenu, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(213, 490)
+        cmWST.Size = New Size(213, 468)
         ' 
         ' cmiWSTCancelStartUp
         ' 
@@ -494,14 +491,6 @@
         cmiWSTAC.ShowShortcutKeys = False
         cmiWSTAC.Size = New Size(212, 22)
         cmiWSTAC.Text = "Alarm / Chime"
-        ' 
-        ' cmiWSTStopWatch
-        ' 
-        cmiWSTStopWatch.Image = My.Resources.Resources.imageWSTStopWatch
-        cmiWSTStopWatch.Name = "cmiWSTStopWatch"
-        cmiWSTStopWatch.Size = New Size(212, 22)
-        cmiWSTStopWatch.Text = "StopWatch"
-        cmiWSTStopWatch.ToolTipText = "RightClick = Toggle Widget"
         ' 
         ' cmseparatorWSTShutDownOptions
         ' 
@@ -2630,10 +2619,10 @@
         tabpageHC.Controls.Add(label12)
         tabpageHC.Controls.Add(label16)
         tabpageHC.Controls.Add(label15)
-        tabpageHC.Location = New Point(4, 24)
+        tabpageHC.Location = New Point(4, 26)
         tabpageHC.Name = "tabpageHC"
         tabpageHC.Padding = New Padding(3)
-        tabpageHC.Size = New Size(618, 375)
+        tabpageHC.Size = New Size(618, 373)
         tabpageHC.TabIndex = 6
         tabpageHC.Text = """HotClicks"""
         tabpageHC.UseVisualStyleBackColor = True
@@ -2805,7 +2794,6 @@
         tabpageHK.Controls.Add(textboxHKHLC)
         tabpageHK.Controls.Add(textboxHKHLA)
         tabpageHK.Controls.Add(textboxHKWSTClock)
-        tabpageHK.Controls.Add(textboxHKWSTStopWatch)
         tabpageHK.Controls.Add(textboxHKWSTLockWorkSpace)
         tabpageHK.Controls.Add(btnHKSet)
         tabpageHK.Controls.Add(btnHKReset)
@@ -2839,12 +2827,11 @@
         tabpageHK.Controls.Add(btnHKWLDisable)
         tabpageHK.Controls.Add(btnHKWSTClockDisable)
         tabpageHK.Controls.Add(btnHKWSTLockWorkSpaceDisable)
-        tabpageHK.Controls.Add(btnHKWSTStopWatchDisable)
         tabpageHK.Controls.Add(btnHKWSTScreenSaverDisable)
-        tabpageHK.Location = New Point(4, 24)
+        tabpageHK.Location = New Point(4, 26)
         tabpageHK.Name = "tabpageHK"
         tabpageHK.Padding = New Padding(3)
-        tabpageHK.Size = New Size(618, 375)
+        tabpageHK.Size = New Size(618, 373)
         tabpageHK.TabIndex = 5
         tabpageHK.Text = """HotKeys"""
         tabpageHK.UseVisualStyleBackColor = True
@@ -2991,17 +2978,6 @@
         textboxHKWSTClock.TabStop = False
         textboxHKWSTClock.TextAlign = HorizontalAlignment.Center
         textboxHKWSTClock.WordWrap = False
-        ' 
-        ' textboxHKWSTStopWatch
-        ' 
-        textboxHKWSTStopWatch.Location = New Point(9, 106)
-        textboxHKWSTStopWatch.Name = "textboxHKWSTStopWatch"
-        textboxHKWSTStopWatch.ShortcutsEnabled = False
-        textboxHKWSTStopWatch.Size = New Size(143, 25)
-        textboxHKWSTStopWatch.TabIndex = 24
-        textboxHKWSTStopWatch.TabStop = False
-        textboxHKWSTStopWatch.TextAlign = HorizontalAlignment.Center
-        textboxHKWSTStopWatch.WordWrap = False
         ' 
         ' textboxHKWSTLockWorkSpace
         ' 
@@ -3378,18 +3354,6 @@
         btnHKWSTLockWorkSpaceDisable.TabIndex = 14
         btnHKWSTLockWorkSpaceDisable.TabStop = False
         btnHKWSTLockWorkSpaceDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKWSTStopWatchDisable
-        ' 
-        btnHKWSTStopWatchDisable.FlatStyle = FlatStyle.Flat
-        btnHKWSTStopWatchDisable.ForeColor = Color.Transparent
-        btnHKWSTStopWatchDisable.Image = My.Resources.Resources.imageRemove
-        btnHKWSTStopWatchDisable.Location = New Point(149, 108)
-        btnHKWSTStopWatchDisable.Name = "btnHKWSTStopWatchDisable"
-        btnHKWSTStopWatchDisable.Size = New Size(20, 20)
-        btnHKWSTStopWatchDisable.TabIndex = 25
-        btnHKWSTStopWatchDisable.TabStop = False
-        btnHKWSTStopWatchDisable.UseVisualStyleBackColor = True
         ' 
         ' btnHKWSTScreenSaverDisable
         ' 
@@ -3776,7 +3740,6 @@
     Private WithEvents cmseparatorWSTShutDownOptions As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmiWSTReStart As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTAC As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWSTStopWatch As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTHLMenu As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTLog As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTHelp As System.Windows.Forms.ToolStripMenuItem
@@ -3808,10 +3771,8 @@
     Private WithEvents lblHKWSTLockWorkSpace As System.Windows.Forms.Label
     Private WithEvents textboxHKWSTScreenSaver As System.Windows.Forms.TextBox
     Private WithEvents lblHKWSTScreenSaver As System.Windows.Forms.Label
-    Private WithEvents textboxHKWSTStopWatch As System.Windows.Forms.TextBox
     Private WithEvents lblHKWSTStopWatch As System.Windows.Forms.Label
     Private WithEvents btnHKWSTLockWorkSpaceDisable As System.Windows.Forms.Button
-    Private WithEvents btnHKWSTStopWatchDisable As System.Windows.Forms.Button
     Private WithEvents btnHKWSTScreenSaverDisable As System.Windows.Forms.Button
     Private WithEvents textboxHKWSTClock As System.Windows.Forms.TextBox
     Private WithEvents lblHKWSTClock As System.Windows.Forms.Label
