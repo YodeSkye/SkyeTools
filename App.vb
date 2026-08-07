@@ -1,4 +1,8 @@
 
+Imports System.Text.Json
+Imports System.Text.Json.Serialization
+Imports Skye.Common
+
 Namespace My
 
 	Friend Module App
@@ -151,7 +155,7 @@ Namespace My
 		Friend WSTSSEnableOnActivate As Boolean
 		Friend WSTShowSSIcon As Boolean
 		Friend WSTShowSSActivate As Boolean
-        Friend WSTShowSSEnabled As Boolean
+		Friend WSTShowSSEnabled As Boolean
 
 		' Declarations
 		Friend Enum WSTSSStartUpMode
@@ -225,35 +229,29 @@ Namespace My
 			FilesWithSubFolders
 			Folders
 		End Enum
-		Friend Structure WLItemType
-			'Saved Settings
-			Dim Root As String
-			Dim Name As String
-			Dim Sort As SortOrder
-			Dim FolderMode As WLFolderMode
-			Dim FolderPlacement As WLFolderPlacement
-			Dim UseDefaultIcon As Boolean
-			Dim ShowInMenu As Boolean
-			Dim ShowInTray As Boolean
-			Dim ShowNoMenu As Boolean
-			Dim ShowMenuIcons As Boolean
-			'Declarations
-			Dim RefreshData As Boolean
-			Dim RefreshMenu As Boolean
-			'Procedures
-			Sub New(path As String)
-				Me.Root = path
-				Me.Name = String.Empty
-				Me.Sort = SortOrder.Ascending
-				Me.FolderMode = WLFolderMode.ShowAsMenu
-				Me.FolderPlacement = WLFolderPlacement.Top
-				Me.UseDefaultIcon = False
-				Me.ShowInMenu = True
-				Me.ShowInTray = True
-				Me.ShowNoMenu = False
-				Me.ShowMenuIcons = True
+		Public Class WLItemType
+			Public Property Root As String = String.Empty
+			Public Property Name As String = String.Empty
+			Public Property Sort As SortOrder = SortOrder.Ascending
+			Public Property FolderMode As WLFolderMode = WLFolderMode.ShowAsMenu
+			Public Property FolderPlacement As WLFolderPlacement = WLFolderPlacement.Top
+			Public Property UseDefaultIcon As Boolean = False
+			Public Property ShowInMenu As Boolean = True
+			Public Property ShowInTray As Boolean = True
+			Public Property ShowNoMenu As Boolean = False
+			Public Property ShowMenuIcons As Boolean = True
+
+			<JsonIgnore>
+			Public Property RefreshData As Boolean = True
+			<JsonIgnore>
+			Public Property RefreshMenu As Boolean = True
+
+			Public Sub New()
 			End Sub
-		End Structure
+			Public Sub New(path As String)
+				Me.Root = path
+			End Sub
+		End Class
 
 #End Region
 
@@ -1242,6 +1240,103 @@ Namespace My
 
 		End Sub
 
+		'Imports System.Text.Json
+		'Private Sub UpgradeLegacyWLSettings()
+		'	' Check if legacy "WL" subkey exists under BaseKey
+		'	Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
+
+		'	Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+		'		If key Is Nothing Then Return ' No legacy settings to migrate
+		'	End Using
+
+		'	Dim legacyLinks As New List(Of WLItemType)()
+
+		'	' Read old format
+		'	Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+		'		For Each subKeyName In wlKey.GetSubKeyNames()
+		'			Using itemKey = wlKey.OpenSubKey(subKeyName)
+		'				If itemKey Is Nothing Then Continue For
+
+		'				Dim rootPath = itemKey.GetValue("", "").ToString()
+		'				If String.IsNullOrEmpty(rootPath) Then Continue For
+
+		'				Dim link As New WLItemType(rootPath) With {
+		'					.Name = itemKey.GetValue("Name", "").ToString(),
+		'					.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
+		'					.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
+		'					.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
+		'					.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
+		'					.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
+		'				}
+
+		'				[Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
+		'				[Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
+		'				[Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
+
+		'				legacyLinks.Add(link)
+		'			End Using
+		'		Next
+		'	End Using
+
+		'	' Save in new JSON format & remove legacy registry tree
+		'	SaveWLDataToJson(legacyLinks)
+
+		'	Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
+		'		baseKey?.DeleteSubKeyTree("WL", False)
+		'	End Using
+		'End Sub
+
+		'Private Sub GetSettingsWL()
+		'	' 1. Run migration check automatically
+		'	UpgradeLegacyWLSettings()
+
+		'	' 2. Simple scalar settings using RegistryHelper
+		'	WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
+		'	WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
+		'	WLShowFolderPathToolTips = RegistryHelper.GetBool("WLShowFolderPathToolTips", False)
+
+		'	WLMaxLinksPerFolder = CByte(Math.Clamp(RegistryHelper.GetInt("WLMaxLinksPerFolder", 30), 1, 100))
+		'	WLStartUpDelay = CShort(Math.Clamp(RegistryHelper.GetInt("WLStartUpDelay", 10), 0, 300))
+
+		'	WLAutoRefresh = RegistryHelper.GetBool("WLAutoRefresh", False)
+		'	WLAutoRefreshInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshInterval", 5), 1, 90))
+		'	WLAutoRefreshIdleInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshIdleInterval", 30), 20, 240))
+
+		'	' 3. Load complex WLData list from single JSON string
+		'	Dim json = RegistryHelper.GetString("WLDataJson", "[]")
+		'	Try
+		'		WLData = JsonSerializer.Deserialize(Of List(Of WLItemType))(json)
+		'	Catch
+		'		WLData = New List(Of WLItemType)()
+		'	End Try
+
+		'	' Set runtime flags
+		'	For i As Integer = 0 To WLData.Count - 1
+		'		Dim item = WLData(i)
+		'		item.RefreshData = True
+		'		item.RefreshMenu = True
+		'		WLData(i) = item
+		'	Next
+		'End Sub
+
+		'Private Sub SaveSettingsWL()
+		'	RegistryHelper.SetBool("WLShowFilePathToolTips", WLShowFilePathToolTips)
+		'	RegistryHelper.SetBool("WLShowFileInfoToolTips", WLShowFileInfoToolTips)
+		'	RegistryHelper.SetBool("WLShowFolderPathToolTips", WLShowFolderPathToolTips)
+		'	RegistryHelper.SetInt("WLMaxLinksPerFolder", WLMaxLinksPerFolder)
+		'	RegistryHelper.SetInt("WLStartUpDelay", WLStartUpDelay)
+		'	RegistryHelper.SetBool("WLAutoRefresh", WLAutoRefresh)
+		'	RegistryHelper.SetInt("WLAutoRefreshInterval", WLAutoRefreshInterval)
+		'	RegistryHelper.SetInt("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval)
+
+		'	' Save entire link list as a clean JSON string
+		'	SaveWLDataToJson(WLData)
+		'End Sub
+
+		'Private Sub SaveWLDataToJson(data As List(Of WLItemType))
+		'	Dim json = JsonSerializer.Serialize(data)
+		'	RegistryHelper.SetString("WLDataJson", json)
+		'End Sub
 	End Module
 
 End Namespace
