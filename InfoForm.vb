@@ -89,7 +89,7 @@ Friend Partial Class InfoForm
 		My.App.ShowLog()
 	End Sub
 	Private Sub BtnDeleteLogClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnDeleteLog.Click
-		My.App.DeleteLog()
+		'My.App.DeleteLog()
 	End Sub
 	Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
 		Me.Close()

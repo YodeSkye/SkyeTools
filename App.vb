@@ -258,12 +258,6 @@ Namespace My
 #End Region
 
 		' Declarations
-		Friend Const UseAlternateStartMethodToolTipText As String = "Will start the Application and wait the specified TimeOut before starting the next Application." _
-				+ vbCr + "This will allow an Application to fully load before starting the next one, to avoid causing traffic jams like Windows does!"
-		Friend Const UseAlternateCloseMethodToolTipText As String = "Will try to close the Application using the Standard Windows Close Method." _
-				+ vbCr + "Try this if the Primary Method fails to properly close the Application." _
-				+ vbCr + "Both methods will Force Kill the Application when the TimeOut is reached."
-		Friend Const CloseAllToolTipText As String = "RightClick = ReStart SkyeTools" + vbCr + "CtrlRightClick = ReStart In Current Context"
 		Friend Enum NotifyInterval
 			[Short]
 			[Medium]
@@ -341,8 +335,18 @@ Namespace My
 			Next
 			Return list
 		End Function
+		Friend Const UseAlternateStartMethodToolTipText As String = "Will start the Application and wait the specified TimeOut before starting the next Application." _
+				+ vbCr + "This will allow an Application to fully load before starting the next one, to avoid causing traffic jams like Windows does!"
+		Friend Const UseAlternateCloseMethodToolTipText As String = "Will try to close the Application using the Standard Windows Close Method." _
+				+ vbCr + "Try this if the Primary Method fails to properly close the Application." _
+				+ vbCr + "Both methods will Force Kill the Application when the TimeOut is reached."
+		Friend Const CloseAllToolTipText As String = "RightClick = ReStart SkyeTools" + vbCr + "CtrlRightClick = ReStart In Current Context"
+		Friend ReadOnly AdjustScreenBoundsNormalWindow As Byte = 8 ' The number of pixels to adjust the screen bounds for normal windows.
+		Friend ReadOnly AdjustScreenBoundsDialogWindow As Byte = 10 ' The number of pixels to adjust the screen bounds for dialog windows.
 		Friend AppIsClosing As Boolean = False
+		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend FrmMain As MainForm
+		Friend FrmLog As Log
 		Friend FrmBalloon As Balloon
 		Friend FrmInfo As InfoForm
 		Friend Function FrmInfoVisible() As Boolean
@@ -359,10 +363,8 @@ Namespace My
 			Return False
 		End Function
 #If DEBUG Then
-		Friend ReadOnly LogPath As String = My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "LogDEV.txt" 'LogPath is the path to the log file.
 		Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName + "DEV" 'RegPath is the path to the registry key where application settings are stored.
 #Else
-        Friend ReadOnly LogPath As String = My.Computer.FileSystem.SpecialDirectories.Temp + "\" + My.Application.Info.ProductName + "Log.txt" 'LogPath is the path to the log file.
         Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName 'RegPath is the path to the registry key where application settings are stored.
 #End If
 		Private RegKey As Microsoft.Win32.RegistryKey
@@ -373,6 +375,7 @@ Namespace My
 
 		' Methods
 		Friend Sub Initialize()
+			Skye.Common.Log.Initialize(My.Application.Info.ProductName & "DEV")
 			WriteToLog(My.App.Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
 			Debug.Print("OnStartup, Alternate Start? " + My.Application.AlternateStart.ToString)
@@ -547,39 +550,21 @@ Namespace My
 			End If
 		End Sub
 		Friend Sub ShowLog(Optional showmaximized As Boolean = False)
-			Dim logtext As String = String.Empty
-			Try : logtext = IO.File.ReadAllText(LogPath)
-			Catch
-			Finally
-				If String.IsNullOrEmpty(logtext) Then logtext = "Log Empty"
-				If showmaximized Or (FrmInfoVisible() AndAlso FrmInfo.WindowState = FormWindowState.Maximized) Then : ShowInfo(Tools.SkyeTools, "Log", logtext, LogPath, Resources.Resources.iconLog, False, False, True)
-				Else : ShowInfo(Tools.SkyeTools, "Log", logtext, LogPath, Resources.Resources.iconLog, False, False, False)
-				End If
-			End Try
+			If FrmLog Is Nothing Then
+				FrmLog = New Log
+				FrmLog.LogViewer.Tip.Font = MenuFont
+				FrmLog.Show()
+			Else
+				FrmLog.BringToFront()
+				FrmLog.Focus()
+			End If
+			If showmaximized Then FrmLog.WindowState = FormWindowState.Maximized
+			FrmLog.BTNOK.Select()
 		End Sub
-		Friend Sub WriteToLog(tool As Tools, logtext As String)
-			Static fi As IO.FileInfo
-			Try
-				fi = New IO.FileInfo(LogPath)
-				If fi.Exists AndAlso fi.Length >= 1000000 Then IO.File.Move(LogPath, LogPath.Insert(LogPath.Length - 4, "Backup" + "@" + My.Computer.Clock.LocalTime.ToString("yyyyMMdd") + "@" + My.Computer.Clock.LocalTime.ToString("HHmmss")))
-				IO.File.AppendAllText(LogPath, My.Computer.Clock.LocalTime.ToString("yyyy/MM/dd") + " @ " + My.Computer.Clock.LocalTime.ToString("HH:mm:ss") + " <" + tool.ToString + "> " + logtext + Chr(13))
-				Debug.Print("WriteToLog: " + My.Computer.Clock.LocalTime.ToString("yyyy/MM/dd") + " @ " + My.Computer.Clock.LocalTime.ToString("HH:mm:ss") + " <" + tool.ToString + "> " + logtext)
-			Catch
-			Finally : fi = Nothing
-			End Try
-		End Sub
-		Friend Sub DeleteLog()
-			Try : My.Computer.FileSystem.DeleteFile(LogPath, Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs, Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin)
-			Catch
-			Finally : FrmInfo.Close()
-			End Try
-		End Sub
-		''' <summary>
-		''' Suspends, or puts to sleep, the application for the specified period.
-		''' </summary>
-		''' <param name="period">The number of seconds to sleep.</param>
-		Friend Sub AppSleep(period As Byte)
-			If period > 0 Then Threading.Thread.Sleep(period * 1000)
+		Friend Sub WriteToLog(tool As Tools, text As String)
+			Dim logentry As String = $"{tool} --> {text}"
+			Skye.Common.Log.Write(logentry)
+			Debug.Print("WriteToLog: " & logentry)
 		End Sub
 		Friend Sub StartFile(file As FileType)
 			Try
@@ -1213,7 +1198,7 @@ Namespace My
 			'WinLinks (WL)
 			WSTShowWLMenu = True
 			WSTShowWLTray = True
-			WLStartUpDelay = 5 '0 = Disable Delay, Load Immediately
+			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
 			GetSettingsDebugWL()
 		End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHK()
