@@ -373,7 +373,13 @@ Namespace My
 
 		' Methods
 		Friend Sub Initialize()
-			Skye.Common.Log.Initialize(My.Application.Info.ProductName & "DEV")
+#If DEBUG Then
+			Dim baseName As String = My.Application.Info.ProductName & "DEV"
+#Else
+			Dim baseName As String = My.Application.Info.ProductName
+#End If
+			Skye.Common.Log.Initialize(baseName)
+			Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
 			WriteToLog(My.App.Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
 			Debug.Print("OnStartup, Alternate Start? " + My.Application.AlternateStart.ToString)
@@ -396,11 +402,6 @@ Namespace My
 			GetSettingsWL()
 
 			RegKey.Close()
-
-			'				#If DEBUG
-			'					GetSettingsDebug
-			'				#End If
-
 			HCGenerateActionList()
 			HKGenerateKeyList()
 		End Sub
@@ -601,6 +602,50 @@ Namespace My
 		End Function
 		Private Sub TimerBalloonTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerBalloon.Tick
 			HideBalloon()
+		End Sub
+		Private Sub UpgradeLegacyWLSettings()
+			' Check if legacy "WL" subkey exists under BaseKey
+			Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
+			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+				If key Is Nothing Then Return ' No legacy settings to migrate
+			End Using
+			Dim legacyLinks As New List(Of WLItemType)()
+
+			' Read old format
+			Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+				For Each subKeyName In wlKey.GetSubKeyNames()
+					Using itemKey = wlKey.OpenSubKey(subKeyName)
+						If itemKey Is Nothing Then Continue For
+
+						Dim rootPath = itemKey.GetValue("", "").ToString()
+						If String.IsNullOrEmpty(rootPath) Then Continue For
+						Dim link As New WLItemType(rootPath) With {
+							.Name = itemKey.GetValue("Name", "").ToString(),
+							.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
+							.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
+							.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
+							.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
+							.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
+						}
+						Dim result As Boolean
+						result = [Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
+						result = [Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
+						result = [Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
+
+						legacyLinks.Add(link)
+					End Using
+				Next
+			End Using
+
+			' Save in new JSON format
+			Dim json = JsonSerializer.Serialize(legacyLinks)
+			RegistryHelper.SetString("WLData", json)
+
+			' Remove legacy registry tree
+			'Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
+			'	baseKey?.DeleteSubKeyTree("WL", False)
+			'End Using
+
 		End Sub
 		Private Sub GetSettingsHC()
 			Dim TypeHCAction As Type = GetType(HCAction)
@@ -958,91 +1003,118 @@ Namespace My
 			End Select
 		End Sub
 		Private Sub GetSettingsWL()
-			Select Case RegKey.GetValue("WLShowFilePathToolTips", "False").ToString
-				Case "True", "1" : WLShowFilePathToolTips = True
-				Case Else : WLShowFilePathToolTips = False
-			End Select
-			Select Case RegKey.GetValue("WLShowFileInfoToolTips", "False").ToString
-				Case "True", "1" : WLShowFileInfoToolTips = True
-				Case Else : WLShowFileInfoToolTips = False
-			End Select
-			Select Case RegKey.GetValue("WLShowFolderPathToolTips", "False").ToString
-				Case "True", "1" : WLShowFolderPathToolTips = True
-				Case Else : WLShowFolderPathToolTips = False
-			End Select
+			UpgradeLegacyWLSettings()
+
+			WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
+			WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
+			WLShowFolderPathToolTips = RegistryHelper.GetBool("WLShowFolderPathToolTips", False)
+			WLMaxLinksPerFolder = CByte(Math.Clamp(RegistryHelper.GetInt("WLMaxLinksPerFolder", 30), 1, 100))
+			WLStartUpDelay = CShort(Math.Clamp(RegistryHelper.GetInt("WLStartUpDelay", 10), 0, 300))
+			WLAutoRefresh = RegistryHelper.GetBool("WLAutoRefresh", False)
+			WLAutoRefreshInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshInterval", 5), 1, 90))
+			WLAutoRefreshIdleInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshIdleInterval", 30), 20, 240))
+			Dim json = RegistryHelper.GetString("WLDataJson", "[]")
 			Try
-				WLMaxLinksPerFolder = CByte(Val(RegKey.GetValue("WLMaxLinksPerFolder", "30")))
-				If WLMaxLinksPerFolder < 1 Or WLMaxLinksPerFolder > 100 Then WLMaxLinksPerFolder = 30
-			Catch : WLMaxLinksPerFolder = 30
-			End Try
-			Try
-				WLStartUpDelay = CShort(Val(RegKey.GetValue("WLStartUpDelay", "10")))
-				If (WLStartUpDelay < 5 Or WLStartUpDelay > 300) And WLStartUpDelay <> 0 Then WLStartUpDelay = 10
+				WLData = JsonSerializer.Deserialize(Of List(Of WLItemType))(json)
 			Catch
-				WLStartUpDelay = 10
+				WLData = New List(Of WLItemType)()
 			End Try
-			Select Case RegKey.GetValue("WLAutoRefresh", "False").ToString
-				Case "True", "1" : WLAutoRefresh = True
-				Case Else : WLAutoRefresh = False
-			End Select
-			Try
-				WLAutoRefreshInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshInterval", "5")))
-				If WLAutoRefreshInterval < 1 Or WLAutoRefreshInterval > 90 Then WLAutoRefreshInterval = 5
-			Catch : WLAutoRefreshInterval = 5
-			End Try
-			Try
-				WLAutoRefreshIdleInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshIdleInterval", "30")))
-				If WLAutoRefreshIdleInterval < 20 Or WLAutoRefreshIdleInterval > 240 Then WLAutoRefreshIdleInterval = 30
-			Catch : WLAutoRefreshIdleInterval = 30
-			End Try
-			WLData.Clear()
-			RegSubKey = RegKey.CreateSubKey("WL")
-			Dim WLSortOrderType As Type = GetType(SortOrder)
-			Dim WLFolderModeType As Type = GetType(WLFolderMode)
-			Dim WLFolderPlacementType As Type = GetType(WLFolderPlacement)
-			For index As Integer = 1 To RegSubKey.SubKeyCount
-				RegItemKey = RegSubKey.OpenSubKey("Link" + (index).ToString.Trim, True)
-				Dim link As New WLItemType With {
-					.Root = RegItemKey.GetValue("", "").ToString}
-				If Not String.IsNullOrEmpty(link.Root) Then
-					link.Name = RegItemKey.GetValue("Name", "").ToString
-					Try : link.Sort = DirectCast(SortOrder.Parse(WLSortOrderType, RegItemKey.GetValue("Sort", "Ascending").ToString), SortOrder)
-					Catch : link.Sort = SortOrder.Ascending
-					End Try
-					Try : link.FolderMode = DirectCast(WLFolderMode.Parse(WLFolderModeType, RegItemKey.GetValue("FolderMode", "NoFolders").ToString), WLFolderMode)
-					Catch : link.FolderMode = WLFolderMode.NoFolders
-					End Try
-					Try : link.FolderPlacement = DirectCast(WLFolderPlacement.Parse(WLFolderPlacementType, RegItemKey.GetValue("FolderPlacement", "Top").ToString), WLFolderPlacement)
-					Catch : link.FolderPlacement = WLFolderPlacement.Top
-					End Try
-					Select Case RegItemKey.GetValue("UseDefaultIcon", "False").ToString
-						Case "True", "1" : link.UseDefaultIcon = True
-						Case Else : link.UseDefaultIcon = False
-					End Select
-					Select Case RegItemKey.GetValue("ShowInMenu", "True").ToString
-						Case "False", "0" : link.ShowInMenu = False
-						Case Else : link.ShowInMenu = True
-					End Select
-					Select Case RegItemKey.GetValue("ShowInTray", "True").ToString
-						Case "False", "0" : link.ShowInTray = False
-						Case Else : link.ShowInTray = True
-					End Select
-					Select Case RegItemKey.GetValue("ShowNoMenu", "False").ToString
-						Case "True", "1" : link.ShowNoMenu = True
-						Case Else : link.ShowNoMenu = False
-					End Select
-					Select Case RegItemKey.GetValue("ShowMenuIcons", "True").ToString
-						Case "False", "0" : link.ShowMenuIcons = False
-						Case Else : link.ShowMenuIcons = True
-					End Select
-					link.RefreshData = True
-					link.RefreshMenu = True
-					WLData.Add(link)
-				End If
-				RegItemKey.Close()
+
+			' Set runtime flags
+			For i As Integer = 0 To WLData.Count - 1
+				Dim item = WLData(i)
+				item.RefreshData = True
+				item.RefreshMenu = True
+				WLData(i) = item
 			Next
-			RegSubKey.Close()
+
 		End Sub
+		'Private Sub GetSettingsWL()
+		'	Select Case RegKey.GetValue("WLShowFilePathToolTips", "False").ToString
+		'		Case "True", "1" : WLShowFilePathToolTips = True
+		'		Case Else : WLShowFilePathToolTips = False
+		'	End Select
+		'	Select Case RegKey.GetValue("WLShowFileInfoToolTips", "False").ToString
+		'		Case "True", "1" : WLShowFileInfoToolTips = True
+		'		Case Else : WLShowFileInfoToolTips = False
+		'	End Select
+		'	Select Case RegKey.GetValue("WLShowFolderPathToolTips", "False").ToString
+		'		Case "True", "1" : WLShowFolderPathToolTips = True
+		'		Case Else : WLShowFolderPathToolTips = False
+		'	End Select
+		'	Try
+		'		WLMaxLinksPerFolder = CByte(Val(RegKey.GetValue("WLMaxLinksPerFolder", "30")))
+		'		If WLMaxLinksPerFolder < 1 Or WLMaxLinksPerFolder > 100 Then WLMaxLinksPerFolder = 30
+		'	Catch : WLMaxLinksPerFolder = 30
+		'	End Try
+		'	Try
+		'		WLStartUpDelay = CShort(Val(RegKey.GetValue("WLStartUpDelay", "10")))
+		'		If (WLStartUpDelay < 5 Or WLStartUpDelay > 300) And WLStartUpDelay <> 0 Then WLStartUpDelay = 10
+		'	Catch
+		'		WLStartUpDelay = 10
+		'	End Try
+		'	Select Case RegKey.GetValue("WLAutoRefresh", "False").ToString
+		'		Case "True", "1" : WLAutoRefresh = True
+		'		Case Else : WLAutoRefresh = False
+		'	End Select
+		'	Try
+		'		WLAutoRefreshInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshInterval", "5")))
+		'		If WLAutoRefreshInterval < 1 Or WLAutoRefreshInterval > 90 Then WLAutoRefreshInterval = 5
+		'	Catch : WLAutoRefreshInterval = 5
+		'	End Try
+		'	Try
+		'		WLAutoRefreshIdleInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshIdleInterval", "30")))
+		'		If WLAutoRefreshIdleInterval < 20 Or WLAutoRefreshIdleInterval > 240 Then WLAutoRefreshIdleInterval = 30
+		'	Catch : WLAutoRefreshIdleInterval = 30
+		'	End Try
+		'	WLData.Clear()
+		'	RegSubKey = RegKey.CreateSubKey("WL")
+		'	Dim WLSortOrderType As Type = GetType(SortOrder)
+		'	Dim WLFolderModeType As Type = GetType(WLFolderMode)
+		'	Dim WLFolderPlacementType As Type = GetType(WLFolderPlacement)
+		'	For index As Integer = 1 To RegSubKey.SubKeyCount
+		'		RegItemKey = RegSubKey.OpenSubKey("Link" + (index).ToString.Trim, True)
+		'		Dim link As New WLItemType With {
+		'			.Root = RegItemKey.GetValue("", "").ToString}
+		'		If Not String.IsNullOrEmpty(link.Root) Then
+		'			link.Name = RegItemKey.GetValue("Name", "").ToString
+		'			Try : link.Sort = DirectCast(SortOrder.Parse(WLSortOrderType, RegItemKey.GetValue("Sort", "Ascending").ToString), SortOrder)
+		'			Catch : link.Sort = SortOrder.Ascending
+		'			End Try
+		'			Try : link.FolderMode = DirectCast(WLFolderMode.Parse(WLFolderModeType, RegItemKey.GetValue("FolderMode", "NoFolders").ToString), WLFolderMode)
+		'			Catch : link.FolderMode = WLFolderMode.NoFolders
+		'			End Try
+		'			Try : link.FolderPlacement = DirectCast(WLFolderPlacement.Parse(WLFolderPlacementType, RegItemKey.GetValue("FolderPlacement", "Top").ToString), WLFolderPlacement)
+		'			Catch : link.FolderPlacement = WLFolderPlacement.Top
+		'			End Try
+		'			Select Case RegItemKey.GetValue("UseDefaultIcon", "False").ToString
+		'				Case "True", "1" : link.UseDefaultIcon = True
+		'				Case Else : link.UseDefaultIcon = False
+		'			End Select
+		'			Select Case RegItemKey.GetValue("ShowInMenu", "True").ToString
+		'				Case "False", "0" : link.ShowInMenu = False
+		'				Case Else : link.ShowInMenu = True
+		'			End Select
+		'			Select Case RegItemKey.GetValue("ShowInTray", "True").ToString
+		'				Case "False", "0" : link.ShowInTray = False
+		'				Case Else : link.ShowInTray = True
+		'			End Select
+		'			Select Case RegItemKey.GetValue("ShowNoMenu", "False").ToString
+		'				Case "True", "1" : link.ShowNoMenu = True
+		'				Case Else : link.ShowNoMenu = False
+		'			End Select
+		'			Select Case RegItemKey.GetValue("ShowMenuIcons", "True").ToString
+		'				Case "False", "0" : link.ShowMenuIcons = False
+		'				Case Else : link.ShowMenuIcons = True
+		'			End Select
+		'			link.RefreshData = True
+		'			link.RefreshMenu = True
+		'			WLData.Add(link)
+		'		End If
+		'		RegItemKey.Close()
+		'	Next
+		'	RegSubKey.Close()
+		'End Sub
 		Private Sub SaveSettingsHC()
 			RegKey.SetValue("HCWSTLeft", HCWSTLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
 			RegKey.SetValue("HCWSTDouble", HCWSTDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
@@ -1136,34 +1208,46 @@ Namespace My
 			RegKey.SetValue("ACThirdQuarterHourAfterChimeEnabled", ACThirdQuarterHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
 		End Sub
 		Private Sub SaveSettingsWL()
-			RegKey.SetValue("WLShowFilePathToolTips", WLShowFilePathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLShowFileInfoToolTips", WLShowFileInfoToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLShowFolderPathToolTips", WLShowFolderPathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLMaxLinksPerFolder", WLMaxLinksPerFolder.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLStartUpDelay", WLStartUpDelay.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLAutoRefresh", WLAutoRefresh.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLAutoRefreshInterval", WLAutoRefreshInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegSubKey = RegKey.OpenSubKey("WL", True)
-			For Each s As String In RegSubKey.GetSubKeyNames : RegSubKey.DeleteSubKeyTree(s) : Next
-			If WLData.Count > 0 Then
-				For index As Integer = 0 To WLData.Count - 1
-					RegItemKey = RegSubKey.CreateSubKey("Link" + (index + 1).ToString.Trim)
-					RegItemKey.SetValue("", WLData(index).Root, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Name", WLData(index).Name, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("Sort", WLData(index).Sort.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("FolderMode", WLData(index).FolderMode.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("FolderPlacement", WLData(index).FolderPlacement.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("UseDefaultIcon", WLData(index).UseDefaultIcon.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("ShowInMenu", WLData(index).ShowInMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("ShowInTray", WLData(index).ShowInTray.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("ShowNoMenu", WLData(index).ShowNoMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.SetValue("ShowMenuIcons", WLData(index).ShowMenuIcons.ToString, Microsoft.Win32.RegistryValueKind.String)
-					RegItemKey.Close()
-				Next
-			End If
-			RegSubKey.Close()
+			RegistryHelper.SetBool("WLShowFilePathToolTips", WLShowFilePathToolTips)
+			RegistryHelper.SetBool("WLShowFileInfoToolTips", WLShowFileInfoToolTips)
+			RegistryHelper.SetBool("WLShowFolderPathToolTips", WLShowFolderPathToolTips)
+			RegistryHelper.SetInt("WLMaxLinksPerFolder", WLMaxLinksPerFolder)
+			RegistryHelper.SetInt("WLStartUpDelay", WLStartUpDelay)
+			RegistryHelper.SetBool("WLAutoRefresh", WLAutoRefresh)
+			RegistryHelper.SetInt("WLAutoRefreshInterval", WLAutoRefreshInterval)
+			RegistryHelper.SetInt("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval)
+			Dim json = JsonSerializer.Serialize(WLData)
+			RegistryHelper.SetString("WLData", json)
 		End Sub
+		'Private Sub SaveSettingsWL()
+		'	RegKey.SetValue("WLShowFilePathToolTips", WLShowFilePathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLShowFileInfoToolTips", WLShowFileInfoToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLShowFolderPathToolTips", WLShowFolderPathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLMaxLinksPerFolder", WLMaxLinksPerFolder.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLStartUpDelay", WLStartUpDelay.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLAutoRefresh", WLAutoRefresh.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLAutoRefreshInterval", WLAutoRefreshInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegKey.SetValue("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'	RegSubKey = RegKey.OpenSubKey("WL", True)
+		'	For Each s As String In RegSubKey.GetSubKeyNames : RegSubKey.DeleteSubKeyTree(s) : Next
+		'	If WLData.Count > 0 Then
+		'		For index As Integer = 0 To WLData.Count - 1
+		'			RegItemKey = RegSubKey.CreateSubKey("Link" + (index + 1).ToString.Trim)
+		'			RegItemKey.SetValue("", WLData(index).Root, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("Name", WLData(index).Name, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("Sort", WLData(index).Sort.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("FolderMode", WLData(index).FolderMode.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("FolderPlacement", WLData(index).FolderPlacement.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("UseDefaultIcon", WLData(index).UseDefaultIcon.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("ShowInMenu", WLData(index).ShowInMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("ShowInTray", WLData(index).ShowInTray.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("ShowNoMenu", WLData(index).ShowNoMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.SetValue("ShowMenuIcons", WLData(index).ShowMenuIcons.ToString, Microsoft.Win32.RegistryValueKind.String)
+		'			RegItemKey.Close()
+		'		Next
+		'	End If
+		'	RegSubKey.Close()
+		'End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			HKEnabled = False
 			GetSettingsDebugHK()
@@ -1197,7 +1281,7 @@ Namespace My
 			WSTShowWLMenu = True
 			WSTShowWLTray = True
 			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
-			GetSettingsDebugWL()
+			'GetSettingsDebugWL()
 		End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHK()
 			If HKEnabled Then
@@ -1240,103 +1324,6 @@ Namespace My
 
 		End Sub
 
-		'Imports System.Text.Json
-		'Private Sub UpgradeLegacyWLSettings()
-		'	' Check if legacy "WL" subkey exists under BaseKey
-		'	Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
-
-		'	Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-		'		If key Is Nothing Then Return ' No legacy settings to migrate
-		'	End Using
-
-		'	Dim legacyLinks As New List(Of WLItemType)()
-
-		'	' Read old format
-		'	Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-		'		For Each subKeyName In wlKey.GetSubKeyNames()
-		'			Using itemKey = wlKey.OpenSubKey(subKeyName)
-		'				If itemKey Is Nothing Then Continue For
-
-		'				Dim rootPath = itemKey.GetValue("", "").ToString()
-		'				If String.IsNullOrEmpty(rootPath) Then Continue For
-
-		'				Dim link As New WLItemType(rootPath) With {
-		'					.Name = itemKey.GetValue("Name", "").ToString(),
-		'					.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
-		'					.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
-		'					.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
-		'					.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
-		'					.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
-		'				}
-
-		'				[Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
-		'				[Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
-		'				[Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
-
-		'				legacyLinks.Add(link)
-		'			End Using
-		'		Next
-		'	End Using
-
-		'	' Save in new JSON format & remove legacy registry tree
-		'	SaveWLDataToJson(legacyLinks)
-
-		'	Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
-		'		baseKey?.DeleteSubKeyTree("WL", False)
-		'	End Using
-		'End Sub
-
-		'Private Sub GetSettingsWL()
-		'	' 1. Run migration check automatically
-		'	UpgradeLegacyWLSettings()
-
-		'	' 2. Simple scalar settings using RegistryHelper
-		'	WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
-		'	WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
-		'	WLShowFolderPathToolTips = RegistryHelper.GetBool("WLShowFolderPathToolTips", False)
-
-		'	WLMaxLinksPerFolder = CByte(Math.Clamp(RegistryHelper.GetInt("WLMaxLinksPerFolder", 30), 1, 100))
-		'	WLStartUpDelay = CShort(Math.Clamp(RegistryHelper.GetInt("WLStartUpDelay", 10), 0, 300))
-
-		'	WLAutoRefresh = RegistryHelper.GetBool("WLAutoRefresh", False)
-		'	WLAutoRefreshInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshInterval", 5), 1, 90))
-		'	WLAutoRefreshIdleInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshIdleInterval", 30), 20, 240))
-
-		'	' 3. Load complex WLData list from single JSON string
-		'	Dim json = RegistryHelper.GetString("WLDataJson", "[]")
-		'	Try
-		'		WLData = JsonSerializer.Deserialize(Of List(Of WLItemType))(json)
-		'	Catch
-		'		WLData = New List(Of WLItemType)()
-		'	End Try
-
-		'	' Set runtime flags
-		'	For i As Integer = 0 To WLData.Count - 1
-		'		Dim item = WLData(i)
-		'		item.RefreshData = True
-		'		item.RefreshMenu = True
-		'		WLData(i) = item
-		'	Next
-		'End Sub
-
-		'Private Sub SaveSettingsWL()
-		'	RegistryHelper.SetBool("WLShowFilePathToolTips", WLShowFilePathToolTips)
-		'	RegistryHelper.SetBool("WLShowFileInfoToolTips", WLShowFileInfoToolTips)
-		'	RegistryHelper.SetBool("WLShowFolderPathToolTips", WLShowFolderPathToolTips)
-		'	RegistryHelper.SetInt("WLMaxLinksPerFolder", WLMaxLinksPerFolder)
-		'	RegistryHelper.SetInt("WLStartUpDelay", WLStartUpDelay)
-		'	RegistryHelper.SetBool("WLAutoRefresh", WLAutoRefresh)
-		'	RegistryHelper.SetInt("WLAutoRefreshInterval", WLAutoRefreshInterval)
-		'	RegistryHelper.SetInt("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval)
-
-		'	' Save entire link list as a clean JSON string
-		'	SaveWLDataToJson(WLData)
-		'End Sub
-
-		'Private Sub SaveWLDataToJson(data As List(Of WLItemType))
-		'	Dim json = JsonSerializer.Serialize(data)
-		'	RegistryHelper.SetString("WLDataJson", json)
-		'End Sub
 	End Module
 
 End Namespace
