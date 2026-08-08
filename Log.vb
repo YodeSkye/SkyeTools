@@ -12,13 +12,12 @@ Public Class Log
     ' FORM EVENTS
     Private Sub Log_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'Skye.UI.ThemeManager.RegisterComponent(TipLog)
-        'Skye.UI.ThemeManager.RegisterComponent(TipAlert)
-        'Skye.UI.ThemeManager.ApplyTheme(Me)
+        Skye.UI.ThemeManager.RegisterComponent(TipLog)
+        Skye.UI.ThemeManager.RegisterComponent(TipAlert)
+        Skye.UI.ThemeManager.ApplyTheme(Me)
 
         Text = My.Application.Info.ProductName + " Log"
         LBLLogInfo.Text = Skye.Common.Log.LogFilePath
-        RTBCMLog.Font = App.MenuFont
         TimerDeleteLog.Interval = 5000
     End Sub
     Private Sub Log_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed

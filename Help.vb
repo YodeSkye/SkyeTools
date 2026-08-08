@@ -10,7 +10,7 @@ Partial Friend Class Help
 	' Form Events
 	Friend Sub New()
 		InitializeComponent()
-		'Skye.UI.ThemeManager.ApplyTheme(Me)
+		Skye.UI.ThemeManager.ApplyTheme(Me)
 	End Sub
 	Private Sub Help_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
 		App.FrmHelp?.Dispose()

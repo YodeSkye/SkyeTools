@@ -24,7 +24,6 @@ Partial Class Log
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Log))
-        RTBCMLog = New Skye.UI.RichTextBoxContextMenu()
         BTNOK = New Button()
         BTNDeleteLog = New Button()
         LBLLogInfo = New Skye.UI.Label()
@@ -32,16 +31,6 @@ Partial Class Log
         LogViewer = New Skye.UI.Log.LogViewerControl()
         TipAlert = New Skye.UI.ToolTipEX(components)
         SuspendLayout()
-        ' 
-        ' RTBCMLog
-        ' 
-        RTBCMLog.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipLog.SetImage(RTBCMLog, Nothing)
-        TipAlert.SetImage(RTBCMLog, Nothing)
-        RTBCMLog.Name = "RTBCMLog"
-        RTBCMLog.Size = New Size(129, 148)
-        TipLog.SetText(RTBCMLog, Nothing)
-        TipAlert.SetText(RTBCMLog, Nothing)
         ' 
         ' BTNOK
         ' 
@@ -133,7 +122,6 @@ Partial Class Log
     End Sub
     Friend WithEvents BTNOK As Button
     Friend WithEvents BTNDeleteLog As Button
-    Friend WithEvents RTBCMLog As Skye.UI.RichTextBoxContextMenu
     Friend WithEvents LBLLogInfo As Skye.UI.Label
     Friend WithEvents TipLog As Skye.UI.ToolTipEX
     Friend WithEvents TipAlert As Skye.UI.ToolTipEX

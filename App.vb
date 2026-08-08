@@ -2,6 +2,7 @@
 Imports System.Text.Json
 Imports System.Text.Json.Serialization
 Imports Skye.Common
+Imports Skye.UI
 
 Namespace My
 
@@ -110,6 +111,8 @@ Namespace My
 		Friend WSTShowShutDown As Boolean
 		Friend WSTShowHelp As Boolean
 		Friend WSTShowLog As Boolean
+		Friend Theme As Skye.UI.SkyeTheme
+		Friend ThemeAuto As Boolean
 
 		' Declarations
 		Friend Enum ClockSize
@@ -246,8 +249,8 @@ Namespace My
 
 #End Region
 
-		' Declarations
-		Friend Enum NotifyInterval
+        ' DECLARATIONS
+        Friend Enum NotifyInterval
 			[Short]
 			[Medium]
 			[Long]
@@ -341,6 +344,13 @@ Namespace My
 		Private BalloonHideEnabled As Boolean
 		Private WithEvents TimerBalloon As New Timer
 
+		' HANDLERS
+		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
+			For Each f As Form In Application.OpenForms
+				ThemeManager.ApplyTheme(f)
+			Next
+		End Sub
+
 		' METHODS
 		Friend Sub Initialize()
 #If DEBUG Then
@@ -358,6 +368,9 @@ Namespace My
 			GetSettingsDebug()
 #End If
 			FrmMain = New MainForm
+			Dim selectedTheme As Skye.UI.SkyeTheme = If(ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), Theme)
+			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
+			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 		End Sub
 		Friend Sub Finalize()
 			WriteToLog(My.App.Tools.SkyeTools, "..." + My.Application.Info.ProductName + " Closed")
@@ -423,9 +436,13 @@ Namespace My
 				   .Title = title,
 				   .Message = message,
 				   .Icon = icon,
-				   .Duration = 6000
+				   .Duration = 6000,
+				   .MessageFont = MenuFont,
+				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
+				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
+				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder
 			   }
-            Skye.UI.Toast.ShowToast(t)
+			Skye.UI.Toast.ShowToast(t)
 			WriteToLog(tool, title & " --> " & message)
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
@@ -684,6 +701,11 @@ Namespace My
 			WSTShowWLMenu = RegistryHelper.GetBool("WSTShowWLMenu", False)
 			WSTShowWLTray = RegistryHelper.GetBool("WSTShowWLTray", False)
 
+			' Theme
+			Dim themeName As String = Skye.Common.RegistryHelper.GetString("Theme", "Light")
+			Theme = Skye.UI.SkyeThemes.GetTheme(themeName)
+			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
+
 		End Sub
 		Private Sub GetSettingsAC()
 
@@ -830,6 +852,10 @@ Namespace My
 			RegistryHelper.SetBool("WSTShowAC", WSTShowAC)
 			RegistryHelper.SetBool("WSTShowWLMenu", WSTShowWLMenu)
 			RegistryHelper.SetBool("WSTShowWLTray", WSTShowWLTray)
+
+			' Theme
+			Skye.Common.RegistryHelper.SetString("Theme", Theme.Name)
+			Skye.Common.RegistryHelper.SetBool("ThemeAuto", ThemeAuto)
 
 		End Sub
 		Private Sub SaveSettingsAC()
