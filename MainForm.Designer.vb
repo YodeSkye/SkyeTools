@@ -18,8 +18,6 @@
         cmiWSTACAlarmCancel = New ToolStripMenuItem()
         cmseparatorWSTCancel = New ToolStripSeparator()
         cmseparatorWSTTopSpacer = New ToolStripSeparator()
-        cmiWSTTaskManager = New ToolStripMenuItem()
-        cmiWSTCommandPrompt = New ToolStripMenuItem()
         cmiWSTScreenSaverActivate = New ToolStripMenuItem()
         cmiWSTScreenSaverEnabled = New ToolStripMenuItem()
         cmseparatorWSTWLTop = New ToolStripSeparator()
@@ -48,8 +46,6 @@
         checkboxWSTShowSleep = New CheckBox()
         checkboxWSTSSToolEnabled = New CheckBox()
         checkboxWSTShowLog = New CheckBox()
-        lblWSTTaskManagerPath = New Label()
-        lblWSTCommandPromptPath = New Label()
         checkboxWSTShowReStart = New CheckBox()
         checkboxWSTShowShutDown = New CheckBox()
         checkboxWSTShowHibernate = New CheckBox()
@@ -69,16 +65,10 @@
         checkboxWSTShowScreenSaverEnabled = New CheckBox()
         checkboxWSTShowScreenSaverActivate = New CheckBox()
         checkboxWSTShowScreenSaverIcon = New CheckBox()
-        checkboxWSTShowTaskManager = New CheckBox()
         btnLoadOnOSStartupPath = New Button()
-        checkboxWSTShowCommandPrompt = New CheckBox()
-        txbxWSTTaskManagerArgs = New TextBox()
-        txbxWSTCommandPromptArgs = New TextBox()
         checkboxLoadOnOSStartup = New CheckBox()
         txbxLoadOnOSStartupArgs = New TextBox()
         checkboxWSTEnabled = New CheckBox()
-        btnWSTTaskManager = New Button()
-        btnWSTCommandPrompt = New Button()
         tabpageAC = New TabPage()
         lblACAlarmChime = New Label()
         lblACOffHourChimePath = New Label()
@@ -176,8 +166,6 @@
         label16 = New Label()
         label15 = New Label()
         tabpageHK = New TabPage()
-        textboxHKWSTCommandPrompt = New TextBox()
-        textboxHKWSTTaskManager = New TextBox()
         textboxHKWL = New TextBox()
         textboxHKWSTClock = New TextBox()
         textboxHKWSTLockWorkSpace = New TextBox()
@@ -185,15 +173,11 @@
         btnHKReset = New Button()
         textboxHKWSTScreenSaver = New TextBox()
         btnHKEnabled = New Button()
-        lblHKWSTCommandPrompt = New Label()
-        lblHKWSTTaskManager = New Label()
         lblHKWL = New Label()
         lblHKWSTClock = New Label()
         lblHKWSTStopWatch = New Label()
         lblHKWSTLockWorkSpace = New Label()
         lblHKWSTScreenSaver = New Label()
-        btnHKWSTCommandPromptDisable = New Button()
-        btnHKWSTTaskManagerDisable = New Button()
         btnHKWLDisable = New Button()
         btnHKWSTClockDisable = New Button()
         btnHKWSTLockWorkSpaceDisable = New Button()
@@ -284,9 +268,9 @@
         ' cmWST
         ' 
         cmWST.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTTaskManager, cmiWSTCommandPrompt, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
+        cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(213, 446)
+        cmWST.Size = New Size(213, 424)
         ' 
         ' cmiWSTCancelStartUp
         ' 
@@ -316,21 +300,6 @@
         cmseparatorWSTTopSpacer.AutoSize = False
         cmseparatorWSTTopSpacer.Name = "cmseparatorWSTTopSpacer"
         cmseparatorWSTTopSpacer.Size = New Size(209, 0)
-        ' 
-        ' cmiWSTTaskManager
-        ' 
-        cmiWSTTaskManager.Image = My.Resources.Resources.imageTaskManager
-        cmiWSTTaskManager.Name = "cmiWSTTaskManager"
-        cmiWSTTaskManager.ShortcutKeyDisplayString = ""
-        cmiWSTTaskManager.Size = New Size(212, 22)
-        cmiWSTTaskManager.Text = "Task Manager"
-        ' 
-        ' cmiWSTCommandPrompt
-        ' 
-        cmiWSTCommandPrompt.Image = My.Resources.Resources.imageCommandPrompt
-        cmiWSTCommandPrompt.Name = "cmiWSTCommandPrompt"
-        cmiWSTCommandPrompt.Size = New Size(212, 22)
-        cmiWSTCommandPrompt.Text = "Command Prompt"
         ' 
         ' cmiWSTScreenSaverActivate
         ' 
@@ -553,8 +522,6 @@
         tabpageWST.Controls.Add(checkboxWSTShowSleep)
         tabpageWST.Controls.Add(checkboxWSTSSToolEnabled)
         tabpageWST.Controls.Add(checkboxWSTShowLog)
-        tabpageWST.Controls.Add(lblWSTTaskManagerPath)
-        tabpageWST.Controls.Add(lblWSTCommandPromptPath)
         tabpageWST.Controls.Add(checkboxWSTShowReStart)
         tabpageWST.Controls.Add(checkboxWSTShowShutDown)
         tabpageWST.Controls.Add(checkboxWSTShowHibernate)
@@ -567,16 +534,10 @@
         tabpageWST.Controls.Add(checkboxWSTShowWLTray)
         tabpageWST.Controls.Add(checkboxWSTShowWLMenu)
         tabpageWST.Controls.Add(groupboxWSTSS)
-        tabpageWST.Controls.Add(checkboxWSTShowTaskManager)
         tabpageWST.Controls.Add(btnLoadOnOSStartupPath)
-        tabpageWST.Controls.Add(checkboxWSTShowCommandPrompt)
-        tabpageWST.Controls.Add(txbxWSTTaskManagerArgs)
-        tabpageWST.Controls.Add(txbxWSTCommandPromptArgs)
         tabpageWST.Controls.Add(checkboxLoadOnOSStartup)
         tabpageWST.Controls.Add(txbxLoadOnOSStartupArgs)
         tabpageWST.Controls.Add(checkboxWSTEnabled)
-        tabpageWST.Controls.Add(btnWSTTaskManager)
-        tabpageWST.Controls.Add(btnWSTCommandPrompt)
         tabpageWST.Location = New Point(4, 26)
         tabpageWST.Name = "tabpageWST"
         tabpageWST.Padding = New Padding(3)
@@ -612,22 +573,6 @@
         checkboxWSTShowLog.TabIndex = 68
         checkboxWSTShowLog.Text = "Show 'Log'"
         checkboxWSTShowLog.UseVisualStyleBackColor = True
-        ' 
-        ' lblWSTTaskManagerPath
-        ' 
-        lblWSTTaskManagerPath.BorderStyle = BorderStyle.FixedSingle
-        lblWSTTaskManagerPath.Location = New Point(220, 22)
-        lblWSTTaskManagerPath.Name = "lblWSTTaskManagerPath"
-        lblWSTTaskManagerPath.Size = New Size(150, 20)
-        lblWSTTaskManagerPath.TabIndex = 76
-        ' 
-        ' lblWSTCommandPromptPath
-        ' 
-        lblWSTCommandPromptPath.BorderStyle = BorderStyle.FixedSingle
-        lblWSTCommandPromptPath.Location = New Point(220, 90)
-        lblWSTCommandPromptPath.Name = "lblWSTCommandPromptPath"
-        lblWSTCommandPromptPath.Size = New Size(150, 20)
-        lblWSTCommandPromptPath.TabIndex = 81
         ' 
         ' checkboxWSTShowReStart
         ' 
@@ -821,15 +766,6 @@
         checkboxWSTShowScreenSaverIcon.Text = "Show Tray Icon"
         checkboxWSTShowScreenSaverIcon.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWSTShowTaskManager
-        ' 
-        checkboxWSTShowTaskManager.Location = New Point(220, 5)
-        checkboxWSTShowTaskManager.Name = "checkboxWSTShowTaskManager"
-        checkboxWSTShowTaskManager.Size = New Size(169, 21)
-        checkboxWSTShowTaskManager.TabIndex = 75
-        checkboxWSTShowTaskManager.Text = "Show 'Task Manager'"
-        checkboxWSTShowTaskManager.UseVisualStyleBackColor = True
-        ' 
         ' btnLoadOnOSStartupPath
         ' 
         btnLoadOnOSStartupPath.FlatAppearance.BorderSize = 0
@@ -845,31 +781,6 @@
         btnLoadOnOSStartupPath.TextAlign = ContentAlignment.MiddleLeft
         tipInfo.SetToolTip(btnLoadOnOSStartupPath, "Select An Application")
         btnLoadOnOSStartupPath.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowCommandPrompt
-        ' 
-        checkboxWSTShowCommandPrompt.Location = New Point(220, 73)
-        checkboxWSTShowCommandPrompt.Name = "checkboxWSTShowCommandPrompt"
-        checkboxWSTShowCommandPrompt.Size = New Size(178, 21)
-        checkboxWSTShowCommandPrompt.TabIndex = 80
-        checkboxWSTShowCommandPrompt.Text = "Show 'Command Prompt'"
-        checkboxWSTShowCommandPrompt.UseVisualStyleBackColor = True
-        ' 
-        ' txbxWSTTaskManagerArgs
-        ' 
-        txbxWSTTaskManagerArgs.Location = New Point(220, 41)
-        txbxWSTTaskManagerArgs.Name = "txbxWSTTaskManagerArgs"
-        txbxWSTTaskManagerArgs.Size = New Size(150, 25)
-        txbxWSTTaskManagerArgs.TabIndex = 78
-        txbxWSTTaskManagerArgs.WordWrap = False
-        ' 
-        ' txbxWSTCommandPromptArgs
-        ' 
-        txbxWSTCommandPromptArgs.Location = New Point(220, 109)
-        txbxWSTCommandPromptArgs.Name = "txbxWSTCommandPromptArgs"
-        txbxWSTCommandPromptArgs.Size = New Size(150, 25)
-        txbxWSTCommandPromptArgs.TabIndex = 83
-        txbxWSTCommandPromptArgs.WordWrap = False
         ' 
         ' checkboxLoadOnOSStartup
         ' 
@@ -897,38 +808,6 @@
         checkboxWSTEnabled.TabIndex = 10
         checkboxWSTEnabled.Text = "Show Tray Icon"
         checkboxWSTEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' btnWSTTaskManager
-        ' 
-        btnWSTTaskManager.FlatAppearance.BorderSize = 0
-        btnWSTTaskManager.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnWSTTaskManager.FlatAppearance.MouseOverBackColor = Color.Transparent
-        btnWSTTaskManager.FlatStyle = FlatStyle.Flat
-        btnWSTTaskManager.Image = My.Resources.Resources.ImageFolder
-        btnWSTTaskManager.Location = New Point(368, 21)
-        btnWSTTaskManager.Name = "btnWSTTaskManager"
-        btnWSTTaskManager.Size = New Size(21, 21)
-        btnWSTTaskManager.TabIndex = 77
-        btnWSTTaskManager.TabStop = False
-        btnWSTTaskManager.TextAlign = ContentAlignment.MiddleLeft
-        tipInfo.SetToolTip(btnWSTTaskManager, "LeftClick = Select An Application" & vbCrLf & "RightClick = Set To Defaults")
-        btnWSTTaskManager.UseVisualStyleBackColor = True
-        ' 
-        ' btnWSTCommandPrompt
-        ' 
-        btnWSTCommandPrompt.FlatAppearance.BorderSize = 0
-        btnWSTCommandPrompt.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnWSTCommandPrompt.FlatAppearance.MouseOverBackColor = Color.Transparent
-        btnWSTCommandPrompt.FlatStyle = FlatStyle.Flat
-        btnWSTCommandPrompt.Image = My.Resources.Resources.ImageFolder
-        btnWSTCommandPrompt.Location = New Point(368, 90)
-        btnWSTCommandPrompt.Name = "btnWSTCommandPrompt"
-        btnWSTCommandPrompt.Size = New Size(21, 21)
-        btnWSTCommandPrompt.TabIndex = 82
-        btnWSTCommandPrompt.TabStop = False
-        btnWSTCommandPrompt.TextAlign = ContentAlignment.MiddleLeft
-        tipInfo.SetToolTip(btnWSTCommandPrompt, "LeftClick = Select An Application" & vbCrLf & "RightClick = Set To Defaults")
-        btnWSTCommandPrompt.UseVisualStyleBackColor = True
         ' 
         ' tabpageAC
         ' 
@@ -2047,8 +1926,6 @@
         ' 
         ' tabpageHK
         ' 
-        tabpageHK.Controls.Add(textboxHKWSTCommandPrompt)
-        tabpageHK.Controls.Add(textboxHKWSTTaskManager)
         tabpageHK.Controls.Add(textboxHKWL)
         tabpageHK.Controls.Add(textboxHKWSTClock)
         tabpageHK.Controls.Add(textboxHKWSTLockWorkSpace)
@@ -2056,15 +1933,11 @@
         tabpageHK.Controls.Add(btnHKReset)
         tabpageHK.Controls.Add(textboxHKWSTScreenSaver)
         tabpageHK.Controls.Add(btnHKEnabled)
-        tabpageHK.Controls.Add(lblHKWSTCommandPrompt)
-        tabpageHK.Controls.Add(lblHKWSTTaskManager)
         tabpageHK.Controls.Add(lblHKWL)
         tabpageHK.Controls.Add(lblHKWSTClock)
         tabpageHK.Controls.Add(lblHKWSTStopWatch)
         tabpageHK.Controls.Add(lblHKWSTLockWorkSpace)
         tabpageHK.Controls.Add(lblHKWSTScreenSaver)
-        tabpageHK.Controls.Add(btnHKWSTCommandPromptDisable)
-        tabpageHK.Controls.Add(btnHKWSTTaskManagerDisable)
         tabpageHK.Controls.Add(btnHKWLDisable)
         tabpageHK.Controls.Add(btnHKWSTClockDisable)
         tabpageHK.Controls.Add(btnHKWSTLockWorkSpaceDisable)
@@ -2076,30 +1949,6 @@
         tabpageHK.TabIndex = 5
         tabpageHK.Text = """HotKeys"""
         tabpageHK.UseVisualStyleBackColor = True
-        ' 
-        ' textboxHKWSTCommandPrompt
-        ' 
-        textboxHKWSTCommandPrompt.Anchor = AnchorStyles.Top
-        textboxHKWSTCommandPrompt.Location = New Point(449, 106)
-        textboxHKWSTCommandPrompt.Name = "textboxHKWSTCommandPrompt"
-        textboxHKWSTCommandPrompt.ShortcutsEnabled = False
-        textboxHKWSTCommandPrompt.Size = New Size(143, 25)
-        textboxHKWSTCommandPrompt.TabIndex = 127
-        textboxHKWSTCommandPrompt.TabStop = False
-        textboxHKWSTCommandPrompt.TextAlign = HorizontalAlignment.Center
-        textboxHKWSTCommandPrompt.WordWrap = False
-        ' 
-        ' textboxHKWSTTaskManager
-        ' 
-        textboxHKWSTTaskManager.Anchor = AnchorStyles.Top
-        textboxHKWSTTaskManager.Location = New Point(449, 65)
-        textboxHKWSTTaskManager.Name = "textboxHKWSTTaskManager"
-        textboxHKWSTTaskManager.ShortcutsEnabled = False
-        textboxHKWSTTaskManager.Size = New Size(143, 25)
-        textboxHKWSTTaskManager.TabIndex = 124
-        textboxHKWSTTaskManager.TabStop = False
-        textboxHKWSTTaskManager.TextAlign = HorizontalAlignment.Center
-        textboxHKWSTTaskManager.WordWrap = False
         ' 
         ' textboxHKWL
         ' 
@@ -2187,26 +2036,6 @@
         btnHKEnabled.TextAlign = ContentAlignment.MiddleRight
         btnHKEnabled.UseVisualStyleBackColor = True
         ' 
-        ' lblHKWSTCommandPrompt
-        ' 
-        lblHKWSTCommandPrompt.Anchor = AnchorStyles.Top
-        lblHKWSTCommandPrompt.ForeColor = SystemColors.ControlText
-        lblHKWSTCommandPrompt.Location = New Point(449, 90)
-        lblHKWSTCommandPrompt.Name = "lblHKWSTCommandPrompt"
-        lblHKWSTCommandPrompt.Size = New Size(143, 14)
-        lblHKWSTCommandPrompt.TabIndex = 126
-        lblHKWSTCommandPrompt.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' lblHKWSTTaskManager
-        ' 
-        lblHKWSTTaskManager.Anchor = AnchorStyles.Top
-        lblHKWSTTaskManager.ForeColor = SystemColors.ControlText
-        lblHKWSTTaskManager.Location = New Point(449, 49)
-        lblHKWSTTaskManager.Name = "lblHKWSTTaskManager"
-        lblHKWSTTaskManager.Size = New Size(143, 14)
-        lblHKWSTTaskManager.TabIndex = 123
-        lblHKWSTTaskManager.TextAlign = ContentAlignment.BottomCenter
-        ' 
         ' lblHKWL
         ' 
         lblHKWL.Anchor = AnchorStyles.Top
@@ -2252,32 +2081,6 @@
         lblHKWSTScreenSaver.Size = New Size(143, 14)
         lblHKWSTScreenSaver.TabIndex = 27
         lblHKWSTScreenSaver.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' btnHKWSTCommandPromptDisable
-        ' 
-        btnHKWSTCommandPromptDisable.Anchor = AnchorStyles.Top
-        btnHKWSTCommandPromptDisable.FlatStyle = FlatStyle.Flat
-        btnHKWSTCommandPromptDisable.ForeColor = Color.Transparent
-        btnHKWSTCommandPromptDisable.Image = My.Resources.Resources.imageRemove
-        btnHKWSTCommandPromptDisable.Location = New Point(589, 108)
-        btnHKWSTCommandPromptDisable.Name = "btnHKWSTCommandPromptDisable"
-        btnHKWSTCommandPromptDisable.Size = New Size(20, 20)
-        btnHKWSTCommandPromptDisable.TabIndex = 128
-        btnHKWSTCommandPromptDisable.TabStop = False
-        btnHKWSTCommandPromptDisable.UseVisualStyleBackColor = True
-        ' 
-        ' btnHKWSTTaskManagerDisable
-        ' 
-        btnHKWSTTaskManagerDisable.Anchor = AnchorStyles.Top
-        btnHKWSTTaskManagerDisable.FlatStyle = FlatStyle.Flat
-        btnHKWSTTaskManagerDisable.ForeColor = Color.Transparent
-        btnHKWSTTaskManagerDisable.Image = My.Resources.Resources.imageRemove
-        btnHKWSTTaskManagerDisable.Location = New Point(589, 67)
-        btnHKWSTTaskManagerDisable.Name = "btnHKWSTTaskManagerDisable"
-        btnHKWSTTaskManagerDisable.Size = New Size(20, 20)
-        btnHKWSTTaskManagerDisable.TabIndex = 125
-        btnHKWSTTaskManagerDisable.TabStop = False
-        btnHKWSTTaskManagerDisable.UseVisualStyleBackColor = True
         ' 
         ' btnHKWLDisable
         ' 
@@ -2559,18 +2362,6 @@
     Private WithEvents comboboxWSTSSStartUp As System.Windows.Forms.ComboBox
     Private WithEvents checkboxWSTSSToolEnabled As System.Windows.Forms.CheckBox
     Private WithEvents groupboxWSTSS As System.Windows.Forms.GroupBox
-    Private WithEvents textboxHKWSTCommandPrompt As System.Windows.Forms.TextBox
-    Private WithEvents lblHKWSTCommandPrompt As System.Windows.Forms.Label
-    Private WithEvents btnHKWSTCommandPromptDisable As System.Windows.Forms.Button
-    Private WithEvents textboxHKWSTTaskManager As System.Windows.Forms.TextBox
-    Private WithEvents lblHKWSTTaskManager As System.Windows.Forms.Label
-    Private WithEvents btnHKWSTTaskManagerDisable As System.Windows.Forms.Button
-    Private WithEvents btnWSTTaskManager As System.Windows.Forms.Button
-    Private WithEvents btnWSTCommandPrompt As System.Windows.Forms.Button
-    Private WithEvents txbxWSTTaskManagerArgs As System.Windows.Forms.TextBox
-    Private WithEvents txbxWSTCommandPromptArgs As System.Windows.Forms.TextBox
-    Private WithEvents lblWSTTaskManagerPath As System.Windows.Forms.Label
-    Private WithEvents lblWSTCommandPromptPath As System.Windows.Forms.Label
     Private cmseparatorWSTTopSpacer As System.Windows.Forms.ToolStripSeparator
     Private WithEvents panelWL As System.Windows.Forms.Panel
     Private WithEvents cmiWLMoveUp As System.Windows.Forms.ToolStripMenuItem
@@ -2636,8 +2427,6 @@
     Private WithEvents cmiWSTSleep As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTHibernate As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTShutDown As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWSTCommandPrompt As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWSTTaskManager As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmseparatorWSTShutDownOptions As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmiWSTReStart As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTAC As System.Windows.Forms.ToolStripMenuItem
@@ -2652,8 +2441,6 @@
     Private WithEvents checkboxWSTShowSleep As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowHibernate As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowShutDown As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowTaskManager As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowCommandPrompt As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowReStart As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowAC As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowWLTray As System.Windows.Forms.CheckBox

@@ -80,8 +80,6 @@ Namespace My
 			HKKeys.Add(HKWSTLockWorkSpace)
 			HKKeys.Add(HKWSTScreenSaver)
 			HKKeys.Add(HKWSTClock)
-			HKKeys.Add(HKWSTTaskManager)
-			HKKeys.Add(HKWSTCommandPrompt)
 			HKKeys.Add(HKWL)
 		End Sub
 
@@ -89,8 +87,6 @@ Namespace My
 		Friend HKWSTLockWorkSpace As New HKType
 		Friend HKWSTScreenSaver As New HKType
 		Friend HKWSTClock As New HKType
-		Friend HKWSTTaskManager As New HKType
-		Friend HKWSTCommandPrompt As New HKType
 		Friend HKWL As New HKType
 		Friend HKKeys As New Collections.Generic.List(Of HKType)
 		Friend HKEnabled As Boolean
@@ -103,10 +99,6 @@ Namespace My
 		Friend WSTLoadOnOSStartup As Boolean
 		Friend WSTLoadOnOSStartupPath As FileType
 		Friend WSTEnabled As Boolean
-		Friend WSTShowTaskManager As Boolean
-		Friend WSTTaskManager As FileType
-		Friend WSTShowCommandPrompt As Boolean
-		Friend WSTCommandPrompt As FileType
 		Friend WSTShowClock As Boolean
 		Friend WSTClockLocation As Point
 		Friend WSTClockSize As ClockSize
@@ -579,8 +571,6 @@ Namespace My
 			'WSTLoadOnOSStartup = True
 			'WSTLoadOnOSStartupPath = New FileType("C:\Tools\YMTag.exe", "test args")
 			WSTEnabled = True
-			WSTShowTaskManager = False
-			WSTShowCommandPrompt = False
 			WSTShowClock = True
 			'WSTClockSize = ClockSize.Medium
 			WSTShowLockWorkSpace = False
@@ -691,8 +681,6 @@ Namespace My
 			GetHK(HKWSTLockWorkSpace, "HKWSTLockWorkSpace", "Lock WorkSpace", 1, CType(262163, Keys), 19, 2)
 			GetHK(HKWSTScreenSaver, "HKWSTScreenSaver", "Activate Screen Saver", 2, Keys.Pause, 19, 0)
 			GetHK(HKWSTClock, "HKWSTClock", "Clock", 4, Keys.F8, 119, 0)
-			GetHK(HKWSTTaskManager, "HKWSTTaskManager", "Task Manager", 5, Keys.None, 0, 0)
-			GetHK(HKWSTCommandPrompt, "HKWSTCommandPrompt", "Command Prompt", 6, Keys.None, 0, 0)
 			GetHK(HKWL, "HKWL", "Open WinLink Root Folder", 15, Keys.None, 0, 0)
 
 		End Sub
@@ -719,18 +707,6 @@ Namespace My
 				RegistryHelper.GetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPathDefault.Arguments)
 			)
 			WSTEnabled = RegistryHelper.GetBool("WSTEnabled", True)
-
-			' Task Manager & Command Prompt
-			WSTShowTaskManager = RegistryHelper.GetBool("WSTShowTaskManager", True)
-			WSTTaskManager = New FileType(
-				RegistryHelper.GetString("WSTTaskManagerPath", WSTTaskManagerDefault.Path),
-				RegistryHelper.GetString("WSTTaskManagerArgs", WSTTaskManagerDefault.Arguments)
-			)
-			WSTShowCommandPrompt = RegistryHelper.GetBool("WSTShowCommandPrompt", True)
-			WSTCommandPrompt = New FileType(
-				RegistryHelper.GetString("WSTCommandPromptPath", WSTCommandPromptDefault.Path),
-				RegistryHelper.GetString("WSTCommandPromptArgs", WSTCommandPromptDefault.Arguments)
-			)
 
 			' Screensaver Tool Options
 			WSTSSToolEnabled = RegistryHelper.GetBool("WSTSSToolEnabled", False)
@@ -867,8 +843,6 @@ Namespace My
 			SaveHK(HKWSTLockWorkSpace, "HKWSTLockWorkSpace")
 			SaveHK(HKWSTScreenSaver, "HKWSTScreenSaver")
 			SaveHK(HKWSTClock, "HKWSTClock")
-			SaveHK(HKWSTTaskManager, "HKWSTTaskManager")
-			SaveHK(HKWSTCommandPrompt, "HKWSTCommandPrompt")
 			SaveHK(HKWL, "HKWL")
 
 		End Sub
@@ -884,14 +858,6 @@ Namespace My
 			RegistryHelper.SetString("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPath.Path)
 			RegistryHelper.SetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPath.Arguments)
 			RegistryHelper.SetBool("WSTEnabled", WSTEnabled)
-
-			' Task Manager & Command Prompt
-			RegistryHelper.SetBool("WSTShowTaskManager", WSTShowTaskManager)
-			RegistryHelper.SetString("WSTTaskManagerPath", WSTTaskManager.Path)
-			RegistryHelper.SetString("WSTTaskManagerArgs", WSTTaskManager.Arguments)
-			RegistryHelper.SetBool("WSTShowCommandPrompt", WSTShowCommandPrompt)
-			RegistryHelper.SetString("WSTCommandPromptPath", WSTCommandPrompt.Path)
-			RegistryHelper.SetString("WSTCommandPromptArgs", WSTCommandPrompt.Arguments)
 
 			' Screensaver Tool Options
 			RegistryHelper.SetBool("WSTSSToolEnabled", WSTSSToolEnabled)

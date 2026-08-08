@@ -263,7 +263,7 @@ Partial Friend Class MainForm
 
 		End If
 	End Sub
-	Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTTaskManager.Enter, btnWSTScreenSaverEnabled.Enter, btnWSTCommandPrompt.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnBalloonTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
+	Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnBalloonTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
 		btnClose.Focus()
 	End Sub
 	Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHelp.MouseUp, btnInfo.MouseUp
@@ -502,8 +502,8 @@ Partial Friend Class MainForm
 	Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress, textboxACAlarmTimer.KeyPress, textboxACAlarmTime.KeyPress
 		If nonNumberEntered Then e.Handled = True
 	End Sub
-	Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs) Handles txbxWSTTaskManagerArgs.KeyDown, txbxWSTCommandPromptArgs.KeyDown, txbxLoadOnOSStartupArgs.KeyDown
-		If e.KeyCode = Keys.Enter Then Me.Validate()
+	Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs) Handles txbxLoadOnOSStartupArgs.KeyDown
+		If e.KeyCode = Keys.Enter Then Validate()
 	End Sub
 
 	' Methods
@@ -573,16 +573,6 @@ Partial Friend Class MainForm
 		Me.textboxHKWL.Tag = My.App.HKWL
 		Me.textboxHKWL.Font = New Font(Me.Font, FontStyle.Bold)
 		Me.textboxHKWL.ForeColor = Color.Teal
-		Me.lblHKWSTTaskManager.Text = My.App.HKWSTTaskManager.Description
-		Me.textboxHKWSTTaskManager.Text = My.App.HKWSTTaskManager.Key.ToString
-		Me.textboxHKWSTTaskManager.Tag = My.App.HKWSTTaskManager
-		Me.textboxHKWSTTaskManager.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKWSTTaskManager.ForeColor = Color.Teal
-		Me.lblHKWSTCommandPrompt.Text = My.App.HKWSTCommandPrompt.Description
-		Me.textboxHKWSTCommandPrompt.Text = My.App.HKWSTCommandPrompt.Key.ToString
-		Me.textboxHKWSTCommandPrompt.Tag = My.App.HKWSTCommandPrompt
-		Me.textboxHKWSTCommandPrompt.Font = New Font(Me.Font, FontStyle.Bold)
-		Me.textboxHKWSTCommandPrompt.ForeColor = Color.Teal
 		Me.btnHKReset.Enabled = False
 		Me.btnHKSet.Enabled = False
 		If My.App.HKEnabled Then
@@ -606,16 +596,6 @@ Partial Friend Class MainForm
 			End If
 			Me.textboxHKWL.Enabled = True
 			Me.btnHKWLDisable.Enabled = True
-			If My.App.WSTShowTaskManager Then : Me.lblHKWSTTaskManager.Enabled = True
-			Else : Me.lblHKWSTTaskManager.Enabled = False
-			End If
-			Me.textboxHKWSTTaskManager.Enabled = True
-			Me.btnHKWSTTaskManagerDisable.Enabled = True
-			If My.App.WSTShowCommandPrompt Then : Me.lblHKWSTCommandPrompt.Enabled = True
-			Else : Me.lblHKWSTCommandPrompt.Enabled = False
-			End If
-			Me.textboxHKWSTCommandPrompt.Enabled = True
-			Me.btnHKWSTCommandPromptDisable.Enabled = True
 			Me.btnHKEnabled.Text = "Disable"
 			Me.btnHKEnabled.Image = My.Resources.Resources.imageHKDisable 'DirectCast(My.App.AppResources.GetObject("imageHKDisable"), Image)
 		Else
@@ -632,16 +612,9 @@ Partial Friend Class MainForm
 			Me.lblHKWL.Enabled = False
 			Me.textboxHKWL.Enabled = False
 			Me.btnHKWLDisable.Enabled = False
-			Me.lblHKWSTTaskManager.Enabled = False
-			Me.textboxHKWSTTaskManager.Enabled = False
-			Me.btnHKWSTTaskManagerDisable.Enabled = False
-			Me.lblHKWSTCommandPrompt.Enabled = False
-			Me.textboxHKWSTCommandPrompt.Enabled = False
-			Me.btnHKWSTCommandPromptDisable.Enabled = False
 			Me.btnHKEnabled.Text = "Enable"
 			Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
 		End If
-		WSTSetHKToolTipText()
 	End Sub
 	Private Sub ShowSettingsWST()
 		If My.App.WSTLoadOnOSStartup Then
@@ -668,44 +641,6 @@ Partial Friend Class MainForm
 		If My.App.WSTEnabled Then : Me.checkboxWSTEnabled.Checked = True
 		Else : Me.checkboxWSTEnabled.Checked = False
 		End If
-		If My.App.WSTShowTaskManager Then
-			Me.checkboxWSTShowTaskManager.Checked = True
-			Me.btnWSTTaskManager.Enabled = True
-			Me.lblWSTTaskManagerPath.Enabled = True
-			Me.txbxWSTTaskManagerArgs.Enabled = True
-			Me.tipInfo.SetToolTip(Me.lblWSTTaskManagerPath, My.App.WSTTaskManager.Path + Chr(13) + "DoubleClick To Copy Full Path")
-			Me.tipInfo.SetToolTip(Me.txbxWSTTaskManagerArgs, IIf(String.IsNullOrEmpty(My.App.WSTTaskManager.Arguments), "Arguments", My.App.WSTTaskManager.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
-		Else
-			Me.checkboxWSTShowTaskManager.Checked = False
-			Me.btnWSTTaskManager.Enabled = False
-			Me.lblWSTTaskManagerPath.Enabled = False
-			Me.txbxWSTTaskManagerArgs.Enabled = False
-			Me.tipInfo.SetToolTip(Me.lblWSTTaskManagerPath, Nothing)
-			Me.tipInfo.SetToolTip(Me.txbxWSTTaskManagerArgs, Nothing)
-		End If
-		Me.lblWSTTaskManagerPath.Text = IIf(My.App.WSTTaskManager.Path.Contains("\"c), "...\", String.Empty).ToString + My.App.WSTTaskManager.Path.Split(CChar("\")).GetValue(My.App.WSTTaskManager.Path.Split(CChar("\")).Length - 1).ToString
-		Me.txbxWSTTaskManagerArgs.Text = My.App.WSTTaskManager.Arguments
-		Me.txbxWSTTaskManagerArgs.SelectionLength = 0
-		Me.txbxWSTTaskManagerArgs.SelectionStart = Me.txbxWSTTaskManagerArgs.Text.Length
-		If My.App.WSTShowCommandPrompt Then
-			Me.checkboxWSTShowCommandPrompt.Checked = True
-			Me.btnWSTCommandPrompt.Enabled = True
-			Me.lblWSTCommandPromptPath.Enabled = True
-			Me.txbxWSTCommandPromptArgs.Enabled = True
-			Me.tipInfo.SetToolTip(Me.lblWSTCommandPromptPath, My.App.WSTCommandPrompt.Path + Chr(13) + "DoubleClick To Copy Full Path")
-			Me.tipInfo.SetToolTip(Me.txbxWSTCommandPromptArgs, IIf(String.IsNullOrEmpty(My.App.WSTCommandPrompt.Arguments), "Arguments", My.App.WSTCommandPrompt.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
-		Else
-			Me.checkboxWSTShowCommandPrompt.Checked = False
-			Me.btnWSTCommandPrompt.Enabled = False
-			Me.lblWSTCommandPromptPath.Enabled = False
-			Me.txbxWSTCommandPromptArgs.Enabled = False
-			Me.tipInfo.SetToolTip(Me.lblWSTCommandPromptPath, Nothing)
-			Me.tipInfo.SetToolTip(Me.txbxWSTCommandPromptArgs, Nothing)
-		End If
-		Me.lblWSTCommandPromptPath.Text = IIf(My.App.WSTCommandPrompt.Path.Contains("\"c), "...\", String.Empty).ToString + My.App.WSTCommandPrompt.Path.Split(CChar("\")).GetValue(My.App.WSTCommandPrompt.Path.Split(CChar("\")).Length - 1).ToString
-		Me.txbxWSTCommandPromptArgs.Text = My.App.WSTCommandPrompt.Arguments
-		Me.txbxWSTCommandPromptArgs.SelectionLength = 0
-		Me.txbxWSTCommandPromptArgs.SelectionStart = Me.txbxWSTCommandPromptArgs.Text.Length
 		If My.App.WSTShowWLMenu Then : Me.checkboxWSTShowWLMenu.Checked = True
 		Else : Me.checkboxWSTShowWLMenu.Checked = False
 		End If
@@ -742,7 +677,6 @@ Partial Friend Class MainForm
 		If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
 		Else : Me.checkboxWSTShowLog.Checked = False
 		End If
-		WSTSetHKToolTipText()
 	End Sub
 	Private Sub ShowSettingsSS()
 		If My.App.WSTSSToolEnabled Then
@@ -1103,7 +1037,7 @@ Partial Friend Class MainForm
 	Private HKInUse As New Collections.Generic.List(Of Keys)
 
 	'Control Events
-	Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTTaskManager.PreviewKeyDown, textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTCommandPrompt.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown
+	Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown
 		Dim senderTextBox = CType(sender, TextBox)
 		Dim senderTag = CType(senderTextBox.Tag, HKType)
 		If e.KeyData <> senderTag.Key Then
@@ -1126,8 +1060,6 @@ Partial Friend Class MainForm
 			If Not CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key)
 			If Not CType(textboxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(textboxHKWSTScreenSaver.Tag, HKType).Key)
 			If Not CType(textboxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(textboxHKWSTClock.Tag, HKType).Key)
-			If Not CType(textboxHKWSTTaskManager.Tag, HKType).Key = HKWSTTaskManager.Key Then HKInUse.Add(CType(textboxHKWSTTaskManager.Tag, HKType).Key)
-			If Not CType(textboxHKWSTCommandPrompt.Tag, HKType).Key = HKWSTCommandPrompt.Key Then HKInUse.Add(CType(textboxHKWSTCommandPrompt.Tag, HKType).Key)
 			If Not CType(textboxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(textboxHKWL.Tag, HKType).Key)
 			For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
 			Next
@@ -1143,10 +1075,10 @@ Partial Friend Class MainForm
 			End If
 		End If
 	End Sub
-	Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTTaskManager.KeyPress, textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTCommandPrompt.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress
+	Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress
 		e.Handled = True
 	End Sub
-	Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Click, btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTCommandPromptDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click
+	Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click
 		Dim senderTextBox As New TextBox
 		Dim senderTag As New HKType
 		Select Case CType(sender, Button).Name
@@ -1159,12 +1091,6 @@ Partial Friend Class MainForm
 			Case btnHKWSTClockDisable.Name
 				senderTextBox = textboxHKWSTClock
 				senderTag = CType(textboxHKWSTClock.Tag, HKType)
-			Case btnHKWSTTaskManagerDisable.Name
-				senderTextBox = textboxHKWSTTaskManager
-				senderTag = CType(textboxHKWSTTaskManager.Tag, HKType)
-			Case btnHKWSTCommandPromptDisable.Name
-				senderTextBox = textboxHKWSTCommandPrompt
-				senderTag = CType(textboxHKWSTCommandPrompt.Tag, HKType)
 			Case btnHKWLDisable.Name
 				senderTextBox = textboxHKWL
 				senderTag = CType(textboxHKWL.Tag, HKType)
@@ -1184,7 +1110,7 @@ Partial Friend Class MainForm
 		btnHKSet.Enabled = True
 		btnHKSet.Focus()
 	End Sub
-	Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTTaskManagerDisable.Enter, btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTCommandPromptDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter
+	Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter
 		If btnHKSet.Enabled Then : btnHKSet.Focus()
 		Else : btnClose.Focus()
 		End If
@@ -1198,8 +1124,6 @@ Partial Friend Class MainForm
 		If Not CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key = My.App.HKWSTLockWorkSpace.Key Then My.App.HKWSTLockWorkSpace = CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key = My.App.HKWSTScreenSaver.Key Then My.App.HKWSTScreenSaver = CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then My.App.HKWSTClock = CType(Me.textboxHKWSTClock.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType).Key = My.App.HKWSTTaskManager.Key Then My.App.HKWSTTaskManager = CType(Me.textboxHKWSTTaskManager.Tag, My.App.HKType)
-		If Not CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType).Key = My.App.HKWSTCommandPrompt.Key Then My.App.HKWSTCommandPrompt = CType(Me.textboxHKWSTCommandPrompt.Tag, My.App.HKType)
 		If Not CType(Me.textboxHKWL.Tag, My.App.HKType).Key = My.App.HKWL.Key Then My.App.HKWL = CType(Me.textboxHKWL.Tag, My.App.HKType)
 		My.App.HKGenerateKeyList()
 		HKRegister()
@@ -1232,8 +1156,6 @@ Partial Friend Class MainForm
 			Case My.App.HKWSTLockWorkSpace.WinID : WSTLockWorkSpace()
 			Case My.App.HKWSTScreenSaver.WinID : WSTSSActivate(True)
 			Case My.App.HKWSTClock.WinID : WSTShowClock()
-			Case My.App.HKWSTTaskManager.WinID : WSTTaskManagerToggle()
-			Case My.App.HKWSTCommandPrompt.WinID : My.App.StartFile(My.App.WSTCommandPrompt)
 			Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then WLStartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
 		End Select
 	End Sub
@@ -1269,15 +1191,6 @@ Partial Friend Class MainForm
 			End If
 			UpdateWSTCancelState()
 		End If
-	End Sub
-	Private Sub CMIWSTTaskManagerMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTTaskManager.MouseUp
-		Select Case e.Button
-			Case MouseButtons.Left : My.App.StartFile(My.App.WSTTaskManager)
-			Case MouseButtons.Right : WSTTaskManagerToggle()
-		End Select
-	End Sub
-	Private Sub CMIWSTCommandPromptMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCommandPrompt.MouseUp
-		If e.Button = MouseButtons.Left Then My.App.StartFile(My.App.WSTCommandPrompt)
 	End Sub
 	Private Sub CMIWSTClockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTClock.MouseUp
 		If e.Button = MouseButtons.Left Then WSTShowClock()
@@ -1331,37 +1244,11 @@ Partial Friend Class MainForm
 			ShowSettings()
 		End If
 	End Sub
-	Private Sub BtnWSTTaskManagerMouseUp(sender As Object, e As MouseEventArgs) Handles btnWSTTaskManager.MouseUp
-		Select Case e.Button
-			Case MouseButtons.Left
-				Me.openfiledialogWST.InitialDirectory = My.App.WSTTaskManager.Path
-				If Me.openfiledialogWST.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK AndAlso Not String.IsNullOrEmpty(Me.openfiledialogWST.FileName) Then
-					My.App.WSTTaskManager.Path = Me.openfiledialogWST.FileName
-					ShowSettings(My.App.Tools.WorkSpaceTools)
-				End If
-			Case MouseButtons.Right
-				My.App.WSTTaskManager = New My.App.FileType(My.App.WSTTaskManagerDefault.Path, My.App.WSTTaskManagerDefault.Arguments)
-				ShowSettingsWST()
-		End Select
-	End Sub
-	Private Sub BtnWSTCommandPromptMouseUp(sender As Object, e As MouseEventArgs) Handles btnWSTCommandPrompt.MouseUp
-		Select Case e.Button
-			Case MouseButtons.Left
-				Me.openfiledialogWST.InitialDirectory = My.App.WSTCommandPrompt.Path
-				If Me.openfiledialogWST.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK AndAlso Not String.IsNullOrEmpty(Me.openfiledialogWST.FileName) Then
-					My.App.WSTCommandPrompt.Path = Me.openfiledialogWST.FileName
-					ShowSettings(My.App.Tools.WorkSpaceTools)
-				End If
-			Case MouseButtons.Right
-				My.App.WSTCommandPrompt = New My.App.FileType(My.App.WSTCommandPromptDefault.Path, My.App.WSTCommandPromptDefault.Arguments)
-				ShowSettingsWST()
-		End Select
-	End Sub
 	Private Sub CheckboxWSTEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTEnabled.Click
 		My.App.WSTEnabled = Not My.App.WSTEnabled
 		ShowTools()
 	End Sub
-	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowTaskManager.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowCommandPrompt.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
+	Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
 		Select Case CType(sender, CheckBox).Name
 			Case checkboxWSTShowWLMenu.Name
 				WSTShowWLMenu = Not WSTShowWLMenu
@@ -1378,12 +1265,6 @@ Partial Friend Class MainForm
 					ShowWL()
 				Else : WLClose()
 				End If
-			Case checkboxWSTShowTaskManager.Name
-				WSTShowTaskManager = Not WSTShowTaskManager
-				ShowSettingsWST()
-			Case checkboxWSTShowCommandPrompt.Name
-				WSTShowCommandPrompt = Not WSTShowCommandPrompt
-				ShowSettingsWST()
 			Case checkboxWSTShowScreenSaverActivate.Name : WSTShowSSActivate = Not WSTShowSSActivate
 			Case checkboxWSTShowScreenSaverEnabled.Name : WSTShowSSEnabled = Not WSTShowSSEnabled
 			Case checkboxWSTShowClock.Name
@@ -1450,27 +1331,9 @@ Partial Friend Class MainForm
 		ShowSettingsWST()
 		Me.txbxLoadOnOSStartupArgs.SelectAll()
 	End Sub
-	Private Sub TxbxWSTTaskManagerArgsValidated(sender As Object, e As EventArgs) Handles txbxWSTTaskManagerArgs.Validated
-		If String.IsNullOrEmpty(Me.txbxWSTTaskManagerArgs.Text) Then : My.App.WSTTaskManager.Arguments = String.Empty
-		Else : My.App.WSTTaskManager.Arguments = Me.txbxWSTTaskManagerArgs.Text
-		End If
-		ShowSettingsWST()
-		Me.txbxWSTTaskManagerArgs.SelectAll()
-	End Sub
-	Private Sub TxbxWSTCommandPromptArgsValidated(sender As Object, e As EventArgs) Handles txbxWSTCommandPromptArgs.Validated
-		If String.IsNullOrEmpty(Me.txbxWSTCommandPromptArgs.Text) Then : My.App.WSTCommandPrompt.Arguments = String.Empty
-		Else : My.App.WSTCommandPrompt.Arguments = Me.txbxWSTCommandPromptArgs.Text
-		End If
-		ShowSettingsWST()
-		Me.txbxWSTCommandPromptArgs.SelectAll()
-	End Sub
-	Private Sub TxbxWSTCopyDoubleClick(sender As Object, e As EventArgs) Handles txbxWSTTaskManagerArgs.DoubleClick, txbxWSTCommandPromptArgs.DoubleClick, txbxLoadOnOSStartupArgs.DoubleClick, lblWSTTaskManagerPath.DoubleClick, lblWSTCommandPromptPath.DoubleClick, lblLoadOnOSStartupPath.DoubleClick
-		If sender Is Me.lblWSTTaskManagerPath Then : If Not String.IsNullOrEmpty(My.App.WSTTaskManager.Path) Then My.Computer.Clipboard.SetText(My.App.WSTTaskManager.Path)
-		ElseIf sender Is Me.txbxWSTTaskManagerArgs Then : If Not String.IsNullOrEmpty(My.App.WSTTaskManager.Arguments) Then My.Computer.Clipboard.SetText(My.App.WSTTaskManager.Arguments)
-		ElseIf sender Is Me.lblWSTCommandPromptPath Then : If Not String.IsNullOrEmpty(My.App.WSTCommandPrompt.Path) Then My.Computer.Clipboard.SetText(My.App.WSTCommandPrompt.Path)
-		ElseIf sender Is Me.txbxWSTCommandPromptArgs Then : If Not String.IsNullOrEmpty(My.App.WSTCommandPrompt.Arguments) Then My.Computer.Clipboard.SetText(My.App.WSTCommandPrompt.Arguments)
-		ElseIf sender Is Me.lblLoadOnOSStartupPath Then : If Not String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(My.App.WSTLoadOnOSStartupPath.Path)
-		ElseIf sender Is Me.txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(My.App.WSTLoadOnOSStartupPath.Arguments)
+	Private Sub TxbxWSTCopyDoubleClick(sender As Object, e As EventArgs) Handles txbxLoadOnOSStartupArgs.DoubleClick, lblLoadOnOSStartupPath.DoubleClick
+		If sender Is lblLoadOnOSStartupPath Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
+		ElseIf sender Is txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
 		End If
 	End Sub
 
@@ -1555,12 +1418,6 @@ Partial Friend Class MainForm
 	End Sub
 	Private Sub ShowWST()
 		'Main Section
-		If My.App.WSTShowTaskManager Then : Me.cmiWSTTaskManager.Visible = True
-		Else : Me.cmiWSTTaskManager.Visible = False
-		End If
-		If My.App.WSTShowCommandPrompt Then : Me.cmiWSTCommandPrompt.Visible = True
-		Else : Me.cmiWSTCommandPrompt.Visible = False
-		End If
 		If My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled Then : Me.cmiWSTScreenSaverEnabled.Visible = True
 		Else : Me.cmiWSTScreenSaverEnabled.Visible = False
 		End If
@@ -1568,7 +1425,7 @@ Partial Friend Class MainForm
 		Else : Me.cmiWSTScreenSaverActivate.Visible = False
 		End If
 		If My.App.WSTShowWLMenu Then
-			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) Then : Me.cmseparatorWSTWLTop.Visible = True
+			If (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) Then : Me.cmseparatorWSTWLTop.Visible = True
 			Else : Me.cmseparatorWSTWLTop.Visible = False
 			End If
 			If My.App.WSTShowClock OrElse My.App.WSTShowAC Then : Me.cmseparatorWSTWLBottom.Visible = True
@@ -1604,7 +1461,7 @@ Partial Friend Class MainForm
 		Else : Me.cmiWSTShutDown.Visible = False
 		End If
 		If My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown Then
-			If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC Then
+			If (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC Then
 				Me.cmseparatorWSTShutDownOptions.Visible = True
 			Else
 				Me.cmseparatorWSTShutDownOptions.Visible = False
@@ -1618,34 +1475,12 @@ Partial Friend Class MainForm
 		If My.App.WSTShowLog Then : Me.cmiWSTLog.Visible = True
 		Else : Me.cmiWSTLog.Visible = False
 		End If
-		If My.App.WSTShowTaskManager OrElse My.App.WSTShowCommandPrompt OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) _
+		If (My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled) OrElse (My.App.WSTSSToolEnabled And My.App.WSTShowSSActivate) _
 			OrElse My.App.WSTShowClock OrElse My.App.WSTShowAC _
 			OrElse My.App.WSTShowLockWorkSpace OrElse My.App.WSTShowLogOff OrElse My.App.WSTShowSleep OrElse My.App.WSTShowHibernate OrElse My.App.WSTShowReStart OrElse My.App.WSTShowShutDown _
 			Then : Me.cmseparatorWSTSettings.Visible = True
 		Else : Me.cmseparatorWSTSettings.Visible = False
 		End If
-	End Sub
-	Private Sub WSTSetHKToolTipText()
-		Me.cmiWSTTaskManager.ToolTipText = "LeftClick = Start/Show" + Chr(13) + "RightClick = Toggle"
-		If My.App.HKEnabled Then
-			Dim kc As New System.Windows.Forms.KeysConverter
-			Me.cmiWSTTaskManager.ToolTipText += Chr(13) + "HotKey(Toggle) = " + kc.ConvertToString(My.App.HKWSTTaskManager.Key)
-			Me.cmiWSTCommandPrompt.ToolTipText = "HotKey = " + kc.ConvertToString(My.App.HKWSTCommandPrompt.Key)
-		End If
-	End Sub
-	Private Sub WSTTaskManagerToggle()
-		Dim closelist As New System.Collections.Generic.List(Of String)
-		ProcessListGenerate()
-
-		For Each p As ProcessListType In ProcessList
-			If p.FileName.Equals(My.App.WSTTaskManager.Path, StringComparison.CurrentCultureIgnoreCase) Then
-				closelist.Add(p.ProcessName)
-				Me.CloseApplications(My.App.Tools.WorkSpaceTools, closelist)
-				Exit For
-			End If
-		Next
-		If Not closelist.Count > 0 Then My.App.StartFile(My.App.WSTTaskManager)
-		closelist.Clear()
 	End Sub
 	Private Sub WSTClockSet()
 		frmWSTClock?.Close()
