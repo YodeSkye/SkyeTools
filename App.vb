@@ -111,8 +111,8 @@ Namespace My
 		Friend WSTShowShutDown As Boolean
 		Friend WSTShowHelp As Boolean
 		Friend WSTShowLog As Boolean
-		Friend Theme As Skye.UI.SkyeTheme
-		Friend ThemeAuto As Boolean
+		Friend WSTTheme As Skye.UI.SkyeTheme
+		Friend WSTThemeAuto As Boolean
 
 		' Declarations
 		Friend Enum ClockSize
@@ -249,8 +249,8 @@ Namespace My
 
 #End Region
 
-        ' DECLARATIONS
-        Friend Enum NotifyInterval
+		' DECLARATIONS
+		Friend Enum NotifyInterval
 			[Short]
 			[Medium]
 			[Long]
@@ -368,7 +368,7 @@ Namespace My
 			GetSettingsDebug()
 #End If
 			FrmMain = New MainForm
-			Dim selectedTheme As Skye.UI.SkyeTheme = If(ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), Theme)
+			Dim selectedTheme As Skye.UI.SkyeTheme = If(WSTThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), WSTTheme)
 			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
 			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 		End Sub
@@ -702,9 +702,9 @@ Namespace My
 			WSTShowWLTray = RegistryHelper.GetBool("WSTShowWLTray", False)
 
 			' Theme
-			Dim themeName As String = Skye.Common.RegistryHelper.GetString("Theme", "Light")
-			Theme = Skye.UI.SkyeThemes.GetTheme(themeName)
-			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
+			Dim themeName As String = Skye.Common.RegistryHelper.GetString("WSTTheme", "Light")
+			WSTTheme = Skye.UI.SkyeThemes.GetTheme(themeName)
+			WSTThemeAuto = Skye.Common.RegistryHelper.GetBool("WSTThemeAuto", True)
 
 		End Sub
 		Private Sub GetSettingsAC()
@@ -854,8 +854,8 @@ Namespace My
 			RegistryHelper.SetBool("WSTShowWLTray", WSTShowWLTray)
 
 			' Theme
-			Skye.Common.RegistryHelper.SetString("Theme", Theme.Name)
-			Skye.Common.RegistryHelper.SetBool("ThemeAuto", ThemeAuto)
+			Skye.Common.RegistryHelper.SetString("WSTTheme", WSTTheme.Name)
+			Skye.Common.RegistryHelper.SetBool("WSTThemeAuto", WSTThemeAuto)
 
 		End Sub
 		Private Sub SaveSettingsAC()
