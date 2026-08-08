@@ -359,11 +359,6 @@ Namespace My
 			End If
 			Return False
 		End Function
-#If DEBUG Then
-		Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName + "DEV" 'RegPath is the path to the registry key where application settings are stored.
-#Else
-        Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName 'RegPath is the path to the registry key where application settings are stored.
-#End If
 		Private BalloonHideEnabled As Boolean
 		Private WithEvents TimerBalloon As New Timer
 
