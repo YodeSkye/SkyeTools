@@ -966,9 +966,6 @@ Partial Friend Class MainForm
 	Private Sub CMWSTOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmWST.Opening
 		If Not My.App.HCWSTRight = My.App.HCAction.Menu Then e.Cancel = True
 	End Sub
-	Private Sub CMCBTrayOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs)
-		If Not My.App.HCCBRight = My.App.HCAction.Menu Then e.Cancel = True
-	End Sub
 	Private Sub CMWSTSSOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmWSTScreenSaver.Opening
 		If Not My.App.HCWSTScreenSaverRight = My.App.HCAction.Menu Then e.Cancel = True
 	End Sub

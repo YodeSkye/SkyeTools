@@ -63,7 +63,6 @@ Namespace My
 		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
 		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
 		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
-		Friend HCCBLeft, HCCBDouble, HCCBMiddle, HCCBRight As HCAction
 
 #End Region
 #Region "HotKeys (HK)"
@@ -365,13 +364,10 @@ Namespace My
 #Else
         Private ReadOnly RegPath As String = "Software\\" + My.Application.Info.ProductName 'RegPath is the path to the registry key where application settings are stored.
 #End If
-		Private RegKey As Microsoft.Win32.RegistryKey
-		Private RegSubKey As Microsoft.Win32.RegistryKey
-		Private RegItemKey As Microsoft.Win32.RegistryKey
 		Private BalloonHideEnabled As Boolean
 		Private WithEvents TimerBalloon As New Timer
 
-		' Methods
+		' METHODS
 		Friend Sub Initialize()
 #If DEBUG Then
 			Dim baseName As String = My.Application.Info.ProductName & "DEV"
@@ -392,36 +388,14 @@ Namespace My
 		Friend Sub Finalize()
 			WriteToLog(My.App.Tools.SkyeTools, "..." + My.Application.Info.ProductName + " Closed")
 		End Sub
-		Friend Sub GetSettings()
-			RegKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(RegPath)
-
-			GetSettingsHC()
-			GetSettingsHK()
-			GetSettingsWST()
-			GetSettingsAC()
-			GetSettingsWL()
-
-			RegKey.Close()
-			HCGenerateActionList()
-			HKGenerateKeyList()
-		End Sub
-		Friend Sub SaveSettings()
-			RegKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegPath, True)
-
-			SaveSettingsHC()
-			SaveSettingsHK()
-			SaveSettingsWST()
-			SaveSettingsAC()
-			SaveSettingsWL()
-
-			RegKey.Flush()
-			RegKey.Close()
-		End Sub
 		Friend Sub SetLoadOnOSStartup()
+			Dim RegKey As Microsoft.Win32.RegistryKey = Nothing
 			Try
 				RegKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\", True)
-				If WSTLoadOnOSStartup And Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then : RegKey.SetValue("SkyeTools", IIf(String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments), WSTLoadOnOSStartupPath.Path, WSTLoadOnOSStartupPath.Path + " " + WSTLoadOnOSStartupPath.Arguments).ToString, Microsoft.Win32.RegistryValueKind.String)
-				Else : RegKey.DeleteValue("SkyeTools", False)
+				If WSTLoadOnOSStartup And Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then
+					RegKey.SetValue("SkyeTools", IIf(String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments), WSTLoadOnOSStartupPath.Path, WSTLoadOnOSStartupPath.Path + " " + WSTLoadOnOSStartupPath.Arguments).ToString, Microsoft.Win32.RegistryValueKind.String)
+				Else
+					RegKey.DeleteValue("SkyeTools", False)
 				End If
 			Catch
 				WriteToLog(Tools.SkyeTools, "Error Setting AutoLoad Options To Windows Registry")
@@ -603,651 +577,6 @@ Namespace My
 		Private Sub TimerBalloonTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerBalloon.Tick
 			HideBalloon()
 		End Sub
-		Private Sub UpgradeLegacyWLSettings()
-			' Check if legacy "WL" subkey exists under BaseKey
-			Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
-			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-				If key Is Nothing Then Return ' No legacy settings to migrate
-			End Using
-			Dim legacyLinks As New List(Of WLItemType)()
-
-			' Read old format
-			Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-				For Each subKeyName In wlKey.GetSubKeyNames()
-					Using itemKey = wlKey.OpenSubKey(subKeyName)
-						If itemKey Is Nothing Then Continue For
-
-						Dim rootPath = itemKey.GetValue("", "").ToString()
-						If String.IsNullOrEmpty(rootPath) Then Continue For
-						Dim link As New WLItemType(rootPath) With {
-							.Name = itemKey.GetValue("Name", "").ToString(),
-							.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
-							.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
-							.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
-							.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
-							.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
-						}
-						Dim result As Boolean
-						result = [Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
-						result = [Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
-						result = [Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
-
-						legacyLinks.Add(link)
-					End Using
-				Next
-			End Using
-
-			' Save in new JSON format
-			Dim json = JsonSerializer.Serialize(legacyLinks)
-			RegistryHelper.SetString("WLData", json)
-
-			' Remove legacy registry tree
-			'Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
-			'	baseKey?.DeleteSubKeyTree("WL", False)
-			'End Using
-
-		End Sub
-		Private Sub GetSettingsHC()
-			Dim TypeHCAction As Type = GetType(HCAction)
-			Try : HCWSTLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTLeft", "NoAction").ToString), HCAction)
-			Catch : HCWSTLeft = HCAction.NoAction
-			End Try
-			Try : HCWSTDouble = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTDouble", "NoAction").ToString), HCAction)
-			Catch : HCWSTDouble = HCAction.NoAction
-			End Try
-			Try : HCWSTMiddle = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTMiddle", "NoAction").ToString), HCAction)
-			Catch : HCWSTMiddle = HCAction.NoAction
-			End Try
-			Try : HCWSTRight = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTRight", "Menu").ToString), HCAction)
-			Catch : HCWSTRight = HCAction.Menu
-			End Try
-			Try : HCWLLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWLLeft", "NoAction").ToString), HCAction)
-			Catch : HCWLLeft = HCAction.NoAction
-			End Try
-			Try : HCWLDouble = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWLDouble", "NoAction").ToString), HCAction)
-			Catch : HCWLDouble = HCAction.NoAction
-			End Try
-			Try : HCWLMiddle = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWLMiddle", "NoAction").ToString), HCAction)
-			Catch : HCWLMiddle = HCAction.NoAction
-			End Try
-			HCWLRight = HCAction.Menu
-			Try : HCCBLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCCBLeft", "NoAction").ToString), HCAction)
-			Catch : HCCBLeft = HCAction.NoAction
-			End Try
-			Try : HCCBDouble = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCCBDouble", "NoAction").ToString), HCAction)
-			Catch : HCCBDouble = HCAction.NoAction
-			End Try
-			Try : HCCBMiddle = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCCBMiddle", "NoAction").ToString), HCAction)
-			Catch : HCCBMiddle = HCAction.NoAction
-			End Try
-			Try : HCCBRight = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCCBRight", "Menu").ToString), HCAction)
-			Catch : HCCBRight = HCAction.Menu
-			End Try
-			Try : HCWSTScreenSaverLeft = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTScreenSaverLeft", "NoAction").ToString), HCAction)
-			Catch : HCWSTScreenSaverLeft = HCAction.NoAction
-			End Try
-			Try : HCWSTScreenSaverDouble = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTScreenSaverDouble", "NoAction").ToString), HCAction)
-			Catch : HCWSTScreenSaverDouble = HCAction.NoAction
-			End Try
-			Try : HCWSTScreenSaverMiddle = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTScreenSaverMiddle", "NoAction").ToString), HCAction)
-			Catch : HCWSTScreenSaverMiddle = HCAction.NoAction
-			End Try
-			Try : HCWSTScreenSaverRight = DirectCast(HCAction.Parse(TypeHCAction, RegKey.GetValue("HCWSTScreenSaverRight", "Menu").ToString), HCAction)
-			Catch : HCWSTScreenSaverRight = HCAction.Menu
-			End Try
-		End Sub
-		Private Sub GetSettingsHK()
-			Select Case RegKey.GetValue("HKEnabled", "True").ToString
-				Case "False", "0" : HKEnabled = False
-				Case Else : HKEnabled = True
-			End Select
-			HKWSTLockWorkSpace.Description = "Lock WorkSpace"
-			HKWSTLockWorkSpace.WinID = 1
-			Try
-				HKWSTLockWorkSpace.Key = CType(Val(RegKey.GetValue("HKWSTLockWorkSpaceKey", "131075")), Keys) 'Pause, Ctrl
-				If HKWSTLockWorkSpace.Key < 0 Or HKWSTLockWorkSpace.Key > Integer.MaxValue Then HKWSTLockWorkSpace.Key = CType(262163, Keys)
-			Catch
-				HKWSTLockWorkSpace.Key = CType(262163, Keys)
-			End Try
-			Try
-				HKWSTLockWorkSpace.KeyCode = CByte(Val(RegKey.GetValue("HKWSTLockWorkSpaceKeyCode", "19"))) 'Pause, Ctrl
-				If HKWSTLockWorkSpace.KeyCode < Byte.MinValue Or HKWSTLockWorkSpace.KeyCode > Byte.MaxValue Then HKWSTLockWorkSpace.KeyCode = 19
-			Catch
-				HKWSTLockWorkSpace.KeyCode = 19
-			End Try
-			Try
-				HKWSTLockWorkSpace.KeyMod = CByte(Val(RegKey.GetValue("HKWSTLockWorkSpaceKeyMod", "2"))) 'Pause, Ctrl
-				If HKWSTLockWorkSpace.KeyMod < Byte.MinValue Or HKWSTLockWorkSpace.KeyMod > Byte.MaxValue Then HKWSTLockWorkSpace.KeyMod = 1
-			Catch
-				HKWSTLockWorkSpace.KeyMod = 2
-			End Try
-			HKWSTScreenSaver.Description = "Activate Screen Saver"
-			HKWSTScreenSaver.WinID = 2
-			Try
-				HKWSTScreenSaver.Key = CType(Val(RegKey.GetValue("HKWSTScreenSaverKey", "19")), Keys) 'Pause/Break 'PrintScreen = 44
-				If HKWSTScreenSaver.Key < 0 Or HKWSTScreenSaver.Key > Integer.MaxValue Then HKWSTScreenSaver.Key = CType(19, Keys)
-			Catch
-				HKWSTScreenSaver.Key = CType(19, Keys)
-			End Try
-			Try
-				HKWSTScreenSaver.KeyCode = CByte(Val(RegKey.GetValue("HKWSTScreenSaverKeyCode", "19"))) 'Pause/Break
-				If HKWSTScreenSaver.KeyCode < Byte.MinValue Or HKWSTScreenSaver.KeyCode > Byte.MaxValue Then HKWSTScreenSaver.KeyCode = 19
-			Catch
-				HKWSTScreenSaver.KeyCode = 19
-			End Try
-			Try
-				HKWSTScreenSaver.KeyMod = CByte(Val(RegKey.GetValue("HKWSTScreenSaverKeyMod", "0"))) 'Pause/Break
-				If HKWSTScreenSaver.KeyMod < Byte.MinValue Or HKWSTScreenSaver.KeyMod > Byte.MaxValue Then HKWSTScreenSaver.KeyMod = 0
-			Catch
-				HKWSTScreenSaver.KeyMod = 0
-			End Try
-			HKWSTClock.Description = "Clock"
-			HKWSTClock.WinID = 4
-			Try
-				HKWSTClock.Key = CType(Val(RegKey.GetValue("HKWSTClockKey", "119")), Keys) 'F8
-				If HKWSTClock.Key < 0 Or HKWSTClock.Key > Integer.MaxValue Then HKWSTClock.Key = CType(119, Keys)
-			Catch
-				HKWSTClock.Key = CType(119, Keys)
-			End Try
-			Try
-				HKWSTClock.KeyCode = CByte(Val(RegKey.GetValue("HKWSTClockKeyCode", "119"))) 'F8
-				If HKWSTClock.KeyCode < Byte.MinValue Or HKWSTClock.KeyCode > Byte.MaxValue Then HKWSTClock.KeyCode = 119
-			Catch
-				HKWSTClock.KeyCode = 119
-			End Try
-			Try
-				HKWSTClock.KeyMod = CByte(Val(RegKey.GetValue("HKWSTClockKeyMod", "0"))) 'F8
-				If HKWSTClock.KeyMod < Byte.MinValue Or HKWSTClock.KeyMod > Byte.MaxValue Then HKWSTClock.KeyMod = 0
-			Catch
-				HKWSTClock.KeyMod = 0
-			End Try
-			HKWSTTaskManager.Description = "Task Manager"
-			HKWSTTaskManager.WinID = 5
-			Try
-				HKWSTTaskManager.Key = CType(Val(RegKey.GetValue("HKWSTTaskManagerKey", "0")), Keys)
-				If HKWSTTaskManager.Key < 0 Or HKWSTTaskManager.Key > Integer.MaxValue Then HKWSTTaskManager.Key = 0
-			Catch
-				HKWSTTaskManager.Key = 0
-			End Try
-			Try
-				HKWSTTaskManager.KeyCode = CByte(Val(RegKey.GetValue("HKWSTTaskManagerKeyCode", "0")))
-				If HKWSTTaskManager.KeyCode < Byte.MinValue Or HKWSTTaskManager.KeyCode > Byte.MaxValue Then HKWSTTaskManager.KeyCode = 0
-			Catch
-				HKWSTTaskManager.KeyCode = 0
-			End Try
-			Try
-				HKWSTTaskManager.KeyMod = CByte(Val(RegKey.GetValue("HKWSTTaskManagerKeyMod", "0")))
-				If HKWSTTaskManager.KeyMod < Byte.MinValue Or HKWSTTaskManager.KeyMod > Byte.MaxValue Then HKWSTTaskManager.KeyMod = 0
-			Catch
-				HKWSTTaskManager.KeyMod = 0
-			End Try
-			HKWSTCommandPrompt.Description = "Command Prompt"
-			HKWSTCommandPrompt.WinID = 6
-			Try
-				HKWSTCommandPrompt.Key = CType(Val(RegKey.GetValue("HKWSTCommandPromptKey", "0")), Keys)
-				If HKWSTCommandPrompt.Key < 0 Or HKWSTCommandPrompt.Key > Integer.MaxValue Then HKWSTCommandPrompt.Key = 0
-			Catch
-				HKWSTCommandPrompt.Key = 0
-			End Try
-			Try
-				HKWSTCommandPrompt.KeyCode = CByte(Val(RegKey.GetValue("HKWSTCommandPromptKeyCode", "0")))
-				If HKWSTCommandPrompt.KeyCode < Byte.MinValue Or HKWSTCommandPrompt.KeyCode > Byte.MaxValue Then HKWSTCommandPrompt.KeyCode = 0
-			Catch
-				HKWSTCommandPrompt.KeyCode = 0
-			End Try
-			Try
-				HKWSTCommandPrompt.KeyMod = CByte(Val(RegKey.GetValue("HKWSTCommandPromptKeyMod", "0")))
-				If HKWSTCommandPrompt.KeyMod < Byte.MinValue Or HKWSTCommandPrompt.KeyMod > Byte.MaxValue Then HKWSTCommandPrompt.KeyMod = 0
-			Catch
-				HKWSTCommandPrompt.KeyMod = 0
-			End Try
-			HKWL.Description = "Open WinLink Root Folder"
-			HKWL.WinID = 15
-			Try
-				HKWL.Key = CType(Val(RegKey.GetValue("HKWLKey", "0")), Keys)
-				If HKWL.Key < 0 Or HKWL.Key > Integer.MaxValue Then HKWL.Key = 0
-			Catch
-				HKWL.Key = 0
-			End Try
-			Try
-				HKWL.KeyCode = CByte(Val(RegKey.GetValue("HKWLKeyCode", "0")))
-				If HKWL.KeyCode < Byte.MinValue Or HKWL.KeyCode > Byte.MaxValue Then HKWL.KeyCode = 0
-			Catch
-				HKWL.KeyCode = 0
-			End Try
-			Try
-				HKWL.KeyMod = CByte(Val(RegKey.GetValue("HKWLKeyMod", "0")))
-				If HKWL.KeyMod < Byte.MinValue Or HKWL.KeyMod > Byte.MaxValue Then HKWL.KeyMod = 0
-			Catch
-				HKWL.KeyMod = 0
-			End Try
-		End Sub
-		Private Sub GetSettingsWST()
-			Select Case RegKey.GetValue("WSTLoadOnOSStartup", "False").ToString
-				Case "True", "1" : WSTLoadOnOSStartup = True
-				Case Else : WSTLoadOnOSStartup = False
-			End Select
-			WSTLoadOnOSStartupPath = New FileType(RegKey.GetValue("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPathDefault.Path).ToString, RegKey.GetValue("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPathDefault.Arguments).ToString)
-			Select Case RegKey.GetValue("WSTEnabled", "True").ToString
-				Case "False", "0" : WSTEnabled = False
-				Case Else : WSTEnabled = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowTaskManager", "True").ToString
-				Case "False", "0" : WSTShowTaskManager = False
-				Case Else : WSTShowTaskManager = True
-			End Select
-			WSTTaskManager = New FileType(RegKey.GetValue("WSTTaskManagerPath", WSTTaskManagerDefault.Path).ToString, RegKey.GetValue("WSTTaskManagerArgs", WSTTaskManagerDefault.Arguments).ToString)
-			Select Case RegKey.GetValue("WSTShowCommandPrompt", "True").ToString
-				Case "False", "0" : WSTShowCommandPrompt = False
-				Case Else : WSTShowCommandPrompt = True
-			End Select
-			WSTCommandPrompt = New FileType(RegKey.GetValue("WSTCommandPromptPath", WSTCommandPromptDefault.Path).ToString, RegKey.GetValue("WSTCommandPromptArgs", WSTCommandPromptDefault.Arguments).ToString)
-			Select Case RegKey.GetValue("WSTSSToolEnabled", "False").ToString
-				Case "True", "1" : WSTSSToolEnabled = True
-				Case Else : WSTSSToolEnabled = False
-			End Select
-			Dim rawValueWSTSSStartUpMode As String = RegKey.GetValue("WSTSSStartUp", "Enabled").ToString()
-			Dim parsedWSTSSStartUpMode As WSTSSStartUpMode
-			If [Enum].TryParse(rawValueWSTSSStartUpMode, True, parsedWSTSSStartUpMode) Then
-				WSTSSStartUp = parsedWSTSSStartUpMode
-			Else
-				WSTSSStartUp = WSTSSStartUpMode.Enabled
-			End If
-			Select Case RegKey.GetValue("WSTSSEnableOnActivate", "True").ToString
-				Case "False", "0" : WSTSSEnableOnActivate = False
-				Case Else : WSTSSEnableOnActivate = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowSSIcon", "True").ToString
-				Case "False", "0" : WSTShowSSIcon = False
-				Case Else : WSTShowSSIcon = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowSSActivate", "True").ToString
-				Case "False", "0" : WSTShowSSActivate = False
-				Case Else : WSTShowSSActivate = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowSSEnabled", "True").ToString
-				Case "False", "0" : WSTShowSSEnabled = False
-				Case Else : WSTShowSSEnabled = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowClock", "False").ToString
-				Case "True", "1" : WSTShowClock = True
-				Case Else : WSTShowClock = False
-			End Select
-			WSTClockLocation.X = CInt(Val(RegKey.GetValue("WSTClockLocationX", "0")))
-			WSTClockLocation.Y = CInt(Val(RegKey.GetValue("WSTClockLocationY", "0")))
-			Dim rawValueWSTClockSize As String = RegKey.GetValue("WSTClockSize", "Medium").ToString()
-			Dim parsedWSTClockSize As ClockSize
-			If [Enum].TryParse(rawValueWSTClockSize, True, parsedWSTClockSize) Then
-				WSTClockSize = parsedWSTClockSize
-			Else
-				WSTClockSize = ClockSize.Medium
-			End If
-			Select Case RegKey.GetValue("WSTShowLockWorkSpace", "True").ToString
-				Case "False", "0" : WSTShowLockWorkSpace = False
-				Case Else : WSTShowLockWorkSpace = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowLogOff", "True").ToString
-				Case "False", "0" : WSTShowLogOff = False
-				Case Else : WSTShowLogOff = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowSleep", "True").ToString
-				Case "False", "0" : WSTShowSleep = False
-				Case Else : WSTShowSleep = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowHibernate", "True").ToString
-				Case "False", "0" : WSTShowHibernate = False
-				Case Else : WSTShowHibernate = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowReStart", "True").ToString
-				Case "False", "0" : WSTShowReStart = False
-				Case Else : WSTShowReStart = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowShutDown", "True").ToString
-				Case "False", "0" : WSTShowShutDown = False
-				Case Else : WSTShowShutDown = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowHelp", "True").ToString
-				Case "False", "0" : WSTShowHelp = False
-				Case Else : WSTShowHelp = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowLog", "True").ToString
-				Case "False", "0" : WSTShowLog = False
-				Case Else : WSTShowLog = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowAC", "True").ToString
-				Case "False", "0" : WSTShowAC = False
-				Case Else : WSTShowAC = True
-			End Select
-			Select Case RegKey.GetValue("WSTShowWLMenu", "False").ToString
-				Case "True", "1" : WSTShowWLMenu = True
-				Case Else : WSTShowWLMenu = False
-			End Select
-			Select Case RegKey.GetValue("WSTShowWLTray", "False").ToString
-				Case "True", "1" : WSTShowWLTray = True
-				Case Else : WSTShowWLTray = False
-			End Select
-		End Sub
-		Private Sub GetSettingsAC()
-			Dim rawValue As String = RegKey.GetValue("ACAlarmTime", "00:00").ToString()
-			Dim parsed As TimeSpan
-			If TimeSpan.TryParse(rawValue, parsed) Then
-				ACAlarmTime = parsed
-			Else ' fallback if parsing fails
-				ACAlarmTime = TimeSpan.Zero
-			End If
-			Select Case RegKey.GetValue("ACAlarmRecurring", "False").ToString
-				Case "False", "0" : ACAlarmRecurring = False
-				Case Else : ACAlarmRecurring = True
-			End Select
-			ACAlarmChimePath = RegKey.GetValue("ACAlarmChimePath", "").ToString
-			Select Case RegKey.GetValue("ACAlarmChimeType", "Simple").ToString
-				Case "Extended" : ACAlarmChimeType = ACChimeType.Extended
-				Case "Forever" : ACAlarmChimeType = ACChimeType.Forever
-				Case Else : ACAlarmChimeType = ACChimeType.Simple
-			End Select
-			Select Case RegKey.GetValue("ACTopHourChimeEnabled", "True").ToString
-				Case "False", "0" : ACTopHourChimeEnabled = False
-				Case Else : ACTopHourChimeEnabled = True
-			End Select
-			ACTopHourChimePath = RegKey.GetValue("ACTopHourChimePath", "").ToString
-			Select Case RegKey.GetValue("ACTopHourChimeType", "Extended").ToString
-				Case "Simple" : ACTopHourChimeType = ACChimeType.Simple
-				Case "Extended" : ACTopHourChimeType = ACChimeType.Extended
-				Case "HourTick" : ACTopHourChimeType = ACChimeType.HourTick
-				Case Else : ACTopHourChimeType = ACChimeType.Extended
-			End Select
-			ACOffHourChimePath = RegKey.GetValue("ACOffHourChimePath", "").ToString
-			Select Case RegKey.GetValue("ACTopHourBeforeChimeEnabled", "False").ToString
-				Case "False", "0" : ACTopHourBeforeChimeEnabled = False
-				Case Else : ACTopHourBeforeChimeEnabled = True
-			End Select
-			Select Case RegKey.GetValue("ACTopHourAfterChimeEnabled", "False").ToString
-				Case "False", "0" : ACTopHourAfterChimeEnabled = False
-				Case Else : ACTopHourAfterChimeEnabled = True
-			End Select
-			Select Case RegKey.GetValue("ACFirstQuarterHourChimeEnabled", "False").ToString
-				Case "False", "0" : ACFirstQuarterHourChimeEnabled = False
-				Case Else : ACFirstQuarterHourChimeEnabled = True
-			End Select
-			Select Case RegKey.GetValue("ACFirstQuarterHourBeforeChimeEnabled", "False").ToString
-				Case "True", "1" : ACFirstQuarterHourBeforeChimeEnabled = True
-				Case Else : ACFirstQuarterHourBeforeChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACFirstQuarterHourAfterChimeEnabled", "False").ToString
-				Case "True", "1" : ACFirstQuarterHourAfterChimeEnabled = True
-				Case Else : ACFirstQuarterHourAfterChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACBottomHourChimeEnabled", "True").ToString
-				Case "False", "0" : ACBottomHourChimeEnabled = False
-				Case Else : ACBottomHourChimeEnabled = True
-			End Select
-			Select Case RegKey.GetValue("ACBottomHourBeforeChimeEnabled", "False").ToString
-				Case "True", "1" : ACBottomHourBeforeChimeEnabled = True
-				Case Else : ACBottomHourBeforeChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACBottomHourAfterChimeEnabled", "False").ToString
-				Case "True", "1" : ACBottomHourAfterChimeEnabled = True
-				Case Else : ACBottomHourAfterChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACThirdQuarterHourChimeEnabled", "False").ToString
-				Case "True", "1" : ACThirdQuarterHourChimeEnabled = True
-				Case Else : ACThirdQuarterHourChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACThirdQuarterHourBeforeChimeEnabled", "False").ToString
-				Case "True", "1" : ACThirdQuarterHourBeforeChimeEnabled = True
-				Case Else : ACThirdQuarterHourBeforeChimeEnabled = False
-			End Select
-			Select Case RegKey.GetValue("ACThirdQuarterHourAfterChimeEnabled", "False").ToString
-				Case "True", "1" : ACThirdQuarterHourAfterChimeEnabled = True
-				Case Else : ACThirdQuarterHourAfterChimeEnabled = False
-			End Select
-		End Sub
-		Private Sub GetSettingsWL()
-			UpgradeLegacyWLSettings()
-
-			WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
-			WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
-			WLShowFolderPathToolTips = RegistryHelper.GetBool("WLShowFolderPathToolTips", False)
-			WLMaxLinksPerFolder = CByte(Math.Clamp(RegistryHelper.GetInt("WLMaxLinksPerFolder", 30), 1, 100))
-			WLStartUpDelay = CShort(Math.Clamp(RegistryHelper.GetInt("WLStartUpDelay", 10), 0, 300))
-			WLAutoRefresh = RegistryHelper.GetBool("WLAutoRefresh", False)
-			WLAutoRefreshInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshInterval", 5), 1, 90))
-			WLAutoRefreshIdleInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshIdleInterval", 30), 20, 240))
-			Dim json = RegistryHelper.GetString("WLDataJson", "[]")
-			Try
-				WLData = JsonSerializer.Deserialize(Of List(Of WLItemType))(json)
-			Catch
-				WLData = New List(Of WLItemType)()
-			End Try
-
-			' Set runtime flags
-			For i As Integer = 0 To WLData.Count - 1
-				Dim item = WLData(i)
-				item.RefreshData = True
-				item.RefreshMenu = True
-				WLData(i) = item
-			Next
-
-		End Sub
-		'Private Sub GetSettingsWL()
-		'	Select Case RegKey.GetValue("WLShowFilePathToolTips", "False").ToString
-		'		Case "True", "1" : WLShowFilePathToolTips = True
-		'		Case Else : WLShowFilePathToolTips = False
-		'	End Select
-		'	Select Case RegKey.GetValue("WLShowFileInfoToolTips", "False").ToString
-		'		Case "True", "1" : WLShowFileInfoToolTips = True
-		'		Case Else : WLShowFileInfoToolTips = False
-		'	End Select
-		'	Select Case RegKey.GetValue("WLShowFolderPathToolTips", "False").ToString
-		'		Case "True", "1" : WLShowFolderPathToolTips = True
-		'		Case Else : WLShowFolderPathToolTips = False
-		'	End Select
-		'	Try
-		'		WLMaxLinksPerFolder = CByte(Val(RegKey.GetValue("WLMaxLinksPerFolder", "30")))
-		'		If WLMaxLinksPerFolder < 1 Or WLMaxLinksPerFolder > 100 Then WLMaxLinksPerFolder = 30
-		'	Catch : WLMaxLinksPerFolder = 30
-		'	End Try
-		'	Try
-		'		WLStartUpDelay = CShort(Val(RegKey.GetValue("WLStartUpDelay", "10")))
-		'		If (WLStartUpDelay < 5 Or WLStartUpDelay > 300) And WLStartUpDelay <> 0 Then WLStartUpDelay = 10
-		'	Catch
-		'		WLStartUpDelay = 10
-		'	End Try
-		'	Select Case RegKey.GetValue("WLAutoRefresh", "False").ToString
-		'		Case "True", "1" : WLAutoRefresh = True
-		'		Case Else : WLAutoRefresh = False
-		'	End Select
-		'	Try
-		'		WLAutoRefreshInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshInterval", "5")))
-		'		If WLAutoRefreshInterval < 1 Or WLAutoRefreshInterval > 90 Then WLAutoRefreshInterval = 5
-		'	Catch : WLAutoRefreshInterval = 5
-		'	End Try
-		'	Try
-		'		WLAutoRefreshIdleInterval = CByte(Val(RegKey.GetValue("WLAutoRefreshIdleInterval", "30")))
-		'		If WLAutoRefreshIdleInterval < 20 Or WLAutoRefreshIdleInterval > 240 Then WLAutoRefreshIdleInterval = 30
-		'	Catch : WLAutoRefreshIdleInterval = 30
-		'	End Try
-		'	WLData.Clear()
-		'	RegSubKey = RegKey.CreateSubKey("WL")
-		'	Dim WLSortOrderType As Type = GetType(SortOrder)
-		'	Dim WLFolderModeType As Type = GetType(WLFolderMode)
-		'	Dim WLFolderPlacementType As Type = GetType(WLFolderPlacement)
-		'	For index As Integer = 1 To RegSubKey.SubKeyCount
-		'		RegItemKey = RegSubKey.OpenSubKey("Link" + (index).ToString.Trim, True)
-		'		Dim link As New WLItemType With {
-		'			.Root = RegItemKey.GetValue("", "").ToString}
-		'		If Not String.IsNullOrEmpty(link.Root) Then
-		'			link.Name = RegItemKey.GetValue("Name", "").ToString
-		'			Try : link.Sort = DirectCast(SortOrder.Parse(WLSortOrderType, RegItemKey.GetValue("Sort", "Ascending").ToString), SortOrder)
-		'			Catch : link.Sort = SortOrder.Ascending
-		'			End Try
-		'			Try : link.FolderMode = DirectCast(WLFolderMode.Parse(WLFolderModeType, RegItemKey.GetValue("FolderMode", "NoFolders").ToString), WLFolderMode)
-		'			Catch : link.FolderMode = WLFolderMode.NoFolders
-		'			End Try
-		'			Try : link.FolderPlacement = DirectCast(WLFolderPlacement.Parse(WLFolderPlacementType, RegItemKey.GetValue("FolderPlacement", "Top").ToString), WLFolderPlacement)
-		'			Catch : link.FolderPlacement = WLFolderPlacement.Top
-		'			End Try
-		'			Select Case RegItemKey.GetValue("UseDefaultIcon", "False").ToString
-		'				Case "True", "1" : link.UseDefaultIcon = True
-		'				Case Else : link.UseDefaultIcon = False
-		'			End Select
-		'			Select Case RegItemKey.GetValue("ShowInMenu", "True").ToString
-		'				Case "False", "0" : link.ShowInMenu = False
-		'				Case Else : link.ShowInMenu = True
-		'			End Select
-		'			Select Case RegItemKey.GetValue("ShowInTray", "True").ToString
-		'				Case "False", "0" : link.ShowInTray = False
-		'				Case Else : link.ShowInTray = True
-		'			End Select
-		'			Select Case RegItemKey.GetValue("ShowNoMenu", "False").ToString
-		'				Case "True", "1" : link.ShowNoMenu = True
-		'				Case Else : link.ShowNoMenu = False
-		'			End Select
-		'			Select Case RegItemKey.GetValue("ShowMenuIcons", "True").ToString
-		'				Case "False", "0" : link.ShowMenuIcons = False
-		'				Case Else : link.ShowMenuIcons = True
-		'			End Select
-		'			link.RefreshData = True
-		'			link.RefreshMenu = True
-		'			WLData.Add(link)
-		'		End If
-		'		RegItemKey.Close()
-		'	Next
-		'	RegSubKey.Close()
-		'End Sub
-		Private Sub SaveSettingsHC()
-			RegKey.SetValue("HCWSTLeft", HCWSTLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTDouble", HCWSTDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTMiddle", HCWSTMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTRight", HCWSTRight.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWLLeft", HCWLLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWLDouble", HCWLDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWLMiddle", HCWLMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCCBLeft", HCCBLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCCBDouble", HCCBDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCCBMiddle", HCCBMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCCBRight", HCCBRight.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTScreenSaverLeft", HCWSTScreenSaverLeft.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTScreenSaverDouble", HCWSTScreenSaverDouble.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTScreenSaverMiddle", HCWSTScreenSaverMiddle.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HCWSTScreenSaverRight", HCWSTScreenSaverRight.ToString, Microsoft.Win32.RegistryValueKind.String)
-		End Sub
-		Private Sub SaveSettingsHK()
-			RegKey.SetValue("HKEnabled", HKEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTLockWorkSpaceKey", Val(HKWSTLockWorkSpace.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTLockWorkSpaceKeyCode", HKWSTLockWorkSpace.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTLockWorkSpaceKeyMod", HKWSTLockWorkSpace.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTScreenSaverKey", Val(HKWSTScreenSaver.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTScreenSaverKeyCode", HKWSTScreenSaver.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTScreenSaverKeyMod", HKWSTScreenSaver.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTClockKey", Val(HKWSTClock.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTClockKeyCode", HKWSTClock.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTClockKeyMod", HKWSTClock.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTTaskManagerKey", Val(HKWSTTaskManager.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTTaskManagerKeyCode", HKWSTTaskManager.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTTaskManagerKeyMod", HKWSTTaskManager.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTCommandPromptKey", Val(HKWSTCommandPrompt.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTCommandPromptKeyCode", HKWSTCommandPrompt.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWSTCommandPromptKeyMod", HKWSTCommandPrompt.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWLKey", Val(HKWL.Key).ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWLKeyCode", HKWL.KeyCode.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("HKWLKeyMod", HKWL.KeyMod.ToString, Microsoft.Win32.RegistryValueKind.String)
-		End Sub
-		Friend Sub SaveSettingsWST()
-			RegKey.SetValue("WSTLoadOnOSStartup", WSTLoadOnOSStartup.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPath.Path, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPath.Arguments, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTEnabled", WSTEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowTaskManager", WSTShowTaskManager.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTTaskManagerPath", WSTTaskManager.Path, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTTaskManagerArgs", WSTTaskManager.Arguments, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowCommandPrompt", WSTShowCommandPrompt.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTCommandPromptPath", WSTCommandPrompt.Path, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTCommandPromptArgs", WSTCommandPrompt.Arguments, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTSSToolEnabled", WSTSSToolEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTSSStartUp", WSTSSStartUp.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTSSEnableOnActivate", WSTSSEnableOnActivate.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowSSIcon", WSTShowSSIcon.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowSSActivate", WSTShowSSActivate.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowSSEnabled", WSTShowSSEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowClock", WSTShowClock.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTClockLocationX", WSTClockLocation.X.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTClockLocationY", WSTClockLocation.Y.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTClockSize", WSTClockSize.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowLockWorkSpace", WSTShowLockWorkSpace.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowLogOff", WSTShowLogOff.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowSleep", WSTShowSleep.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowHibernate", WSTShowHibernate.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowReStart", WSTShowReStart.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowShutDown", WSTShowShutDown.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowHelp", WSTShowHelp.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowLog", WSTShowLog.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowAC", WSTShowAC.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowWLMenu", WSTShowWLMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("WSTShowWLTray", WSTShowWLTray.ToString, Microsoft.Win32.RegistryValueKind.String)
-		End Sub
-		Private Sub SaveSettingsAC()
-			RegKey.SetValue("ACAlarmTime", ACAlarmTime.ToString().Substring(0, My.App.ACAlarmTime.ToString().Length - 3), Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACAlarmRecurring", ACAlarmRecurring.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACAlarmChimePath", ACAlarmChimePath, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACAlarmChimeType", ACAlarmChimeType.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACTopHourChimeEnabled", ACTopHourChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACTopHourChimePath", ACTopHourChimePath, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACTopHourChimeType", ACTopHourChimeType.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACOffHourChimePath", ACOffHourChimePath, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACTopHourBeforeChimeEnabled", ACTopHourBeforeChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACTopHourAfterChimeEnabled", ACTopHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACFirstQuarterHourChimeEnabled", ACFirstQuarterHourChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACFirstQuarterHourBeforeChimeEnabled", ACFirstQuarterHourBeforeChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACFirstQuarterHourAfterChimeEnabled", ACFirstQuarterHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACBottomHourChimeEnabled", ACBottomHourChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACBottomHourBeforeChimeEnabled", ACBottomHourBeforeChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACBottomHourAfterChimeEnabled", ACBottomHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACThirdQuarterHourChimeEnabled", ACThirdQuarterHourChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACThirdQuarterHourBeforeChimeEnabled", ACThirdQuarterHourBeforeChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-			RegKey.SetValue("ACThirdQuarterHourAfterChimeEnabled", ACThirdQuarterHourAfterChimeEnabled.ToString, Microsoft.Win32.RegistryValueKind.String)
-		End Sub
-		Private Sub SaveSettingsWL()
-			RegistryHelper.SetBool("WLShowFilePathToolTips", WLShowFilePathToolTips)
-			RegistryHelper.SetBool("WLShowFileInfoToolTips", WLShowFileInfoToolTips)
-			RegistryHelper.SetBool("WLShowFolderPathToolTips", WLShowFolderPathToolTips)
-			RegistryHelper.SetInt("WLMaxLinksPerFolder", WLMaxLinksPerFolder)
-			RegistryHelper.SetInt("WLStartUpDelay", WLStartUpDelay)
-			RegistryHelper.SetBool("WLAutoRefresh", WLAutoRefresh)
-			RegistryHelper.SetInt("WLAutoRefreshInterval", WLAutoRefreshInterval)
-			RegistryHelper.SetInt("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval)
-			Dim json = JsonSerializer.Serialize(WLData)
-			RegistryHelper.SetString("WLData", json)
-		End Sub
-		'Private Sub SaveSettingsWL()
-		'	RegKey.SetValue("WLShowFilePathToolTips", WLShowFilePathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLShowFileInfoToolTips", WLShowFileInfoToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLShowFolderPathToolTips", WLShowFolderPathToolTips.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLMaxLinksPerFolder", WLMaxLinksPerFolder.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLStartUpDelay", WLStartUpDelay.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLAutoRefresh", WLAutoRefresh.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLAutoRefreshInterval", WLAutoRefreshInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegKey.SetValue("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'	RegSubKey = RegKey.OpenSubKey("WL", True)
-		'	For Each s As String In RegSubKey.GetSubKeyNames : RegSubKey.DeleteSubKeyTree(s) : Next
-		'	If WLData.Count > 0 Then
-		'		For index As Integer = 0 To WLData.Count - 1
-		'			RegItemKey = RegSubKey.CreateSubKey("Link" + (index + 1).ToString.Trim)
-		'			RegItemKey.SetValue("", WLData(index).Root, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("Name", WLData(index).Name, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("Sort", WLData(index).Sort.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("FolderMode", WLData(index).FolderMode.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("FolderPlacement", WLData(index).FolderPlacement.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("UseDefaultIcon", WLData(index).UseDefaultIcon.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("ShowInMenu", WLData(index).ShowInMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("ShowInTray", WLData(index).ShowInTray.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("ShowNoMenu", WLData(index).ShowNoMenu.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.SetValue("ShowMenuIcons", WLData(index).ShowMenuIcons.ToString, Microsoft.Win32.RegistryValueKind.String)
-		'			RegItemKey.Close()
-		'		Next
-		'	End If
-		'	RegSubKey.Close()
-		'End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			HKEnabled = False
 			GetSettingsDebugHK()
@@ -1322,6 +651,366 @@ Namespace My
 				.RefreshMenu = True}
 			WLData.Add(link)
 
+		End Sub
+
+		' Settings
+		Friend Sub GetSettings()
+			Dim starttime As TimeSpan = DateTime.Now.TimeOfDay
+
+			GetSettingsHC()
+			GetSettingsHK()
+			GetSettingsWST()
+			GetSettingsAC()
+			GetSettingsWL()
+
+			HCGenerateActionList()
+			HKGenerateKeyList()
+			Skye.Common.Log.Write("Settings Loaded (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
+		End Sub
+		Private Sub GetSettingsHC()
+
+			' WST Actions
+			HCWSTLeft = RegistryHelper.GetEnum("HCWSTLeft", HCAction.NoAction)
+			HCWSTDouble = RegistryHelper.GetEnum("HCWSTDouble", HCAction.NoAction)
+			HCWSTMiddle = RegistryHelper.GetEnum("HCWSTMiddle", HCAction.NoAction)
+			HCWSTRight = RegistryHelper.GetEnum("HCWSTRight", HCAction.Menu)
+
+			' WinLink Actions
+			HCWLLeft = RegistryHelper.GetEnum("HCWLLeft", HCAction.NoAction)
+			HCWLDouble = RegistryHelper.GetEnum("HCWLDouble", HCAction.NoAction)
+			HCWLMiddle = RegistryHelper.GetEnum("HCWLMiddle", HCAction.NoAction)
+			HCWLRight = HCAction.Menu ' Hardcoded default/constant
+
+			' ScreenSaver Actions
+			HCWSTScreenSaverLeft = RegistryHelper.GetEnum("HCWSTScreenSaverLeft", HCAction.NoAction)
+			HCWSTScreenSaverDouble = RegistryHelper.GetEnum("HCWSTScreenSaverDouble", HCAction.NoAction)
+			HCWSTScreenSaverMiddle = RegistryHelper.GetEnum("HCWSTScreenSaverMiddle", HCAction.NoAction)
+			HCWSTScreenSaverRight = RegistryHelper.GetEnum("HCWSTScreenSaverRight", HCAction.Menu)
+
+		End Sub
+		Private Sub GetSettingsHK()
+
+			HKEnabled = RegistryHelper.GetBool("HKEnabled", True)
+
+			' Load hotkeys with descriptions, IDs, and defaults
+			GetHK(HKWSTLockWorkSpace, "HKWSTLockWorkSpace", "Lock WorkSpace", 1, CType(262163, Keys), 19, 2)
+			GetHK(HKWSTScreenSaver, "HKWSTScreenSaver", "Activate Screen Saver", 2, Keys.Pause, 19, 0)
+			GetHK(HKWSTClock, "HKWSTClock", "Clock", 4, Keys.F8, 119, 0)
+			GetHK(HKWSTTaskManager, "HKWSTTaskManager", "Task Manager", 5, Keys.None, 0, 0)
+			GetHK(HKWSTCommandPrompt, "HKWSTCommandPrompt", "Command Prompt", 6, Keys.None, 0, 0)
+			GetHK(HKWL, "HKWL", "Open WinLink Root Folder", 15, Keys.None, 0, 0)
+
+		End Sub
+		Private Sub GetHK(ByRef hotkey As HKType, keyPrefix As String, desc As String, winId As Integer, defaultKey As Keys, defaultCode As Byte, defaultMod As Byte)
+
+			hotkey.Description = desc
+			hotkey.WinID = winId
+
+			' Read values safely using RegistryHelper
+			Dim rawKey As Integer = RegistryHelper.GetInt($"{keyPrefix}Key", CInt(defaultKey))
+			hotkey.Key = If(rawKey >= 0, CType(rawKey, Keys), defaultKey)
+			Dim rawCode As Integer = RegistryHelper.GetInt($"{keyPrefix}KeyCode", CInt(defaultCode))
+			hotkey.KeyCode = CByte(Math.Clamp(rawCode, Byte.MinValue, Byte.MaxValue))
+			Dim rawMod As Integer = RegistryHelper.GetInt($"{keyPrefix}KeyMod", CInt(defaultMod))
+			hotkey.KeyMod = CByte(Math.Clamp(rawMod, Byte.MinValue, Byte.MaxValue))
+
+		End Sub
+		Private Sub GetSettingsWST()
+
+			' Startup & Feature Flags
+			WSTLoadOnOSStartup = RegistryHelper.GetBool("WSTLoadOnOSStartup", False)
+			WSTLoadOnOSStartupPath = New FileType(
+				RegistryHelper.GetString("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPathDefault.Path),
+				RegistryHelper.GetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPathDefault.Arguments)
+			)
+			WSTEnabled = RegistryHelper.GetBool("WSTEnabled", True)
+
+			' Task Manager & Command Prompt
+			WSTShowTaskManager = RegistryHelper.GetBool("WSTShowTaskManager", True)
+			WSTTaskManager = New FileType(
+				RegistryHelper.GetString("WSTTaskManagerPath", WSTTaskManagerDefault.Path),
+				RegistryHelper.GetString("WSTTaskManagerArgs", WSTTaskManagerDefault.Arguments)
+			)
+			WSTShowCommandPrompt = RegistryHelper.GetBool("WSTShowCommandPrompt", True)
+			WSTCommandPrompt = New FileType(
+				RegistryHelper.GetString("WSTCommandPromptPath", WSTCommandPromptDefault.Path),
+				RegistryHelper.GetString("WSTCommandPromptArgs", WSTCommandPromptDefault.Arguments)
+			)
+
+			' Screensaver Tool Options
+			WSTSSToolEnabled = RegistryHelper.GetBool("WSTSSToolEnabled", False)
+			WSTSSEnableOnActivate = RegistryHelper.GetBool("WSTSSEnableOnActivate", True)
+			WSTShowSSIcon = RegistryHelper.GetBool("WSTShowSSIcon", True)
+			WSTShowSSActivate = RegistryHelper.GetBool("WSTShowSSActivate", True)
+			WSTShowSSEnabled = RegistryHelper.GetBool("WSTShowSSEnabled", True)
+			If Not [Enum].TryParse(RegistryHelper.GetString("WSTSSStartUp", "Enabled"), True, WSTSSStartUp) Then
+				WSTSSStartUp = WSTSSStartUpMode.Enabled
+			End If
+
+			' Clock Options
+			WSTShowClock = RegistryHelper.GetBool("WSTShowClock", False)
+			WSTClockLocation.X = RegistryHelper.GetInt("WSTClockLocationX", 0)
+			WSTClockLocation.Y = RegistryHelper.GetInt("WSTClockLocationY", 0)
+			If Not [Enum].TryParse(RegistryHelper.GetString("WSTClockSize", "Medium"), True, WSTClockSize) Then
+				WSTClockSize = ClockSize.Medium
+			End If
+
+			' Menu / UI Toggles
+			WSTShowLockWorkSpace = RegistryHelper.GetBool("WSTShowLockWorkSpace", True)
+			WSTShowLogOff = RegistryHelper.GetBool("WSTShowLogOff", True)
+			WSTShowSleep = RegistryHelper.GetBool("WSTShowSleep", True)
+			WSTShowHibernate = RegistryHelper.GetBool("WSTShowHibernate", True)
+			WSTShowReStart = RegistryHelper.GetBool("WSTShowReStart", True)
+			WSTShowShutDown = RegistryHelper.GetBool("WSTShowShutDown", True)
+			WSTShowHelp = RegistryHelper.GetBool("WSTShowHelp", True)
+			WSTShowLog = RegistryHelper.GetBool("WSTShowLog", True)
+			WSTShowAC = RegistryHelper.GetBool("WSTShowAC", True)
+			WSTShowWLMenu = RegistryHelper.GetBool("WSTShowWLMenu", False)
+			WSTShowWLTray = RegistryHelper.GetBool("WSTShowWLTray", False)
+
+		End Sub
+		Private Sub GetSettingsAC()
+
+			' TimeSpan parsing with safe fallback
+			Dim rawTime = RegistryHelper.GetString("ACAlarmTime", "00:00")
+			If Not TimeSpan.TryParse(rawTime, ACAlarmTime) Then
+				ACAlarmTime = TimeSpan.Zero
+			End If
+
+			' Booleans
+			ACAlarmRecurring = RegistryHelper.GetBool("ACAlarmRecurring", False)
+			ACTopHourChimeEnabled = RegistryHelper.GetBool("ACTopHourChimeEnabled", True)
+			ACTopHourBeforeChimeEnabled = RegistryHelper.GetBool("ACTopHourBeforeChimeEnabled", False)
+			ACTopHourAfterChimeEnabled = RegistryHelper.GetBool("ACTopHourAfterChimeEnabled", False)
+			ACFirstQuarterHourChimeEnabled = RegistryHelper.GetBool("ACFirstQuarterHourChimeEnabled", False)
+			ACFirstQuarterHourBeforeChimeEnabled = RegistryHelper.GetBool("ACFirstQuarterHourBeforeChimeEnabled", False)
+			ACFirstQuarterHourAfterChimeEnabled = RegistryHelper.GetBool("ACFirstQuarterHourAfterChimeEnabled", False)
+			ACBottomHourChimeEnabled = RegistryHelper.GetBool("ACBottomHourChimeEnabled", True)
+			ACBottomHourBeforeChimeEnabled = RegistryHelper.GetBool("ACBottomHourBeforeChimeEnabled", False)
+			ACBottomHourAfterChimeEnabled = RegistryHelper.GetBool("ACBottomHourAfterChimeEnabled", False)
+			ACThirdQuarterHourChimeEnabled = RegistryHelper.GetBool("ACThirdQuarterHourChimeEnabled", False)
+			ACThirdQuarterHourBeforeChimeEnabled = RegistryHelper.GetBool("ACThirdQuarterHourBeforeChimeEnabled", False)
+			ACThirdQuarterHourAfterChimeEnabled = RegistryHelper.GetBool("ACThirdQuarterHourAfterChimeEnabled", False)
+
+			' Strings
+			ACAlarmChimePath = RegistryHelper.GetString("ACAlarmChimePath", "")
+			ACTopHourChimePath = RegistryHelper.GetString("ACTopHourChimePath", "")
+			ACOffHourChimePath = RegistryHelper.GetString("ACOffHourChimePath", "")
+
+			' Enums
+			If Not [Enum].TryParse(RegistryHelper.GetString("ACAlarmChimeType", "Simple"), ACAlarmChimeType) Then
+				ACAlarmChimeType = ACChimeType.Simple
+			End If
+			If Not [Enum].TryParse(RegistryHelper.GetString("ACTopHourChimeType", "Extended"), ACTopHourChimeType) Then
+				ACTopHourChimeType = ACChimeType.Extended
+			End If
+
+		End Sub
+		Private Sub GetSettingsWL()
+			UpgradeLegacyWLSettings()
+
+			WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
+			WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
+			WLShowFolderPathToolTips = RegistryHelper.GetBool("WLShowFolderPathToolTips", False)
+			WLMaxLinksPerFolder = CByte(Math.Clamp(RegistryHelper.GetInt("WLMaxLinksPerFolder", 30), 1, 100))
+			WLStartUpDelay = CShort(Math.Clamp(RegistryHelper.GetInt("WLStartUpDelay", 10), 0, 300))
+			WLAutoRefresh = RegistryHelper.GetBool("WLAutoRefresh", False)
+			WLAutoRefreshInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshInterval", 5), 1, 90))
+			WLAutoRefreshIdleInterval = CByte(Math.Clamp(RegistryHelper.GetInt("WLAutoRefreshIdleInterval", 30), 20, 240))
+			Dim json = RegistryHelper.GetString("WLData", "[]")
+			Try
+				WLData = JsonSerializer.Deserialize(Of List(Of WLItemType))(json)
+			Catch
+				WLData = New List(Of WLItemType)()
+			End Try
+
+			' Set runtime flags
+			For i As Integer = 0 To WLData.Count - 1
+				Dim item = WLData(i)
+				item.RefreshData = True
+				item.RefreshMenu = True
+				WLData(i) = item
+			Next
+
+		End Sub
+
+		Friend Sub SaveSettings()
+			Dim starttime As TimeSpan = DateTime.Now.TimeOfDay
+
+			SaveSettingsHC()
+			SaveSettingsHK()
+			SaveSettingsWST()
+			SaveSettingsAC()
+			SaveSettingsWL()
+
+			Skye.Common.Log.Write("Settings Saved (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
+		End Sub
+		Friend Sub SaveSettingsHC()
+
+			' WST Actions
+			RegistryHelper.SetString("HCWSTLeft", HCWSTLeft.ToString())
+			RegistryHelper.SetString("HCWSTDouble", HCWSTDouble.ToString())
+			RegistryHelper.SetString("HCWSTMiddle", HCWSTMiddle.ToString())
+			RegistryHelper.SetString("HCWSTRight", HCWSTRight.ToString())
+
+			' WinLink Actions
+			RegistryHelper.SetString("HCWLLeft", HCWLLeft.ToString())
+			RegistryHelper.SetString("HCWLDouble", HCWLDouble.ToString())
+			RegistryHelper.SetString("HCWLMiddle", HCWLMiddle.ToString())
+
+			' ScreenSaver Actions
+			RegistryHelper.SetString("HCWSTScreenSaverLeft", HCWSTScreenSaverLeft.ToString())
+			RegistryHelper.SetString("HCWSTScreenSaverDouble", HCWSTScreenSaverDouble.ToString())
+			RegistryHelper.SetString("HCWSTScreenSaverMiddle", HCWSTScreenSaverMiddle.ToString())
+			RegistryHelper.SetString("HCWSTScreenSaverRight", HCWSTScreenSaverRight.ToString())
+
+		End Sub
+		Friend Sub SaveSettingsHK()
+
+			RegistryHelper.SetBool("HKEnabled", HKEnabled)
+
+			SaveHK(HKWSTLockWorkSpace, "HKWSTLockWorkSpace")
+			SaveHK(HKWSTScreenSaver, "HKWSTScreenSaver")
+			SaveHK(HKWSTClock, "HKWSTClock")
+			SaveHK(HKWSTTaskManager, "HKWSTTaskManager")
+			SaveHK(HKWSTCommandPrompt, "HKWSTCommandPrompt")
+			SaveHK(HKWL, "HKWL")
+
+		End Sub
+		Private Sub SaveHK(ByVal hotkey As HKType, keyPrefix As String)
+			RegistryHelper.SetInt($"{keyPrefix}Key", CInt(hotkey.Key))
+			RegistryHelper.SetInt($"{keyPrefix}KeyCode", CInt(hotkey.KeyCode))
+			RegistryHelper.SetInt($"{keyPrefix}KeyMod", CInt(hotkey.KeyMod))
+		End Sub
+		Friend Sub SaveSettingsWST()
+
+			' Startup & Feature Flags
+			RegistryHelper.SetBool("WSTLoadOnOSStartup", WSTLoadOnOSStartup)
+			RegistryHelper.SetString("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPath.Path)
+			RegistryHelper.SetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPath.Arguments)
+			RegistryHelper.SetBool("WSTEnabled", WSTEnabled)
+
+			' Task Manager & Command Prompt
+			RegistryHelper.SetBool("WSTShowTaskManager", WSTShowTaskManager)
+			RegistryHelper.SetString("WSTTaskManagerPath", WSTTaskManager.Path)
+			RegistryHelper.SetString("WSTTaskManagerArgs", WSTTaskManager.Arguments)
+			RegistryHelper.SetBool("WSTShowCommandPrompt", WSTShowCommandPrompt)
+			RegistryHelper.SetString("WSTCommandPromptPath", WSTCommandPrompt.Path)
+			RegistryHelper.SetString("WSTCommandPromptArgs", WSTCommandPrompt.Arguments)
+
+			' Screensaver Tool Options
+			RegistryHelper.SetBool("WSTSSToolEnabled", WSTSSToolEnabled)
+			RegistryHelper.SetString("WSTSSStartUp", WSTSSStartUp.ToString())
+			RegistryHelper.SetBool("WSTSSEnableOnActivate", WSTSSEnableOnActivate)
+			RegistryHelper.SetBool("WSTShowSSIcon", WSTShowSSIcon)
+			RegistryHelper.SetBool("WSTShowSSActivate", WSTShowSSActivate)
+			RegistryHelper.SetBool("WSTShowSSEnabled", WSTShowSSEnabled)
+
+			' Clock Options
+			RegistryHelper.SetBool("WSTShowClock", WSTShowClock)
+			RegistryHelper.SetInt("WSTClockLocationX", WSTClockLocation.X)
+			RegistryHelper.SetInt("WSTClockLocationY", WSTClockLocation.Y)
+			RegistryHelper.SetString("WSTClockSize", WSTClockSize.ToString())
+
+			' Menu / UI Toggles
+			RegistryHelper.SetBool("WSTShowLockWorkSpace", WSTShowLockWorkSpace)
+			RegistryHelper.SetBool("WSTShowLogOff", WSTShowLogOff)
+			RegistryHelper.SetBool("WSTShowSleep", WSTShowSleep)
+			RegistryHelper.SetBool("WSTShowHibernate", WSTShowHibernate)
+			RegistryHelper.SetBool("WSTShowReStart", WSTShowReStart)
+			RegistryHelper.SetBool("WSTShowShutDown", WSTShowShutDown)
+			RegistryHelper.SetBool("WSTShowHelp", WSTShowHelp)
+			RegistryHelper.SetBool("WSTShowLog", WSTShowLog)
+			RegistryHelper.SetBool("WSTShowAC", WSTShowAC)
+			RegistryHelper.SetBool("WSTShowWLMenu", WSTShowWLMenu)
+			RegistryHelper.SetBool("WSTShowWLTray", WSTShowWLTray)
+
+		End Sub
+		Private Sub SaveSettingsAC()
+
+			' Clean TimeSpan formatting (hh:mm or hh:mm:ss depending on needs)
+			RegistryHelper.SetString("ACAlarmTime", ACAlarmTime.ToString("hh\:mm"))
+
+			' Booleans
+			RegistryHelper.SetBool("ACAlarmRecurring", ACAlarmRecurring)
+			RegistryHelper.SetBool("ACTopHourChimeEnabled", ACTopHourChimeEnabled)
+			RegistryHelper.SetBool("ACTopHourBeforeChimeEnabled", ACTopHourBeforeChimeEnabled)
+			RegistryHelper.SetBool("ACTopHourAfterChimeEnabled", ACTopHourAfterChimeEnabled)
+			RegistryHelper.SetBool("ACFirstQuarterHourChimeEnabled", ACFirstQuarterHourChimeEnabled)
+			RegistryHelper.SetBool("ACFirstQuarterHourBeforeChimeEnabled", ACFirstQuarterHourBeforeChimeEnabled)
+			RegistryHelper.SetBool("ACFirstQuarterHourAfterChimeEnabled", ACFirstQuarterHourAfterChimeEnabled)
+			RegistryHelper.SetBool("ACBottomHourChimeEnabled", ACBottomHourChimeEnabled)
+			RegistryHelper.SetBool("ACBottomHourBeforeChimeEnabled", ACBottomHourBeforeChimeEnabled)
+			RegistryHelper.SetBool("ACBottomHourAfterChimeEnabled", ACBottomHourAfterChimeEnabled)
+			RegistryHelper.SetBool("ACThirdQuarterHourChimeEnabled", ACThirdQuarterHourChimeEnabled)
+			RegistryHelper.SetBool("ACThirdQuarterHourBeforeChimeEnabled", ACThirdQuarterHourBeforeChimeEnabled)
+			RegistryHelper.SetBool("ACThirdQuarterHourAfterChimeEnabled", ACThirdQuarterHourAfterChimeEnabled)
+
+			' Strings
+			RegistryHelper.SetString("ACAlarmChimePath", ACAlarmChimePath)
+			RegistryHelper.SetString("ACTopHourChimePath", ACTopHourChimePath)
+			RegistryHelper.SetString("ACOffHourChimePath", ACOffHourChimePath)
+
+			' Enums
+			RegistryHelper.SetString("ACAlarmChimeType", ACAlarmChimeType.ToString())
+			RegistryHelper.SetString("ACTopHourChimeType", ACTopHourChimeType.ToString())
+
+		End Sub
+		Private Sub UpgradeLegacyWLSettings()
+			' Check if legacy "WL" subkey exists under BaseKey
+			Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
+			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+				If key Is Nothing Then Return ' No legacy settings to migrate
+			End Using
+			Dim legacyLinks As New List(Of WLItemType)()
+
+			' Read old format
+			Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
+				For Each subKeyName In wlKey.GetSubKeyNames()
+					Using itemKey = wlKey.OpenSubKey(subKeyName)
+						If itemKey Is Nothing Then Continue For
+
+						Dim rootPath = itemKey.GetValue("", "").ToString()
+						If String.IsNullOrEmpty(rootPath) Then Continue For
+						Dim link As New WLItemType(rootPath) With {
+							.Name = itemKey.GetValue("Name", "").ToString(),
+							.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
+							.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
+							.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
+							.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
+							.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
+						}
+						Dim result As Boolean
+						result = [Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
+						result = [Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
+						result = [Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
+
+						legacyLinks.Add(link)
+					End Using
+				Next
+			End Using
+
+			' Save in new JSON format
+			Dim json = JsonSerializer.Serialize(legacyLinks)
+			RegistryHelper.SetString("WLData", json)
+
+			' Remove legacy registry tree
+			'Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
+			'	baseKey?.DeleteSubKeyTree("WL", False)
+			'End Using
+
+		End Sub
+		Private Sub SaveSettingsWL()
+			RegistryHelper.SetBool("WLShowFilePathToolTips", WLShowFilePathToolTips)
+			RegistryHelper.SetBool("WLShowFileInfoToolTips", WLShowFileInfoToolTips)
+			RegistryHelper.SetBool("WLShowFolderPathToolTips", WLShowFolderPathToolTips)
+			RegistryHelper.SetInt("WLMaxLinksPerFolder", WLMaxLinksPerFolder)
+			RegistryHelper.SetInt("WLStartUpDelay", WLStartUpDelay)
+			RegistryHelper.SetBool("WLAutoRefresh", WLAutoRefresh)
+			RegistryHelper.SetInt("WLAutoRefreshInterval", WLAutoRefreshInterval)
+			RegistryHelper.SetInt("WLAutoRefreshIdleInterval", WLAutoRefreshIdleInterval)
+			Dim json = JsonSerializer.Serialize(WLData)
+			RegistryHelper.SetString("WLData", json)
 		End Sub
 
 	End Module
