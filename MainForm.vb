@@ -292,9 +292,9 @@ Partial Friend Class MainForm
 			Select Case e.Button
 				Case MouseButtons.Left
 					ErrorNotification()
-					My.App.WriteToLog(My.App.Tools.SkyeTools, "Test Error - DO NOT PANIC!!")
+					'My.App.WriteToLog(My.App.Tools.SkyeTools, "Test Error - DO NOT PANIC!!")
 					'My.SkyeTools.ShowMessage(My.SkyeTools.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", "Error Noted In Log")
-					My.App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", "Error Noted In Log", SystemIcons.Error)
+					My.App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", SystemIcons.Error)
 				Case MouseButtons.Right
 					Throw New Exception("Test Exception - DO NOT PANIC!!")
 			End Select
@@ -418,8 +418,6 @@ Partial Friend Class MainForm
 	End Function
 	Private Function InUseForms() As Boolean
 		If My.App.FrmBalloon IsNot Nothing Then If My.App.FrmBalloon.Visible Then Return True
-		If My.App.FrmInfoVisible Then Return True
-		If My.App.FrmMessageVisible Then Return True
 		Return False
 	End Function
 	Private Function InUseSettings() As Boolean '
@@ -2761,8 +2759,8 @@ Partial Friend Class MainForm
 				p = Nothing
 				pi = Nothing
 			Catch ex As Exception
-				My.App.ShowMessage(My.App.Tools.WinLinks, "Cannot Start ", link.ToUpper + Chr(13) + Chr(13) + ex.Message, "Please Check Your Settings And Try Again")
-				My.App.WriteToLog(My.App.Tools.WinLinks, "Unable to start " + link.ToUpper + "." + Chr(13) + ex.ToString)
+				My.App.ShowMessage(My.App.Tools.WinLinks, "Cannot Start ", link.ToUpper + Chr(13) + Chr(13) + ex.Message & Environment.NewLine & "Please Check Your Settings And Try Again")
+				'My.App.WriteToLog(My.App.Tools.WinLinks, "Unable to start " + link.ToUpper + "." + Chr(13) + ex.ToString)
 			End Try
 		End If
 	End Sub

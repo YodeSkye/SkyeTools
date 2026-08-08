@@ -335,22 +335,9 @@ Namespace My
 		Friend AppIsClosing As Boolean = False
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend FrmMain As MainForm
+		Friend FrmHelp As Help
 		Friend FrmLog As Log
 		Friend FrmBalloon As Balloon
-		Friend FrmInfo As InfoForm
-		Friend Function FrmInfoVisible() As Boolean
-			If FrmInfo IsNot Nothing Then
-				Return FrmInfo.Visible
-			End If
-			Return False
-		End Function
-		Friend FrmMessage As MessageForm
-		Friend Function FrmMessageVisible() As Boolean
-			If FrmMessage IsNot Nothing Then
-				Return FrmMessage.Visible
-			End If
-			Return False
-		End Function
 		Private BalloonHideEnabled As Boolean
 		Private WithEvents TimerBalloon As New Timer
 
@@ -431,61 +418,19 @@ Namespace My
 				FrmBalloon.Hide()
 			End If
 		End Sub
-		Friend Sub ShowInfo(tool As Tools, title As String, message As String, postmessage As String, Optional icon As Icon = Nothing, Optional wordwrap As Boolean = False, Optional scrolltotop As Boolean = True, Optional showmaximized As Boolean = False)
-			Try
-				If FrmInfoVisible() Then FrmInfo.Close()
-				FrmInfo = New InfoForm
-				If icon Is Nothing Then : FrmInfo.Icon = Resources.Resources.iconApp 'DirectCast(AppResources.GetObject("iconApp"), Icon)
-				Else : FrmInfo.Icon = icon
-				End If
-				FrmInfo.Text = tool.ToString + " " + title
-				FrmInfo.rtbMessage.ResetText()
-				FrmInfo.rtbMessage.AppendText(message)
-				If scrolltotop Then FrmInfo.rtbMessage.Select(0, 0)
-				If wordwrap Then FrmInfo.rtbMessage.WordWrap = True
-				FrmInfo.tbPostMessage.Text = postmessage
-				If title = "Log" Then
-					Dim lines As Integer = 0
-					If FrmInfo.rtbMessage.Lines(0).Length > 0 Then lines = FrmInfo.rtbMessage.GetLineFromCharIndex(FrmInfo.rtbMessage.Text.Length)
-					If lines > 0 Then
-						FrmInfo.tbPostMessage.Text += "  (" + lines.ToString + IIf(lines > 1, " Lines", " Line").ToString + ")"
-						FrmInfo.btnDeleteLog.Visible = True
-					End If
-					FrmInfo.btnRefreshLog.Visible = True
-				End If
-				FrmInfo.btnClose.Select()
-				FrmInfo.Show()
-				If showmaximized Then FrmInfo.ChangeWindowState()
-				FrmInfo.rtbMessage.Focus()
-			Catch ex As Exception : WriteToLog(Tools.SkyeTools, "ShowInfo Managed Error" + Chr(13) + ex.ToString)
-			End Try
-		End Sub
-		Friend Sub ShowMessage(tool As Tools, title As String, message As String, postmessage As String, Optional icon As Icon = Nothing)
-			Try
-				FrmMessage = New MessageForm
-				If icon Is Nothing Then
-					Select Case tool
-						Case Tools.SkyeTools : FrmMessage.Icon = Resources.Resources.iconApp 'DirectCast(AppResources.GetObject("iconApp"), Icon)
-						Case Else : FrmMessage.Icon = Resources.Resources.iconApp 'DirectCast(AppResources.GetObject("iconApp"), Icon)
-					End Select
-				Else : FrmMessage.Icon = icon
-				End If
-				FrmMessage.Text = tool.ToString + " " + title
-				FrmMessage.rtbMessage.ResetText()
-				FrmMessage.rtbMessage.AppendText(message)
-				FrmMessage.rtbMessage.SelectAll()
-				FrmMessage.rtbMessage.SelectionAlignment = System.Windows.Forms.HorizontalAlignment.Center
-				FrmMessage.rtbMessage.Select(0, 0)
-				FrmMessage.rtbMessage.ClearUndo()
-				FrmMessage.tbPostMessage.Text = postmessage
-				FrmMessage.btnClose.Select()
-				FrmMessage.ShowDialog()
-			Catch ex As Exception : WriteToLog(Tools.SkyeTools, "ShowMessage Managed Error" + Chr(13) + ex.ToString)
-			End Try
+		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing)
+			Dim t As New Skye.UI.ToastOptions With {
+				   .Title = title,
+				   .Message = message,
+				   .Icon = icon,
+				   .Duration = 6000
+			   }
+            Skye.UI.Toast.ShowToast(t)
+			WriteToLog(tool, title & " --> " & message)
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
-			Dim logtext As String = "HotKeys -- If the title of a HotKey on the Settings Page is grayed out, but HotKeys are enabled, this means that the feature is not active and the HotKey will not function even though it can be set. Activate the feature and the HotKey will function normally."
-			logtext += Chr(13) + Chr(13) + "HotKeys -- The InfoTip of the HotKey Header will display which HotLinks are assigned to that HotKey."
+			Dim logtext As String = "HotKeys -- If the title Of a HotKey On the Settings Page Is grayed out, but HotKeys are enabled, this means that the feature Is Not active And the HotKey will Not Function even though it can be Set. Activate the feature And the HotKey will Function normally."
+			logtext += Chr(13) + Chr(13) + "HotKeys -- The InfoTip Of the HotKey Header will display which HotLinks are assigned To that HotKey."
 			logtext += Chr(13) + Chr(13) + "HotKeys -- The 'Open WinLink Root Folder' HotKey will open the last WinLink folder. This folder is also used as the AutoRefresh folder."
 			logtext += Chr(13) + Chr(13) + "WorkSpace Tools -- Disabling the ScreenSaver does not affect any Windoze settings, it merely activates a 'keep alive' function for the App that will prevent Windoze from going idle relative to display and power functions. Activating the Screen Saver from the HotKey will not enable the Screen Saver even if the 'Enable On Activate' option is set. This is so the HotKey can be used for emergency purposes and not interfere with normal WorkSpace functioning."
 			logtext += Chr(13) + Chr(13) + "WinLinks -- AutoRefresh will refresh the last WinLink folder."
@@ -496,18 +441,28 @@ Namespace My
 			logtext += Chr(13) + Chr(13) + "WinLinks -- The HotClick Refresh WinLink is meant to be used with WinLinks Tray Icons. If used with one of the other Tray Icons, it will refresh the last WinLink."
 			logtext += Chr(13) + Chr(13) + "Alarm & Chime -- When the Alarm is set to chime Forever, it will chime a maximum of 255 times, or until cancelled."
 			logtext += Chr(13) + Chr(13) + "Alarm & Chime -- When the Alarm is set to chime Forever, a text alert will be displayed in the WorkSpace Tools menu. This can be cleared by clicking 'Cancel Alarm', by clicking the bolded 'Alarm / Chime' menu item, or by closing the Balloon."
-			logtext += Chr(13) + Chr(13) + "SkyeTools -- Use Alternate Close Method means that another method will be used to close the application. This is useful when the normal method does not work properly and application errors occur."
 			logtext += Chr(13) + Chr(13) + "SkyeTools -- Holding the ShiftKey down while the app is starting will put the app into 'Alternate Start Mode'. This means that HotLinks & WinLinks will not AutoLoad on StartUp. You may, however, manually Refresh WinLinks from the WinLinks Settings page."
 			logtext += Chr(13) + "When starting the App in 'Alternate Start Mode', the text on the Splash Screen will be red."
 			logtext += Chr(13) + Chr(13) + "SkyeTools -- The option to 'ReStart In Current Context' means that the App will ReStart with the same CommandLine parameters as when it was started."
 			logtext += Chr(13) + Chr(13) + "CommandLine -- Parameters may be used in any order or combination unless otherwise noted."
 			logtext += Chr(13) + "/ALTSTART -- Puts the App into 'Alternate Start Mode'"
 			logtext += Chr(13) + "/DELAYEDSTART:xx -- Delays the start of the app for xx seconds. The minimum and default is 2 seconds. The maximum is 300 seconds(5 minutes). The Splash Screen will be displayed during this time."
-			If showmaximized Or (FrmInfoVisible() AndAlso FrmInfo.WindowState = FormWindowState.Maximized) Then
-				ShowInfo(My.App.Tools.SkyeTools, "Help & About", logtext, "v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString, Resources.Resources.iconInfo, True, True, True)
+			If FrmHelp Is Nothing Then
+				FrmHelp = New Help With {
+					.Text = My.Application.Info.Title + " Help & About",
+					.Icon = My.Resources.Resources.iconInfo
+				}
+				FrmHelp.RTxtBoxMessage.Clear()
+				FrmHelp.RTxtBoxMessage.AppendText(logtext)
+				FrmHelp.RTxtBoxMessage.Select(0, 0)
+				FrmHelp.TxtBoxPostMessage.Text = "v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
+				FrmHelp.Show()
 			Else
-				ShowInfo(My.App.Tools.SkyeTools, "Help & About", logtext, "v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString, Resources.Resources.iconInfo, True, True, False)
+				FrmHelp.BringToFront()
+				FrmHelp.Focus()
 			End If
+			If showmaximized Then FrmHelp.WindowState = FormWindowState.Maximized
+			FrmHelp.BtnOK.Select()
 		End Sub
 		Friend Sub ShowLog(Optional showmaximized As Boolean = False)
 			If FrmLog Is Nothing Then
@@ -525,16 +480,6 @@ Namespace My
 			Dim logentry As String = $"{tool} --> {text}"
 			Skye.Common.Log.Write(logentry)
 			Debug.Print("WriteToLog: " & logentry)
-		End Sub
-		Friend Sub StartFile(file As FileType)
-			Try
-				If String.IsNullOrEmpty(file.Arguments) Then : Diagnostics.Process.Start(file.Path)
-				Else : Diagnostics.Process.Start(file.Path, file.Arguments)
-				End If
-			Catch ex As Exception
-				My.App.WriteToLog(My.App.Tools.WorkSpaceTools, "Cannot Start '" + file.Path + "'" + Chr(13) + ex.ToString)
-				My.App.ShowMessage(My.App.Tools.WorkSpaceTools, "Cannot Start '" + file.Path + "'", ex.Message, "Please Check Your Settings And Try Again")
-			End Try
 		End Sub
 		''' <summary>
 		''' Checks whether the Mouse Pointer is within the bounds of the Control. Useful for MouseUp Control Events so a user can 'wander' off the control, while holding the button down, without the event triggering.

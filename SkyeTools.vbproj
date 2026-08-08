@@ -46,19 +46,13 @@
     <Compile Update="WSTClock.Designer.vb">
       <DependentUpon>WSTClock.vb</DependentUpon>
     </Compile>
-    <Compile Update="InfoForm.Designer.vb">
-      <DependentUpon>InfoForm.vb</DependentUpon>
-    </Compile>
     <Compile Update="MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
-    </Compile>
-    <Compile Update="MessageForm.Designer.vb">
-      <DependentUpon>MessageForm.vb</DependentUpon>
     </Compile>
     <Compile Update="SplashForm.Designer.vb">
       <DependentUpon>SplashForm.vb</DependentUpon>
     </Compile>
-    <PackageReference Include="SkyeLibrary" Version="1.5.23" />
+    <PackageReference Include="SkyeLibrary" Version="1.5.24" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <FileAlignment>4096</FileAlignment>
