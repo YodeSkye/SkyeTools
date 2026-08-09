@@ -90,7 +90,6 @@ Partial Friend Class MainForm
 		My.App.ACChime = audioBytes
 		audioBytes = Nothing
 		ums.Dispose()
-		My.App.SetBalloon()
 
 		'Initialize Form
 		Me.Text = "Settings For " + My.Application.Info.ProductName + " v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
@@ -298,7 +297,6 @@ Partial Friend Class MainForm
 	Friend Function InUseApp() As Boolean
 		If Me.cmWST.Visible Or Me.cmWSTScreenSaver.Visible Then Return True
 		If InUseWL() Then Return True
-		If InUseForms() Then Return True
 		If InUseSettings() Then Return True
 		Return False
 	End Function
@@ -382,10 +380,6 @@ Partial Friend Class MainForm
 		End If
 		Return False
 	End Function
-	Private Function InUseForms() As Boolean
-		If My.App.FrmBalloon IsNot Nothing Then If My.App.FrmBalloon.Visible Then Return True
-		Return False
-	End Function
 	Private Function InUseSettings() As Boolean '
 		If Me.Visible Then Return True
 		Return False
@@ -393,12 +387,7 @@ Partial Friend Class MainForm
 	Private Function CloseApplications(tool As My.App.Tools, closelist As Collections.Generic.List(Of String), Optional timeout As Byte = 60, Optional generateOArestartlist As Boolean = False) As Boolean '
 		Try
 			For Each i As String In closelist
-				'Dim usealt As Boolean = False
-				'If i.Substring(0, 1) = "*" Then
-				'	usealt = True
-				'	i = i.TrimStart(CChar("*"))
-				'End If
-				My.App.ShowBalloon(tool, "Closing " + i.ToUpper, My.App.BalloonDelay.WaitForUser)
+				App.ShowMessage(tool, "Closing " + i.ToUpper, Nothing)
 				Dim plist As Diagnostics.Process() = Diagnostics.Process.GetProcessesByName(i)
 				For Each p As Diagnostics.Process In plist
 					If p.CloseMainWindow Then
@@ -420,7 +409,6 @@ Partial Friend Class MainForm
 					'	pcloseapp.Dispose()
 					'End If
 				Next
-				My.App.HideBalloon()
 			Next
 			If closelist.Count > 0 Then My.App.WriteToLog(tool, "Application Closure Completed")
 			CloseApplications = True 'DO NOT use RETURN here because SMStandByEnd will not execute if you do!!
@@ -1164,37 +1152,34 @@ Partial Friend Class MainForm
 	End Sub
 	Private Sub CMIWSTLogOffMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLogOff.MouseUp
 		If e.Button = MouseButtons.Left Then
-			My.App.WriteToLog(My.App.Tools.WorkSpaceTools, "System Log Off Initiated")
-			My.App.ShowBalloon(My.App.Tools.WorkSpaceTools, "Logging Off...", My.App.BalloonDelay.WaitForEver)
-			'Mentalis.Utilities.WindowsController.ExitWindows(Mentalis.Utilities.RestartOptions.LogOff, False)
+			My.App.WriteToLog(App.Tools.WorkSpaceTools, "System Log Off Initiated")
+			My.App.ShowMessage(App.Tools.WorkSpaceTools, "Logging Off...", Nothing)
 			System.Diagnostics.Process.Start("ShutDown", "/l")
 		End If
 	End Sub
 	Private Sub CMIWSTSleepMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTSleep.MouseUp
 		If e.Button = MouseButtons.Left Then
-			My.App.ShowBalloon(My.App.Tools.WorkSpaceTools, "Standing By...", My.App.BalloonDelay.Medium)
+			App.ShowMessage(App.Tools.WorkSpaceTools, "Standing By...", Nothing)
 			System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Suspend, False, False)
 		End If
 	End Sub
 	Private Sub CMIWSTHibernateMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHibernate.MouseUp
 		If e.Button = MouseButtons.Left Then
-			My.App.ShowBalloon(My.App.Tools.WorkSpaceTools, "Hibernating...", My.App.BalloonDelay.Medium)
+			App.ShowMessage(App.Tools.WorkSpaceTools, "Hibernating...", Nothing)
 			System.Windows.Forms.Application.SetSuspendState(System.Windows.Forms.PowerState.Hibernate, False, False)
 		End If
 	End Sub
 	Private Sub CMIWSTReStartMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTReStart.MouseUp
 		If e.Button = MouseButtons.Left Then
-			My.App.WriteToLog(My.App.Tools.WorkSpaceTools, "System ReStart Initiated")
-			My.App.ShowBalloon(My.App.Tools.WorkSpaceTools, "ReStarting...", My.App.BalloonDelay.WaitForEver)
-			'Mentalis.Utilities.WindowsController.ExitWindows(Mentalis.Utilities.RestartOptions.Reboot, False)
+			App.WriteToLog(App.Tools.WorkSpaceTools, "System ReStart Initiated")
+			App.ShowMessage(App.Tools.WorkSpaceTools, "ReStarting...", Nothing)
 			System.Diagnostics.Process.Start("ShutDown", "/r /t 0")
 		End If
 	End Sub
 	Private Sub CMIWSTShutDownMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTShutDown.MouseUp
 		If e.Button = MouseButtons.Left Then
-			My.App.WriteToLog(My.App.Tools.WorkSpaceTools, "System Shut Down Initiated")
-			My.App.ShowBalloon(My.App.Tools.WorkSpaceTools, "Shutting Down...", My.App.BalloonDelay.WaitForEver)
-			'Mentalis.Utilities.WindowsController.ExitWindows(Mentalis.Utilities.RestartOptions.ShutDown, False)
+			App.WriteToLog(App.Tools.WorkSpaceTools, "System Shut Down Initiated")
+			App.ShowMessage(App.Tools.WorkSpaceTools, "Shutting Down...", Nothing)
 			System.Diagnostics.Process.Start("ShutDown", "/s /t 0")
 		End If
 	End Sub
@@ -1659,11 +1644,8 @@ Partial Friend Class MainForm
 			Loop While counter < chimecount
 		Else
 			If sender Is Me.btnACAlarmChimePlay And My.App.ACAlarmChimeType = My.App.ACChimeType.Forever Then chimecount = Byte.MaxValue
-			Select Case chimecount
-				Case > 12 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", My.App.BalloonDelay.WaitForUser)
-				Case > 1 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", My.App.BalloonDelay.Long)
-				Case > 0 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", My.App.BalloonDelay.Medium)
-			End Select
+			App.ShowMessage(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", Nothing)
+
 		End If
 		Me.lblACAlarmChime.ResetForeColor()
 		Me.lblACAlarmChime.ResetFont()
@@ -1849,13 +1831,7 @@ Partial Friend Class MainForm
 					UpdateACAlarmCancel(True)
 				End If
 			End If
-			If ACMute Then
-				Select Case ACChimeCount
-					Case > 12 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** " + IIf(ACAlarmTripped, "ALARM", "CHIME").ToString + " IS SOUNDING **", My.App.BalloonDelay.WaitForUser)
-					Case > 1 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** " + IIf(ACAlarmTripped, "ALARM", "CHIME").ToString + " IS SOUNDING **", My.App.BalloonDelay.Long)
-					Case > 0 : My.App.ShowBalloon(My.App.Tools.AlarmChime, "** " + IIf(ACAlarmTripped, "ALARM", "CHIME").ToString + " IS SOUNDING **", My.App.BalloonDelay.Medium)
-				End Select
-			End If
+			If ACMute Then App.ShowMessage(My.App.Tools.AlarmChime, "** " + If(ACAlarmTripped, "ALARM", "CHIME") + " IS SOUNDING **", Nothing)
 		End If
 	End Sub
 	Private Sub BackgroundworkerACDoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundworkerAC.DoWork
@@ -1894,7 +1870,6 @@ Partial Friend Class MainForm
 			UpdateACAlarmCancel(False)
 		End If
 		Me.btnACAlarmCancel.Visible = False
-		My.App.HideBalloon()
 	End Sub
 	Private Sub UpdateACAlarmCancel(visible As Boolean)
 		If visible Then
@@ -2489,9 +2464,9 @@ Partial Friend Class MainForm
             WLSetSettingsState(True)
             If e.Cancelled Then Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
             WLLoadStartTime = TimeSpan.Zero
-            If Not WLAutoRefreshUpdate Then My.App.ShowBalloon(My.App.Tools.WinLinks, "WinLinks Loaded", My.App.BalloonDelay.Medium)
-            WLAutoRefreshUpdate = False
-        Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Fatal Error Loading WinLinks!" + Chr(13) + "Location : backgroundworkerWinLinksRunWorkerCompleted" + Chr(13) + "Error : " + ex.ToString)
+			If Not WLAutoRefreshUpdate Then App.ShowMessage(My.App.Tools.WinLinks, "WinLinks Loaded", Nothing)
+			WLAutoRefreshUpdate = False
+		Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Fatal Error Loading WinLinks!" + Chr(13) + "Location : backgroundworkerWinLinksRunWorkerCompleted" + Chr(13) + "Error : " + ex.ToString)
         End Try
     End Sub
 

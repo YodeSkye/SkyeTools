@@ -35,9 +35,6 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Balloon.Designer.vb">
-      <DependentUpon>Balloon.vb</DependentUpon>
-    </Compile>
     <Compile Update="Resources.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -337,12 +337,10 @@ Namespace My
 		Friend ReadOnly AdjustScreenBoundsDialogWindow As Byte = 10 ' The number of pixels to adjust the screen bounds for dialog windows.
 		Friend AppIsClosing As Boolean = False
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
+		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
 		Friend FrmMain As MainForm
 		Friend FrmHelp As Help
 		Friend FrmLog As Log
-		Friend FrmBalloon As Balloon
-		Private BalloonHideEnabled As Boolean
-		Private WithEvents TimerBalloon As New Timer
 
 		' HANDLERS
 		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
@@ -353,15 +351,6 @@ Namespace My
 
 		' METHODS
 		Friend Sub Initialize()
-			ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
-			ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
-			ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
-			ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
-			ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
-			ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
-			ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
-			ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
-			ShowMessage(Tools.SkyeTools, "Starting " & My.Application.Info.ProductName & "...", Nothing)
 #If DEBUG Then
 			Dim baseName As String = My.Application.Info.ProductName & "DEV"
 #Else
@@ -371,11 +360,21 @@ Namespace My
 			Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
 			WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
-			Debug.Print("OnStartup, Alternate Start? " + My.Application.AlternateStart.ToString)
 			GetSettings()
 #If DEBUG Then
 			GetSettingsDebug()
 #End If
+            'ShowSplash() ' Keep this in case you want to add a splash message later.
+
+            ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
+			ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
+			ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
+			ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
+			ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
+			ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
+			ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
+			ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
+
 			FrmMain = New MainForm
 			Dim selectedTheme As Skye.UI.SkyeTheme = If(WSTThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), WSTTheme)
 			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
@@ -400,58 +399,32 @@ Namespace My
 				If RegKey IsNot Nothing Then RegKey.Close()
 			End Try
 		End Sub
-		Friend Sub SetBalloon()
-			Try
-				FrmBalloon?.Close()
-				FrmBalloon?.Dispose()
-				FrmBalloon = Nothing
-			Catch
-			Finally : FrmBalloon = New Balloon
-			End Try
-		End Sub
-		Friend Sub ShowBalloon(tool As Tools, text As String, delay As BalloonDelay)
-			Try
-				BalloonHideEnabled = True
-				HideBalloon()
-				FrmBalloon.picboxIcon.Image = ToolToImage(tool)
-				FrmBalloon.lblTitle.Text = ToolToString(tool)
-				FrmBalloon.lblText.Text = text
-				FrmBalloon.Left = My.Computer.Screen.WorkingArea.Right - FrmBalloon.Width - 25
-				FrmBalloon.Top = My.Computer.Screen.WorkingArea.Top + 25
-				FrmBalloon.Visible = True
-				FrmBalloon.Refresh()
-
-				Select Case delay
-					Case BalloonDelay.Short : TimerBalloon.Interval = NotifyDelay(NotifyInterval.Short, NotifyIntervalFormat.MilliSeconds)
-					Case BalloonDelay.Medium : TimerBalloon.Interval = NotifyDelay(NotifyInterval.Medium, NotifyIntervalFormat.MilliSeconds)
-					Case BalloonDelay.Long : TimerBalloon.Interval = NotifyDelay(NotifyInterval.Long, NotifyIntervalFormat.MilliSeconds)
-					Case BalloonDelay.WaitForUser : TimerBalloon.Interval = 1
-					Case BalloonDelay.WaitForEver
-						TimerBalloon.Interval = 1
-						BalloonHideEnabled = False
-				End Select
-				If TimerBalloon.Interval > 1 Then TimerBalloon.Start()
-			Catch ex As Exception : WriteToLog(Tools.SkyeTools, "ShowBalloon Managed Error" + Chr(13) + ex.ToString)
-			End Try
-		End Sub
-		Friend Sub HideBalloon()
-			On Error Resume Next
-			If FrmBalloon.Visible And BalloonHideEnabled Then
-				TimerBalloon.Stop()
-				FrmBalloon.Hide()
-			End If
+		Friend Sub ShowSplash() ' Keep this in case you want to add a splash message later.
+			Dim t As New Skye.UI.ToastOptions With {
+				   .Icon = My.Resources.Resources.iconApp,
+				   .Title = "Starting " & My.Application.Info.ProductName & "...",
+				   .TitleFont = New Font(MenuFont, FontStyle.Bold),
+				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
+				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
+				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
+				   .Duration = 4000,
+				   .Width = 100,
+				   .Location = Skye.UI.ToastLocation.TopRight
+			   }
+			If My.Application.AlternateStart Then t.ForeColor = Color.Firebrick
+			Skye.UI.Toast.ShowToast(t)
 		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
 				   .Title = title,
-				   .TitleFont = New Font(MenuFont, FontStyle.Bold),
+				   .TitleFont = MenuFontBold,
 				   .Message = message,
 				   .MessageFont = MenuFont,
 				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
 				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
 				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
 				   .Duration = 7000,
-				   .Width = 200,
+				   .Width = 100,
 				   .Location = Skye.UI.ToastLocation.TopRight
 			   }
 			If icon Is Nothing Then
@@ -540,9 +513,6 @@ Namespace My
 			Catch : Return source
 			End Try
 		End Function
-		Private Sub TimerBalloonTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerBalloon.Tick
-			HideBalloon()
-		End Sub
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			HKEnabled = False
 			GetSettingsDebugHK()
