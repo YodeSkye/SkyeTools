@@ -10,8 +10,8 @@ Namespace My
 
 #Region "HotClicks (HC)"
 
-		'Declarations
-		Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
+        'DECLARATIONS
+        Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
 			NoAction
 			Menu
 			WLNew
@@ -68,8 +68,8 @@ Namespace My
 #End Region
 #Region "HotKeys (HK)"
 
-		'Declarations
-		Friend Structure HKType
+        'DECLARATIONS
+        Friend Structure HKType
 			Dim Description As String
 			Dim WinID As Integer
 			Dim Key As Keys
@@ -96,25 +96,7 @@ Namespace My
 
 #Region "WorkSpace Tools (WST)"
 
-		' Saved Settings
-		Friend WSTLoadOnOSStartup As Boolean
-		Friend WSTLoadOnOSStartupPath As FileType
-		Friend WSTEnabled As Boolean
-		Friend WSTShowClock As Boolean
-		Friend WSTClockLocation As Point
-		Friend WSTClockSize As ClockSize
-		Friend WSTShowLockWorkSpace As Boolean
-		Friend WSTShowLogOff As Boolean
-		Friend WSTShowSleep As Boolean
-		Friend WSTShowHibernate As Boolean
-		Friend WSTShowReStart As Boolean
-		Friend WSTShowShutDown As Boolean
-		Friend WSTShowHelp As Boolean
-		Friend WSTShowLog As Boolean
-		Friend WSTTheme As Skye.UI.SkyeTheme
-		Friend WSTThemeAuto As Boolean
-
-		' Declarations
+		' DECLARATIONS
 		Friend Enum ClockSize
 			Small
 			Medium
@@ -140,8 +122,30 @@ Namespace My
 			End Function
 		End Structure
 
+		' Saved Settings
+		Friend WSTLoadOnOSStartup As Boolean
+		Friend WSTLoadOnOSStartupPath As FileType
+		Friend WSTEnabled As Boolean
+		Friend WSTShowClock As Boolean
+		Friend WSTClockLocation As Point
+		Friend WSTClockSize As ClockSize
+		Friend WSTShowLockWorkSpace As Boolean
+		Friend WSTShowLogOff As Boolean
+		Friend WSTShowSleep As Boolean
+		Friend WSTShowHibernate As Boolean
+		Friend WSTShowReStart As Boolean
+		Friend WSTShowShutDown As Boolean
+		Friend WSTShowHelp As Boolean
+		Friend WSTShowLog As Boolean
+
 #End Region
 #Region "ScreenSaver (SS)"
+
+		' DECLARATIONS
+		Friend Enum WSTSSStartUpMode
+			Enabled
+			Disabled
+		End Enum
 
 		' Saved Settings
 		Friend WSTSSToolEnabled As Boolean
@@ -149,19 +153,13 @@ Namespace My
 		Friend WSTSSEnableOnActivate As Boolean
 		Friend WSTShowSSIcon As Boolean
 		Friend WSTShowSSActivate As Boolean
-		Friend WSTShowSSEnabled As Boolean
-
-		' Declarations
-		Friend Enum WSTSSStartUpMode
-			Enabled
-			Disabled
-		End Enum
+        Friend WSTShowSSEnabled As Boolean
 
 #End Region
 #Region "Alarm & Chime (AC)"
-		Friend WSTShowAC As Boolean
 
-		Friend Enum ACChimeType '*If you change this, modify GetSettings!
+        ' DECLARATIONS
+        Friend Enum ACChimeType '*If you change this, modify GetSettings!
 			Simple      'One Chime
 			Extended    'Four Chimes
 			HourTick    'x Chimes Based On Hour
@@ -169,6 +167,8 @@ Namespace My
 		End Enum
 		Friend ACChime As Byte()
 
+		' Saved Settings
+		Friend WSTShowAC As Boolean
 		Friend ACAlarmTime As TimeSpan
 		Friend ACAlarmRecurring As Boolean
 		Friend ACAlarmChimePath As String 'Full File Path to .WAV file, or Empty String for Default Chime
@@ -188,23 +188,11 @@ Namespace My
 		Friend ACThirdQuarterHourChimeEnabled As Boolean
 		Friend ACThirdQuarterHourBeforeChimeEnabled As Boolean
 		Friend ACThirdQuarterHourAfterChimeEnabled As Boolean
+
 #End Region
 #Region "WinLinks (WL)"
 
-		'Saved Settings
-		Friend WSTShowWLMenu As Boolean
-		Friend WSTShowWLTray As Boolean
-		Friend WLData As New Collections.Generic.List(Of WLItemType)
-		Friend WLShowFilePathToolTips As Boolean
-		Friend WLShowFileInfoToolTips As Boolean
-		Friend WLShowFolderPathToolTips As Boolean
-		Friend WLMaxLinksPerFolder As Byte '1-100
-		Friend WLStartUpDelay As Short 'Range 5-300, Default = 10, 0 = Disable Delay (Load Immediately)
-		Friend WLAutoRefresh As Boolean
-		Friend WLAutoRefreshInterval As Byte '1 - 90 minutes, Default = 5, Check For Changes Every x Minutes
-		Friend WLAutoRefreshIdleInterval As Byte '20-240 seconds, Default = 30, Refresh Only When Folder Idle For x Seconds
-
-		'Declarations
+		' DECLARATIONS
 		Friend Const WLEmptyText As String = "< No Items >"
 		Friend Enum WLFolderMode
 			NoFolders
@@ -247,7 +235,21 @@ Namespace My
 			End Sub
 		End Class
 
+		' Saved Settings
+		Friend WSTShowWLMenu As Boolean
+		Friend WSTShowWLTray As Boolean
+		Friend WLData As New Collections.Generic.List(Of WLItemType)
+		Friend WLShowFilePathToolTips As Boolean
+		Friend WLShowFileInfoToolTips As Boolean
+		Friend WLShowFolderPathToolTips As Boolean
+		Friend WLMaxLinksPerFolder As Byte '1-100
+		Friend WLStartUpDelay As Short 'Range 5-300, Default = 10, 0 = Disable Delay (Load Immediately)
+		Friend WLAutoRefresh As Boolean
+		Friend WLAutoRefreshInterval As Byte '1 - 90 minutes, Default = 5, Check For Changes Every x Minutes
+        Friend WLAutoRefreshIdleInterval As Byte '20-240 seconds, Default = 30, Refresh Only When Folder Idle For x Seconds
+
 #End Region
+
 
 		' DECLARATIONS
 		Friend Enum NotifyInterval
@@ -342,6 +344,10 @@ Namespace My
 		Friend FrmHelp As Help
 		Friend FrmLog As Log
 
+		' Saved Settings
+		Friend Theme As Skye.UI.SkyeTheme
+		Friend ThemeAuto As Boolean
+
 		' HANDLERS
 		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
 			For Each f As Form In Application.OpenForms
@@ -364,9 +370,11 @@ Namespace My
 #If DEBUG Then
 			GetSettingsDebug()
 #End If
-            'ShowSplash() ' Keep this in case you want to add a splash message later.
+			Dim selectedTheme As Skye.UI.SkyeTheme = If(ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), Theme)
+			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
+			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 
-            ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
+			ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
 			ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
 			ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
 			ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
@@ -376,9 +384,6 @@ Namespace My
 			ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
 
 			FrmMain = New MainForm
-			Dim selectedTheme As Skye.UI.SkyeTheme = If(WSTThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), WSTTheme)
-			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
-			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 
 		End Sub
 		Friend Sub Finalize()
@@ -398,21 +403,6 @@ Namespace My
 			Finally
 				If RegKey IsNot Nothing Then RegKey.Close()
 			End Try
-		End Sub
-		Friend Sub ShowSplash() ' Keep this in case you want to add a splash message later.
-			Dim t As New Skye.UI.ToastOptions With {
-				   .Icon = My.Resources.Resources.iconApp,
-				   .Title = "Starting " & My.Application.Info.ProductName & "...",
-				   .TitleFont = New Font(MenuFont, FontStyle.Bold),
-				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
-				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
-				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
-				   .Duration = 4000,
-				   .Width = 100,
-				   .Location = Skye.UI.ToastLocation.TopRight
-			   }
-			If My.Application.AlternateStart Then t.ForeColor = Color.Firebrick
-			Skye.UI.Toast.ShowToast(t)
 		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
@@ -591,6 +581,11 @@ Namespace My
 		Friend Sub GetSettings()
 			Dim starttime As TimeSpan = DateTime.Now.TimeOfDay
 
+			' Theme
+			Dim themeName As String = Skye.Common.RegistryHelper.GetString("Theme", "Light")
+			Theme = Skye.UI.SkyeThemes.GetTheme(themeName)
+			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
+
 			GetSettingsHC()
 			GetSettingsHK()
 			GetSettingsWST()
@@ -688,11 +683,6 @@ Namespace My
 			WSTShowWLMenu = RegistryHelper.GetBool("WSTShowWLMenu", False)
 			WSTShowWLTray = RegistryHelper.GetBool("WSTShowWLTray", False)
 
-			' Theme
-			Dim themeName As String = Skye.Common.RegistryHelper.GetString("WSTTheme", "Light")
-			WSTTheme = Skye.UI.SkyeThemes.GetTheme(themeName)
-			WSTThemeAuto = Skye.Common.RegistryHelper.GetBool("WSTThemeAuto", True)
-
 		End Sub
 		Private Sub GetSettingsAC()
 
@@ -761,6 +751,10 @@ Namespace My
 
 		Friend Sub SaveSettings()
 			Dim starttime As TimeSpan = DateTime.Now.TimeOfDay
+
+			' Theme
+			Skye.Common.RegistryHelper.SetString("Theme", Theme.Name)
+			Skye.Common.RegistryHelper.SetBool("ThemeAuto", ThemeAuto)
 
 			SaveSettingsHC()
 			SaveSettingsHK()
@@ -839,10 +833,6 @@ Namespace My
 			RegistryHelper.SetBool("WSTShowAC", WSTShowAC)
 			RegistryHelper.SetBool("WSTShowWLMenu", WSTShowWLMenu)
 			RegistryHelper.SetBool("WSTShowWLTray", WSTShowWLTray)
-
-			' Theme
-			Skye.Common.RegistryHelper.SetString("WSTTheme", WSTTheme.Name)
-			Skye.Common.RegistryHelper.SetBool("WSTThemeAuto", WSTThemeAuto)
 
 		End Sub
 		Private Sub SaveSettingsAC()
