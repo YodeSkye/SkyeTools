@@ -43,6 +43,8 @@
         btnSettingsRestore = New Button()
         tabcontrolSettings = New TabControl()
         tabpageWST = New TabPage()
+        LblTheme = New Skye.UI.Label()
+        CoBoxTheme = New Skye.UI.ComboBox()
         checkboxWSTShowSleep = New CheckBox()
         checkboxWSTSSToolEnabled = New CheckBox()
         checkboxWSTShowLog = New CheckBox()
@@ -69,6 +71,7 @@
         checkboxLoadOnOSStartup = New CheckBox()
         txbxLoadOnOSStartupArgs = New TextBox()
         checkboxWSTEnabled = New CheckBox()
+        ChkBoxThemeAuto = New CheckBox()
         tabpageAC = New TabPage()
         lblACAlarmChime = New Label()
         lblACOffHourChimePath = New Label()
@@ -518,6 +521,8 @@
         ' 
         ' tabpageWST
         ' 
+        tabpageWST.Controls.Add(LblTheme)
+        tabpageWST.Controls.Add(CoBoxTheme)
         tabpageWST.Controls.Add(checkboxWSTShowSleep)
         tabpageWST.Controls.Add(checkboxWSTSSToolEnabled)
         tabpageWST.Controls.Add(checkboxWSTShowLog)
@@ -537,6 +542,7 @@
         tabpageWST.Controls.Add(checkboxLoadOnOSStartup)
         tabpageWST.Controls.Add(txbxLoadOnOSStartupArgs)
         tabpageWST.Controls.Add(checkboxWSTEnabled)
+        tabpageWST.Controls.Add(ChkBoxThemeAuto)
         tabpageWST.Location = New Point(4, 26)
         tabpageWST.Name = "tabpageWST"
         tabpageWST.Padding = New Padding(3)
@@ -544,6 +550,24 @@
         tabpageWST.TabIndex = 0
         tabpageWST.Text = "****WorkSpace Tools****"
         tabpageWST.UseVisualStyleBackColor = True
+        ' 
+        ' LblTheme
+        ' 
+        LblTheme.Font = New Font("Segoe UI", 9.75F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        LblTheme.Location = New Point(209, 3)
+        LblTheme.Name = "LblTheme"
+        LblTheme.Size = New Size(100, 23)
+        LblTheme.TabIndex = 143
+        LblTheme.Text = "Theme"
+        LblTheme.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' CoBoxTheme
+        ' 
+        CoBoxTheme.FormattingEnabled = True
+        CoBoxTheme.Location = New Point(209, 43)
+        CoBoxTheme.Name = "CoBoxTheme"
+        CoBoxTheme.Size = New Size(166, 26)
+        CoBoxTheme.TabIndex = 141
         ' 
         ' checkboxWSTShowSleep
         ' 
@@ -807,6 +831,16 @@
         checkboxWSTEnabled.TabIndex = 10
         checkboxWSTEnabled.Text = "Show Tray Icon"
         checkboxWSTEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxThemeAuto
+        ' 
+        ChkBoxThemeAuto.AutoSize = True
+        ChkBoxThemeAuto.Location = New Point(209, 23)
+        ChkBoxThemeAuto.Name = "ChkBoxThemeAuto"
+        ChkBoxThemeAuto.Size = New Size(137, 21)
+        ChkBoxThemeAuto.TabIndex = 142
+        ChkBoxThemeAuto.Text = "Use System Theme"
+        ChkBoxThemeAuto.UseVisualStyleBackColor = True
         ' 
         ' tabpageAC
         ' 
@@ -2514,4 +2548,7 @@
     Private WithEvents groupboxACTopHourChimeType As System.Windows.Forms.GroupBox
     Private WithEvents radiobtnACTopHourChimeExtended As System.Windows.Forms.RadioButton
     Private WithEvents tabcontrolSettings As System.Windows.Forms.TabControl
+    Friend WithEvents LblTheme As Skye.UI.Label
+    Friend WithEvents ChkBoxThemeAuto As CheckBox
+    Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
 End Class
