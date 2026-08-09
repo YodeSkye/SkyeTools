@@ -450,7 +450,7 @@ Namespace My
 				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
 				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
 				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
-				   .Duration = 8000,
+				   .Duration = 7000,
 				   .Width = 200,
 				   .Location = Skye.UI.ToastLocation.TopRight
 			   }
