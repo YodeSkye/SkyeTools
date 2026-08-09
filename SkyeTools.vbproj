@@ -52,7 +52,7 @@
     <Compile Update="SplashForm.Designer.vb">
       <DependentUpon>SplashForm.vb</DependentUpon>
     </Compile>
-    <PackageReference Include="SkyeLibrary" Version="1.5.26" />
+    <PackageReference Include="SkyeLibrary" Version="1.5.27" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <FileAlignment>4096</FileAlignment>
