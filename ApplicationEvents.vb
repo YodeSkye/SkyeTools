@@ -24,8 +24,6 @@ Namespace My
 #If DEBUG Then
 #Else
 			ProcessCommandLine(My.Application.CommandLineArgs)
-			My.Application.MinimumSplashScreenDisplayTime = DelayedStart
-			Me.SplashScreen = New SplashForm
 #End If
 		End Sub
 		Protected Overrides Function OnStartup(e As ApplicationServices.StartupEventArgs) As Boolean

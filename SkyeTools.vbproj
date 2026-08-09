@@ -49,9 +49,6 @@
     <Compile Update="MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
     </Compile>
-    <Compile Update="SplashForm.Designer.vb">
-      <DependentUpon>SplashForm.vb</DependentUpon>
-    </Compile>
     <PackageReference Include="SkyeLibrary" Version="1.5.27" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">

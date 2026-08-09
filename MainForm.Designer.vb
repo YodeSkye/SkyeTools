@@ -183,7 +183,6 @@
         btnHKWSTLockWorkSpaceDisable = New Button()
         btnHKWSTScreenSaverDisable = New Button()
         tipInfo = New ToolTip(components)
-        btnBalloonTest = New Button()
         btnErrorTest = New Button()
         btnClockTest = New Button()
         btnInfo = New Button()
@@ -270,7 +269,7 @@
         cmWST.Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(213, 424)
+        cmWST.Size = New Size(213, 402)
         ' 
         ' cmiWSTCancelStartUp
         ' 
@@ -2140,22 +2139,6 @@
         tipInfo.UseAnimation = False
         tipInfo.UseFading = False
         ' 
-        ' btnBalloonTest
-        ' 
-        btnBalloonTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnBalloonTest.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnBalloonTest.FlatAppearance.BorderSize = 0
-        btnBalloonTest.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnBalloonTest.FlatAppearance.MouseOverBackColor = Color.Transparent
-        btnBalloonTest.Image = My.Resources.Resources.imageBalloon
-        btnBalloonTest.Location = New Point(367, 432)
-        btnBalloonTest.Name = "btnBalloonTest"
-        btnBalloonTest.Size = New Size(25, 24)
-        btnBalloonTest.TabIndex = 0
-        btnBalloonTest.TabStop = False
-        tipInfo.SetToolTip(btnBalloonTest, "LeftClick = Toggle Balloon" & vbCrLf & "CtrlLeftClick = Toggle Splash Screen" & vbCrLf & "RightClick = Test DebugForm")
-        btnBalloonTest.Visible = False
-        ' 
         ' btnErrorTest
         ' 
         btnErrorTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
@@ -2164,7 +2147,7 @@
         btnErrorTest.FlatAppearance.MouseDownBackColor = Color.Transparent
         btnErrorTest.FlatAppearance.MouseOverBackColor = Color.Transparent
         btnErrorTest.Image = My.Resources.Resources.imageError
-        btnErrorTest.Location = New Point(337, 432)
+        btnErrorTest.Location = New Point(368, 432)
         btnErrorTest.Name = "btnErrorTest"
         btnErrorTest.Size = New Size(24, 24)
         btnErrorTest.TabIndex = 0
@@ -2312,7 +2295,6 @@
         Controls.Add(tabcontrolSettings)
         Controls.Add(btnClockTest)
         Controls.Add(btnErrorTest)
-        Controls.Add(btnBalloonTest)
         Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Icon = My.Resources.Resources.iconSettings
         Location = New Point(0, 186)
@@ -2488,7 +2470,6 @@
     Private WithEvents btnErrorTest As System.Windows.Forms.Button
     Private WithEvents tipInfo As System.Windows.Forms.ToolTip
     Private label32 As System.Windows.Forms.Label
-    Private WithEvents btnBalloonTest As System.Windows.Forms.Button
     Private WithEvents btnInfo As System.Windows.Forms.Button
     Private WithEvents btnLog As System.Windows.Forms.Button
     Private label30 As System.Windows.Forms.Label

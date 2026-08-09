@@ -84,14 +84,6 @@ Partial Friend Class MainForm
 		Me.tabpageWST.ImageKey = "imageWST"
 
 		'Initialize Globals
-		My.App.ToolToImage(My.App.Tools.SkyeTools) = My.Resources.Resources.imageApp 'DirectCast(My.App.AppResources.GetObject("imageApp"), Image)
-		My.App.ToolToImage(My.App.Tools.HotClicks) = My.Resources.Resources.imageHC 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image)
-		My.App.ToolToImage(My.App.Tools.HotKeys) = My.Resources.Resources.imageHK 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image)
-		My.App.ToolToImage(My.App.Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWST"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
-		My.App.ToolToImage(My.App.Tools.AlarmChime) = Me.cmiWSTAC.Image
-		My.App.ToolToImage(My.App.Tools.Clock) = My.Resources.Resources.imageWSTClock 'DirectCast(My.App.AppResources.GetObject("imageWSTClock"), Image)
 		Dim ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
 		Dim audioBytes(CInt(ums.Length) - 1) As Byte
 		ums.Read(audioBytes, 0, audioBytes.Length)
@@ -195,21 +187,12 @@ Partial Friend Class MainForm
 		Me.Top = CInt(My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2)
 		Me.btnErrorTest.Show()
 		Me.btnClockTest.Show()
-		Me.btnBalloonTest.Show()
 		Me.checkboxLoadOnOSStartup.Enabled = False
 		Me.lblLoadOnOSStartupPath.Enabled = False
 		Me.txbxLoadOnOSStartupArgs.Enabled = False
 		Me.btnLoadOnOSStartupPath.Enabled = False
-
-		'Me.tabcontrolSettings.SelectTab(Me.tabpageAC)
-		'Me.tabcontrolSettings.SelectTab(Me.tabpageCB)
-		'Me.tabcontrolSettings.SelectTab(Me.tabpageHL)
-		'Me.tabcontrolSettings.SelectTab(Me.tabpageWL)
-		'Me.tabcontrolSettings.SelectTab(Me.tabpageOA)
-
 		Me.Show()
 #Else
-
 #End If
 	End Sub
 	Private Sub FrmVisibleChanged(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.VisibleChanged
@@ -263,7 +246,7 @@ Partial Friend Class MainForm
 
 		End If
 	End Sub
-	Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnBalloonTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
+	Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
 		btnClose.Focus()
 	End Sub
 	Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHelp.MouseUp, btnInfo.MouseUp
@@ -297,21 +280,6 @@ Partial Friend Class MainForm
 					Throw New Exception("Test Exception - DO NOT PANIC!!")
 			End Select
 		End If
-	End Sub
-	Private Sub BtnBalloonTestMouseUp(sender As Object, e As MouseEventArgs) Handles btnBalloonTest.MouseUp
-		Select Case e.Button
-			Case MouseButtons.Left
-				If My.Computer.Keyboard.CtrlKeyDown Then
-					If My.Application.SplashScreen Is Nothing Then My.Application.SplashScreen = New SplashForm
-					If My.Application.SplashScreen.Visible Then : My.Application.SplashScreen.Hide()
-					Else : My.Application.SplashScreen.Show()
-					End If
-				Else
-					If My.App.FrmBalloon.Visible Then : My.App.HideBalloon()
-					Else : My.App.ShowBalloon(My.App.Tools.SkyeTools, "TEST BALLOON" + Chr(13) + "This is a test Balloon Window. Click anywhere to close.", My.App.BalloonDelay.WaitForUser)
-					End If
-				End If
-		End Select
 	End Sub
 	Private Sub BtnClockTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnClockTest.MouseUp
 		If e.X >= 0 And e.X <= Me.btnClockTest.Width And e.Y >= 0 And e.Y <= Me.btnClockTest.Height Then

@@ -353,6 +353,15 @@ Namespace My
 
 		' METHODS
 		Friend Sub Initialize()
+			ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
+			ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
+			ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
+			ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
+			ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
+			ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
+			ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
+			ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
+			ShowMessage(Tools.SkyeTools, "Starting " & My.Application.Info.ProductName & "...", Nothing)
 #If DEBUG Then
 			Dim baseName As String = My.Application.Info.ProductName & "DEV"
 #Else
@@ -360,7 +369,7 @@ Namespace My
 #End If
 			Skye.Common.Log.Initialize(baseName)
 			Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
-			WriteToLog(My.App.Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
+			WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
 			Debug.Print("OnStartup, Alternate Start? " + My.Application.AlternateStart.ToString)
 			GetSettings()
@@ -371,6 +380,7 @@ Namespace My
 			Dim selectedTheme As Skye.UI.SkyeTheme = If(WSTThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), WSTTheme)
 			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
 			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
+
 		End Sub
 		Friend Sub Finalize()
 			WriteToLog(My.App.Tools.SkyeTools, "..." + My.Application.Info.ProductName + " Closed")
