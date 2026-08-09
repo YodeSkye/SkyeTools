@@ -431,19 +431,26 @@ Namespace My
 				FrmBalloon.Hide()
 			End If
 		End Sub
-		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing)
+		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
 				   .Title = title,
+				   .TitleFont = New Font(MenuFont, FontStyle.Bold),
 				   .Message = message,
-				   .Icon = icon,
-				   .Duration = 6000,
 				   .MessageFont = MenuFont,
 				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
 				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
-				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder
+				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
+				   .Duration = 8000,
+				   .Width = 200,
+				   .Location = Skye.UI.ToastLocation.TopRight
 			   }
+			If icon Is Nothing Then
+				t.Image = ToolToImage(tool)
+			Else
+				t.Icon = icon
+			End If
 			Skye.UI.Toast.ShowToast(t)
-			WriteToLog(tool, title & " --> " & message)
+			If addtolog Then WriteToLog(tool, title & " --> " & message)
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
 			Dim logtext As String = "HotKeys -- If the title Of a HotKey On the Settings Page Is grayed out, but HotKeys are enabled, this means that the feature Is Not active And the HotKey will Not Function even though it can be Set. Activate the feature And the HotKey will Function normally."

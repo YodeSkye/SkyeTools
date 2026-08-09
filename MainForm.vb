@@ -288,13 +288,11 @@ Partial Friend Class MainForm
 		HideForm()
 	End Sub
 	Private Sub BtnErrorTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnErrorTest.MouseUp
-		If e.X >= 0 And e.X <= Me.btnErrorTest.Width And e.Y >= 0 And e.Y <= Me.btnErrorTest.Height Then
+		If e.X >= 0 And e.X <= btnErrorTest.Width And e.Y >= 0 And e.Y <= btnErrorTest.Height Then
 			Select Case e.Button
 				Case MouseButtons.Left
 					ErrorNotification()
-					'My.App.WriteToLog(My.App.Tools.SkyeTools, "Test Error - DO NOT PANIC!!")
-					'My.SkyeTools.ShowMessage(My.SkyeTools.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", "Error Noted In Log")
-					My.App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", SystemIcons.Error)
+					App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", SystemIcons.Error, True)
 				Case MouseButtons.Right
 					Throw New Exception("Test Exception - DO NOT PANIC!!")
 			End Select
@@ -2741,7 +2739,7 @@ Partial Friend Class MainForm
 		End Try
 	End Sub
 	Private Sub WLStartLink(ByRef link As String)
-		If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
+		If App.WSTShowWLMenu Or App.WSTShowWLTray Then
 			Try
 				Dim p As Diagnostics.Process
 				Dim pi As New Diagnostics.ProcessStartInfo
@@ -2759,8 +2757,8 @@ Partial Friend Class MainForm
 				p = Nothing
 				pi = Nothing
 			Catch ex As Exception
-				My.App.ShowMessage(My.App.Tools.WinLinks, "Cannot Start ", link.ToUpper + Chr(13) + Chr(13) + ex.Message & Environment.NewLine & "Please Check Your Settings And Try Again")
-				'My.App.WriteToLog(My.App.Tools.WinLinks, "Unable to start " + link.ToUpper + "." + Chr(13) + ex.ToString)
+				App.ShowMessage(App.Tools.WinLinks, Nothing, "Cannot Start " & link.ToUpper & ", Please Check Your Settings And Try Again.")
+				App.WriteToLog(App.Tools.WinLinks, "Unable to start " + link.ToUpper + Environment.NewLine + ex.ToString)
 			End Try
 		End If
 	End Sub
