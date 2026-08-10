@@ -1,6 +1,7 @@
 
 Imports System.Data.Common
 Imports System.IO
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports SkyeTools.My
 
 Partial Friend Class MainForm
@@ -59,7 +60,7 @@ Partial Friend Class MainForm
 		uiWLFileBrowser.Filter = "Executable Files|*.exe"
 		uiWLFileBrowser.InitialDirectory = "C:\PROGRAM FILES"
 		uiWLFolderBrowser.ShowNewFolderButton = False
-		Me.cmWLItem.Font = New Font(Me.Font, FontStyle.Regular)
+		Me.cmWLItem.Font = App.MenuFont
 		Me.imagelisttabcontrolSettings = New ImageList(Me.components) With {
 			.ColorDepth = ColorDepth.Depth32Bit,
 			.ImageSize = New Size(16, 16),
@@ -108,7 +109,10 @@ Partial Friend Class MainForm
 			Me.comboboxWSTSSStartUp.Items.Add(s)
 		Next
 #Enable Warning CA2263
-		Me.tipInfo.SetToolTip(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
+		Me.TipInfoEX.SetText(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
+		For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
+			CoBoxTheme.Items.Add(thm.Name)
+		Next
 		AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
 		AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
 		WLSetSettingsState(True)
@@ -164,7 +168,14 @@ Partial Friend Class MainForm
 		ShowSettings()
 		ACSet()
 		HKRegister()
-	End Sub
+		Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
+		Skye.UI.ThemeManager.RegisterComponent(TipHCEX)
+		Skye.UI.ThemeManager.ApplyTheme(Me)
+        cmWST.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmWSTScreenSaver.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmWLItem.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmlistviewWL.Renderer = New Skye.UI.SkyeMenuRenderer
+    End Sub
 	Private Sub FrmShown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 		Me.Hide()
 		Me.Opacity = 1
@@ -574,15 +585,15 @@ Partial Friend Class MainForm
 			Me.btnLoadOnOSStartupPath.Enabled = True
 			Me.lblLoadOnOSStartupPath.Enabled = True
 			Me.txbxLoadOnOSStartupArgs.Enabled = True
-			Me.tipInfo.SetToolTip(Me.lblLoadOnOSStartupPath, My.App.WSTLoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path")
-			Me.tipInfo.SetToolTip(Me.txbxLoadOnOSStartupArgs, IIf(String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments), "Arguments", My.App.WSTLoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
+			Me.TipInfoEX.SetText(Me.lblLoadOnOSStartupPath, My.App.WSTLoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path")
+			Me.TipInfoEX.SetText(Me.txbxLoadOnOSStartupArgs, IIf(String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments), "Arguments", My.App.WSTLoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
 		Else
 			Me.checkboxLoadOnOSStartup.Checked = False
 			Me.btnLoadOnOSStartupPath.Enabled = False
 			Me.lblLoadOnOSStartupPath.Enabled = False
 			Me.txbxLoadOnOSStartupArgs.Enabled = False
-			Me.tipInfo.SetToolTip(Me.lblLoadOnOSStartupPath, Nothing)
-			Me.tipInfo.SetToolTip(Me.txbxLoadOnOSStartupArgs, Nothing)
+			Me.TipInfoEX.SetText(Me.lblLoadOnOSStartupPath, Nothing)
+			Me.TipInfoEX.SetText(Me.txbxLoadOnOSStartupArgs, Nothing)
 		End If
 		If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then : Me.lblLoadOnOSStartupPath.Text = String.Empty
 		Else : Me.lblLoadOnOSStartupPath.Text = IIf(My.App.WSTLoadOnOSStartupPath.Path.Contains("\"c), "...\", Nothing).ToString + My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).GetValue(My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).Length - 1).ToString
@@ -629,6 +640,9 @@ Partial Friend Class MainForm
 		If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
 		Else : Me.checkboxWSTShowLog.Checked = False
 		End If
+		CoBoxTheme.SelectedItem = App.Theme.Name
+		ChkBoxThemeAuto.Checked = App.ThemeAuto
+		SetThemesList()
 	End Sub
 	Private Sub ShowSettingsSS()
 		If My.App.WSTSSToolEnabled Then
@@ -657,16 +671,14 @@ Partial Friend Class MainForm
 			Me.btnACAlarmSet.Text = "Alarm Active"
 			Me.btnACAlarmSet.Font = New Font(Me.Font, FontStyle.Bold)
 			Me.btnACAlarmSet.ForeColor = Color.Teal
-			'Me.tipInfo.SetToolTip(Me.btnACAlarmSet, "Alarm Set for " + My.App.ACAlarmTime.ToString.Substring(0, My.App.ACAlarmTime.ToString.Length - 3))
 			Dim alarmText As String = My.App.ACAlarmTime.ToString()
-			Me.tipInfo.SetToolTip(Me.btnACAlarmSet, String.Concat("Alarm Set for ", alarmText.AsSpan(0, alarmText.Length - 3)))
+			Me.TipInfoEX.SetText(Me.btnACAlarmSet, String.Concat("Alarm Set for ", alarmText.AsSpan(0, alarmText.Length - 3)))
 		Else
 			Me.btnACAlarmSet.Text = "Alarm InActive"
 			Me.btnACAlarmSet.Font = New Font(Me.Font, FontStyle.Regular)
 			Me.btnACAlarmSet.ForeColor = Color.Maroon
-			'Me.tipInfo.SetToolTip(Me.btnACAlarmSet, "Activate Alarm for " + My.App.ACAlarmTime.ToString.Substring(0, My.App.ACAlarmTime.ToString.Length - 3))
 			Dim alarmText As String = My.App.ACAlarmTime.ToString()
-			Me.tipInfo.SetToolTip(Me.btnACAlarmSet, String.Concat("Activate Alarm for ", alarmText.AsSpan(0, alarmText.Length - 3)))
+			Me.TipInfoEX.SetText(Me.btnACAlarmSet, String.Concat("Activate Alarm for ", alarmText.AsSpan(0, alarmText.Length - 3)))
 		End If
 		Me.textboxACAlarmTime.Text = My.App.ACAlarmTime.ToString().Substring(0, My.App.ACAlarmTime.ToString().Length - 3)
 		If My.App.ACAlarmRecurring Then : Me.checkboxACAlarmRecurring.Checked = True
@@ -674,10 +686,10 @@ Partial Friend Class MainForm
 		End If
 		If My.App.ACAlarmChimePath = "" Then
 			Me.lblACAlarmChimePath.Text = "Default Chime"
-			Me.tipInfo.SetToolTip(Me.lblACAlarmChimePath, "Use Built-In Chime")
+			Me.TipInfoEX.SetText(Me.lblACAlarmChimePath, "Use Built-In Chime")
 		Else
 			Me.lblACAlarmChimePath.Text = "...\" + My.App.ACAlarmChimePath.Split(CChar("\"))(My.App.ACAlarmChimePath.Split(CChar("\")).Length - 1)
-			Me.tipInfo.SetToolTip(Me.lblACAlarmChimePath, My.App.ACAlarmChimePath)
+			Me.TipInfoEX.SetText(Me.lblACAlarmChimePath, My.App.ACAlarmChimePath)
 		End If
 		Select Case My.App.ACAlarmChimeType
 			Case My.App.ACChimeType.Simple : Me.radiobtnACAlarmChimeSimple.Checked = True
@@ -722,10 +734,10 @@ Partial Friend Class MainForm
 		End If
 		If My.App.ACTopHourChimePath = "" Then
 			Me.lblACTopHourChimePath.Text = "Default Chime"
-			Me.tipInfo.SetToolTip(Me.lblACTopHourChimePath, "Use Built-In Chime")
+			Me.TipInfoEX.SetText(Me.lblACTopHourChimePath, "Use Built-In Chime")
 		Else
 			Me.lblACTopHourChimePath.Text = "...\" + My.App.ACTopHourChimePath.Split(CChar("\"))(My.App.ACTopHourChimePath.Split(CChar("\")).Length - 1)
-			Me.tipInfo.SetToolTip(Me.lblACTopHourChimePath, My.App.ACTopHourChimePath)
+			Me.TipInfoEX.SetText(Me.lblACTopHourChimePath, My.App.ACTopHourChimePath)
 		End If
 		Select Case My.App.ACTopHourChimeType
 			Case My.App.ACChimeType.Simple : Me.radiobtnACTopHourChimeSimple.Checked = True
@@ -734,10 +746,10 @@ Partial Friend Class MainForm
 		End Select
 		If My.App.ACOffHourChimePath = "" Then
 			Me.lblACOffHourChimePath.Text = "Default Chime"
-			Me.tipInfo.SetToolTip(Me.lblACOffHourChimePath, "Use Built-In Chime")
+			Me.TipInfoEX.SetText(Me.lblACOffHourChimePath, "Use Built-In Chime")
 		Else
 			Me.lblACOffHourChimePath.Text = "...\" + My.App.ACOffHourChimePath.Split(CChar("\")).GetValue(My.App.ACOffHourChimePath.Split(CChar("\")).Length - 1).ToString
-			Me.tipInfo.SetToolTip(Me.lblACOffHourChimePath, My.App.ACOffHourChimePath)
+			Me.TipInfoEX.SetText(Me.lblACOffHourChimePath, My.App.ACOffHourChimePath)
 		End If
 	End Sub
 	Private Sub ShowSettingsWL()
@@ -1285,6 +1297,21 @@ Partial Friend Class MainForm
 		ElseIf sender Is txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
 		End If
 	End Sub
+	Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+		Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
+		Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
+		App.Theme = selected
+		If Not App.ThemeAuto Then
+			Skye.UI.ThemeManager.SetTheme(selected)
+			ShowSettings()
+		End If
+	End Sub
+	Private Sub ChkBoxThemeAuto_Click(sender As Object, e As EventArgs) Handles ChkBoxThemeAuto.Click
+		App.ThemeAuto = ChkBoxThemeAuto.Checked
+		SetThemesList()
+		Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
+		Skye.UI.ThemeManager.SetTheme(selectedTheme)
+	End Sub
 
 	' Methods
 	Friend Sub WSTShowClock()
@@ -1315,8 +1342,8 @@ Partial Friend Class MainForm
 	End Sub
 	Friend Sub UpdateWST()
 		'Settings Window
-		Me.tipInfo.SetToolTip(Me.btnLog, "Log" + Chr(13) + "RightClick = Show Maximized")
-		If ErrorWarning Then Me.tipInfo.SetToolTip(Me.btnLog, Me.tipInfo.GetToolTip(Me.btnLog) + Chr(13) + "An Application Error Has Occured. View Log For Details.")
+		Me.TipInfoEX.SetText(Me.btnLog, "Log" + Chr(13) + "RightClick = Show Maximized")
+		If ErrorWarning Then Me.TipInfoEX.SetText(Me.btnLog, Me.TipInfoEX.GetText(Me.btnLog) + Chr(13) + "An Application Error Has Occured. View Log For Details.")
 		'WorkSpace Tools
 		If My.App.WSTEnabled Then
 			Me.notifyiconWST.Icon = My.Resources.Resources.iconWST 'CType(My.App.AppResources.GetObject("iconWST"), Icon)
@@ -1339,7 +1366,7 @@ Partial Friend Class MainForm
 			If ACAlarmTripped And ACChimeCount = Byte.MaxValue Then
 				Me.notifyiconWST.Text += Chr(13) + "** ALARM **"
 				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
-				Me.cmiWSTAC.ToolTipText = Me.tipInfo.GetToolTip(Me.btnACAlarmCancel) '"THE ALARM HAS SOUNDED"
+				Me.cmiWSTAC.ToolTipText = Me.TipInfoEX.GetText(Me.btnACAlarmCancel) '"THE ALARM HAS SOUNDED"
 				Me.cmiWSTAC.Checked = True
 				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Bold)
 			ElseIf ACAlarmActive Then
@@ -1447,6 +1474,13 @@ Partial Friend Class MainForm
 			Skye.WinAPI.LockWorkStation()
 		End If
 	End Sub
+	Private Sub SetThemesList()
+		If App.ThemeAuto Then
+			CoBoxTheme.Enabled = False
+		Else
+			CoBoxTheme.Enabled = True
+		End If
+	End Sub
 
 #End Region
 #Region "ScreenSaver (SS)"
@@ -1504,7 +1538,7 @@ Partial Friend Class MainForm
 				Me.cmiScreenSaverEnabled.Text = "Screen Saver ENABLED"
 				Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
 				Me.btnWSTScreenSaverEnabled.Checked = True
-				Me.tipInfo.SetToolTip(Me.btnWSTScreenSaverEnabled, "Screen Saver ENABLED")
+				Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver ENABLED")
 			Else
 				Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_DISPLAY_REQUIRED Or Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
 				Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
@@ -1517,9 +1551,9 @@ Partial Friend Class MainForm
 				Me.cmiScreenSaverEnabled.Text = "Screen Saver DISABLED"
 				Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
 				Me.btnWSTScreenSaverEnabled.Checked = False
-				Me.tipInfo.SetToolTip(Me.btnWSTScreenSaverEnabled, "Screen Saver DISABLED")
+				Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver DISABLED")
 			End If
-			Me.tipInfo.SetToolTip(Me.btnWSTScreenSaverEnabled, Me.tipInfo.GetToolTip(Me.btnWSTScreenSaverEnabled) + vbCr + "RightClick = Activate")
+			Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, Me.TipInfoEX.GetText(Me.btnWSTScreenSaverEnabled) + vbCr + "RightClick = Activate")
 			UpdateWST()
 		End If
 	End Sub
@@ -1884,10 +1918,10 @@ Partial Friend Class MainForm
 	Private Sub UpdateACMute()
 		If ACMute Then
 			Me.btnACMute.Image = My.Resources.Resources.imageACMute 'CType(My.App.AppResources.GetObject("imageACMute"), Image)
-			Me.tipInfo.SetToolTip(Me.btnACMute, "Sound All Chimes")
+			Me.TipInfoEX.SetText(Me.btnACMute, "Sound All Chimes")
 		Else
 			Me.btnACMute.Image = My.Resources.Resources.imageACSound 'CType(My.App.AppResources.GetObject("imageACSound"), Image)
-			Me.tipInfo.SetToolTip(Me.btnACMute, "Mute All Chimes")
+			Me.TipInfoEX.SetText(Me.btnACMute, "Mute All Chimes")
 		End If
 	End Sub
 	Private Sub ACSet()
@@ -2100,7 +2134,7 @@ Partial Friend Class MainForm
 		If Me.btnWLRefresh.Text = "CANCEL" Then
 			Me.btnWLRefresh.Enabled = False
 			Me.btnWLRefresh.Text = "PENDING..."
-			Me.tipInfo.SetToolTip(Me.btnWLRefresh, "Stopping File Search, Please Wait...")
+			Me.TipInfoEX.SetText(Me.btnWLRefresh, "Stopping File Search, Please Wait...")
 			BackgroundworkerWL.CancelAsync()
 		Else
 			WLClose(True)
@@ -2295,8 +2329,10 @@ Partial Friend Class MainForm
                             For Each cmi As ToolStripMenuItem In WLMenus
                                 If CInt(cmi.Tag) = wlindex Then
                                     cmi.DropDown.Dispose()
-                                    Dim menu As ContextMenuStrip = WLGenerateMenu(WLMenuData(CInt(cmi.Tag)), My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons)
-                                    Dim cmitem As ToolStripItem
+									Dim menu As ContextMenuStrip = WLGenerateMenu(WLMenuData(CInt(cmi.Tag)), My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons)
+									menu.Font = App.MenuFont
+									menu.Renderer = New Skye.UI.SkyeMenuRenderer
+									Dim cmitem As ToolStripItem
                                     cmi.DropDown = menu
                                     If Not link.ShowNoMenu Then
                                         If menu.Items.Count = 0 Then
@@ -2309,9 +2345,10 @@ Partial Friend Class MainForm
                                     End If
                                     'SubMenu Options
                                     If Not link.ShowNoMenu Then
-                                        'Initialize
-                                        Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
-                                        If Not My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
+										'Initialize
+										Dim cm As New ContextMenuStrip With {.Font = App.MenuFont}
+										cm.Renderer = New Skye.UI.SkyeMenuRenderer
+										If Not My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
                                         'Open Root
                                         cmitem = New ToolStripMenuItem("Open Root Folder")
                                         If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = cmi.Image
@@ -2368,8 +2405,10 @@ Partial Friend Class MainForm
                                     trayicon.ContextMenuStrip.Dispose()
                                     trayicon.Text = trayicon.Text.Split(Chr(13))(0)
                                     Dim traymenu As ContextMenuStrip = WLGenerateMenu(WLMenuData(CInt(trayicon.Tag)), My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons)
+                                    traymenu.Font = App.MenuFont
+                                    traymenu.Renderer = New Skye.UI.SkyeMenuRenderer
                                     Dim cmitem As ToolStripItem
-                                    If Not link.ShowNoMenu Then
+									If Not link.ShowNoMenu Then
                                         If traymenu.Items.Count = 0 Then
                                             cmitem = New ToolStripMenuItem(My.App.WLEmptyText)
 											If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
@@ -2378,10 +2417,11 @@ Partial Friend Class MainForm
                                         End If
                                         traymenu.Items.Add(New ToolStripSeparator)
                                     End If
-                                    'SubMenu Options
-                                    'Initialize
-                                    Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
-                                    If Not My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
+									'SubMenu Options
+									'Initialize
+									Dim cm As New ContextMenuStrip With {.Font = App.MenuFont}
+									cm.Renderer = New Skye.UI.SkyeMenuRenderer
+									If Not My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
                                     'Open Root
                                     cmitem = New ToolStripMenuItem("Open Root Folder")
                                     If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = trayicon.Icon.ToBitmap
@@ -2516,7 +2556,10 @@ Partial Friend Class MainForm
 								End If
 								trayicon.Tag = index
 								AddHandler trayicon.MouseDown, AddressOf NotifyiconMouseDown
-								trayicon.ContextMenuStrip = New ContextMenuStrip
+								trayicon.ContextMenuStrip = New ContextMenuStrip With {
+									.Font = App.MenuFont,
+									.Renderer = New Skye.UI.SkyeMenuRenderer
+								}
 								trayicon.Visible = True
 								WLTrayIcons.Add(trayicon)
 							End If
@@ -2548,7 +2591,10 @@ Partial Friend Class MainForm
 					For Each trayicon As NotifyIcon In WLTrayIcons
 						If My.App.WLData(CInt(trayicon.Tag)).RefreshMenu Then
 							trayicon.ContextMenuStrip.Dispose()
-							Dim traymenu As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
+							Dim traymenu As New ContextMenuStrip With {
+								.Font = App.MenuFont,
+								.Renderer = New Skye.UI.SkyeMenuRenderer
+							}
 							If Not My.App.WLData(CInt(trayicon.Tag)).ShowNoMenu Then
 								If Not trayicon.Text.EndsWith("Loading...") Then trayicon.Text += Chr(13) + "Loading..."
 								Dim mi As New ToolStripMenuItem("Loading...")
@@ -2818,13 +2864,13 @@ Partial Friend Class MainForm
 		If state Then
 			Me.btnSettingsRestore.Enabled = True
 			Me.btnWLRefresh.Text = "Full Refresh"
-			Me.tipInfo.SetToolTip(Me.btnWLRefresh, "Refresh ALL Data & Menus")
+			Me.TipInfoEX.SetText(Me.btnWLRefresh, "Refresh ALL Data & Menus")
 			Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
 			Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
 		Else
 			Me.btnSettingsRestore.Enabled = False
 			Me.btnWLRefresh.Text = "CANCEL"
-			Me.tipInfo.SetToolTip(Me.btnWLRefresh, "Cancel File Search")
+			Me.TipInfoEX.SetText(Me.btnWLRefresh, "Cancel File Search")
 			Me.btnWLRefresh.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
 			Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
 		End If
@@ -2914,7 +2960,10 @@ Partial Friend Class MainForm
 		WLGenerateMenuData = md
 	End Function
 	Private Function WLGenerateMenu(ByRef md As Collections.Generic.List(Of WLMenuDataItem), includeicons As Boolean) As ContextMenuStrip '
-		Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
+		Dim cm As New ContextMenuStrip With {
+			.Font = App.MenuFont,
+			.Renderer = New Skye.UI.SkyeMenuRenderer
+		}
 		Dim cmi As ToolStripMenuItem
 		If Not includeicons Then cm.ShowImageMargin = False
 		For Each mi As WLMenuDataItem In md
