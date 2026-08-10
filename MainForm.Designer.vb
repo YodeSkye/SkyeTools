@@ -286,7 +286,7 @@
         TipHCEX.SetImage(cmWST, Nothing)
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(240, 470)
+        cmWST.Size = New Size(240, 492)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -367,7 +367,7 @@
         ' 
         ' cmiWSTShutDown
         ' 
-        cmiWSTShutDown.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTShutDown.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTShutDown.ForeColor = Color.Firebrick
         cmiWSTShutDown.Image = My.Resources.Resources.imageClose
         cmiWSTShutDown.Name = "cmiWSTShutDown"
@@ -377,7 +377,7 @@
         ' 
         ' cmiWSTHibernate
         ' 
-        cmiWSTHibernate.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTHibernate.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTHibernate.ForeColor = Color.Firebrick
         cmiWSTHibernate.Image = My.Resources.Resources.imageWindowHide
         cmiWSTHibernate.Name = "cmiWSTHibernate"
@@ -387,7 +387,7 @@
         ' 
         ' cmiWSTSleep
         ' 
-        cmiWSTSleep.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTSleep.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTSleep.ForeColor = Color.Firebrick
         cmiWSTSleep.Image = My.Resources.Resources.imageWindowHide
         cmiWSTSleep.Name = "cmiWSTSleep"
@@ -397,7 +397,7 @@
         ' 
         ' cmiWSTReStart
         ' 
-        cmiWSTReStart.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTReStart.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTReStart.ForeColor = Color.DarkCyan
         cmiWSTReStart.Image = My.Resources.Resources.imageGoReStart
         cmiWSTReStart.Name = "cmiWSTReStart"
@@ -407,7 +407,7 @@
         ' 
         ' cmiWSTLogOff
         ' 
-        cmiWSTLogOff.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTLogOff.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTLogOff.ForeColor = Color.Goldenrod
         cmiWSTLogOff.Image = My.Resources.Resources.imageWSTSessionKey
         cmiWSTLogOff.Name = "cmiWSTLogOff"
@@ -417,7 +417,7 @@
         ' 
         ' cmiWSTLock
         ' 
-        cmiWSTLock.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        cmiWSTLock.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
         cmiWSTLock.ForeColor = Color.Goldenrod
         cmiWSTLock.Image = My.Resources.Resources.imageWSTSessionKey
         cmiWSTLock.Name = "cmiWSTLock"
@@ -2801,43 +2801,43 @@
         ' cmiScreenSaverActivate
         ' 
         cmiScreenSaverActivate.Name = "cmiScreenSaverActivate"
-        cmiScreenSaverActivate.Size = New Size(216, 22)
+        cmiScreenSaverActivate.Size = New Size(244, 26)
         cmiScreenSaverActivate.Text = "Activate Screen Saver"
         ' 
         ' cmiScreenSaverEnabled
         ' 
         cmiScreenSaverEnabled.Name = "cmiScreenSaverEnabled"
-        cmiScreenSaverEnabled.Size = New Size(216, 22)
+        cmiScreenSaverEnabled.Size = New Size(244, 26)
         ' 
         ' toolStripSeparator1
         ' 
         toolStripSeparator1.Name = "toolStripSeparator1"
-        toolStripSeparator1.Size = New Size(213, 6)
+        toolStripSeparator1.Size = New Size(241, 6)
         ' 
         ' cmiScreenSaverSettings
         ' 
         cmiScreenSaverSettings.Image = My.Resources.Resources.imageSettings
         cmiScreenSaverSettings.Name = "cmiScreenSaverSettings"
-        cmiScreenSaverSettings.Size = New Size(216, 22)
+        cmiScreenSaverSettings.Size = New Size(244, 26)
         cmiScreenSaverSettings.Text = "Settings"
         ' 
         ' toolStripSeparator12
         ' 
         toolStripSeparator12.Name = "toolStripSeparator12"
-        toolStripSeparator12.Size = New Size(213, 6)
+        toolStripSeparator12.Size = New Size(241, 6)
         ' 
         ' cmiScreenSaverClose
         ' 
         cmiScreenSaverClose.Image = My.Resources.Resources.imageClose
         cmiScreenSaverClose.Name = "cmiScreenSaverClose"
-        cmiScreenSaverClose.Size = New Size(216, 22)
+        cmiScreenSaverClose.Size = New Size(244, 26)
         cmiScreenSaverClose.Text = "Close Screen Saver Tool"
         ' 
         ' cmiScreenSaverCloseAll
         ' 
         cmiScreenSaverCloseAll.Image = My.Resources.Resources.imageClose
         cmiScreenSaverCloseAll.Name = "cmiScreenSaverCloseAll"
-        cmiScreenSaverCloseAll.Size = New Size(216, 22)
+        cmiScreenSaverCloseAll.Size = New Size(244, 26)
         cmiScreenSaverCloseAll.Text = "Exit YMTools"
         ' 
         ' tableLayoutPanel2

@@ -1354,7 +1354,7 @@ Partial Friend Class MainForm
 			If ErrorWarning Then
 				Me.notifyiconWST.Text += Chr(13) + "** ERROR **"
 				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
-				Me.cmiWSTLog.Font = New Font(Me.Font, FontStyle.Bold)
+				Me.cmiWSTLog.Font = App.MenuFontBold
 				Me.cmiWSTLog.ForeColor = Color.Firebrick
 				Me.cmiWSTLog.ToolTipText += Chr(13) + "An Application Error Has Occured. View Log For Details."
 			End If
@@ -1368,18 +1368,18 @@ Partial Friend Class MainForm
 				Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
 				Me.cmiWSTAC.ToolTipText = Me.TipInfoEX.GetText(Me.btnACAlarmCancel) '"THE ALARM HAS SOUNDED"
 				Me.cmiWSTAC.Checked = True
-				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Bold)
+				Me.cmiWSTAC.Font = App.MenuFontBold
 			ElseIf ACAlarmActive Then
 				Dim alarmText As String = My.App.ACAlarmTime.ToString()
 				Dim prefix As String = String.Concat(Me.notifyiconWST.Text, ChrW(13), "Alarm Set for ")
 				Me.notifyiconWST.Text = String.Concat(prefix, alarmText.AsSpan(0, alarmText.Length - 3))
 				Me.cmiWSTAC.ToolTipText = String.Concat("Alarm Set for ", alarmText.AsSpan(0, alarmText.Length - 3))
 				Me.cmiWSTAC.Checked = True
-				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Regular)
+				Me.cmiWSTAC.Font = App.MenuFont
 			Else
 				Me.cmiWSTAC.ToolTipText = Nothing
 				Me.cmiWSTAC.Checked = False
-				Me.cmiWSTAC.Font = New Font(Me.Font, FontStyle.Regular)
+				Me.cmiWSTAC.Font = App.MenuFont
 			End If
 			If Me.frmWSTClock?.Visible Then : Me.cmiWSTClock.Checked = True
 			Else : Me.cmiWSTClock.Checked = False
