@@ -212,14 +212,13 @@ Partial Friend Class MainForm
 		WLClose(True)
 	End Sub
 	Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, MyBase.MouseDown
-		Static senderTB As Control
-		If e.Button = MouseButtons.Left And WindowState = FormWindowState.Normal Then
+		If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
 			mMove = True
-			If sender.GetType = GetType(TabPage) Then
-				senderTB = DirectCast(sender, Control)
-				mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width - tabcontrolSettings.Left - senderTB.Left, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight - tabcontrolSettings.Top - senderTB.Top)
-				senderTB = Nothing
-			Else : mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
+			Dim ctrl As Control = DirectCast(sender, Control)
+			If TypeOf ctrl Is TabPage Then
+				mOffset = New Point(-e.X - 4 - tabcontrolSettings.Left - ctrl.Left - SystemInformation.FrameBorderSize.Width, -e.Y - 4 - tabcontrolSettings.Top - ctrl.Top - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
+			Else
+				mOffset = New Point(-e.X - 4 - SystemInformation.FrameBorderSize.Width, -e.Y - 4 - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
 			End If
 		End If
 	End Sub
@@ -235,7 +234,7 @@ Partial Friend Class MainForm
 		mMove = False
 	End Sub
 	Private Sub FrmMove(sender As Object, e As EventArgs) Handles MyBase.Move
-		If Not mMove AndAlso Me.WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
+		If Not mMove AndAlso WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
 	End Sub
 
 	' Control Events
@@ -370,10 +369,11 @@ Partial Friend Class MainForm
 		If Me.listviewWL.SelectedIndices.Count > 0 Then ShowSettings(My.App.Tools.WinLinks)
 	End Sub
 	Private Sub CheckMove(ByRef location As Point)
-		If location.X + Me.Width > My.Computer.Screen.WorkingArea.Right Then location.X = My.Computer.Screen.WorkingArea.Right - Me.Width
-		If location.Y + Me.Height > My.Computer.Screen.WorkingArea.Bottom Then location.Y = My.Computer.Screen.WorkingArea.Bottom - Me.Height
-		If location.X < My.Computer.Screen.WorkingArea.Left Then location.X = My.Computer.Screen.WorkingArea.Left
-		If location.Y < My.Computer.Screen.WorkingArea.Top Then location.Y = My.Computer.Screen.WorkingArea.Top
+		Dim screen As Rectangle = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
+		If location.X + Me.Width > screen.Right Then location.X = screen.Right - Me.Width + App.AdjustScreenBoundsNormalWindow
+		If location.Y + Me.Height > screen.Bottom Then location.Y = screen.Bottom - Me.Height + App.AdjustScreenBoundsNormalWindow
+		If location.X < screen.Left Then location.X = screen.Left - App.AdjustScreenBoundsNormalWindow
+		If location.Y < screen.Top Then location.Y = screen.Top
 	End Sub
 	Private Function InUseWL() As Boolean
 		If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then

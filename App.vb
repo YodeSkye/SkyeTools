@@ -364,7 +364,7 @@ Namespace My
 #End If
 			Skye.Common.Log.Initialize(baseName)
 			Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
-			WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + " Started...")
+			WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + If(My.Application.AlternateStart, " Started in Alternate Start Mode...", " Started..."))
 			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
 			GetSettings()
 #If DEBUG Then
@@ -439,7 +439,6 @@ Namespace My
 			logtext += Chr(13) + Chr(13) + "Alarm & Chime -- When the Alarm is set to chime Forever, it will chime a maximum of 255 times, or until cancelled."
 			logtext += Chr(13) + Chr(13) + "Alarm & Chime -- When the Alarm is set to chime Forever, a text alert will be displayed in the WorkSpace Tools menu. This can be cleared by clicking 'Cancel Alarm', by clicking the bolded 'Alarm / Chime' menu item, or by closing the Balloon."
 			logtext += Chr(13) + Chr(13) + "SkyeTools -- Holding the ShiftKey down while the app is starting will put the app into 'Alternate Start Mode'. This means that HotLinks & WinLinks will not AutoLoad on StartUp. You may, however, manually Refresh WinLinks from the WinLinks Settings page."
-			logtext += Chr(13) + "When starting the App in 'Alternate Start Mode', the text on the Splash Screen will be red."
 			logtext += Chr(13) + Chr(13) + "SkyeTools -- The option to 'ReStart In Current Context' means that the App will ReStart with the same CommandLine parameters as when it was started."
 			logtext += Chr(13) + Chr(13) + "CommandLine -- Parameters may be used in any order or combination unless otherwise noted."
 			logtext += Chr(13) + "/ALTSTART -- Puts the App into 'Alternate Start Mode'"
