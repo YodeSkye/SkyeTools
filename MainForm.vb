@@ -28,13 +28,32 @@ Partial Friend Class MainForm
 			End If
 		End Function
 	End Class
+	Private mMove As Boolean = False
+	Private mOffset, mPosition As Point
 	Private nonNumberEntered As Boolean
 	Private ErrorWarning As Boolean = False
 	Private ProcessList As Collections.Generic.List(Of ProcessListType)
-	Private mMove As Boolean = False
-	Private mOffset, mPosition As Point
+	Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
 	' Form Events
+	Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+		Select Case m.Msg
+			Case Skye.WinAPI.WM_SYSCOMMAND
+				Select Case CInt(m.WParam)
+					Case Skye.WinAPI.SC_CLOSE
+#If DEBUG Then
+						Me.Close()
+#Else
+							HideForm
+#End If
+					Case Else : MyBase.WndProc(m)
+				End Select
+			Case Skye.WinAPI.WM_HOTKEY
+				HKPerformAction(m.WParam.ToInt32)
+				MyBase.WndProc(m)
+			Case Else : MyBase.WndProc(m)
+		End Select
+	End Sub
 	Friend Sub New()
 
 		'Initialize Locals
@@ -60,18 +79,17 @@ Partial Friend Class MainForm
 		uiWLFileBrowser.Filter = "Executable Files|*.exe"
 		uiWLFileBrowser.InitialDirectory = "C:\PROGRAM FILES"
 		uiWLFolderBrowser.ShowNewFolderButton = False
-		Me.cmWLItem.Font = App.MenuFont
+		cmWLItem.Font = App.MenuFont
+		cmWLItem.ShowItemToolTips = False
 		Me.imagelisttabcontrolSettings = New ImageList(Me.components) With {
 			.ColorDepth = ColorDepth.Depth32Bit,
 			.ImageSize = New Size(16, 16),
 			.TransparentColor = System.Drawing.Color.Transparent}
-		Me.imagelisttabcontrolSettings.Images.Add("imageAC", My.Resources.Resources.imageAC) 'DirectCast(My.App.AppResources.GetObject("imageAC"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageCB", My.Resources.Resources.imageCB) 'DirectCast(My.App.AppResources.GetObject("imageCB"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.imageHC) 'DirectCast(My.App.AppResources.GetObject("imageHC"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK) 'DirectCast(My.App.AppResources.GetObject("imageHK"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageHL", My.Resources.Resources.imageHL) 'DirectCast(My.App.AppResources.GetObject("imageHL"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageWL", My.Resources.Resources.imageWL) 'DirectCast(My.App.AppResources.GetObject("imageWL"), Image))
-		Me.imagelisttabcontrolSettings.Images.Add("imageWST", My.Resources.Resources.imageWST) 'DirectCast(My.App.AppResources.GetObject("imageWST"), Image))
+		Me.imagelisttabcontrolSettings.Images.Add("imageAC", My.Resources.Resources.imageAC)
+		Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.imageHC)
+		Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
+		Me.imagelisttabcontrolSettings.Images.Add("imageWL", My.Resources.Resources.imageWL)
+		Me.imagelisttabcontrolSettings.Images.Add("imageWST", My.Resources.Resources.imageWST)
 		Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
 		Me.tabpageAC.Text = My.App.ToolToString(My.App.Tools.AlarmChime)
 		Me.tabpageAC.ImageKey = "imageAC"
@@ -121,42 +139,6 @@ Partial Friend Class MainForm
 #End If
 
 	End Sub
-	Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
-		'Try
-		Select Case m.Msg
-			Case Skye.WinAPI.WM_SYSCOMMAND
-				Select Case CInt(m.WParam)
-					Case Skye.WinAPI.SC_CLOSE
-#If DEBUG Then
-						Me.Close()
-#Else
-							HideForm
-#End If
-					Case Else : MyBase.WndProc(m)
-				End Select
-			'Case Skye.WinAPI.WM_CHANGECBCHAIN
-			'	CBOSChain = m.LParam
-			'	If Not CBOSChain.ToInt32 = 0 Then Skye.WinAPI.SendMessage(CBOSChain, CUInt(m.Msg), m.WParam, m.LParam)
-			'	MyBase.WndProc(m)
-			'Case Skye.WinAPI.WM_DRAWCLIPBOARD
-			'	Dim seqno As UInteger = Skye.WinAPI.GetClipboardSequenceNumber
-			'	If seqno - CBOSSequenceNumber <= 2 Then : CBOSSequenceNumber = CInt(seqno) 'This attempts to check for duplicates.
-			'	Else
-			'		CBOSSequenceNumber = CInt(seqno)
-			'		If CBSet Then : CBSet = False 'Windows clipboard was just set by this program, so ignore this message, for it is just the same data.
-			'		Else : CBSetData(m.WParam)
-			'		End If
-			'	End If
-			'	If Not CBOSChain.ToInt32 = 0 Then Skye.WinAPI.SendMessage(CBOSChain, CUInt(m.Msg), m.WParam, m.LParam)
-			'	MyBase.WndProc(m)
-			Case Skye.WinAPI.WM_HOTKEY
-				HKPerformAction(m.WParam.ToInt32)
-				MyBase.WndProc(m)
-			Case Else : MyBase.WndProc(m)
-		End Select
-		'Catch ex As Exception : My.App.WriteToLog(My.App.Tools.SkyeTools, "MainForm WndProc Handler Error" + Chr(13) + ex.ToString)
-		'End Try
-	End Sub
 	Private Sub FrmLoad(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 #If DEBUG Then
 #Else
@@ -168,14 +150,26 @@ Partial Friend Class MainForm
 		ShowSettings()
 		ACSet()
 		HKRegister()
+		TipCM = New Skye.UI.ToolTipEX() With {
+			.Font = App.MenuFont,
+			.ShadowAlpha = 0,
+			.ShadowThickness = 0,
+			.FadeInRate = 25,
+			.FadeOutRate = 25,
+			.HideDelay = 5000,
+			.ShowDelay = 250
+		}
+		App.HookTSItemsForCMTooltip(cmWST, TipCM)
+        App.HookTSItemsForCMTooltip(cmWSTScreenSaver, TipCM)
 		Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
 		Skye.UI.ThemeManager.RegisterComponent(TipHCEX)
+		Skye.UI.ThemeManager.RegisterComponent(TipCM)
 		Skye.UI.ThemeManager.ApplyTheme(Me)
-        cmWST.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmWSTScreenSaver.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmWLItem.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmlistviewWL.Renderer = New Skye.UI.SkyeMenuRenderer
-    End Sub
+		cmWST.Renderer = New Skye.UI.SkyeMenuRenderer
+		cmWSTScreenSaver.Renderer = New Skye.UI.SkyeMenuRenderer
+		cmWLItem.Renderer = New Skye.UI.SkyeMenuRenderer
+		cmlistviewWL.Renderer = New Skye.UI.SkyeMenuRenderer
+	End Sub
 	Private Sub FrmShown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 		Me.Hide()
 		Me.Opacity = 1
@@ -2346,11 +2340,14 @@ Partial Friend Class MainForm
                                     'SubMenu Options
                                     If Not link.ShowNoMenu Then
 										'Initialize
-										Dim cm As New ContextMenuStrip With {.Font = App.MenuFont}
-										cm.Renderer = New Skye.UI.SkyeMenuRenderer
+										Dim cm As New ContextMenuStrip With {
+											.Font = App.MenuFont,
+											.Renderer = New Skye.UI.SkyeMenuRenderer,
+											.ShowItemToolTips = False
+										}
 										If Not My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
-                                        'Open Root
-                                        cmitem = New ToolStripMenuItem("Open Root Folder")
+										'Open Root
+										cmitem = New ToolStripMenuItem("Open Root Folder")
                                         If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then cmitem.Image = cmi.Image
                                         cmitem.Tag = cmi.Tag
                                         AddHandler cmitem.MouseUp, AddressOf CMIWLRootMouseUp
@@ -2391,8 +2388,9 @@ Partial Friend Class MainForm
                                         Dim mi As New ToolStripMenuItem(cmi.Text + " Menu")
                                         If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then mi.Image = cmi.Image
                                         mi.Tag = cmi.Tag
-                                        mi.DropDown = cm
-                                        AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
+										App.HookTSItemsForCMTooltip(cm, TipCM)
+										mi.DropDown = cm
+										AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
                                         cmi.DropDown.Items.Add(mi)
                                     End If
                                 End If
@@ -2406,8 +2404,9 @@ Partial Friend Class MainForm
                                     trayicon.Text = trayicon.Text.Split(Chr(13))(0)
                                     Dim traymenu As ContextMenuStrip = WLGenerateMenu(WLMenuData(CInt(trayicon.Tag)), My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons)
                                     traymenu.Font = App.MenuFont
-                                    traymenu.Renderer = New Skye.UI.SkyeMenuRenderer
-                                    Dim cmitem As ToolStripItem
+									traymenu.Renderer = New Skye.UI.SkyeMenuRenderer
+									traymenu.ShowItemToolTips = False
+									Dim cmitem As ToolStripItem
 									If Not link.ShowNoMenu Then
                                         If traymenu.Items.Count = 0 Then
                                             cmitem = New ToolStripMenuItem(My.App.WLEmptyText)
@@ -2417,13 +2416,16 @@ Partial Friend Class MainForm
                                         End If
                                         traymenu.Items.Add(New ToolStripSeparator)
                                     End If
-									'SubMenu Options
-									'Initialize
-									Dim cm As New ContextMenuStrip With {.Font = App.MenuFont}
-									cm.Renderer = New Skye.UI.SkyeMenuRenderer
-									If Not My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
-                                    'Open Root
-                                    cmitem = New ToolStripMenuItem("Open Root Folder")
+                                    'SubMenu Options
+                                    'Initialize
+                                    Dim cm As New ContextMenuStrip With {
+                                        .Font = App.MenuFont,
+                                        .Renderer = New Skye.UI.SkyeMenuRenderer,
+                                        .ShowItemToolTips = False
+                                    }
+                                    If Not My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cm.ShowImageMargin = False
+									'Open Root
+									cmitem = New ToolStripMenuItem("Open Root Folder")
                                     If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = trayicon.Icon.ToBitmap
                                     cmitem.Tag = trayicon.Tag
                                     AddHandler cmitem.MouseUp, AddressOf CMIWLRootMouseUp
@@ -2455,7 +2457,7 @@ Partial Friend Class MainForm
                                     End If
                                     cm.Items.Add(New ToolStripSeparator)
                                     cmitem = New ToolStripMenuItem("Remove From Tray")
-									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose
 									cmitem.Tag = trayicon.Tag
                                     AddHandler cmitem.MouseUp, AddressOf CMIWLRemoveFromTrayMouseUp
                                     cm.Items.Add(cmitem)
@@ -2470,26 +2472,28 @@ Partial Friend Class MainForm
                                     Dim mi As New ToolStripMenuItem(trayicon.Text + " Menu")
                                     If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then mi.Image = trayicon.Icon.ToBitmap
                                     mi.Tag = trayicon.Tag
-                                    mi.DropDown = cm
-                                    AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
+									App.HookTSItemsForCMTooltip(cm, TipCM)
+									mi.DropDown = cm
+									AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
                                     traymenu.Items.Add(mi)
                                     'Menu Options
                                     cmitem = New ToolStripMenuItem("Settings")
-									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageSettings 'DirectCast(My.App.AppResources.GetObject("imageSettings"), Image)
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageSettings
 									AddHandler cmitem.MouseUp, AddressOf CMIWLSettingsMouseUp
                                     traymenu.Items.Add(cmitem)
                                     traymenu.Items.Add(New ToolStripSeparator)
                                     cmitem = New ToolStripMenuItem("Close WinLinks Tray")
-									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose
 									AddHandler cmitem.MouseUp, AddressOf CMIWLCloseMouseUp
                                     traymenu.Items.Add(cmitem)
                                     cmitem = New ToolStripMenuItem("Exit SkyeTools")
-									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+									If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmitem.Image = My.Resources.Resources.imageClose
 									cmitem.ToolTipText = My.App.CloseAllToolTipText
                                     AddHandler cmitem.MouseUp, AddressOf CMICloseAllMouseUp
                                     traymenu.Items.Add(cmitem)
-                                    traymenu.Tag = trayicon.Tag
-                                    trayicon.ContextMenuStrip = traymenu
+									traymenu.Tag = trayicon.Tag
+									App.HookTSItemsForCMTooltip(traymenu, TipCM)
+									trayicon.ContextMenuStrip = traymenu
                                 End If
                             Next
                         End If
@@ -2689,6 +2693,7 @@ Partial Friend Class MainForm
 		If BackgroundworkerWL.IsBusy Then cmi.Enabled = False
 		cmWLItem.Items.Add(cmi)
 		'Finalize
+		App.HookTSItemsForCMTooltip(cmWLItem, TipCM)
 		cmWLItem.Show(MousePosition)
 	End Sub
 	Private Sub WLClose(Optional ByRef forcecloseall As Boolean = False)

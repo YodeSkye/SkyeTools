@@ -286,7 +286,8 @@
         TipHCEX.SetImage(cmWST, Nothing)
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
-        cmWST.Size = New Size(240, 492)
+        cmWST.ShowItemToolTips = False
+        cmWST.Size = New Size(240, 470)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -2794,7 +2795,8 @@
         TipHCEX.SetImage(cmWSTScreenSaver, Nothing)
         cmWSTScreenSaver.Items.AddRange(New ToolStripItem() {cmiScreenSaverActivate, cmiScreenSaverEnabled, toolStripSeparator1, cmiScreenSaverSettings, toolStripSeparator12, cmiScreenSaverClose, cmiScreenSaverCloseAll})
         cmWSTScreenSaver.Name = "contextmenuWorkSpaceTools"
-        cmWSTScreenSaver.Size = New Size(245, 146)
+        cmWSTScreenSaver.ShowItemToolTips = False
+        cmWSTScreenSaver.Size = New Size(245, 168)
         TipInfoEX.SetText(cmWSTScreenSaver, Nothing)
         TipHCEX.SetText(cmWSTScreenSaver, Nothing)
         ' 
