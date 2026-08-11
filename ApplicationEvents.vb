@@ -8,12 +8,14 @@ Namespace My
 		'App Declarations
 		Friend CurrentProcess As Diagnostics.Process = Diagnostics.Process.GetCurrentProcess
 		Friend AlternateStart As Boolean = False
-		Private DelayedStart As Integer = 2000
 
 		'App Events
 		Public Sub New()
 			MyBase.New(ApplicationServices.AuthenticationMode.Windows)
-			CurrentProcess.PriorityClass = Diagnostics.ProcessPriorityClass.AboveNormal
+			Try
+				CurrentProcess.PriorityClass = Diagnostics.ProcessPriorityClass.AboveNormal
+			Catch
+			End Try
 			If My.Computer.Keyboard.ShiftKeyDown Then AlternateStart = True
 			Me.IsSingleInstance = True
 			Me.EnableVisualStyles = True
@@ -39,42 +41,9 @@ Namespace My
 
 		'App Procedures
 		Protected Sub ProcessCommandLine(ByRef commandline As Collections.ObjectModel.ReadOnlyCollection(Of String))
-			If commandline.Count = 0 Then
-				Debug.Print("ProcessCommandLine: No CommandLine Arguments")
-			Else
+			If commandline.Count > 0 Then
 				For Each command As String In commandline
-					Debug.Print("ProcessCommandLine: Command: " + command)
-					If Not String.IsNullOrEmpty(command) Then
-						Dim commands As String() = command.Split(New Char() {CChar(":")}, StringSplitOptions.RemoveEmptyEntries)
-						Select Case commands.Length
-							Case 1
-								Select Case commands(0).ToUpper
-									Case "/ALTSTART"
-										AlternateStart = True
-									Case Else
-										Debug.Print("ProcessCommandLine: Command: " + command + " = Invalid Command")
-								End Select
-							Case 2
-#If DEBUG Then
-								For Each s As String In commands
-									Debug.Print("ProcessCommandLine: Command: " + command + " : " + s)
-								Next
-#End If
-								Select Case commands(0).ToUpper
-									Case "/DELAYEDSTART"
-										DelayedStart = CInt(Val(commands(1))) * 1000
-										If DelayedStart < 2000 Then : DelayedStart = 2000
-										ElseIf DelayedStart > 300000 Then : DelayedStart = 300000
-										End If
-									Case Else
-										Debug.Print("ProcessCommandLine: Command: " + command + " = Invalid Command")
-								End Select
-							Case Else
-								Debug.Print("ProcessCommandLine: Command: " + command + " = Invalid Command")
-						End Select
-						commands = Nothing
-					End If
-					command = Nothing
+					If Not String.IsNullOrWhiteSpace(command) AndAlso command.ToUpper = "/ALTSTART" Then AlternateStart = True
 				Next
 			End If
 		End Sub

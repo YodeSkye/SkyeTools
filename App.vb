@@ -333,7 +333,6 @@ Namespace My
 		Friend Const CloseAllToolTipText As String = "RightClick = ReStart SkyeTools" + vbCr + "CtrlRightClick = ReStart In Current Context"
 		Friend ReadOnly AdjustScreenBoundsNormalWindow As Byte = 8 ' The number of pixels to adjust the screen bounds for normal windows.
 		Friend ReadOnly AdjustScreenBoundsDialogWindow As Byte = 10 ' The number of pixels to adjust the screen bounds for dialog windows.
-		Friend AppIsClosing As Boolean = False
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
 		Friend FrmMain As MainForm
@@ -353,34 +352,42 @@ Namespace My
 
 		' METHODS
 		Friend Sub Initialize()
+			Dim baseName As String = If(Debugger.IsAttached, My.Application.Info.ProductName & "DEV", My.Application.Info.ProductName)
+			Try
+				Skye.Common.Log.Initialize(baseName)
+			Catch ex As Exception
+				System.Diagnostics.Trace.WriteLine($"Failed To Initialize Logging: {ex.Message}")
+				MessageBox.Show($"Application failed to initialize logger: {ex.Message}", "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				Return
+			End Try
+			Try
+				Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
+				WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + If(My.Application.AlternateStart, " Started in Alternate Start Mode...", " Started..."))
+				System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
+				GetSettings()
 #If DEBUG Then
-			Dim baseName As String = My.Application.Info.ProductName & "DEV"
-#Else
-			Dim baseName As String = My.Application.Info.ProductName
+				GetSettingsDebug()
 #End If
-			Skye.Common.Log.Initialize(baseName)
-			Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
-			WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + If(My.Application.AlternateStart, " Started in Alternate Start Mode...", " Started..."))
-			System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
-			GetSettings()
-#If DEBUG Then
-			GetSettingsDebug()
-#End If
-			Dim selectedTheme As Skye.UI.SkyeTheme = If(ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), Theme)
-			Skye.UI.ThemeManager.CurrentTheme = selectedTheme
-			AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
+				Dim selectedTheme As Skye.UI.SkyeTheme = If(ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), Theme)
+				Skye.UI.ThemeManager.CurrentTheme = selectedTheme
+				AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 
-			ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
-			ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
-			ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
-			ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
-			ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
-			ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
-			ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
-			ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
+				ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
+				ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
+				ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
+				ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
+				ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
+				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
+				ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
+				ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
 
-			FrmMain = New MainForm
+				FrmMain = New MainForm
 
+			Catch ex As Exception
+				WriteToLog(Tools.SkyeTools, $"Critical Error During Startup: {ex.Message}")
+				MessageBox.Show($"An error occurred while starting the application:{Environment.NewLine}{ex.Message}",
+								"Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+			End Try
 		End Sub
 		Friend Sub Finalize()
 			WriteToLog(My.App.Tools.SkyeTools, "..." + My.Application.Info.ProductName + " Closed")
@@ -498,79 +505,6 @@ Namespace My
 			Catch : Return source
 			End Try
 		End Function
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-			HKEnabled = False
-			GetSettingsDebugHK()
-			'WorkSpace Tools (WST)
-			'WSTLoadOnOSStartup = True
-			'WSTLoadOnOSStartupPath = New FileType("C:\Tools\YMTag.exe", "test args")
-			WSTEnabled = True
-			WSTShowClock = True
-			'WSTClockSize = ClockSize.Medium
-			WSTShowLockWorkSpace = False
-			WSTShowLogOff = False
-			WSTShowSleep = False
-			WSTShowHibernate = False
-			WSTShowReStart = False
-			WSTShowShutDown = False
-			WSTShowHelp = True
-			WSTShowLog = True
-			'ScreenSaver (SS)
-			WSTSSToolEnabled = True
-			WSTSSStartUp = WSTSSStartUpMode.Enabled
-			WSTSSEnableOnActivate = False
-			WSTShowSSIcon = True
-			WSTShowSSActivate = True
-			WSTShowSSEnabled = True
-			'Alarm & Chime (AC)
-			WSTShowAC = False
-			ACAlarmRecurring = False
-			'WinLinks (WL)
-			WSTShowWLMenu = True
-			WSTShowWLTray = True
-			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
-			'GetSettingsDebugWL()
-		End Sub
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHK()
-			If HKEnabled Then
-				'HotKeyRefreshWorkSpace.HotKey = Keys.R
-				'HotKeyRefreshWorkSpace.HotKeyCode = 82
-				'HotKeyRefreshWorkSpace.HotKeyMod = 0
-				'HotKeyWinLinks.HotKey = Keys.W
-				'HotKeyWinLinks.HotKeyCode = 87
-				'HotKeyWinLinks.HotKeyMod = 0
-			End If
-		End Sub
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugWL()
-
-			WLData.Clear()
-			WLAutoRefresh = True
-			WLAutoRefreshInterval = 1
-			WLAutoRefreshIdleInterval = 20
-
-			Dim link As WLItemType
-
-			link = New WLItemType("C:\Users\YodeS\Review") With {
-				.Name = "bla & bla",
-				.ShowMenuIcons = True,
-				.RefreshData = True,
-				.RefreshMenu = True}
-			WLData.Add(link)
-
-			link = New WLItemType("C:\Users\YodeS\Dev") With {
-				.FolderMode = WLFolderMode.FoldersOnly,
-				.FolderPlacement = WLFolderPlacement.Merged,
-				.ShowMenuIcons = True,
-				.RefreshData = True,
-				.RefreshMenu = True}
-			WLData.Add(link)
-
-			link = New WLItemType("C:\Users\YodeS\Dev\TESTDATA") With {
-				.RefreshData = True,
-				.RefreshMenu = True}
-			WLData.Add(link)
-
-		End Sub
 
 		' Settings
 		Friend Sub GetSettings()
@@ -741,6 +675,80 @@ Namespace My
 				item.RefreshMenu = True
 				WLData(i) = item
 			Next
+
+		End Sub
+
+		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
+			HKEnabled = False
+			GetSettingsDebugHK()
+			'WorkSpace Tools (WST)
+			'WSTLoadOnOSStartup = True
+			'WSTLoadOnOSStartupPath = New FileType("C:\Tools\YMTag.exe", "test args")
+			WSTEnabled = True
+			WSTShowClock = True
+			'WSTClockSize = ClockSize.Medium
+			WSTShowLockWorkSpace = False
+			WSTShowLogOff = False
+			WSTShowSleep = False
+			WSTShowHibernate = False
+			WSTShowReStart = False
+			WSTShowShutDown = False
+			WSTShowHelp = True
+			WSTShowLog = True
+			'ScreenSaver (SS)
+			WSTSSToolEnabled = True
+			WSTSSStartUp = WSTSSStartUpMode.Enabled
+			WSTSSEnableOnActivate = False
+			WSTShowSSIcon = True
+			WSTShowSSActivate = True
+			WSTShowSSEnabled = True
+			'Alarm & Chime (AC)
+			WSTShowAC = False
+			ACAlarmRecurring = False
+			'WinLinks (WL)
+			WSTShowWLMenu = True
+			WSTShowWLTray = True
+			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
+			'GetSettingsDebugWL()
+		End Sub
+		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugHK()
+			If HKEnabled Then
+				'HotKeyRefreshWorkSpace.HotKey = Keys.R
+				'HotKeyRefreshWorkSpace.HotKeyCode = 82
+				'HotKeyRefreshWorkSpace.HotKeyMod = 0
+				'HotKeyWinLinks.HotKey = Keys.W
+				'HotKeyWinLinks.HotKeyCode = 87
+				'HotKeyWinLinks.HotKeyMod = 0
+			End If
+		End Sub
+		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebugWL()
+
+			WLData.Clear()
+			WLAutoRefresh = True
+			WLAutoRefreshInterval = 1
+			WLAutoRefreshIdleInterval = 20
+
+			Dim link As WLItemType
+
+			link = New WLItemType("C:\Users\YodeS\Review") With {
+				.Name = "bla & bla",
+				.ShowMenuIcons = True,
+				.RefreshData = True,
+				.RefreshMenu = True}
+			WLData.Add(link)
+
+			link = New WLItemType("C:\Users\YodeS\Dev") With {
+				.FolderMode = WLFolderMode.FoldersOnly,
+				.FolderPlacement = WLFolderPlacement.Merged,
+				.ShowMenuIcons = True,
+				.RefreshData = True,
+				.RefreshMenu = True}
+			WLData.Add(link)
+
+			link = New WLItemType("C:\Users\YodeS\Dev\TESTDATA") With {
+				.RefreshData = True,
+				.RefreshMenu = True}
+			WLData.Add(link)
 
 		End Sub
 

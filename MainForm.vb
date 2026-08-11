@@ -44,13 +44,18 @@ Partial Friend Class MainForm
 #If DEBUG Then
 						Me.Close()
 #Else
-							HideForm
+						HideForm()
 #End If
 					Case Else : MyBase.WndProc(m)
 				End Select
 			Case Skye.WinAPI.WM_HOTKEY
-				HKPerformAction(m.WParam.ToInt32)
-				MyBase.WndProc(m)
+                Try
+                    HKPerformAction(m.WParam.ToInt32)
+                Catch ex As Exception
+					App.WriteToLog(App.Tools.SkyeTools, "HotKey Failed --> " + ex.Message)
+				Finally
+					MyBase.WndProc(m)
+				End Try
 			Case Else : MyBase.WndProc(m)
 		End Select
 	End Sub
@@ -194,12 +199,32 @@ Partial Friend Class MainForm
 		UpdateWST()
 	End Sub
 	Private Sub FrmClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
-		My.App.AppIsClosing = True
 		FrmClosingTasks()
 		My.App.Finalize()
 	End Sub
 	Private Sub FrmClosingTasks()
 		HKRegister(True)
+		' Disposing timers purges queued callbacks from the Windows message queue
+		Try
+			TimerWLAutoRefresh?.Stop()
+			TimerWLAutoRefresh?.Dispose()
+			TimerWLAutoRefreshIdle?.Stop()
+			TimerWLAutoRefreshIdle?.Dispose()
+		Catch
+		End Try
+		' Disable the FileSystemWatcher explicitly before disposing UI components
+		Try
+			WatcherWLAutoRefresh.EnableRaisingEvents = False
+			WatcherWLAutoRefresh.Dispose()
+		Catch
+			' Suppress teardown exceptions
+		End Try
+		' If the worker is running during shutdown/refresh, cancel it cleanly
+		If BackgroundworkerWL.IsBusy Then
+			If BackgroundworkerWL.WorkerSupportsCancellation Then
+				BackgroundworkerWL.CancelAsync()
+			End If
+		End If
 		WLClose(True)
 	End Sub
 	Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, MyBase.MouseDown
@@ -1663,7 +1688,6 @@ Partial Friend Class MainForm
 		Else
 			If sender Is Me.btnACAlarmChimePlay And My.App.ACAlarmChimeType = My.App.ACChimeType.Forever Then chimecount = Byte.MaxValue
 			App.ShowMessage(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", Nothing)
-
 		End If
 		Me.lblACAlarmChime.ResetForeColor()
 		Me.lblACAlarmChime.ResetFont()
@@ -2287,13 +2311,26 @@ Partial Friend Class MainForm
 #End If
 					WLMenuItemCount = 0
 					WLMenuData(index).Clear()
+
+					' If process/I/O cancels mid-execution inside WLGenerateMenuData, 
+					' it will throw OperationCanceledException
 					WLMenuData(index) = WLGenerateMenuData(link.Root, link)
+
+					' Check cancellation again before mutating state
+					If BackgroundworkerWL.CancellationPending Then
+						e.Cancel = True
+						Exit For
+					End If
+
 					WLMenuData(index).TrimExcess()
 					link.RefreshData = False
 					My.App.WLData(index) = link
 				End If
 			Next
-		Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Fatal Error Loading WinLinks!" + Chr(13) + "Location : backgroundworkerWinLinksDoWork" + Chr(13) + "Error : " + ex.ToString)
+		Catch ex As OperationCanceledException
+			e.Cancel = True
+		Catch ex As Exception
+			My.App.WriteToLog(My.App.Tools.WinLinks, "Fatal Error Loading WinLinks!" + Chr(13) + "Location : backgroundworkerWinLinksDoWork" + Chr(13) + "Error : " + ex.ToString)
 		End Try
 	End Sub
 	<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub BackgroundworkerWLProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundworkerWL.ProgressChanged
@@ -2700,8 +2737,14 @@ Partial Friend Class MainForm
 			End If
 			If Not My.App.WSTShowWLTray Or forcecloseall Then
 				For Each trayicon As NotifyIcon In WLTrayIcons
-					trayicon.Visible = False
-					trayicon.Dispose()
+					Try
+						trayicon.Visible = False
+						' Allow OS to process tray icon removal
+						Application.DoEvents()
+						trayicon.Dispose()
+					Catch ex As Exception
+						' Ignore shell notification teardown exceptions
+					End Try
 				Next
 				WLTrayIcons.Clear()
 			End If
