@@ -2534,7 +2534,7 @@ Partial Friend Class MainForm
             WLSetSettingsState(True)
             If e.Cancelled Then Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
             WLLoadStartTime = TimeSpan.Zero
-			If Not WLAutoRefreshUpdate Then App.ShowMessage(My.App.Tools.WinLinks, "WinLinks Loaded", Nothing)
+			If Not WLAutoRefreshUpdate Then App.ShowMessage(My.App.Tools.WinLinks, App.ToolToString(App.Tools.WinLinks), "All WinLinks Loaded")
 			WLAutoRefreshUpdate = False
 		Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Fatal Error Loading WinLinks!" + Chr(13) + "Location : backgroundworkerWinLinksRunWorkerCompleted" + Chr(13) + "Error : " + ex.ToString)
         End Try
