@@ -63,21 +63,13 @@ Partial Friend Class MainForm
 		BackgroundworkerAC.WorkerSupportsCancellation = True
 		openfiledialogLoadOnOSStartup.DefaultExt = "exe"
 		openfiledialogLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
-		openfiledialogLoadOnOSStartup.InitialDirectory = "C:\Program Files"
+		openfiledialogLoadOnOSStartup.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
 		openfiledialogLoadOnOSStartup.Title = "Select An Application..."
-		openfiledialogWST.DefaultExt = "exe"
-		openfiledialogWST.Filter = "Executable Files|*.exe|Batch Files|*.bat"
-		openfiledialogWST.InitialDirectory = "C:\Program Files"
-		openfiledialogWST.Title = "Select An Application..."
 		uiACOpenFile.DefaultExt = "wav"
 		uiACOpenFile.Filter = "WAV Files|*.wav"
-		uiACOpenFile.InitialDirectory = "C:\WINDOWS\Media"
+		uiACOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
 		uiACOpenFile.Title = "Select a WAV File..."
 		uiWLFolderBrowser.Description = "Select a Folder with ShortCuts or Programs..."
-		uiWLFileBrowser.Title = "Select The YMFM App..."
-		uiWLFileBrowser.DefaultExt = "exe"
-		uiWLFileBrowser.Filter = "Executable Files|*.exe"
-		uiWLFileBrowser.InitialDirectory = "C:\PROGRAM FILES"
 		uiWLFolderBrowser.ShowNewFolderButton = False
 		cmWLItem.Font = App.MenuFont
 		cmWLItem.ShowItemToolTips = False
@@ -103,13 +95,12 @@ Partial Friend Class MainForm
 		Me.tabpageWST.ImageKey = "imageWST"
 
 		'Initialize Globals
-		Dim ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
-		Dim audioBytes(CInt(ums.Length) - 1) As Byte
-		ums.Read(audioBytes, 0, audioBytes.Length)
-		My.App.ACChime = audioBytes
-		audioBytes = Nothing
-		ums.Dispose()
-
+		Using ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
+			Dim audioBytes(CInt(ums.Length) - 1) As Byte
+			ums.Read(audioBytes, 0, audioBytes.Length)
+			My.App.ACChime = audioBytes
+			audioBytes = Nothing
+		End Using
 		'Initialize Form
 		Me.Text = "Settings For " + My.Application.Info.ProductName + " v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
 		Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText
@@ -1136,7 +1127,6 @@ Partial Friend Class MainForm
 	Private notifyiconWST As NotifyIcon
 	Private notifyiconWSTScreenSaver As NotifyIcon
 	Private frmWSTClock As WSTClock
-	Private openfiledialogWST As New OpenFileDialog
 
 	' Control Events
 	Private Sub CMIWSTCancelStartUpMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCancelStartUp.MouseUp
@@ -1965,7 +1955,6 @@ Partial Friend Class MainForm
 	Private WLInsertIndex As Integer
 	Private WLMenuItemCount As Integer
 	Private cmWLItem As New ContextMenuStrip
-	Private uiWLFileBrowser As New OpenFileDialog
 	Private uiWLFolderBrowser As New FolderBrowserDialog
 
 	' Control Events

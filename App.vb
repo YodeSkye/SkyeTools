@@ -102,10 +102,6 @@ Namespace My
 			Medium
 			Large
 		End Enum
-		Friend Const WSTName As String = "WorkSpace Tools"
-		Friend ReadOnly WSTLoadOnOSStartupPathDefault As New FileType(String.Empty, String.Empty)
-		Friend ReadOnly WSTTaskManagerDefault As New FileType(System.Environment.GetEnvironmentVariable("windir").ToString + "\system32\taskmgr.exe", Nothing) 'C:\WINDOWS\system32\taskmgr.exe
-		Friend ReadOnly WSTCommandPromptDefault As New FileType(System.Environment.GetEnvironmentVariable("windir").ToString + "\system32\cmd.exe", "/K CD /D %USERPROFILE%") 'C:\WINDOWS\system32\cmd.exe /K CD /D %USERPROFILE%"
 		Friend Structure FileType
 			Dim Path As String
 			Dim Arguments As String
@@ -116,11 +112,11 @@ Namespace My
 				End If
 			End Sub
 			Overrides Function ToString() As String
-				If String.IsNullOrEmpty(Me.Arguments) Then : Return Me.Path
-				Else : Return Me.Path + " (" + Me.Arguments + ")"
-				End If
+				Return If(String.IsNullOrEmpty(Me.Arguments), Me.Path, Me.Path & " (" & Me.Arguments & ")")
 			End Function
 		End Structure
+		Friend Const WSTName As String = "WorkSpace Tools"
+		Friend ReadOnly WSTLoadOnOSStartupPathDefault As New FileType(String.Empty, String.Empty)
 
 		' Saved Settings
 		Friend WSTLoadOnOSStartup As Boolean
@@ -158,8 +154,8 @@ Namespace My
 #End Region
 #Region "Alarm & Chime (AC)"
 
-        ' DECLARATIONS
-        Friend Enum ACChimeType '*If you change this, modify GetSettings!
+		' DECLARATIONS
+		Friend Enum ACChimeType
 			Simple      'One Chime
 			Extended    'Four Chimes
 			HourTick    'x Chimes Based On Hour
