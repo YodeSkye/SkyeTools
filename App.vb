@@ -8,92 +8,6 @@ Namespace My
 
 	Friend Module App
 
-#Region "HotClicks (HC)"
-
-        'DECLARATIONS
-        Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
-			NoAction
-			Menu
-			WLNew
-			WLEdit
-			WLOpenRoot
-			WLRefresh
-			WSTLockWorkSpace
-			WSTScreenSaverActivate
-			WSTScreenSaverDisable
-			WSTClock
-			ShowSettings
-			ShowSettingsHC
-			ShowSettingsHK
-			ShowSettingsWST
-			ShowSettingsWL
-			ShowSettingsWSTSS
-			ShowSettingsAC
-		End Enum
-		Friend Structure HCActionType
-			Dim Name As HCAction
-			Dim Description As String
-			Sub New(action As HCAction, text As String)
-				Name = action
-				Description = text
-			End Sub
-		End Structure
-		Private Sub HCGenerateActionList() 'MUST KEEP SAME ORDER AS HCAction ENUM
-			HCActions.Clear()
-			HCActions.Add(New HCActionType(HCAction.NoAction, "No Action"))
-			HCActions.Add(New HCActionType(HCAction.Menu, "Context Menu"))
-			HCActions.Add(New HCActionType(HCAction.WLNew, "New WinLink"))
-			HCActions.Add(New HCActionType(HCAction.WLEdit, "Edit WinLink"))
-			HCActions.Add(New HCActionType(HCAction.WLOpenRoot, "Open WinLink Root Folder"))
-			HCActions.Add(New HCActionType(HCAction.WLRefresh, "Refresh WinLink"))
-			HCActions.Add(New HCActionType(HCAction.WSTLockWorkSpace, "Lock WorkSpace"))
-			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverActivate, "Activate Screen Saver"))
-			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverDisable, "Enable/Disable Screen Saver"))
-			HCActions.Add(New HCActionType(HCAction.WSTClock, "Toggle Clock"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettings, "Show Settings Window (Last Page)"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsHC, "Show HotClick Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsHK, "Show HotKey Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsWST, "Show WorkSpace Tool Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsWL, "Show WinLink Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsWSTSS, "Show Screen Saver Settings"))
-			HCActions.Add(New HCActionType(HCAction.ShowSettingsAC, "Show Alarm & Chime Settings"))
-		End Sub
-
-		'Saved Settings
-		Friend HCActions As New Collections.Generic.List(Of HCActionType)
-		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
-		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
-		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
-
-#End Region
-#Region "HotKeys (HK)"
-
-        'DECLARATIONS
-        Friend Structure HKType
-			Dim Description As String
-			Dim WinID As Integer
-			Dim Key As Keys
-			Dim KeyCode As Byte
-			Dim KeyMod As Byte
-		End Structure
-		Friend Sub HKGenerateKeyList()
-			HKKeys.Clear()
-			HKKeys.Add(HKWSTLockWorkSpace)
-			HKKeys.Add(HKWSTScreenSaver)
-			HKKeys.Add(HKWSTClock)
-			HKKeys.Add(HKWL)
-		End Sub
-
-		'Saved Settings
-		Friend HKWSTLockWorkSpace As New HKType
-		Friend HKWSTScreenSaver As New HKType
-		Friend HKWSTClock As New HKType
-		Friend HKWL As New HKType
-		Friend HKKeys As New Collections.Generic.List(Of HKType)
-		Friend HKEnabled As Boolean
-
-#End Region
-
 #Region "WorkSpace Tools (WST)"
 
 		' DECLARATIONS
@@ -245,7 +159,91 @@ Namespace My
         Friend WLAutoRefreshIdleInterval As Byte '20-240 seconds, Default = 30, Refresh Only When Folder Idle For x Seconds
 
 #End Region
+#Region "HotClicks (HC)"
 
+		'DECLARATIONS
+		Friend Enum HCAction 'MUST KEEP SAME ORDER AS HCGenerateHotClickActionList SUB
+			NoAction
+			Menu
+			WLNew
+			WLEdit
+			WLOpenRoot
+			WLRefresh
+			WSTLockWorkSpace
+			WSTScreenSaverActivate
+			WSTScreenSaverDisable
+			WSTClock
+			ShowSettings
+			ShowSettingsHC
+			ShowSettingsHK
+			ShowSettingsWST
+			ShowSettingsWL
+			ShowSettingsWSTSS
+			ShowSettingsAC
+		End Enum
+		Friend Structure HCActionType
+			Dim Name As HCAction
+			Dim Description As String
+			Sub New(action As HCAction, text As String)
+				Name = action
+				Description = text
+			End Sub
+		End Structure
+		Private Sub HCGenerateActionList() 'MUST KEEP SAME ORDER AS HCAction ENUM
+			HCActions.Clear()
+			HCActions.Add(New HCActionType(HCAction.NoAction, "No Action"))
+			HCActions.Add(New HCActionType(HCAction.Menu, "Context Menu"))
+			HCActions.Add(New HCActionType(HCAction.WLNew, "New WinLink"))
+			HCActions.Add(New HCActionType(HCAction.WLEdit, "Edit WinLink"))
+			HCActions.Add(New HCActionType(HCAction.WLOpenRoot, "Open WinLink Root Folder"))
+			HCActions.Add(New HCActionType(HCAction.WLRefresh, "Refresh WinLink"))
+			HCActions.Add(New HCActionType(HCAction.WSTLockWorkSpace, "Lock WorkSpace"))
+			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverActivate, "Activate Screen Saver"))
+			HCActions.Add(New HCActionType(HCAction.WSTScreenSaverDisable, "Enable/Disable Screen Saver"))
+			HCActions.Add(New HCActionType(HCAction.WSTClock, "Toggle Clock"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettings, "Show Settings Window (Last Page)"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsHC, "Show HotClick Settings"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsHK, "Show HotKey Settings"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsWST, "Show WorkSpace Tool Settings"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsWL, "Show WinLink Settings"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsWSTSS, "Show Screen Saver Settings"))
+			HCActions.Add(New HCActionType(HCAction.ShowSettingsAC, "Show Alarm & Chime Settings"))
+		End Sub
+
+		'Saved Settings
+		Friend HCActions As New Collections.Generic.List(Of HCActionType)
+		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
+		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
+		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
+
+#End Region
+#Region "HotKeys (HK)"
+
+		'DECLARATIONS
+		Friend Structure HKType
+			Dim Description As String
+			Dim WinID As Integer
+			Dim Key As Keys
+			Dim KeyCode As Byte
+			Dim KeyMod As Byte
+		End Structure
+		Friend Sub HKGenerateKeyList()
+			HKKeys.Clear()
+			HKKeys.Add(HKWSTLockWorkSpace)
+			HKKeys.Add(HKWSTScreenSaver)
+			HKKeys.Add(HKWSTClock)
+			HKKeys.Add(HKWL)
+		End Sub
+
+		'Saved Settings
+		Friend HKWSTLockWorkSpace As New HKType
+		Friend HKWSTScreenSaver As New HKType
+		Friend HKWSTClock As New HKType
+		Friend HKWL As New HKType
+		Friend HKKeys As New Collections.Generic.List(Of HKType)
+		Friend HKEnabled As Boolean
+
+#End Region
 
 		' DECLARATIONS
 		Friend Enum NotifyInterval
