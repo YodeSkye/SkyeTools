@@ -409,17 +409,16 @@ Namespace My
 		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
-				   .Title = title,
-				   .TitleFont = MenuFontBold,
-				   .Message = message,
-				   .MessageFont = MenuFont,
-				   .BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
-				   .ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
-				   .BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
-				   .Duration = 7000,
-				   .Width = 100,
-				   .Location = Skye.UI.ToastLocation.TopRight
-			   }
+				.Title = title,
+				.TitleFont = MenuFontBold,
+				.Message = message,
+				.MessageFont = MenuFont,
+				.BackColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBack,
+				.ForeColor = Skye.UI.ThemeManager.CurrentTheme.TooltipFore,
+				.BorderColor = Skye.UI.ThemeManager.CurrentTheme.TooltipBorder,
+				.Duration = 7000,
+				.Location = Skye.UI.ToastLocation.TopRight
+			}
 			If icon Is Nothing Then
 				t.Image = ToolToImage(tool)
 			Else
