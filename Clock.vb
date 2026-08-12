@@ -20,7 +20,7 @@ Public Class Clock
     Private Const TIMER_CLOCK_ID As Integer = 1001
     Private Const TIMER_TOPMOST_ID As Integer = 1002
 
-    Private currentSizeMode As App.ClockSize = App.ClockSize.Medium
+    Private currentSizeMode As App.ClockSize = App.WSTClockSize
     Private contextMenu As ContextMenuStrip
     Private cmiSmall, cmiMedium, cmiLarge As ToolStripMenuItem
 
@@ -78,18 +78,33 @@ Public Class Clock
     Public Sub Show()
         If hWnd = IntPtr.Zero Then CreateNativeWindow()
 
-        ApplySizeMode(My.App.WSTClockSize)
+        Debug.Print($"Raw Saved Setting at start of Show(): {My.App.WSTClockLocation}")
 
-        Dim pos As Point = My.App.WSTClockLocation
+        ApplySizeMode(App.WSTClockSize)
+
+        Dim pos As Point = App.WSTClockLocation
         Dim dims As Size = GetSizeForMode(currentSizeMode)
 
-        ClampToScreen(pos.X, pos.Y, dims.Width, dims.Height)
+        If pos = Point.Empty Then
+            Dim screenArea As Rectangle = Screen.PrimaryScreen.WorkingArea
+            pos = New Point(screenArea.Right - dims.Width - 20, screenArea.Top + 20)
+            App.WSTClockLocation = pos
+        Else
+            ClampToScreen(pos.X, pos.Y, dims.Width, dims.Height)
+        End If
 
-        Skye.WinAPI.MoveWindow(hWnd, pos.X, pos.Y, dims.Width, dims.Height, True)
-        Skye.WinAPI.ShowWindow(hWnd, Skye.WinAPI.SW_SHOWNOACTIVATE)
+        Debug.Print($"Clock.Show() - Position: {pos}, Size: {dims}")
 
-        Skye.WinAPI.SetWindowPos(hWnd, Skye.WinAPI.HWND_TOPMOST, 0, 0, 0, 0,
-                                Skye.WinAPI.SWP_NOMOVE Or Skye.WinAPI.SWP_NOSIZE Or Skye.WinAPI.SWP_NOACTIVATE Or Skye.WinAPI.SWP_SHOWWINDOW)
+        ' Apply Position, Size, TopMost Z-Order, and Show in ONE call:
+        Skye.WinAPI.SetWindowPos(
+            hWnd,
+            Skye.WinAPI.HWND_TOPMOST,
+            pos.X,
+            pos.Y,
+            dims.Width,
+            dims.Height,
+            Skye.WinAPI.SWP_NOACTIVATE Or Skye.WinAPI.SWP_SHOWWINDOW
+        )
 
         ' Start Native Timers
         Skye.WinAPI.SetTimer(hWnd, CType(TIMER_CLOCK_ID, IntPtr), 200, IntPtr.Zero)
@@ -131,7 +146,12 @@ Public Class Clock
         Dim cornerPref As Integer = Skye.WinAPI.DWMWCP_ROUND
         HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_WINDOW_CORNER_PREFERENCE, cornerPref, 4)
 
-        Dim isDark As Integer = If(Skye.UI.ThemeManager.CurrentTheme Is Skye.UI.SkyeThemes.Dark, 1, 0)
+        Dim isDark As Integer
+        If Skye.UI.ThemeManager.CurrentTheme Is Skye.UI.SkyeThemes.Dark Then
+            isDark = 1
+        Else
+            isDark = 0
+        End If
         HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_USE_IMMERSIVE_DARK_MODE, isDark, 4)
     End Sub
 #End Region
@@ -139,6 +159,10 @@ Public Class Clock
 #Region "WndProc Message Loop"
     Private Function WindowProc(hWnd As IntPtr, msg As Skye.WinAPI.UType, wParam As IntPtr, lParam As IntPtr) As IntPtr
         Select Case msg
+            Case Skye.WinAPI.UType.WM_ERASEBKGND
+                ' Return TRUE (1) to prevent Windows from erasing the background and causing flicker
+                Return New IntPtr(1)
+
             Case Skye.WinAPI.UType.WM_PAINT
                 DrawClockContent()
                 Return IntPtr.Zero
@@ -148,20 +172,22 @@ Public Class Clock
                 If timerId = TIMER_CLOCK_ID Then
                     Redraw()
                 ElseIf timerId = TIMER_TOPMOST_ID Then
-                    If Not My.App.FrmMain.InUseApp Then
-                        Skye.WinAPI.SetWindowPos(hWnd, Skye.WinAPI.HWND_TOPMOST, 0, 0, 0, 0, Skye.WinAPI.SWP_NOMOVE Or Skye.WinAPI.SWP_NOSIZE Or Skye.WinAPI.SWP_NOACTIVATE)
-                    End If
+                    Skye.WinAPI.SetWindowPos(hWnd, Skye.WinAPI.HWND_TOPMOST, 0, 0, 0, 0, Skye.WinAPI.SWP_NOMOVE Or Skye.WinAPI.SWP_NOSIZE Or Skye.WinAPI.SWP_NOACTIVATE)
                 End If
                 Return IntPtr.Zero
 
             Case Skye.WinAPI.UType.WM_LBUTTONDOWN
                 isDragging = True
+                Skye.WinAPI.SetCapture(hWnd)
+
                 Skye.WinAPI.GetCursorPos(dragStartPoint)
                 Dim rc As Skye.WinAPI.RECT
-                Skye.WinAPI.GetWindowRect(hWnd, rc)
-                windowStartPos.X = rc.Left
-                windowStartPos.Y = rc.Top
-                Skye.WinAPI.SendMessage(hWnd, Skye.WinAPI.WM_CANCELMODE, 0, 0)
+                If Skye.WinAPI.GetWindowRect(hWnd, rc) Then
+                    windowStartPos.X = rc.Left
+                    windowStartPos.Y = rc.Top
+                    ' Save current valid position immediately
+                    My.App.WSTClockLocation = New Point(rc.Left, rc.Top)
+                End If
                 Return IntPtr.Zero
 
             Case Skye.WinAPI.UType.WM_MOUSEMOVE
@@ -178,6 +204,8 @@ Public Class Clock
                     ClampToScreen(newX, newY, dims.Width, dims.Height)
 
                     Skye.WinAPI.MoveWindow(hWnd, newX, newY, dims.Width, dims.Height, True)
+
+                    ' Update settings continuously while moving
                     My.App.WSTClockLocation = New Point(newX, newY)
                 End If
                 Return IntPtr.Zero
@@ -185,11 +213,14 @@ Public Class Clock
             Case Skye.WinAPI.UType.WM_LBUTTONUP
                 If isDragging Then
                     isDragging = False
-                    ' Trigger action if click didn't result in a drag position change
+                    Skye.WinAPI.ReleaseCapture()
+
                     Dim currentMouse As Skye.WinAPI.POINT
                     Skye.WinAPI.GetCursorPos(currentMouse)
+
+                    ' Check if it was a static click (no drag movement)
                     If currentMouse.X = dragStartPoint.X AndAlso currentMouse.Y = dragStartPoint.Y Then
-                        My.App.FrmMain.WSTShowClock()
+                        My.App.ShowClock()
                     End If
                 End If
                 Return IntPtr.Zero
@@ -225,54 +256,63 @@ Public Class Clock
         Dim h As Integer = rc.Bottom - rc.Top
         If w <= 0 OrElse h <= 0 Then Exit Sub
 
-        Dim hDC As IntPtr = Skye.WinAPI.GetDC(hWnd)
+        Dim ps As New Skye.WinAPI.PAINTSTRUCT()
+        Dim hDC As IntPtr = Skye.WinAPI.BeginPaint(hWnd, ps)
         If hDC = IntPtr.Zero Then Exit Sub
 
-        Dim backColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextBack
-        Dim textColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextFore
+        ' 1. Create off-screen buffer image
+        Using bmp As New Bitmap(w, h)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                g.SmoothingMode = SmoothingMode.AntiAlias
+                g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
 
-        Using g As Graphics = Graphics.FromHdc(hDC)
-            g.SmoothingMode = SmoothingMode.AntiAlias
-            g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
+                ' Clear background
+                Dim backColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextBack
+                Dim textColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextFore
 
-            ' Fill Surface Background
-            Using bgBrush As New SolidBrush(backColor)
-                g.FillRectangle(bgBrush, 0, 0, w, h)
+                Using bgBrush As New SolidBrush(backColor)
+                    g.FillRectangle(bgBrush, 0, 0, w, h)
+                End Using
+
+                ' Draw time text
+                Dim timeStr As String = DateTime.Now.ToString("HH:mm:ss")
+                Dim fontSize As Single = GetFontSizeForMode(currentSizeMode)
+
+                Using clockFont As New Font("Segoe UI", fontSize, FontStyle.Bold, GraphicsUnit.Pixel)
+                    Using textBrush As New SolidBrush(textColor)
+                        Dim sf As New StringFormat() With {
+                            .Alignment = StringAlignment.Center,
+                            .LineAlignment = StringAlignment.Center
+                        }
+                        g.DrawString(timeStr, clockFont, textBrush, New RectangleF(0, 0, w, h), sf)
+                    End Using
+                End Using
             End Using
 
-            ' Render Time String
-            Dim timeStr As String = DateTime.Now.ToString("HH:mm:ss")
-            Dim fontSize As Single = GetFontSizeForMode(currentSizeMode)
-
-            Using clockFont As New Font("Segoe UI", fontSize, FontStyle.Bold)
-                Using textBrush As New SolidBrush(textColor)
-                    Dim sf As New StringFormat() With {
-                        .Alignment = StringAlignment.Center,
-                        .LineAlignment = StringAlignment.Center
-                    }
-                    g.DrawString(timeStr, clockFont, textBrush, New RectangleF(0, 0, w, h), sf)
-                End Using
+            ' 2. Blit finished image onto screen HDC in one pass
+            Using screenGraphics As Graphics = Graphics.FromHdc(hDC)
+                screenGraphics.DrawImage(bmp, 0, 0)
             End Using
         End Using
 
-        Dim HResult As Integer = Skye.WinAPI.ReleaseDC(hWnd, hDC)
+        Skye.WinAPI.EndPaint(hWnd, ps)
     End Sub
 
     Private Shared Function GetSizeForMode(mode As ClockSize) As Size
         Select Case mode
-            Case ClockSize.Small : Return New Size(110, 32)
-            Case ClockSize.Medium : Return New Size(146, 40)
-            Case ClockSize.Large : Return New Size(190, 52)
-            Case Else : Return New Size(146, 40)
+            Case ClockSize.Small : Return New Size(110, 28)
+            Case ClockSize.Medium : Return New Size(152, 40)
+            Case ClockSize.Large : Return New Size(244, 67)
+            Case Else : Return New Size(152, 40)
         End Select
     End Function
 
     Private Shared Function GetFontSizeForMode(mode As ClockSize) As Single
         Select Case mode
-            Case ClockSize.Small : Return 14.0F
-            Case ClockSize.Medium : Return 20.0F
-            Case ClockSize.Large : Return 28.0F
-            Case Else : Return 20.0F
+            Case ClockSize.Small : Return 24.0F
+            Case ClockSize.Medium : Return 34.0F
+            Case ClockSize.Large : Return 52.0F
+            Case Else : Return 34.0F
         End Select
     End Function
 
@@ -280,7 +320,7 @@ Public Class Clock
         currentSizeMode = mode
         UpdateContextMenuChecks()
 
-        If hWnd <> IntPtr.Zero Then
+        If hWnd <> IntPtr.Zero AndAlso _isVisible Then
             Dim dims As Size = GetSizeForMode(mode)
             Dim rc As Skye.WinAPI.RECT
             Skye.WinAPI.GetWindowRect(hWnd, rc)
@@ -290,18 +330,30 @@ Public Class Clock
             ClampToScreen(x, y, dims.Width, dims.Height)
 
             Skye.WinAPI.MoveWindow(hWnd, x, y, dims.Width, dims.Height, True)
-            My.App.WSTClockLocation = New Point(x, y)
+            App.WSTClockLocation = New Point(x, y)
             Redraw()
         End If
     End Sub
 
-    Private Shared Sub ClampToScreen(ByRef x As Integer, ByRef y As Integer, ByVal w As Integer, ByVal h As Integer)
-        Dim wa As Rectangle = Screen.PrimaryScreen.WorkingArea
-        If x + w > wa.Right Then x = wa.Right - w
-        If y + h > wa.Bottom Then y = wa.Bottom - h
-        If x < wa.Left Then x = wa.Left
-        If y < wa.Top Then y = wa.Top
+    Private Shared Sub ClampToScreen(ByRef x As Integer, ByRef y As Integer, ByVal width As Integer, ByVal height As Integer)
+        ' Get active screen bounds (or primary screen)
+        Dim screenBounds As Rectangle = Screen.FromPoint(New Point(x, y)).WorkingArea
+
+        ' Clamp X (Left / Right boundaries)
+        If x < screenBounds.Left Then
+            x = screenBounds.Left
+        ElseIf x + width > screenBounds.Right Then
+            x = screenBounds.Right - width
+        End If
+
+        ' Clamp Y (Top / Bottom boundaries)
+        If y < screenBounds.Top Then
+            y = screenBounds.Top
+        ElseIf y + height > screenBounds.Bottom Then
+            y = screenBounds.Bottom - height
+        End If
     End Sub
+
 #End Region
 
 #Region "Theme & Context Menu"
@@ -318,7 +370,7 @@ Public Class Clock
         Dim item As ToolStripMenuItem = TryCast(sender, ToolStripMenuItem)
         If item IsNot Nothing AndAlso TypeOf item.Tag Is ClockSize Then
             Dim selectedSize As ClockSize = CType(item.Tag, ClockSize)
-            My.App.WSTClockSize = selectedSize
+            App.WSTClockSize = selectedSize
             ApplySizeMode(selectedSize)
         End If
     End Sub

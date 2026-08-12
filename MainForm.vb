@@ -2,6 +2,7 @@
 Imports System.Data.Common
 Imports System.IO
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
+Imports Microsoft.VisualBasic.Devices
 Imports SkyeTools.My
 
 Partial Friend Class MainForm
@@ -49,9 +50,9 @@ Partial Friend Class MainForm
 					Case Else : MyBase.WndProc(m)
 				End Select
 			Case Skye.WinAPI.WM_HOTKEY
-                Try
-                    HKPerformAction(m.WParam.ToInt32)
-                Catch ex As Exception
+				Try
+					HKPerformAction(m.WParam.ToInt32)
+				Catch ex As Exception
 					App.WriteToLog(App.Tools.SkyeTools, "HotKey Failed --> " + ex.Message)
 				Finally
 					MyBase.WndProc(m)
@@ -156,7 +157,7 @@ Partial Friend Class MainForm
 			.ShowDelay = 250
 		}
 		App.HookTSItemsForCMTooltip(cmWST, TipCM)
-        App.HookTSItemsForCMTooltip(cmWSTScreenSaver, TipCM)
+		App.HookTSItemsForCMTooltip(cmWSTScreenSaver, TipCM)
 		Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
 		Skye.UI.ThemeManager.RegisterComponent(TipHCEX)
 		Skye.UI.ThemeManager.RegisterComponent(TipCM)
@@ -203,6 +204,10 @@ Partial Friend Class MainForm
 		My.App.Finalize()
 	End Sub
 	Private Sub FrmClosingTasks()
+		If App.FrmClock IsNot Nothing Then
+			App.FrmClock.Hide()
+			App.FrmClock.Dispose()
+		End If
 		HKRegister(True)
 		' Disposing timers purges queued callbacks from the Windows message queue
 		Try
@@ -256,13 +261,11 @@ Partial Friend Class MainForm
 	' Control Events
 	Private Sub CMICloseAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCloseAll.MouseUp, cmiScreenSaverCloseAll.MouseUp
 		Me.Close()
-		'If e.Button = MouseButtons.Right Then Application.Restart 'This function restarts the app with the same commandline parameters originally passed to it.
 		If e.Button = MouseButtons.Right Then
 			Select Case My.Computer.Keyboard.CtrlKeyDown
 				Case True : System.Windows.Forms.Application.Restart()
 				Case False : Diagnostics.Process.Start(My.Computer.FileSystem.CombinePath(My.Application.Info.DirectoryPath, My.Application.Info.AssemblyName + ".exe"))
 			End Select
-
 		End If
 	End Sub
 	Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
@@ -1302,8 +1305,8 @@ Partial Friend Class MainForm
 		Me.txbxLoadOnOSStartupArgs.SelectAll()
 	End Sub
 	Private Sub TxbxWSTCopyDoubleClick(sender As Object, e As EventArgs) Handles txbxLoadOnOSStartupArgs.DoubleClick, lblLoadOnOSStartupPath.DoubleClick
-		If sender Is lblLoadOnOSStartupPath Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
-		ElseIf sender Is txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
+		If sender Is lblLoadOnOSStartupPath Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
+		ElseIf sender Is txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
 		End If
 	End Sub
 	Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
@@ -1324,15 +1327,16 @@ Partial Friend Class MainForm
 
 	' Methods
 	Friend Sub WSTShowClock()
-		If My.App.WSTShowClock Then
-			If frmWSTClock?.Visible Then
-				frmWSTClock.Hide()
-			Else
-				SizeClock()
-				frmWSTClock.Show()
-			End If
-			UpdateWST()
-		End If
+		'If My.App.WSTShowClock Then
+		'	If frmWSTClock?.Visible Then
+		'		frmWSTClock.Hide()
+		'	Else
+		'		SizeClock()
+		'		frmWSTClock.Show()
+		'	End If
+		'	UpdateWST()
+		'End If
+		App.ShowClock()
 	End Sub
 	Friend Sub SizeClock()
 		Select Case App.WSTClockSize

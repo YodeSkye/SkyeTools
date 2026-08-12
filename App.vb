@@ -334,6 +334,7 @@ Namespace My
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
 		Friend FrmMain As MainForm
+		Friend FrmClock As Clock
 		Friend FrmHelp As Help
 		Friend FrmLog As Log
 
@@ -424,6 +425,20 @@ Namespace My
 			End If
 			Skye.UI.Toast.ShowToast(t)
 			If addtolog Then WriteToLog(tool, title & " --> " & message)
+		End Sub
+		Friend Sub ShowClock()
+            If My.App.WSTShowClock Then
+				If FrmClock Is Nothing Then FrmClock = New Clock
+				If FrmClock.IsVisible Then
+					FrmClock.Hide()
+					FrmClock.Dispose()
+				Else
+					'SizeClock()
+					Debug.Print("Clock Location: " & App.WSTClockLocation.ToString())
+					FrmClock.Show()
+				End If
+				'UpdateWST()
+			End If
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
 			Dim logtext As String = "HotKeys -- If the title Of a HotKey On the Settings Page Is grayed out, but HotKeys are enabled, this means that the feature Is Not active And the HotKey will Not Function even though it can be Set. Activate the feature And the HotKey will Function normally."
