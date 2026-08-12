@@ -40,9 +40,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="WSTClock.Designer.vb">
-      <DependentUpon>WSTClock.vb</DependentUpon>
-    </Compile>
     <Compile Update="MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
     </Compile>

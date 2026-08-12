@@ -78,8 +78,6 @@ Public Class Clock
     Public Sub Show()
         If hWnd = IntPtr.Zero Then CreateNativeWindow()
 
-        Debug.Print($"Raw Saved Setting at start of Show(): {My.App.WSTClockLocation}")
-
         ApplySizeMode(App.WSTClockSize)
 
         Dim pos As Point = App.WSTClockLocation
@@ -92,8 +90,6 @@ Public Class Clock
         Else
             ClampToScreen(pos.X, pos.Y, dims.Width, dims.Height)
         End If
-
-        Debug.Print($"Clock.Show() - Position: {pos}, Size: {dims}")
 
         ' Apply Position, Size, TopMost Z-Order, and Show in ONE call:
         Skye.WinAPI.SetWindowPos(
@@ -358,11 +354,13 @@ Public Class Clock
 
 #Region "Theme & Context Menu"
     Private Sub InitializeContextMenu()
-        contextMenu = New ContextMenuStrip()
+        contextMenu = New ContextMenuStrip With {
+            .Font = MenuFont,
+            .Renderer = New Skye.UI.SkyeMenuRenderer
+        }
         cmiSmall = New ToolStripMenuItem("Small", My.Resources.Resources.ImageSize16, AddressOf OnSizeClicked) With {.Tag = ClockSize.Small}
         cmiMedium = New ToolStripMenuItem("Medium", My.Resources.Resources.ImageSize16, AddressOf OnSizeClicked) With {.Tag = ClockSize.Medium}
         cmiLarge = New ToolStripMenuItem("Large", My.Resources.Resources.ImageSize16, AddressOf OnSizeClicked) With {.Tag = ClockSize.Large}
-
         contextMenu.Items.AddRange(New ToolStripItem() {cmiSmall, cmiMedium, cmiLarge})
     End Sub
 

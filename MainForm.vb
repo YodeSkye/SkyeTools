@@ -142,7 +142,6 @@ Partial Friend Class MainForm
 		My.App.SetLoadOnOSStartup()
 #End If
 		If sender Is Me.btnSettingsRestore Then My.App.WriteToLog(My.App.Tools.SkyeTools, "Settings Restored...") 'This must be here because it is called by btnRestoreSettings.
-		WSTClockSet()
 		UpdateACMute()
 		ShowSettings()
 		ACSet()
@@ -203,11 +202,13 @@ Partial Friend Class MainForm
 		FrmClosingTasks()
 		My.App.Finalize()
 	End Sub
-	Private Sub FrmClosingTasks()
-		If App.FrmClock IsNot Nothing Then
-			App.FrmClock.Hide()
-			App.FrmClock.Dispose()
-		End If
+    Private Sub FrmClosingTasks()
+        ' Dispose of the clock so the form closes
+        If App.FrmClock IsNot Nothing Then
+            App.FrmClock.Hide()
+            App.FrmClock.Dispose()
+        End If
+		' Unregister hotkeys so they don't trigger after the form closes
 		HKRegister(True)
 		' Disposing timers purges queued callbacks from the Windows message queue
 		Try
@@ -230,6 +231,7 @@ Partial Friend Class MainForm
 				BackgroundworkerWL.CancelAsync()
 			End If
 		End If
+		' Close WinLinks
 		WLClose(True)
 	End Sub
 	Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, MyBase.MouseDown
@@ -306,7 +308,7 @@ Partial Friend Class MainForm
 	Private Sub BtnClockTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnClockTest.MouseUp
 		If e.X >= 0 And e.X <= Me.btnClockTest.Width And e.Y >= 0 And e.Y <= Me.btnClockTest.Height Then
 			Select Case e.Button
-				Case MouseButtons.Left : WSTShowClock()
+				Case MouseButtons.Left : App.ShowClock()
 				Case MouseButtons.Right
 			End Select
 		End If
@@ -317,12 +319,6 @@ Partial Friend Class MainForm
 		ErrorWarning = True
 		UpdateWST()
 	End Sub
-	Friend Function InUseApp() As Boolean
-		If Me.cmWST.Visible Or Me.cmWSTScreenSaver.Visible Then Return True
-		If InUseWL() Then Return True
-		If InUseSettings() Then Return True
-		Return False
-	End Function
 	Private Sub ShowTools()
 		If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
 		Else 'Any One or More Tools Running(That Have A Tray Icon)
@@ -394,20 +390,6 @@ Partial Friend Class MainForm
 		If location.X < screen.Left Then location.X = screen.Left - App.AdjustScreenBoundsNormalWindow
 		If location.Y < screen.Top Then location.Y = screen.Top
 	End Sub
-	Private Function InUseWL() As Boolean
-		If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
-			If Me.cmWLItem.Visible Then Return True
-			For Each cmi As ToolStripMenuItem In WLMenus : If cmi.DropDown.Visible Then Return True
-			Next
-			For Each trayicon As NotifyIcon In WLTrayIcons : If trayicon.ContextMenuStrip.Visible Then Return True
-			Next
-		End If
-		Return False
-	End Function
-	Private Function InUseSettings() As Boolean '
-		If Me.Visible Then Return True
-		Return False
-	End Function
 	Private Function CloseApplications(tool As My.App.Tools, closelist As Collections.Generic.List(Of String), Optional timeout As Byte = 60, Optional generateOArestartlist As Boolean = False) As Boolean '
 		Try
 			For Each i As String In closelist
@@ -964,7 +946,7 @@ Partial Friend Class MainForm
 			Case My.App.HCAction.WSTScreenSaverDisable
 				WSTSSEnabled = Not WSTSSEnabled
 				WSTSSSet()
-			Case My.App.HCAction.WSTClock : WSTShowClock()
+			Case My.App.HCAction.WSTClock : App.ShowClock()
 			Case My.App.HCAction.ShowSettings : SelectTab(Nothing)
 			Case My.App.HCAction.ShowSettingsWST : SelectTab(Me.tabpageWST)
 			Case My.App.HCAction.ShowSettingsWL : SelectTab(Me.tabpageWL)
@@ -1132,7 +1114,7 @@ Partial Friend Class MainForm
 		Select Case hotkey
 			Case My.App.HKWSTLockWorkSpace.WinID : WSTLockWorkSpace()
 			Case My.App.HKWSTScreenSaver.WinID : WSTSSActivate(True)
-			Case My.App.HKWSTClock.WinID : WSTShowClock()
+			Case My.App.HKWSTClock.WinID : App.ShowClock()
 			Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then WLStartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
 		End Select
 	End Sub
@@ -1154,7 +1136,6 @@ Partial Friend Class MainForm
 	' Declarations
 	Private notifyiconWST As NotifyIcon
 	Private notifyiconWSTScreenSaver As NotifyIcon
-	Private frmWSTClock As WSTClock
 
 	' Control Events
 	Private Sub CMIWSTCancelStartUpMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCancelStartUp.MouseUp
@@ -1169,7 +1150,7 @@ Partial Friend Class MainForm
 		End If
 	End Sub
 	Private Sub CMIWSTClockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTClock.MouseUp
-		If e.Button = MouseButtons.Left Then WSTShowClock()
+		If e.Button = MouseButtons.Left Then App.ShowClock()
 	End Sub
 	Private Sub CMIWSTLockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLock.MouseUp
 		If e.Button = MouseButtons.Left Then WSTLockWorkSpace()
@@ -1242,7 +1223,6 @@ Partial Friend Class MainForm
 			Case checkboxWSTShowScreenSaverEnabled.Name : WSTShowSSEnabled = Not WSTShowSSEnabled
 			Case checkboxWSTShowClock.Name
 				App.WSTShowClock = Not App.WSTShowClock
-				WSTClockSet()
 			Case checkboxWSTShowAC.Name
 				WSTShowAC = Not WSTShowAC
 				ACSet()
@@ -1326,33 +1306,6 @@ Partial Friend Class MainForm
 	End Sub
 
 	' Methods
-	Friend Sub WSTShowClock()
-		'If My.App.WSTShowClock Then
-		'	If frmWSTClock?.Visible Then
-		'		frmWSTClock.Hide()
-		'	Else
-		'		SizeClock()
-		'		frmWSTClock.Show()
-		'	End If
-		'	UpdateWST()
-		'End If
-		App.ShowClock()
-	End Sub
-	Friend Sub SizeClock()
-		Select Case App.WSTClockSize
-			Case ClockSize.Small
-				frmWSTClock.lblClock.Font = New Font(frmWSTClock.lblClock.Font.FontFamily, 18, FontStyle.Bold)
-				frmWSTClock.Size = New Size(110, 28)
-			Case ClockSize.Medium
-				frmWSTClock.lblClock.Font = New Font(frmWSTClock.lblClock.Font.FontFamily, 24, FontStyle.Bold)
-				frmWSTClock.Size = New Size(146, 40)
-				frmWSTClock.CheckMove()
-			Case ClockSize.Large
-				frmWSTClock.lblClock.Font = New Font(frmWSTClock.lblClock.Font.FontFamily, 40, FontStyle.Bold)
-				frmWSTClock.Size = New Size(244, 67)
-				frmWSTClock.CheckMove()
-		End Select
-	End Sub
 	Friend Sub UpdateWST()
 		'Settings Window
 		Me.TipInfoEX.SetText(Me.btnLog, "Log" + Chr(13) + "RightClick = Show Maximized")
@@ -1394,8 +1347,10 @@ Partial Friend Class MainForm
 				Me.cmiWSTAC.Checked = False
 				Me.cmiWSTAC.Font = App.MenuFont
 			End If
-			If Me.frmWSTClock?.Visible Then : Me.cmiWSTClock.Checked = True
-			Else : Me.cmiWSTClock.Checked = False
+			If App.FrmClock?.IsVisible Then
+				Me.cmiWSTClock.Checked = True
+			Else
+				Me.cmiWSTClock.Checked = False
 			End If
 		End If
 	End Sub
@@ -1470,13 +1425,6 @@ Partial Friend Class MainForm
 			Then : Me.cmseparatorWSTSettings.Visible = True
 		Else : Me.cmseparatorWSTSettings.Visible = False
 		End If
-	End Sub
-	Private Sub WSTClockSet()
-		frmWSTClock?.Close()
-		frmWSTClock?.Dispose()
-		frmWSTClock = Nothing
-		UpdateWST()
-		If My.App.WSTShowClock Then frmWSTClock = New WSTClock
 	End Sub
 	Private Sub WSTLockWorkSpace(Optional hcmode As Boolean = False)
 		If My.App.WSTShowLockWorkSpace Then
@@ -2271,19 +2219,17 @@ Partial Friend Class MainForm
 
 	' Handlers
 	Private Sub TimerWLStartUpTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWLStartUp.Tick
-		If Not InUseSettings() And Not InUseWL() Then
-			Me.TimerWLStartUp.Stop()
-			WLStartUp = False
-			UpdateWSTCancelState()
-			ShowWL()
-		End If
+		Me.TimerWLStartUp.Stop()
+		WLStartUp = False
+		UpdateWSTCancelState()
+		ShowWL()
 		If Me.TimerWLStartUp.Enabled Then Me.TimerWLStartUp.Interval = My.App.WLStartUpDelay * 1000
 	End Sub
 	Private Sub TimerWLAutoRefreshTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWLAutoRefresh.Tick
 		If WLAutoRefreshUpdate Then TimerWLAutoRefreshIdle.Start()
 	End Sub
 	Private Sub TimerWLAutoRefreshIdleTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerWLAutoRefreshIdle.Tick
-		If Not InUseSettings() Then ShowWL()
+		ShowWL()
 	End Sub
 	Private Sub WatcherWLAutoRefreshOnCreated(source As Object, e As IO.FileSystemEventArgs) Handles WatcherWLAutoRefresh.Created
 		On Error Resume Next
@@ -2549,119 +2495,117 @@ Partial Friend Class MainForm
 		Try
 			ShowSettings(My.App.Tools.WinLinks)
 			If (My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLData.Count > 0 And Not BackgroundworkerWL.IsBusy Then
-				If Not InUseWL() Then
-					WLLoadStartTime = My.Computer.Clock.LocalTime.TimeOfDay
-					WLSetAutoRefresh(True)
-					WLSetSettingsState(False)
-					If WLMenuData.Count = 0 And (My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) Then
-						Do Until WLMenuData.Count = My.App.WLData.Count : WLMenuData.Add(New Collections.Generic.List(Of WLMenuDataItem)) : Loop
-					End If
-					If WLMenus.Count = 0 And My.App.WSTShowWLMenu Then
-						Dim cmindex As Integer
-						For index As Integer = 0 To My.App.WLData.Count - 1
-							Dim link As My.App.WLItemType = My.App.WLData(index)
-							If link.ShowInMenu Then
-								Dim cmi As New ToolStripMenuItem
-								If String.IsNullOrEmpty(link.Name) Then
-									Dim split As String() = link.Root.Split(CChar("\"))
-									cmi.Text = split(split.Length - 1)
-								Else : cmi.Text = link.Name
-								End If
-								If My.App.WLShowFolderPathToolTips Then cmi.ToolTipText = link.Root
-								cmi.ForeColor = Color.DarkBlue
-								cmi.Tag = index
-								AddHandler cmi.MouseUp, AddressOf CMIWLMenusMouseUp
-								For cmindex = 0 To Me.cmWST.Items.Count - 1 : If Me.cmWST.Items(cmindex) Is Me.cmseparatorWSTWLBottom Then Exit For
-								Next
-								Me.cmWST.Items.Insert(cmindex, cmi)
-								WLMenus.Add(cmi)
+				WLLoadStartTime = My.Computer.Clock.LocalTime.TimeOfDay
+				WLSetAutoRefresh(True)
+				WLSetSettingsState(False)
+				If WLMenuData.Count = 0 And (My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) Then
+					Do Until WLMenuData.Count = My.App.WLData.Count : WLMenuData.Add(New Collections.Generic.List(Of WLMenuDataItem)) : Loop
+				End If
+				If WLMenus.Count = 0 And My.App.WSTShowWLMenu Then
+					Dim cmindex As Integer
+					For index As Integer = 0 To My.App.WLData.Count - 1
+						Dim link As My.App.WLItemType = My.App.WLData(index)
+						If link.ShowInMenu Then
+							Dim cmi As New ToolStripMenuItem
+							If String.IsNullOrEmpty(link.Name) Then
+								Dim split As String() = link.Root.Split(CChar("\"))
+								cmi.Text = split(split.Length - 1)
+							Else : cmi.Text = link.Name
 							End If
-						Next
-					End If
-					If WLTrayIcons.Count = 0 And My.App.WSTShowWLTray Then
-						For index As Integer = My.App.WLData.Count - 1 To 0 Step -1 'order is reversed here so that tray icons will show up in proper order
-							Dim link As My.App.WLItemType = My.App.WLData(index)
-							If link.ShowInTray Then
-								Dim trayicon As New NotifyIcon
-								If String.IsNullOrEmpty(link.Name) Then
-									Dim split As String() = My.App.FixAmpersand(link.Root, 3).Split(CChar("\"))
-									trayicon.Text = split(split.Length - 1)
-								Else : trayicon.Text = My.App.FixAmpersand(link.Name, 3)
-								End If
-								trayicon.Tag = index
-								AddHandler trayicon.MouseDown, AddressOf NotifyiconMouseDown
-								trayicon.ContextMenuStrip = New ContextMenuStrip With {
+							If My.App.WLShowFolderPathToolTips Then cmi.ToolTipText = link.Root
+							cmi.ForeColor = Color.DarkBlue
+							cmi.Tag = index
+							AddHandler cmi.MouseUp, AddressOf CMIWLMenusMouseUp
+							For cmindex = 0 To Me.cmWST.Items.Count - 1 : If Me.cmWST.Items(cmindex) Is Me.cmseparatorWSTWLBottom Then Exit For
+							Next
+							Me.cmWST.Items.Insert(cmindex, cmi)
+							WLMenus.Add(cmi)
+						End If
+					Next
+				End If
+				If WLTrayIcons.Count = 0 And My.App.WSTShowWLTray Then
+					For index As Integer = My.App.WLData.Count - 1 To 0 Step -1 'order is reversed here so that tray icons will show up in proper order
+						Dim link As My.App.WLItemType = My.App.WLData(index)
+						If link.ShowInTray Then
+							Dim trayicon As New NotifyIcon
+							If String.IsNullOrEmpty(link.Name) Then
+								Dim split As String() = My.App.FixAmpersand(link.Root, 3).Split(CChar("\"))
+								trayicon.Text = split(split.Length - 1)
+							Else : trayicon.Text = My.App.FixAmpersand(link.Name, 3)
+							End If
+							trayicon.Tag = index
+							AddHandler trayicon.MouseDown, AddressOf NotifyiconMouseDown
+							trayicon.ContextMenuStrip = New ContextMenuStrip With {
 									.Font = App.MenuFont,
 									.Renderer = New Skye.UI.SkyeMenuRenderer
 								}
-								trayicon.Visible = True
-								WLTrayIcons.Add(trayicon)
-							End If
-						Next
-					End If
-					For Each cmi As ToolStripMenuItem In WLMenus
-						If My.App.WLData(CInt(cmi.Tag)).RefreshMenu Then
-							cmi.DropDown.Dispose()
-
-							If Not My.App.WLData(CInt(cmi.Tag)).ShowNoMenu Then
-								Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
-								Dim mi As New ToolStripMenuItem("Loading...")
-								If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-								Else : cm.ShowImageMargin = False
-								End If
-								mi.Tag = cmi.Tag
-								AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
-								cm.Items.Add(mi)
-								cmi.DropDown = cm
-							End If
-							If My.App.WLData(CInt(cmi.Tag)).UseDefaultIcon Then : cmi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-							Else
-								Try : cmi.Image = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(cmi.Tag)).Root).ToBitmap
-								Catch : cmi.Image = My.Resources.Resources.iconWL.ToBitmap
-								End Try
-							End If
+							trayicon.Visible = True
+							WLTrayIcons.Add(trayicon)
 						End If
 					Next
-					For Each trayicon As NotifyIcon In WLTrayIcons
-						If My.App.WLData(CInt(trayicon.Tag)).RefreshMenu Then
-							trayicon.ContextMenuStrip.Dispose()
-							Dim traymenu As New ContextMenuStrip With {
+				End If
+				For Each cmi As ToolStripMenuItem In WLMenus
+					If My.App.WLData(CInt(cmi.Tag)).RefreshMenu Then
+						cmi.DropDown.Dispose()
+
+						If Not My.App.WLData(CInt(cmi.Tag)).ShowNoMenu Then
+							Dim cm As New ContextMenuStrip With {.Font = New Font(Me.Font, FontStyle.Regular)}
+							Dim mi As New ToolStripMenuItem("Loading...")
+							If My.App.WLData(CInt(cmi.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+							Else : cm.ShowImageMargin = False
+							End If
+							mi.Tag = cmi.Tag
+							AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
+							cm.Items.Add(mi)
+							cmi.DropDown = cm
+						End If
+						If My.App.WLData(CInt(cmi.Tag)).UseDefaultIcon Then : cmi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+						Else
+							Try : cmi.Image = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(cmi.Tag)).Root).ToBitmap
+							Catch : cmi.Image = My.Resources.Resources.iconWL.ToBitmap
+							End Try
+						End If
+					End If
+				Next
+				For Each trayicon As NotifyIcon In WLTrayIcons
+					If My.App.WLData(CInt(trayicon.Tag)).RefreshMenu Then
+						trayicon.ContextMenuStrip.Dispose()
+						Dim traymenu As New ContextMenuStrip With {
 								.Font = App.MenuFont,
 								.Renderer = New Skye.UI.SkyeMenuRenderer
 							}
-							If Not My.App.WLData(CInt(trayicon.Tag)).ShowNoMenu Then
-								If Not trayicon.Text.EndsWith("Loading...") Then trayicon.Text += Chr(13) + "Loading..."
-								Dim mi As New ToolStripMenuItem("Loading...")
-								If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
-								Else : traymenu.ShowImageMargin = False
-								End If
-								mi.Tag = trayicon.Tag
-								AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
-								traymenu.Items.Add(mi)
-								traymenu.Items.Add(New ToolStripSeparator)
+						If Not My.App.WLData(CInt(trayicon.Tag)).ShowNoMenu Then
+							If Not trayicon.Text.EndsWith("Loading...") Then trayicon.Text += Chr(13) + "Loading..."
+							Dim mi As New ToolStripMenuItem("Loading...")
+							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then : mi.Image = My.Resources.Resources.iconWL.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWL"), Icon).ToBitmap
+							Else : traymenu.ShowImageMargin = False
 							End If
-							Dim cmi As New ToolStripMenuItem("Settings")
-							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageSettings
-							AddHandler cmi.MouseUp, AddressOf CMIWLSettingsMouseUp
-							traymenu.Items.Add(cmi)
+							mi.Tag = trayicon.Tag
+							AddHandler mi.MouseUp, AddressOf CMIWLMenusMouseUp
+							traymenu.Items.Add(mi)
 							traymenu.Items.Add(New ToolStripSeparator)
-							cmi = New ToolStripMenuItem("Exit SkyeTools")
-							If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageClose
-							cmi.ToolTipText = My.App.CloseAllToolTipText
-							AddHandler cmi.MouseUp, AddressOf CMICloseAllMouseUp
-							traymenu.Items.Add(cmi)
-							If My.App.WLData(CInt(trayicon.Tag)).UseDefaultIcon Then : trayicon.Icon = My.Resources.Resources.iconWL
-							Else
-								trayicon.Icon = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(trayicon.Tag)).Root)
-								If trayicon.Icon Is Nothing Then trayicon.Icon = My.Resources.Resources.iconWL
-							End If
-							trayicon.ContextMenuStrip = traymenu
 						End If
-					Next
-					If Not WLStartUp Then
-						My.Application.CurrentProcess.PriorityClass = Diagnostics.ProcessPriorityClass.Normal
-						If Not BackgroundworkerWL.IsBusy Then BackgroundworkerWL.RunWorkerAsync()
+						Dim cmi As New ToolStripMenuItem("Settings")
+						If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageSettings
+						AddHandler cmi.MouseUp, AddressOf CMIWLSettingsMouseUp
+						traymenu.Items.Add(cmi)
+						traymenu.Items.Add(New ToolStripSeparator)
+						cmi = New ToolStripMenuItem("Exit SkyeTools")
+						If My.App.WLData(CInt(trayicon.Tag)).ShowMenuIcons Then cmi.Image = My.Resources.Resources.imageClose
+						cmi.ToolTipText = My.App.CloseAllToolTipText
+						AddHandler cmi.MouseUp, AddressOf CMICloseAllMouseUp
+						traymenu.Items.Add(cmi)
+						If My.App.WLData(CInt(trayicon.Tag)).UseDefaultIcon Then : trayicon.Icon = My.Resources.Resources.iconWL
+						Else
+							trayicon.Icon = Skye.WinAPI.GetApplicationIcon(My.App.WLData(CInt(trayicon.Tag)).Root)
+							If trayicon.Icon Is Nothing Then trayicon.Icon = My.Resources.Resources.iconWL
+						End If
+						trayicon.ContextMenuStrip = traymenu
 					End If
+				Next
+				If Not WLStartUp Then
+					My.Application.CurrentProcess.PriorityClass = Diagnostics.ProcessPriorityClass.Normal
+					If Not BackgroundworkerWL.IsBusy Then BackgroundworkerWL.RunWorkerAsync()
 				End If
 			End If
 		Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Error In ShowWinLinks" + Chr(13) + ex.ToString)

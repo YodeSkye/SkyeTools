@@ -433,11 +433,9 @@ Namespace My
 					FrmClock.Hide()
 					FrmClock.Dispose()
 				Else
-					'SizeClock()
-					Debug.Print("Clock Location: " & App.WSTClockLocation.ToString())
 					FrmClock.Show()
 				End If
-				'UpdateWST()
+				FrmMain.UpdateWST()
 			End If
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
