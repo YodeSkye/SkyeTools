@@ -262,12 +262,26 @@ Public Class Clock
                 g.SmoothingMode = SmoothingMode.AntiAlias
                 g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
 
-                ' Clear background
+                ' Inside DrawClockContent, where you set up colors:
                 Dim backColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextBack
                 Dim textColor As Color = Skye.UI.ThemeManager.CurrentTheme.TextFore
+                Dim borderColor As Color = Skye.UI.ThemeManager.CurrentTheme.BorderColor
+                Dim borderWidth As Single = 4.0F   ' Try 2.0F or 3.0F (looks crisp without needing 6px)
+                Dim cornerRadius As Single = 8.0F  ' Matches Windows 11 default corner curvature
+                ' Offset rect by half the pen width so strokes don't get clipped
+                Dim inset As Single = borderWidth / 2.0F
+                Dim drawRect As New RectangleF(inset, inset, w - borderWidth - 1, h - borderWidth - 1)
 
-                Using bgBrush As New SolidBrush(backColor)
-                    g.FillRectangle(bgBrush, 0, 0, w, h)
+                Using roundPath As GraphicsPath = CreateRoundedRect(drawRect, cornerRadius)
+                    ' 1. Fill background
+                    Using bgBrush As New SolidBrush(backColor)
+                        g.FillPath(bgBrush, roundPath)
+                    End Using
+
+                    ' 2. Draw smooth rounded border
+                    Using borderPen As New Pen(borderColor, borderWidth)
+                        g.DrawPath(borderPen, roundPath)
+                    End Using
                 End Using
 
                 ' Draw time text
@@ -294,9 +308,21 @@ Public Class Clock
         Skye.WinAPI.EndPaint(hWnd, ps)
     End Sub
 
+    Private Function CreateRoundedRect(rect As RectangleF, radius As Single) As GraphicsPath
+        Dim path As New GraphicsPath()
+        Dim d As Single = radius * 2.0F
+
+        path.AddArc(rect.X, rect.Y, d, d, 180, 90)
+        path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90)
+        path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90)
+        path.AddArc(rect.Left, rect.Bottom - d, d, d, 90, 90)
+        path.CloseFigure()
+        Return path
+    End Function
+
     Private Shared Function GetSizeForMode(mode As ClockSize) As Size
         Select Case mode
-            Case ClockSize.Small : Return New Size(110, 28)
+            Case ClockSize.Small : Return New Size(110, 29)
             Case ClockSize.Medium : Return New Size(152, 40)
             Case ClockSize.Large : Return New Size(244, 67)
             Case Else : Return New Size(152, 40)
