@@ -1,47 +1,122 @@
 ﻿
-Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Runtime.InteropServices
-Imports System.Windows.Forms
-Imports Skye.UI
 Imports SkyeTools.My
 
 Public Class Clock
     Implements IDisposable
 
-#Region "Fields & Properties"
-
+    ' DECLARATIONS
     Private Shared ClassRegistered As Boolean = False
     Private Shared ReadOnly ClassName As String = "SkyeNativeClockClass"
-
     Private hWnd As IntPtr = IntPtr.Zero
     Private ReadOnly wndProcDelegateInstance As Skye.WinAPI.UTypedWndProcDelegate
-
     Private Const TIMER_CLOCK_ID As Integer = 1001
     Private Const TIMER_TOPMOST_ID As Integer = 1002
-
+    Private isDisposed As Boolean = False
     Private currentSizeMode As App.ClockSize = App.WSTClockSize
     Private contextMenu As ContextMenuStrip
     Private cmiSmall, cmiMedium, cmiLarge As ToolStripMenuItem
-
     Private isDragging As Boolean = False
     Private dragStartPoint As Skye.WinAPI.POINT
     Private windowStartPos As Skye.WinAPI.POINT
 
+    ' Fields
     Private _isVisible As Boolean = False
     Public ReadOnly Property IsVisible As Boolean
         Get
             Return _isVisible
         End Get
     End Property
-
     Public ReadOnly Property Handle As IntPtr
         Get
             Return hWnd
         End Get
     End Property
-#End Region
 
+    ' HANDLERS
+    Private Sub OnSizeClicked(sender As Object, e As EventArgs)
+        Dim item As ToolStripMenuItem = TryCast(sender, ToolStripMenuItem)
+        If item IsNot Nothing AndAlso TypeOf item.Tag Is ClockSize Then
+            Dim selectedSize As ClockSize = CType(item.Tag, ClockSize)
+            App.WSTClockSize = selectedSize
+            ApplySizeMode(selectedSize)
+        End If
+    End Sub
+    Private Sub OnThemeChanged(sender As Object, e As EventArgs)
+        If hWnd <> IntPtr.Zero Then
+            ApplyDwmAttributes()
+            Redraw()
+        End If
+    End Sub
+
+    ' METHODS
+    Private Function WindowProc(hWnd As IntPtr, msg As Skye.WinAPI.UType, wParam As IntPtr, lParam As IntPtr) As IntPtr
+        Select Case msg
+            Case Skye.WinAPI.UType.WM_ERASEBKGND
+                ' Return TRUE (1) to prevent Windows from erasing the background and causing flicker
+                Return New IntPtr(1)
+            Case Skye.WinAPI.UType.WM_PAINT
+                DrawClockContent()
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_TIMER
+                Dim timerId As Integer = wParam.ToInt32()
+                If timerId = TIMER_CLOCK_ID Then
+                    Redraw()
+                ElseIf timerId = TIMER_TOPMOST_ID Then
+                    Skye.WinAPI.SetWindowPos(hWnd, Skye.WinAPI.HWND_TOPMOST, 0, 0, 0, 0, Skye.WinAPI.SWP_NOMOVE Or Skye.WinAPI.SWP_NOSIZE Or Skye.WinAPI.SWP_NOACTIVATE)
+                End If
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_LBUTTONDOWN
+                isDragging = True
+                Skye.WinAPI.SetCapture(hWnd)
+                Skye.WinAPI.GetCursorPos(dragStartPoint)
+                Dim rc As Skye.WinAPI.RECT
+                If Skye.WinAPI.GetWindowRect(hWnd, rc) Then
+                    windowStartPos.X = rc.Left
+                    windowStartPos.Y = rc.Top
+                    My.App.WSTClockLocation = New Point(rc.Left, rc.Top)
+                End If
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_MOUSEMOVE
+                If isDragging Then
+                    Dim currentMouse As Skye.WinAPI.POINT
+                    Skye.WinAPI.GetCursorPos(currentMouse)
+                    Dim deltaX As Integer = currentMouse.X - dragStartPoint.X
+                    Dim deltaY As Integer = currentMouse.Y - dragStartPoint.Y
+                    Dim newX As Integer = windowStartPos.X + deltaX
+                    Dim newY As Integer = windowStartPos.Y + deltaY
+                    Dim dims As Size = GetSizeForMode(currentSizeMode)
+                    ClampToScreen(newX, newY, dims.Width, dims.Height)
+                    Skye.WinAPI.MoveWindow(hWnd, newX, newY, dims.Width, dims.Height, True)
+                    My.App.WSTClockLocation = New Point(newX, newY)
+                End If
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_LBUTTONUP
+                If isDragging Then
+                    isDragging = False
+                    Skye.WinAPI.ReleaseCapture()
+                    Dim currentMouse As Skye.WinAPI.POINT
+                    Skye.WinAPI.GetCursorPos(currentMouse)
+                    ' Check if it was a static click (no drag movement)
+                    If currentMouse.X = dragStartPoint.X AndAlso currentMouse.Y = dragStartPoint.Y Then
+                        My.App.ShowClock()
+                    End If
+                End If
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_RBUTTONUP
+                Dim pt As Skye.WinAPI.POINT
+                Skye.WinAPI.GetCursorPos(pt)
+                contextMenu.Show(pt.X, pt.Y)
+                Return IntPtr.Zero
+            Case Skye.WinAPI.UType.WM_DESTROY
+                Skye.WinAPI.KillTimer(hWnd, CType(TIMER_CLOCK_ID, IntPtr))
+                Skye.WinAPI.KillTimer(hWnd, CType(TIMER_TOPMOST_ID, IntPtr))
+                Return IntPtr.Zero
+        End Select
+
+        Return Skye.WinAPI.DefWindowProc(hWnd, msg, wParam, lParam)
+    End Function
     Public Sub New()
         ' Bind delegate to prevent GC collection
         wndProcDelegateInstance = AddressOf WindowProc
@@ -51,30 +126,6 @@ Public Class Clock
         ' Theme Listener
         AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
     End Sub
-
-#Region "Window Lifetime & Class Registration"
-    Private Sub RegisterWindowClass()
-        If ClassRegistered Then Exit Sub
-
-        Dim wcx As New Skye.WinAPI.WNDCLASSEX()
-        wcx.cbSize = CType(Marshal.SizeOf(wcx), UInteger)
-        wcx.style = 0
-        wcx.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(wndProcDelegateInstance)
-        wcx.cbClsExtra = 0
-        wcx.cbWndExtra = 0
-        wcx.hInstance = Marshal.GetHINSTANCE(GetType(Clock).Module)
-        wcx.hIcon = IntPtr.Zero
-        wcx.hCursor = Skye.WinAPI.LoadCursor(IntPtr.Zero, Skye.WinAPI.IDC_ARROW)
-        wcx.hbrBackground = IntPtr.Zero
-        wcx.lpszMenuName = Nothing
-        wcx.lpszClassName = ClassName
-        wcx.hIconSm = IntPtr.Zero
-
-        If Skye.WinAPI.RegisterClassEx(wcx) <> 0 Then
-            ClassRegistered = True
-        End If
-    End Sub
-
     Public Sub Show()
         If hWnd = IntPtr.Zero Then CreateNativeWindow()
 
@@ -109,7 +160,6 @@ Public Class Clock
         _isVisible = True
         Redraw()
     End Sub
-
     Public Sub Hide()
         If hWnd = IntPtr.Zero Then Exit Sub
 
@@ -119,7 +169,52 @@ Public Class Clock
         Skye.WinAPI.ShowWindow(hWnd, Skye.WinAPI.SW_HIDE)
         _isVisible = False
     End Sub
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not isDisposed Then
+            If disposing Then
+                ' Managed resources cleanup (if any)
+                RemoveHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
+            End If
 
+            ' Unmanaged resources cleanup (Native Win32 HWND)
+            If hWnd <> IntPtr.Zero Then
+                Skye.WinAPI.DestroyWindow(hWnd)
+                hWnd = IntPtr.Zero
+            End If
+
+            isDisposed = True
+        End If
+    End Sub
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Call the cleanup logic
+        Dispose(True)
+
+        ' Informs the GC that the object was cleaned up manually
+        GC.SuppressFinalize(Me)
+    End Sub
+
+    ' Window Class Registration and Creation
+    Private Sub RegisterWindowClass()
+        If ClassRegistered Then Exit Sub
+
+        Dim wcx As New Skye.WinAPI.WNDCLASSEX()
+        wcx.cbSize = CType(Marshal.SizeOf(wcx), UInteger)
+        wcx.style = 0
+        wcx.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(wndProcDelegateInstance)
+        wcx.cbClsExtra = 0
+        wcx.cbWndExtra = 0
+        wcx.hInstance = Marshal.GetHINSTANCE(GetType(Clock).Module)
+        wcx.hIcon = IntPtr.Zero
+        wcx.hCursor = Skye.WinAPI.LoadCursor(IntPtr.Zero, Skye.WinAPI.IDC_ARROW)
+        wcx.hbrBackground = IntPtr.Zero
+        wcx.lpszMenuName = Nothing
+        wcx.lpszClassName = ClassName
+        wcx.hIconSm = IntPtr.Zero
+
+        If Skye.WinAPI.RegisterClassEx(wcx) <> 0 Then
+            ClassRegistered = True
+        End If
+    End Sub
     Private Sub CreateNativeWindow()
         If hWnd <> IntPtr.Zero Then Exit Sub
 
@@ -136,7 +231,6 @@ Public Class Clock
         Skye.WinAPI.HideFormInTaskSwitcher(hWnd)
         ApplyDwmAttributes()
     End Sub
-
     Private Sub ApplyDwmAttributes()
         Dim HResult As Integer
         Dim cornerPref As Integer = Skye.WinAPI.DWMWCP_ROUND
@@ -150,100 +244,13 @@ Public Class Clock
         End If
         HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_USE_IMMERSIVE_DARK_MODE, isDark, 4)
     End Sub
-#End Region
 
-#Region "WndProc Message Loop"
-    Private Function WindowProc(hWnd As IntPtr, msg As Skye.WinAPI.UType, wParam As IntPtr, lParam As IntPtr) As IntPtr
-        Select Case msg
-            Case Skye.WinAPI.UType.WM_ERASEBKGND
-                ' Return TRUE (1) to prevent Windows from erasing the background and causing flicker
-                Return New IntPtr(1)
-
-            Case Skye.WinAPI.UType.WM_PAINT
-                DrawClockContent()
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_TIMER
-                Dim timerId As Integer = wParam.ToInt32()
-                If timerId = TIMER_CLOCK_ID Then
-                    Redraw()
-                ElseIf timerId = TIMER_TOPMOST_ID Then
-                    Skye.WinAPI.SetWindowPos(hWnd, Skye.WinAPI.HWND_TOPMOST, 0, 0, 0, 0, Skye.WinAPI.SWP_NOMOVE Or Skye.WinAPI.SWP_NOSIZE Or Skye.WinAPI.SWP_NOACTIVATE)
-                End If
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_LBUTTONDOWN
-                isDragging = True
-                Skye.WinAPI.SetCapture(hWnd)
-
-                Skye.WinAPI.GetCursorPos(dragStartPoint)
-                Dim rc As Skye.WinAPI.RECT
-                If Skye.WinAPI.GetWindowRect(hWnd, rc) Then
-                    windowStartPos.X = rc.Left
-                    windowStartPos.Y = rc.Top
-                    ' Save current valid position immediately
-                    My.App.WSTClockLocation = New Point(rc.Left, rc.Top)
-                End If
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_MOUSEMOVE
-                If isDragging Then
-                    Dim currentMouse As Skye.WinAPI.POINT
-                    Skye.WinAPI.GetCursorPos(currentMouse)
-                    Dim deltaX As Integer = currentMouse.X - dragStartPoint.X
-                    Dim deltaY As Integer = currentMouse.Y - dragStartPoint.Y
-
-                    Dim newX As Integer = windowStartPos.X + deltaX
-                    Dim newY As Integer = windowStartPos.Y + deltaY
-
-                    Dim dims As Size = GetSizeForMode(currentSizeMode)
-                    ClampToScreen(newX, newY, dims.Width, dims.Height)
-
-                    Skye.WinAPI.MoveWindow(hWnd, newX, newY, dims.Width, dims.Height, True)
-
-                    ' Update settings continuously while moving
-                    My.App.WSTClockLocation = New Point(newX, newY)
-                End If
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_LBUTTONUP
-                If isDragging Then
-                    isDragging = False
-                    Skye.WinAPI.ReleaseCapture()
-
-                    Dim currentMouse As Skye.WinAPI.POINT
-                    Skye.WinAPI.GetCursorPos(currentMouse)
-
-                    ' Check if it was a static click (no drag movement)
-                    If currentMouse.X = dragStartPoint.X AndAlso currentMouse.Y = dragStartPoint.Y Then
-                        My.App.ShowClock()
-                    End If
-                End If
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_RBUTTONUP
-                Dim pt As Skye.WinAPI.POINT
-                Skye.WinAPI.GetCursorPos(pt)
-                contextMenu.Show(pt.X, pt.Y)
-                Return IntPtr.Zero
-
-            Case Skye.WinAPI.UType.WM_DESTROY
-                Skye.WinAPI.KillTimer(hWnd, CType(TIMER_CLOCK_ID, IntPtr))
-                Skye.WinAPI.KillTimer(hWnd, CType(TIMER_TOPMOST_ID, IntPtr))
-                Return IntPtr.Zero
-        End Select
-
-        Return Skye.WinAPI.DefWindowProc(hWnd, msg, wParam, lParam)
-    End Function
-#End Region
-
-#Region "Rendering & Layout"
+    ' Drawing
     Private Sub Redraw()
         If hWnd <> IntPtr.Zero AndAlso _isVisible Then
             Skye.WinAPI.InvalidateRect(hWnd, IntPtr.Zero, False)
         End If
     End Sub
-
     Private Sub DrawClockContent()
         Dim rc As Skye.WinAPI.RECT
         If Not Skye.WinAPI.GetClientRect(hWnd, rc) Then Exit Sub
@@ -307,8 +314,7 @@ Public Class Clock
 
         Skye.WinAPI.EndPaint(hWnd, ps)
     End Sub
-
-    Private Function CreateRoundedRect(rect As RectangleF, radius As Single) As GraphicsPath
+    Private Shared Function CreateRoundedRect(rect As RectangleF, radius As Single) As GraphicsPath
         Dim path As New GraphicsPath()
         Dim d As Single = radius * 2.0F
 
@@ -319,7 +325,6 @@ Public Class Clock
         path.CloseFigure()
         Return path
     End Function
-
     Private Shared Function GetSizeForMode(mode As ClockSize) As Size
         Select Case mode
             Case ClockSize.Small : Return New Size(110, 29)
@@ -328,7 +333,6 @@ Public Class Clock
             Case Else : Return New Size(152, 40)
         End Select
     End Function
-
     Private Shared Function GetFontSizeForMode(mode As ClockSize) As Single
         Select Case mode
             Case ClockSize.Small : Return 24.0F
@@ -337,7 +341,6 @@ Public Class Clock
             Case Else : Return 34.0F
         End Select
     End Function
-
     Private Sub ApplySizeMode(mode As ClockSize)
         currentSizeMode = mode
         UpdateContextMenuChecks()
@@ -356,7 +359,6 @@ Public Class Clock
             Redraw()
         End If
     End Sub
-
     Private Shared Sub ClampToScreen(ByRef x As Integer, ByRef y As Integer, ByVal width As Integer, ByVal height As Integer)
         ' Get active screen bounds (or primary screen)
         Dim screenBounds As Rectangle = Screen.FromPoint(New Point(x, y)).WorkingArea
@@ -376,9 +378,7 @@ Public Class Clock
         End If
     End Sub
 
-#End Region
-
-#Region "Theme & Context Menu"
+    ' Context Menu
     Private Sub InitializeContextMenu()
         contextMenu = New ContextMenuStrip With {
             .Font = MenuFont,
@@ -389,57 +389,10 @@ Public Class Clock
         cmiLarge = New ToolStripMenuItem("Large", My.Resources.Resources.ImageSize16, AddressOf OnSizeClicked) With {.Tag = ClockSize.Large}
         contextMenu.Items.AddRange(New ToolStripItem() {cmiSmall, cmiMedium, cmiLarge})
     End Sub
-
-    Private Sub OnSizeClicked(sender As Object, e As EventArgs)
-        Dim item As ToolStripMenuItem = TryCast(sender, ToolStripMenuItem)
-        If item IsNot Nothing AndAlso TypeOf item.Tag Is ClockSize Then
-            Dim selectedSize As ClockSize = CType(item.Tag, ClockSize)
-            App.WSTClockSize = selectedSize
-            ApplySizeMode(selectedSize)
-        End If
-    End Sub
-
     Private Sub UpdateContextMenuChecks()
         cmiSmall.Checked = (currentSizeMode = ClockSize.Small)
         cmiMedium.Checked = (currentSizeMode = ClockSize.Medium)
         cmiLarge.Checked = (currentSizeMode = ClockSize.Large)
     End Sub
-
-    Private Sub OnThemeChanged(sender As Object, e As EventArgs)
-        If hWnd <> IntPtr.Zero Then
-            ApplyDwmAttributes()
-            Redraw()
-        End If
-    End Sub
-#End Region
-
-#Region "IDisposable Support"
-    Private isDisposed As Boolean = False
-
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not isDisposed Then
-            If disposing Then
-                ' Managed resources cleanup (if any)
-                RemoveHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
-            End If
-
-            ' Unmanaged resources cleanup (Native Win32 HWND)
-            If hWnd <> IntPtr.Zero Then
-                Skye.WinAPI.DestroyWindow(hWnd)
-                hWnd = IntPtr.Zero
-            End If
-
-            isDisposed = True
-        End If
-    End Sub
-
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Call the cleanup logic
-        Dispose(True)
-
-        ' Informs the GC that the object was cleaned up manually
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
 
 End Class
