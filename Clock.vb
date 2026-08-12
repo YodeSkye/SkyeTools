@@ -234,14 +234,13 @@ Public Class Clock
     Private Sub ApplyDwmAttributes()
         Dim HResult As Integer
         Dim cornerPref As Integer = Skye.WinAPI.DWMWCP_ROUND
-        HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_WINDOW_CORNER_PREFERENCE, cornerPref, 4)
-
         Dim isDark As Integer
-        If Skye.UI.ThemeManager.CurrentTheme Is Skye.UI.SkyeThemes.Dark Then
+        If Skye.UI.ThemeManager.CurrentTheme.IsDark Then
             isDark = 1
         Else
             isDark = 0
         End If
+        HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_WINDOW_CORNER_PREFERENCE, cornerPref, 4)
         HResult = Skye.WinAPI.DwmSetWindowAttribute(hWnd, Skye.WinAPI.DWMWA_USE_IMMERSIVE_DARK_MODE, isDark, 4)
     End Sub
 
