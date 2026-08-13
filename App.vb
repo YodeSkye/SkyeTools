@@ -415,13 +415,13 @@ Namespace My
 		End Sub
 		Friend Sub SetErrorAlert()
 			ErrorAlert = True
-			AppNotify()
+			ErrorNotify()
 		End Sub
 		Friend Sub ClearErrorAlert()
 			ErrorAlert = False
-			AppNotify()
+			ErrorNotify()
 		End Sub
-		Friend Sub AppNotify()
+		Friend Sub ErrorNotify()
 			If ErrorAlert Then
 				'notifyiconSkyeShow.Text = Application.Info.Title
 				'TipInfoEX.SetText(btnLog, "Show Log")
@@ -474,6 +474,20 @@ Namespace My
 				End If
 				FrmMain.UpdateWST()
 			End If
+		End Sub
+		Friend Sub ShowSettings()
+			If FrmSettings Is Nothing Then
+				FrmSettings = New Settings
+				FrmSettings.Show()
+			Else
+				FrmSettings.BringToFront()
+				FrmSettings.Focus()
+			End If
+		End Sub
+		Friend Sub HideSettings()
+			FrmSettings.Close()
+			FrmSettings.Dispose()
+			FrmSettings = Nothing
 		End Sub
 		Friend Sub ShowHelp(Optional showmaximized As Boolean = False)
 			Dim logtext As String = "HotKeys -- If the title Of a HotKey On the Settings Page Is grayed out, but HotKeys are enabled, this means that the feature Is Not active And the HotKey will Not Function even though it can be Set. Activate the feature And the HotKey will Function normally."

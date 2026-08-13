@@ -200,6 +200,7 @@
         tableLayoutPanel2 = New TableLayoutPanel()
         TipInfoEX = New Skye.UI.ToolTipEX(components)
         TipHCEX = New Skye.UI.ToolTipEX(components)
+        BtnSettings = New Button()
         cmWST.SuspendLayout()
         tabcontrolSettings.SuspendLayout()
         tabpageWST.SuspendLayout()
@@ -2796,7 +2797,7 @@
         cmWSTScreenSaver.Items.AddRange(New ToolStripItem() {cmiScreenSaverActivate, cmiScreenSaverEnabled, toolStripSeparator1, cmiScreenSaverSettings, toolStripSeparator12, cmiScreenSaverClose, cmiScreenSaverCloseAll})
         cmWSTScreenSaver.Name = "contextmenuWorkSpaceTools"
         cmWSTScreenSaver.ShowItemToolTips = False
-        cmWSTScreenSaver.Size = New Size(245, 168)
+        cmWSTScreenSaver.Size = New Size(245, 146)
         TipInfoEX.SetText(cmWSTScreenSaver, Nothing)
         TipHCEX.SetText(cmWSTScreenSaver, Nothing)
         ' 
@@ -2874,12 +2875,34 @@
         TipHCEX.ShadowAlpha = 0
         TipHCEX.ShadowThickness = 0
         ' 
+        ' BtnSettings
+        ' 
+        BtnSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnSettings.FlatAppearance.BorderColor = SystemColors.ControlDark
+        BtnSettings.FlatAppearance.BorderSize = 0
+        BtnSettings.FlatAppearance.MouseDownBackColor = Color.Transparent
+        BtnSettings.FlatAppearance.MouseOverBackColor = Color.Transparent
+        TipHCEX.SetImage(BtnSettings, Nothing)
+        BtnSettings.Image = My.Resources.Resources.imageSettings
+        TipInfoEX.SetImage(BtnSettings, Nothing)
+        BtnSettings.ImageAlign = ContentAlignment.TopLeft
+        BtnSettings.Location = New Point(286, 420)
+        BtnSettings.Name = "BtnSettings"
+        BtnSettings.Size = New Size(62, 46)
+        BtnSettings.TabIndex = 11
+        BtnSettings.TabStop = False
+        TipInfoEX.SetText(BtnSettings, "Show Log")
+        TipHCEX.SetText(BtnSettings, Nothing)
+        BtnSettings.Text = "Settings"
+        BtnSettings.TextAlign = ContentAlignment.BottomRight
+        ' 
         ' MainForm
         ' 
         AutoScaleMode = AutoScaleMode.None
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(638, 477)
+        Controls.Add(BtnSettings)
         Controls.Add(btnInfo)
         Controls.Add(btnLog)
         Controls.Add(btnSettingsSave)
@@ -3114,4 +3137,5 @@
     Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
     Friend WithEvents TipHCEX As Skye.UI.ToolTipEX
     Friend WithEvents TipInfoEX As Skye.UI.ToolTipEX
+    Private WithEvents BtnSettings As Button
 End Class

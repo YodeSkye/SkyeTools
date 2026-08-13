@@ -12,9 +12,9 @@
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
-        btnClose = New Button()
-        btnSaveSettings = New Button()
-        btnRestoreSettings = New Button()
+        BtnClose = New Button()
+        BtnSaveSettings = New Button()
+        BtnRestoreSettings = New Button()
         radioButton16 = New RadioButton()
         radioButton17 = New RadioButton()
         radioButton18 = New RadioButton()
@@ -32,12 +32,12 @@
         radioButton30 = New RadioButton()
         radioButton31 = New RadioButton()
         radioButton32 = New RadioButton()
-        btnErrorTest = New Button()
-        btnHelp = New Button()
-        btnLog = New Button()
+        BtnErrorTest = New Button()
+        BtnHelp = New Button()
+        BtnLog = New Button()
         PanelApp = New Panel()
-        PanelPics = New Panel()
-        PanelVids = New Panel()
+        PanelWST = New Panel()
+        PanelSS = New Panel()
         PanelActions = New Panel()
         PanelPageSelector = New Panel()
         LVPageSelector = New Skye.UI.ListViewEX()
@@ -47,45 +47,45 @@
         PanelPageSelector.SuspendLayout()
         SuspendLayout()
         ' 
-        ' btnClose
+        ' BtnClose
         ' 
-        btnClose.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnClose.Font = New Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        btnClose.Image = My.Resources.Resources.ImageOK
-        TipInfoEX.SetImage(btnClose, Nothing)
-        btnClose.Location = New Point(426, 16)
-        btnClose.Name = "btnClose"
-        btnClose.Size = New Size(64, 64)
-        btnClose.TabIndex = 0
-        TipInfoEX.SetText(btnClose, "Close Window")
-        btnClose.TextAlign = ContentAlignment.MiddleRight
-        btnClose.UseVisualStyleBackColor = True
+        BtnClose.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnClose.Font = New Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        BtnClose.Image = My.Resources.Resources.ImageOK
+        TipInfoEX.SetImage(BtnClose, Nothing)
+        BtnClose.Location = New Point(426, 16)
+        BtnClose.Name = "BtnClose"
+        BtnClose.Size = New Size(64, 64)
+        BtnClose.TabIndex = 0
+        TipInfoEX.SetText(BtnClose, "Close Window")
+        BtnClose.TextAlign = ContentAlignment.MiddleRight
+        BtnClose.UseVisualStyleBackColor = True
         ' 
-        ' btnSaveSettings
+        ' BtnSaveSettings
         ' 
-        btnSaveSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnSaveSettings.Image = My.Resources.Resources.ImageSave32
-        TipInfoEX.SetImage(btnSaveSettings, My.Resources.Resources.ImageSave16)
-        btnSaveSettings.Location = New Point(12, 24)
-        btnSaveSettings.Name = "btnSaveSettings"
-        btnSaveSettings.Size = New Size(48, 48)
-        btnSaveSettings.TabIndex = 100
-        TipInfoEX.SetText(btnSaveSettings, "Save All Settings")
-        btnSaveSettings.TextAlign = ContentAlignment.BottomRight
-        btnSaveSettings.UseVisualStyleBackColor = True
+        BtnSaveSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnSaveSettings.Image = My.Resources.Resources.ImageSave32
+        TipInfoEX.SetImage(BtnSaveSettings, My.Resources.Resources.ImageSave16)
+        BtnSaveSettings.Location = New Point(12, 24)
+        BtnSaveSettings.Name = "BtnSaveSettings"
+        BtnSaveSettings.Size = New Size(48, 48)
+        BtnSaveSettings.TabIndex = 100
+        TipInfoEX.SetText(BtnSaveSettings, "Save All Settings")
+        BtnSaveSettings.TextAlign = ContentAlignment.BottomRight
+        BtnSaveSettings.UseVisualStyleBackColor = True
         ' 
-        ' btnRestoreSettings
+        ' BtnRestoreSettings
         ' 
-        btnRestoreSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnRestoreSettings.Image = My.Resources.Resources.ImageUndo32
-        TipInfoEX.SetImage(btnRestoreSettings, My.Resources.Resources.ImageUndo16)
-        btnRestoreSettings.Location = New Point(73, 24)
-        btnRestoreSettings.Name = "btnRestoreSettings"
-        btnRestoreSettings.Size = New Size(48, 48)
-        btnRestoreSettings.TabIndex = 101
-        TipInfoEX.SetText(btnRestoreSettings, "Restore All Settings")
-        btnRestoreSettings.TextAlign = ContentAlignment.BottomRight
-        btnRestoreSettings.UseVisualStyleBackColor = True
+        BtnRestoreSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnRestoreSettings.Image = My.Resources.Resources.ImageUndo32
+        TipInfoEX.SetImage(BtnRestoreSettings, My.Resources.Resources.ImageUndo16)
+        BtnRestoreSettings.Location = New Point(73, 24)
+        BtnRestoreSettings.Name = "BtnRestoreSettings"
+        BtnRestoreSettings.Size = New Size(48, 48)
+        BtnRestoreSettings.TabIndex = 101
+        TipInfoEX.SetText(BtnRestoreSettings, "Restore All Settings")
+        BtnRestoreSettings.TextAlign = ContentAlignment.BottomRight
+        BtnRestoreSettings.UseVisualStyleBackColor = True
         ' 
         ' radioButton16
         ' 
@@ -277,48 +277,48 @@
         radioButton32.TextAlign = ContentAlignment.TopCenter
         radioButton32.UseVisualStyleBackColor = True
         ' 
-        ' btnErrorTest
+        ' BtnErrorTest
         ' 
-        btnErrorTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnErrorTest.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnErrorTest.FlatAppearance.BorderSize = 0
-        btnErrorTest.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnErrorTest.FlatAppearance.MouseOverBackColor = Color.Transparent
-        btnErrorTest.Image = My.Resources.Resources.ImageError32
-        TipInfoEX.SetImage(btnErrorTest, My.Resources.Resources.ImageError16)
-        btnErrorTest.Location = New Point(216, 24)
-        btnErrorTest.Name = "btnErrorTest"
-        btnErrorTest.Size = New Size(48, 48)
-        btnErrorTest.TabIndex = 0
-        btnErrorTest.TabStop = False
-        TipInfoEX.SetText(btnErrorTest, "LeftClick = Test Error" & vbCrLf & "RightClick = Cause Exception")
-        btnErrorTest.Visible = False
+        BtnErrorTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnErrorTest.FlatAppearance.BorderColor = SystemColors.ControlDark
+        BtnErrorTest.FlatAppearance.BorderSize = 0
+        BtnErrorTest.FlatAppearance.MouseDownBackColor = Color.Transparent
+        BtnErrorTest.FlatAppearance.MouseOverBackColor = Color.Transparent
+        BtnErrorTest.Image = My.Resources.Resources.ImageError32
+        TipInfoEX.SetImage(BtnErrorTest, My.Resources.Resources.ImageError16)
+        BtnErrorTest.Location = New Point(241, 24)
+        BtnErrorTest.Name = "BtnErrorTest"
+        BtnErrorTest.Size = New Size(48, 48)
+        BtnErrorTest.TabIndex = 0
+        BtnErrorTest.TabStop = False
+        TipInfoEX.SetText(BtnErrorTest, "LeftClick = Test Error" & vbCrLf & "RightClick = Cause Exception")
+        BtnErrorTest.Visible = False
         ' 
-        ' btnHelp
+        ' BtnHelp
         ' 
-        btnHelp.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnHelp.Image = My.Resources.Resources.imageInfo32
-        TipInfoEX.SetImage(btnHelp, My.Resources.Resources.ImageInfo16)
-        btnHelp.Location = New Point(796, 24)
-        btnHelp.Name = "btnHelp"
-        btnHelp.Size = New Size(48, 48)
-        btnHelp.TabIndex = 105
-        TipInfoEX.SetText(btnHelp, "Show Help & About")
-        btnHelp.TextAlign = ContentAlignment.BottomRight
-        btnHelp.UseVisualStyleBackColor = True
+        BtnHelp.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnHelp.Image = My.Resources.Resources.imageInfo32
+        TipInfoEX.SetImage(BtnHelp, My.Resources.Resources.ImageInfo16)
+        BtnHelp.Location = New Point(796, 24)
+        BtnHelp.Name = "BtnHelp"
+        BtnHelp.Size = New Size(48, 48)
+        BtnHelp.TabIndex = 105
+        TipInfoEX.SetText(BtnHelp, "Show Help & About")
+        BtnHelp.TextAlign = ContentAlignment.BottomRight
+        BtnHelp.UseVisualStyleBackColor = True
         ' 
-        ' btnLog
+        ' BtnLog
         ' 
-        btnLog.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnLog.Image = My.Resources.Resources.ImageLog32
-        TipInfoEX.SetImage(btnLog, My.Resources.Resources.imageLog)
-        btnLog.Location = New Point(857, 24)
-        btnLog.Name = "btnLog"
-        btnLog.Size = New Size(48, 48)
-        btnLog.TabIndex = 106
-        TipInfoEX.SetText(btnLog, "Show Log")
-        btnLog.TextAlign = ContentAlignment.BottomRight
-        btnLog.UseVisualStyleBackColor = True
+        BtnLog.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnLog.Image = My.Resources.Resources.ImageLog32
+        TipInfoEX.SetImage(BtnLog, My.Resources.Resources.imageLog)
+        BtnLog.Location = New Point(857, 24)
+        BtnLog.Name = "BtnLog"
+        BtnLog.Size = New Size(48, 48)
+        BtnLog.TabIndex = 106
+        TipInfoEX.SetText(BtnLog, "Show Log")
+        BtnLog.TextAlign = ContentAlignment.BottomRight
+        BtnLog.UseVisualStyleBackColor = True
         ' 
         ' PanelApp
         ' 
@@ -330,34 +330,34 @@
         PanelApp.TabIndex = 107
         TipInfoEX.SetText(PanelApp, Nothing)
         ' 
-        ' PanelPics
+        ' PanelWST
         ' 
-        PanelPics.Dock = DockStyle.Fill
-        TipInfoEX.SetImage(PanelPics, Nothing)
-        PanelPics.Location = New Point(91, 0)
-        PanelPics.Name = "PanelPics"
-        PanelPics.Size = New Size(826, 534)
-        PanelPics.TabIndex = 108
-        TipInfoEX.SetText(PanelPics, Nothing)
+        PanelWST.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelWST, Nothing)
+        PanelWST.Location = New Point(91, 0)
+        PanelWST.Name = "PanelWST"
+        PanelWST.Size = New Size(826, 534)
+        PanelWST.TabIndex = 108
+        TipInfoEX.SetText(PanelWST, Nothing)
         ' 
-        ' PanelVids
+        ' PanelSS
         ' 
-        PanelVids.Dock = DockStyle.Fill
-        TipInfoEX.SetImage(PanelVids, Nothing)
-        PanelVids.Location = New Point(91, 0)
-        PanelVids.Name = "PanelVids"
-        PanelVids.Size = New Size(826, 534)
-        PanelVids.TabIndex = 109
-        TipInfoEX.SetText(PanelVids, Nothing)
+        PanelSS.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelSS, Nothing)
+        PanelSS.Location = New Point(91, 0)
+        PanelSS.Name = "PanelSS"
+        PanelSS.Size = New Size(826, 534)
+        PanelSS.TabIndex = 109
+        TipInfoEX.SetText(PanelSS, Nothing)
         ' 
         ' PanelActions
         ' 
-        PanelActions.Controls.Add(btnClose)
-        PanelActions.Controls.Add(btnRestoreSettings)
-        PanelActions.Controls.Add(btnSaveSettings)
-        PanelActions.Controls.Add(btnErrorTest)
-        PanelActions.Controls.Add(btnHelp)
-        PanelActions.Controls.Add(btnLog)
+        PanelActions.Controls.Add(BtnClose)
+        PanelActions.Controls.Add(BtnRestoreSettings)
+        PanelActions.Controls.Add(BtnSaveSettings)
+        PanelActions.Controls.Add(BtnErrorTest)
+        PanelActions.Controls.Add(BtnHelp)
+        PanelActions.Controls.Add(BtnLog)
         PanelActions.Dock = DockStyle.Bottom
         TipInfoEX.SetImage(PanelActions, My.Resources.Resources.imageLog)
         PanelActions.Location = New Point(0, 534)
@@ -419,18 +419,17 @@
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
         Controls.Add(PanelApp)
-        Controls.Add(PanelVids)
-        Controls.Add(PanelPics)
+        Controls.Add(PanelSS)
+        Controls.Add(PanelWST)
         Controls.Add(PanelPageSelector)
         Controls.Add(PanelActions)
         DoubleBuffered = True
         Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Icon = My.Resources.Resources.iconApp
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         TipInfoEX.SetImage(Me, Nothing)
         Margin = New Padding(3, 4, 3, 4)
         MaximizeBox = False
         Name = "Settings"
-        Opacity = 0R
         SizeGripStyle = SizeGripStyle.Hide
         StartPosition = FormStartPosition.CenterScreen
         TipInfoEX.SetText(Me, Nothing)
@@ -439,10 +438,10 @@
         ResumeLayout(False)
 
     End Sub
-    Private WithEvents btnClose As System.Windows.Forms.Button
-    Private WithEvents btnLog As System.Windows.Forms.Button
-    Private WithEvents btnHelp As System.Windows.Forms.Button
-    Private WithEvents btnErrorTest As System.Windows.Forms.Button
+    Private WithEvents BtnClose As System.Windows.Forms.Button
+    Private WithEvents BtnLog As System.Windows.Forms.Button
+    Private WithEvents BtnHelp As System.Windows.Forms.Button
+    Private WithEvents BtnErrorTest As System.Windows.Forms.Button
     Private radioButton32 As System.Windows.Forms.RadioButton
     Private radioButton31 As System.Windows.Forms.RadioButton
     Private radioButton30 As System.Windows.Forms.RadioButton
@@ -460,11 +459,11 @@
     Private radioButton18 As System.Windows.Forms.RadioButton
     Private radioButton17 As System.Windows.Forms.RadioButton
     Private radioButton16 As System.Windows.Forms.RadioButton
-    Private WithEvents btnRestoreSettings As System.Windows.Forms.Button
-    Private WithEvents btnSaveSettings As System.Windows.Forms.Button
+    Private WithEvents BtnRestoreSettings As System.Windows.Forms.Button
+    Private WithEvents BtnSaveSettings As System.Windows.Forms.Button
     Friend WithEvents PanelApp As Panel
-    Friend WithEvents PanelPics As Panel
-    Friend WithEvents PanelVids As Panel
+    Friend WithEvents PanelWST As Panel
+    Friend WithEvents PanelSS As Panel
     Friend WithEvents PanelActions As Panel
     Friend WithEvents PanelPageSelector As Panel
     Friend WithEvents LVPageSelector As Skye.UI.ListViewEX
