@@ -333,8 +333,11 @@ Namespace My
 		Friend ReadOnly AdjustScreenBoundsDialogWindow As Byte = 10 ' The number of pixels to adjust the screen bounds for dialog windows.
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
+		Friend NeedsSaved As Boolean = False
+		Friend ErrorAlert As Boolean = False
 		Friend FrmMain As MainForm
 		Friend FrmClock As Clock
+		Friend FrmSettings As Settings
 		Friend FrmHelp As Help
 		Friend FrmLog As Log
 
@@ -405,6 +408,40 @@ Namespace My
 			Finally
 				If RegKey IsNot Nothing Then RegKey.Close()
 			End Try
+		End Sub
+		Friend Sub SetSave()
+			NeedsSaved = True
+			FrmSettings?.ShowSave()
+		End Sub
+		Friend Sub SetErrorAlert()
+			ErrorAlert = True
+			AppNotify()
+		End Sub
+		Friend Sub ClearErrorAlert()
+			ErrorAlert = False
+			AppNotify()
+		End Sub
+		Friend Sub AppNotify()
+			If ErrorAlert Then
+				'notifyiconSkyeShow.Text = Application.Info.Title
+				'TipInfoEX.SetText(btnLog, "Show Log")
+				'If App.IsGeneratingFileList Then
+				'	notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppLoading
+				'	notifyiconSkyeShow.Text += Environment.NewLine + App.GeneratingFileListAlertText
+				'ElseIf App.ErrorAlert Then
+				'	notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppError
+				'	notifyiconSkyeShow.Text += Environment.NewLine + "** ERROR **" + Environment.NewLine + "LeftClick = Clear" + Environment.NewLine + "RightClick = View Log"
+				'	btnLog.BackColor = Color.Red
+				'	TipInfoEX.SetText(btnLog, TipInfoEX.GetText(btnLog) + Environment.NewLine + "An Error Has Occurred")
+				'Else
+				'	If App.ImageIsOnTop And App.VideoIsOnTop Then : notifyiconSkyeShow.Icon = My.Resources.Resources.iconApp
+				'	Else
+				'		notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppHidden
+				'		notifyiconSkyeShow.Text += Environment.NewLine + "One Or More Windows Are Hidden. Click To Restore."
+				'	End If
+				'	btnLog.BackColor = Skye.UI.ThemeManager.CurrentTheme.ButtonBack
+			Else
+			End If
 		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
@@ -716,8 +753,8 @@ Namespace My
 			WSTShowAC = False
 			ACAlarmRecurring = False
 			'WinLinks (WL)
-			WSTShowWLMenu = True
-			WSTShowWLTray = True
+			WSTShowWLMenu = False
+			WSTShowWLTray = False
 			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
 			'GetSettingsDebugWL()
 		End Sub

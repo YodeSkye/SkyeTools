@@ -11,7 +11,6 @@ Partial Friend Class Settings
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
     Private suppressPageSelection As Boolean = False
-    Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
     ' Form Events
     Friend Sub New()
@@ -30,35 +29,20 @@ Partial Friend Class Settings
         LVPageSelector.Items(0).Selected = True
 
     End Sub
-    Private Sub MainForm_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         ShowSettings()
+        ShowSave()
     End Sub
-    Private Sub MainForm_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
-        HideForm()
-        Opacity = 1
+    Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
-        Left = 0
         btnErrorTest.Visible = True
-        ShowForm()
-        btnClose.Focus()
 #Else
 #End If
         LVPageSelector.Focus()
-        TipCM = New Skye.UI.ToolTipEX() With {
-            .Font = App.MenuFont,
-            .ShadowAlpha = 0,
-            .ShadowThickness = 0,
-            .FadeInRate = 25,
-            .FadeOutRate = 25,
-            .HideDelay = 5000,
-            .ShowDelay = 250
-        }
-        ' App.HookTSItemsForCMTooltip(cmApp, TipCM)
         Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
-        Skye.UI.ThemeManager.RegisterComponent(TipCM)
         Skye.UI.ThemeManager.ApplyTheme(Me)
     End Sub
-    Private Sub MainForm_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelPics.MouseDown, PanelVids.MouseDown, PanelActions.MouseDown
+    Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelPics.MouseDown, PanelVids.MouseDown, PanelActions.MouseDown
         If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
             mMove = True
             Dim ctrl As Control = DirectCast(sender, Control)
@@ -69,7 +53,7 @@ Partial Friend Class Settings
             End If
         End If
     End Sub
-    Private Sub MainForm_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove, PanelApp.MouseMove, PanelPics.MouseMove, PanelVids.MouseMove, PanelActions.MouseMove
+    Private Sub Settings_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove, PanelApp.MouseMove, PanelPics.MouseMove, PanelVids.MouseMove, PanelActions.MouseMove
         If mMove Then
             mPosition = MousePosition
             mPosition.Offset(mOffset.X, mOffset.Y)
@@ -77,10 +61,10 @@ Partial Friend Class Settings
             Location = mPosition
         End If
     End Sub
-    Private Sub MainForm_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseUp, PanelApp.MouseUp, PanelPics.MouseUp, PanelVids.MouseUp, PanelActions.MouseUp
+    Private Sub Settings_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseUp, PanelApp.MouseUp, PanelPics.MouseUp, PanelVids.MouseUp, PanelActions.MouseUp
         mMove = False
     End Sub
-    Private Sub MainForm_Move(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Move
+    Private Sub Settings_Move(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Move
         If Not mMove AndAlso Me.WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
     End Sub
 
@@ -133,32 +117,31 @@ Partial Friend Class Settings
                 Case MouseButtons.Left : App.ShowLog(False)
                 Case MouseButtons.Right : App.ShowLog(True)
             End Select
-            'If My.App.ErrorAlert Then App.ClearErrorAlert()
+            If App.ErrorAlert Then App.ClearErrorAlert()
         End If
     End Sub
     Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
-        HideForm()
+        'HideForm
     End Sub
     Private Sub BtnErrorTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnErrorTest.MouseUp
         If e.X >= 0 And e.X <= CType(sender, Button).Width And e.Y >= 0 And e.Y <= CType(sender, Button).Height Then
             Select Case e.Button
                 Case MouseButtons.Left
-                    'My.App.SetErrorAlert()
-                    'Debug.Print("btnErrorTestMouseUp --> TEST ERROR - DO NOT PANIC!!")
-                    'MsgBox("Just Checking, DO NOT PANIC!!", MsgBoxStyle.Critical, "Test Error")
-                    'My.App.WriteToLog("Test Error - DO NOT PANIC!!")
+                    App.SetErrorAlert()
+                    MessageBox.Show(Me, "Just Checking, DO NOT PANIC!!", "Test Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    App.WriteToLog(App.Tools.SkyeTools, "Test Error - DO NOT PANIC!!")
                 Case MouseButtons.Right
-                    '        My.App.SetErrorAlert()
-                    '        My.App.WriteToLog("Test Exception - DO NOT PANIC!!")
-                    '        Throw New Exception("Test Exception - DO NOT PANIC!!")
+                    App.SetErrorAlert()
+                    App.WriteToLog(App.Tools.SkyeTools, "Test Exception - DO NOT PANIC!!")
+                    Throw New Exception("Test Exception - DO NOT PANIC!!")
             End Select
         End If
     End Sub
     Private Sub BtnSaveSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnSaveSettings.Click
         My.App.SaveSettings()
-        'App.NeedsSaved = False
+        App.NeedsSaved = False
         ShowSave()
-        HideForm()
+        'HideForm()
     End Sub
     Private Sub BtnRestoreSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnRestoreSettings.Click
         RestoreSettings()
@@ -186,13 +169,13 @@ Partial Friend Class Settings
         'End If
     End Sub
     Friend Sub ShowSave()
-        'If App.NeedsSaved Then
-        '    btnSaveSettings.BackColor = Color.Red
-        '    TipInfoEX.SetText(btnSaveSettings, "Settings Need Saved")
-        'Else
-        '    btnSaveSettings.BackColor = Skye.UI.ThemeManager.CurrentTheme.ButtonBack
-        '    TipInfoEX.SetText(btnSaveSettings, "Save All Settings")
-        'End If
+        If App.NeedsSaved Then
+            btnSaveSettings.BackColor = Color.Red
+            TipInfoEX.SetText(btnSaveSettings, "Settings Need Saved")
+        Else
+            btnSaveSettings.BackColor = Skye.UI.ThemeManager.CurrentTheme.ButtonBack
+            TipInfoEX.SetText(btnSaveSettings, "Save All Settings")
+        End If
     End Sub
     Private Sub SetPage(page As String)
         PanelApp.Enabled = False
@@ -221,23 +204,8 @@ Partial Friend Class Settings
         ShowSettings()
         Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
         Skye.UI.ThemeManager.SetTheme(selectedTheme)
-        '       App.NeedsSaved = False
+        App.NeedsSaved = False
         ShowSave()
-    End Sub
-    Private Sub ShowForm()
-        Select Case Me.Visible
-            Case True
-                If Me.WindowState = FormWindowState.Minimized Then Me.WindowState = FormWindowState.Normal
-                HideForm()
-            Case False
-                Me.Show()
-                Me.Activate()
-        End Select
-    End Sub
-    Private Sub HideForm()
-        If Me.Visible Then
-            Me.Hide()
-        End If
     End Sub
     Private Sub SetThemesList()
         If App.ThemeAuto Then
