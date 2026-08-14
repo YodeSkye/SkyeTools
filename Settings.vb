@@ -33,12 +33,20 @@ Partial Friend Class Settings
 
         ' Initialize Form
         Text = "Settings For " + My.Application.Info.Title + "  v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
-        ILPageSelector.Images.Add(My.Resources.Resources.imageApp)
-        'ILPageSelector.Images.Add(My.Resources.Resources.ImageImage48)
-        'ILPageSelector.Images.Add(My.Resources.Resources.ImageVideo48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageApp32)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageWST48)
+        ILPageSelector.Images.Add(My.Resources.Resources.imageWSTScreenSaverEnabled)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageAC48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageWL48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageHC48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageHK48)
         LVPageSelector.Items.Add(New ListViewItem("App", 0))
-        'LVPageSelector.Items.Add(New ListViewItem("Pics", 1))
-        'LVPageSelector.Items.Add(New ListViewItem("Vids", 2))
+        LVPageSelector.Items.Add(New ListViewItem("Workspace Tools", 1))
+        LVPageSelector.Items.Add(New ListViewItem("Screen Saver", 2))
+        LVPageSelector.Items.Add(New ListViewItem("Alarm & Chime", 3))
+        LVPageSelector.Items.Add(New ListViewItem("WinLinks", 4))
+        LVPageSelector.Items.Add(New ListViewItem("HotClicks", 5))
+        LVPageSelector.Items.Add(New ListViewItem("HotKeys", 6))
         LVPageSelector.Items(0).Selected = True
 
     End Sub
@@ -51,6 +59,7 @@ Partial Friend Class Settings
         BtnErrorTest.Visible = True
 #Else
 #End If
+        SetListViewSpacing(LVPageSelector, 87, 105)
         LVPageSelector.Focus()
         Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
         Skye.UI.ThemeManager.ApplyTheme(Me)
@@ -82,10 +91,13 @@ Partial Friend Class Settings
     End Sub
 
     ' Control Events
-    Private Sub PanelPage_Paint(sender As Object, e As PaintEventArgs) Handles PanelApp.Paint, PanelWST.Paint, PanelSS.Paint
+    Private Sub PanelPage_Paint(sender As Object, e As PaintEventArgs) Handles PanelApp.Paint, PanelWST.Paint, PanelSS.Paint, PanelAC.Paint, PanelWL.Paint, PanelHC.Paint, PanelHK.Paint
         Dim pagePanel As Panel = DirectCast(sender, Panel)
         Using p As New Pen(Color.FromArgb(100, 100, 100))
             e.Graphics.DrawLine(p, 0, 0, 0, pagePanel.Height)
+        End Using
+        Using p As New Pen(Color.FromArgb(60, 60, 60))
+            e.Graphics.DrawLine(p, 0, pagePanel.Height - 1, pagePanel.Width, pagePanel.Height - 1)
         End Using
     End Sub
     Private Sub PanelActions_Paint(sender As Object, e As PaintEventArgs) Handles PanelActions.Paint
@@ -169,12 +181,24 @@ Partial Friend Class Settings
             Case "App"
                 PanelApp.Enabled = True
                 PanelApp.BringToFront()
-            Case "Pics"
+            Case "Workspace Tools"
                 PanelWST.Enabled = True
                 PanelWST.BringToFront()
-            Case "Vids"
+            Case "Screen Saver"
                 PanelSS.Enabled = True
                 PanelSS.BringToFront()
+            Case "Alarm & Chime"
+                PanelAC.Enabled = True
+                PanelAC.BringToFront()
+            Case "WinLinks"
+                PanelWL.Enabled = True
+                PanelWL.BringToFront()
+            Case "HotClicks"
+                PanelHC.Enabled = True
+                PanelHC.BringToFront()
+            Case "HotKeys"
+                PanelHK.Enabled = True
+                PanelHK.BringToFront()
         End Select
     End Sub
     Private Sub ShowSettings()
@@ -200,6 +224,16 @@ Partial Friend Class Settings
             BtnSaveSettings.BackColor = Skye.UI.ThemeManager.CurrentTheme.ButtonBack
             TipInfoEX.SetText(BtnSaveSettings, "Save All Settings")
         End If
+    End Sub
+    Private Sub SetListViewSpacing(lv As ListView, cx As Integer, cy As Integer)
+        ' cy controls vertical spacing between rows (e.g. try 80 to 100)
+        ' cx controls horizontal spacing (e.g. try 90 to 120)
+        Const LVM_SETICONSPACING As Integer = &H1035
+        Dim lParam As IntPtr = CType((CInt(cy) << 16) Or (CInt(cx) And &HFFFF), IntPtr)
+        Skye.WinAPI.SendMessage(lv.Handle, LVM_SETICONSPACING, IntPtr.Zero, lParam)
+
+        ' Force the ListView to rearrange items with the new grid spacing
+        lv.ArrangeIcons()
     End Sub
     Private Sub SetThemesList()
         If App.ThemeAuto Then

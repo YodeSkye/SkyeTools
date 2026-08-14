@@ -10,7 +10,6 @@ Inherits System.Windows.Forms.Form
 		MyBase.Dispose(disposing)
 	End Sub
     Private Sub InitializeComponent
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Help))
         RTxtBoxMessage = New RichTextBox()
         BtnOK = New Button()
         TxtBoxPostMessage = New TextBox()
@@ -70,7 +69,6 @@ Inherits System.Windows.Forms.Form
         Controls.Add(BtnOK)
         Controls.Add(TxtBoxPostMessage)
         Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         KeyPreview = True
         MinimumSize = New Size(450, 300)
         Name = "Help"

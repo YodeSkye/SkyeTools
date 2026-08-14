@@ -43,6 +43,10 @@
         LVPageSelector = New Skye.UI.ListViewEX()
         ILPageSelector = New ImageList(components)
         TipInfoEX = New Skye.UI.ToolTipEX(components)
+        PanelAC = New Panel()
+        PanelWL = New Panel()
+        PanelHC = New Panel()
+        PanelHK = New Panel()
         PanelActions.SuspendLayout()
         PanelPageSelector.SuspendLayout()
         SuspendLayout()
@@ -324,9 +328,9 @@
         ' 
         PanelApp.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelApp, Nothing)
-        PanelApp.Location = New Point(91, 0)
+        PanelApp.Location = New Point(187, 0)
         PanelApp.Name = "PanelApp"
-        PanelApp.Size = New Size(826, 534)
+        PanelApp.Size = New Size(730, 534)
         PanelApp.TabIndex = 107
         TipInfoEX.SetText(PanelApp, Nothing)
         ' 
@@ -334,9 +338,9 @@
         ' 
         PanelWST.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelWST, Nothing)
-        PanelWST.Location = New Point(91, 0)
+        PanelWST.Location = New Point(187, 0)
         PanelWST.Name = "PanelWST"
-        PanelWST.Size = New Size(826, 534)
+        PanelWST.Size = New Size(730, 534)
         PanelWST.TabIndex = 108
         TipInfoEX.SetText(PanelWST, Nothing)
         ' 
@@ -344,9 +348,9 @@
         ' 
         PanelSS.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelSS, Nothing)
-        PanelSS.Location = New Point(91, 0)
+        PanelSS.Location = New Point(187, 0)
         PanelSS.Name = "PanelSS"
-        PanelSS.Size = New Size(826, 534)
+        PanelSS.Size = New Size(730, 534)
         PanelSS.TabIndex = 109
         TipInfoEX.SetText(PanelSS, Nothing)
         ' 
@@ -373,7 +377,7 @@
         TipInfoEX.SetImage(PanelPageSelector, Nothing)
         PanelPageSelector.Location = New Point(0, 0)
         PanelPageSelector.Name = "PanelPageSelector"
-        PanelPageSelector.Size = New Size(91, 534)
+        PanelPageSelector.Size = New Size(187, 534)
         PanelPageSelector.TabIndex = 111
         TipInfoEX.SetText(PanelPageSelector, Nothing)
         ' 
@@ -394,7 +398,7 @@
         LVPageSelector.Name = "LVPageSelector"
         LVPageSelector.Scrollable = False
         LVPageSelector.ShowGroups = False
-        LVPageSelector.Size = New Size(91, 534)
+        LVPageSelector.Size = New Size(187, 534)
         LVPageSelector.TabIndex = 0
         LVPageSelector.TabStop = False
         TipInfoEX.SetText(LVPageSelector, Nothing)
@@ -412,12 +416,56 @@
         TipInfoEX.ShadowAlpha = 0
         TipInfoEX.ShadowThickness = 0
         ' 
+        ' PanelAC
+        ' 
+        PanelAC.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelAC, Nothing)
+        PanelAC.Location = New Point(187, 0)
+        PanelAC.Name = "PanelAC"
+        PanelAC.Size = New Size(730, 534)
+        PanelAC.TabIndex = 108
+        TipInfoEX.SetText(PanelAC, Nothing)
+        ' 
+        ' PanelWL
+        ' 
+        PanelWL.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelWL, Nothing)
+        PanelWL.Location = New Point(187, 0)
+        PanelWL.Name = "PanelWL"
+        PanelWL.Size = New Size(730, 534)
+        PanelWL.TabIndex = 112
+        TipInfoEX.SetText(PanelWL, Nothing)
+        ' 
+        ' PanelHC
+        ' 
+        PanelHC.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelHC, Nothing)
+        PanelHC.Location = New Point(187, 0)
+        PanelHC.Name = "PanelHC"
+        PanelHC.Size = New Size(730, 534)
+        PanelHC.TabIndex = 113
+        TipInfoEX.SetText(PanelHC, Nothing)
+        ' 
+        ' PanelHK
+        ' 
+        PanelHK.Dock = DockStyle.Fill
+        TipInfoEX.SetImage(PanelHK, Nothing)
+        PanelHK.Location = New Point(187, 0)
+        PanelHK.Name = "PanelHK"
+        PanelHK.Size = New Size(730, 534)
+        PanelHK.TabIndex = 114
+        TipInfoEX.SetText(PanelHK, Nothing)
+        ' 
         ' Settings
         ' 
         AutoScaleMode = AutoScaleMode.None
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
+        Controls.Add(PanelHK)
+        Controls.Add(PanelHC)
+        Controls.Add(PanelWL)
+        Controls.Add(PanelAC)
         Controls.Add(PanelApp)
         Controls.Add(PanelSS)
         Controls.Add(PanelWST)
@@ -469,4 +517,8 @@
     Friend WithEvents LVPageSelector As Skye.UI.ListViewEX
     Friend WithEvents ILPageSelector As ImageList
     Friend WithEvents TipInfoEX As Skye.UI.ToolTipEX
+    Friend WithEvents PanelAC As Panel
+    Friend WithEvents PanelWL As Panel
+    Friend WithEvents PanelHC As Panel
+    Friend WithEvents PanelHK As Panel
 End Class

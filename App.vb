@@ -510,7 +510,7 @@ Namespace My
 			If FrmHelp Is Nothing Then
 				FrmHelp = New Help With {
 					.Text = My.Application.Info.Title + " Help & About",
-					.Icon = My.Resources.Resources.iconInfo
+					.Icon = My.Resources.Resources.IconHelp
 				}
 				FrmHelp.RTxtBoxMessage.Clear()
 				FrmHelp.RTxtBoxMessage.AppendText(logtext)

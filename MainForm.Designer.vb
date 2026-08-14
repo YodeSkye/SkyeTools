@@ -199,8 +199,8 @@
         cmiScreenSaverCloseAll = New ToolStripMenuItem()
         tableLayoutPanel2 = New TableLayoutPanel()
         TipInfoEX = New Skye.UI.ToolTipEX(components)
-        TipHCEX = New Skye.UI.ToolTipEX(components)
         BtnSettings = New Button()
+        TipHCEX = New Skye.UI.ToolTipEX(components)
         cmWST.SuspendLayout()
         tabcontrolSettings.SuspendLayout()
         tabpageWST.SuspendLayout()
@@ -288,7 +288,7 @@
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
         cmWST.ShowItemToolTips = False
-        cmWST.Size = New Size(240, 470)
+        cmWST.Size = New Size(240, 492)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -435,7 +435,7 @@
         ' 
         ' cmiWSTHelp
         ' 
-        cmiWSTHelp.Image = My.Resources.Resources.imageInfo
+        cmiWSTHelp.Image = My.Resources.Resources.ImageInfo16
         cmiWSTHelp.Name = "cmiWSTHelp"
         cmiWSTHelp.Size = New Size(239, 26)
         cmiWSTHelp.Text = "Help"
@@ -2869,12 +2869,6 @@
         TipInfoEX.ShadowAlpha = 0
         TipInfoEX.ShadowThickness = 0
         ' 
-        ' TipHCEX
-        ' 
-        TipHCEX.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipHCEX.ShadowAlpha = 0
-        TipHCEX.ShadowThickness = 0
-        ' 
         ' BtnSettings
         ' 
         BtnSettings.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
@@ -2895,6 +2889,12 @@
         TipHCEX.SetText(BtnSettings, Nothing)
         BtnSettings.Text = "Settings"
         BtnSettings.TextAlign = ContentAlignment.BottomRight
+        ' 
+        ' TipHCEX
+        ' 
+        TipHCEX.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TipHCEX.ShadowAlpha = 0
+        TipHCEX.ShadowThickness = 0
         ' 
         ' MainForm
         ' 
