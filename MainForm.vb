@@ -84,7 +84,7 @@ Partial Friend Class MainForm
             .ImageSize = New Size(16, 16),
             .TransparentColor = System.Drawing.Color.Transparent}
         Me.imagelisttabcontrolSettings.Images.Add("imageAC", My.Resources.Resources.imageAC)
-        Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.imageHC)
+        Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.ImageHC16)
         Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
         Me.imagelisttabcontrolSettings.Images.Add("imageWL", My.Resources.Resources.imageWL)
         Me.imagelisttabcontrolSettings.Images.Add("imageWST", My.Resources.Resources.imageWST)
@@ -117,8 +117,8 @@ Partial Friend Class MainForm
         Me.notifyiconWSTScreenSaver = New NotifyIcon(Me.components) With {
             .Tag = "notifyiconWSTScreenSaver",
             .ContextMenuStrip = cmWSTScreenSaver}
-        Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
-        Me.cmiScreenSaverActivate.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'DirectCast(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+        Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
+        Me.cmiScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
 #Disable Warning CA2263
         For Each s As String In [Enum].GetNames(GetType(My.App.WSTSSStartUpMode))
             Me.comboboxWSTSSStartUp.Items.Add(s)
@@ -350,33 +350,6 @@ Partial Friend Class MainForm
             Else : If WLTrayIcons.Count > 0 Then WLClose()
             End If
         End If
-    End Sub
-    Private Sub ProcessListGenerate()
-        ProcessList = New Collections.Generic.List(Of ProcessListType)
-        Dim plist As Diagnostics.Process() = Diagnostics.Process.GetProcesses
-        For Each p As Diagnostics.Process In plist
-            'Debug.Print(p.MainWindowTitle)
-            Try
-                Dim cpl As New ProcessListType With {
-                    .ProcessName = p.ProcessName}
-                Dim match As Boolean = False
-                For Each cplmatch As ProcessListType In ProcessList
-                    If cpl.ProcessName = cplmatch.ProcessName Then
-                        match = True
-                        Exit For
-                    End If
-                Next
-                If Not match Then
-                    'Debug.Print(p.MainModule.FileName)
-                    cpl.FileName = p.MainModule.FileName.TrimStart(New Char() {CChar("\"), CChar("?"), CChar("?"), CChar("\")}) 'This string,"\??\", gets inserted sometimes for some unknown reason.
-                    cpl.Icon = Skye.WinAPI.GetApplicationIcon(cpl.FileName)
-                    If cpl.Icon.Equals(Nothing) Then cpl.Icon = My.Resources.Resources.iconProcess 'DirectCast(My.App.AppResources.GetObject("iconProcess"), Icon)
-                    ProcessList.Add(cpl)
-                End If
-            Catch
-            End Try
-        Next
-        ProcessList.Sort(New ProcessListComparer)
     End Sub
     Private Function IconToHighQualityImage(ic As Icon) As Image
         Dim bmp As Bitmap = ic.ToBitmap()
@@ -1492,28 +1465,28 @@ Partial Friend Class MainForm
         If My.App.WSTSSToolEnabled Then
             If WSTSSEnabled Then
                 Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
-                Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap '(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+                Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSS16
                 Me.cmiWSTScreenSaverEnabled.ForeColor = Color.Teal
                 Me.cmiWSTScreenSaverEnabled.Text = "Screen Saver ENABLED"
-                Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.iconWSTScreenSaverEnabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon)
+                Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.IconWSTSS
                 Me.notifyiconWSTScreenSaver.Text = "Screen Saver ENABLED"
-                Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+                Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSS16
                 Me.cmiScreenSaverEnabled.ForeColor = Color.Teal
                 Me.cmiScreenSaverEnabled.Text = "Screen Saver ENABLED"
-                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverEnabled"), Icon).ToBitmap
+                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSS16
                 Me.btnWSTScreenSaverEnabled.Checked = True
                 Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver ENABLED")
             Else
                 Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_DISPLAY_REQUIRED Or Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
-                Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+                Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
                 Me.cmiWSTScreenSaverEnabled.ForeColor = Color.Maroon
                 Me.cmiWSTScreenSaverEnabled.Text = "Screen Saver DISABLED"
-                Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.iconWSTScreenSaverDisabled 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon)
+                Me.notifyiconWSTScreenSaver.Icon = My.Resources.Resources.IconWSTSSDisabled
                 Me.notifyiconWSTScreenSaver.Text = "Screen Saver DISABLED"
-                Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+                Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
                 Me.cmiScreenSaverEnabled.ForeColor = Color.Maroon
                 Me.cmiScreenSaverEnabled.Text = "Screen Saver DISABLED"
-                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.iconWSTScreenSaverDisabled.ToBitmap 'CType(My.App.AppResources.GetObject("iconWSTScreenSaverDisabled"), Icon).ToBitmap
+                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
                 Me.btnWSTScreenSaverEnabled.Checked = False
                 Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver DISABLED")
             End If

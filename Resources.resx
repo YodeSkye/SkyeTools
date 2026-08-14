@@ -127,9 +127,6 @@
   <data name="iconLog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\iconLog.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconProcess" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\iconProcess.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="iconSettings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\iconSettings.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -142,11 +139,11 @@
   <data name="IconWSTAlert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\IconWSTAlert.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconWSTScreenSaverDisabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\iconWSTScreenSaverDisabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconWSTSS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\IconWSTSS.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconWSTScreenSaverEnabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\iconWSTScreenSaverEnabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="IconWSTSSDisabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\IconWSTSSDisabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageAC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageAC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -181,17 +178,8 @@
   <data name="ImageApp32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageApp32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageBalloon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageBalloon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="imageClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageClose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageCloseApp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageCloseApp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageCommandPrompt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageCommandPrompt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageCopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -201,9 +189,6 @@
   </data>
   <data name="imageEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageEdit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageError" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageError.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ImageError16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageError16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -219,9 +204,6 @@
   </data>
   <data name="imageGoStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageGoStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageHC" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageHC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ImageHC16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageHC16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -240,9 +222,6 @@
   </data>
   <data name="imageHKEnable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageHKEnable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ImageInfo16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageInfo16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -289,9 +268,6 @@
   <data name="ImageSave32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageSave32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageSaveFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageSaveFile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="imageSelectAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageSelectAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -303,9 +279,6 @@
   </data>
   <data name="imageSwap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageSwap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="imageTaskManager" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageTaskManager.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageTextCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageTextCopy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -358,11 +331,20 @@
   <data name="imageWSTClock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageWSTClock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageWSTScreenSaverEnabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageWSTScreenSaverEnabled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="imageWSTSessionKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageWSTSessionKey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageWSTSS16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTSS16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageWSTSS48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTSS48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageWSTSSDisabled16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTSSDisabled16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageWSTSSDisabled48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTSSDisabled48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="soundChime" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\soundChime.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -2343,7 +2343,7 @@
         ' radiobtnHCWSTSS
         ' 
         TipInfoEX.SetImage(radiobtnHCWSTSS, Nothing)
-        radiobtnHCWSTSS.Image = My.Resources.Resources.imageWSTScreenSaverEnabled
+        radiobtnHCWSTSS.Image = My.Resources.Resources.ImageWSTSS16
         TipHCEX.SetImage(radiobtnHCWSTSS, Nothing)
         radiobtnHCWSTSS.ImageAlign = ContentAlignment.MiddleLeft
         radiobtnHCWSTSS.Location = New Point(107, 11)
@@ -2716,7 +2716,7 @@
         btnErrorTest.FlatAppearance.MouseDownBackColor = Color.Transparent
         btnErrorTest.FlatAppearance.MouseOverBackColor = Color.Transparent
         TipHCEX.SetImage(btnErrorTest, Nothing)
-        btnErrorTest.Image = My.Resources.Resources.imageError
+        btnErrorTest.Image = My.Resources.Resources.ImageError16
         TipInfoEX.SetImage(btnErrorTest, Nothing)
         btnErrorTest.Location = New Point(368, 432)
         btnErrorTest.Name = "btnErrorTest"
@@ -2755,7 +2755,7 @@
         btnInfo.FlatAppearance.MouseDownBackColor = Color.Transparent
         btnInfo.FlatAppearance.MouseOverBackColor = Color.Transparent
         TipHCEX.SetImage(btnInfo, Nothing)
-        btnInfo.Image = My.Resources.Resources.imageInfo
+        btnInfo.Image = My.Resources.Resources.ImageInfo16
         TipInfoEX.SetImage(btnInfo, Nothing)
         btnInfo.ImageAlign = ContentAlignment.TopLeft
         btnInfo.Location = New Point(140, 420)

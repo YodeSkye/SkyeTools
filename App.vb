@@ -375,11 +375,11 @@ Namespace My
 				AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
 
 				ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
-				ToolToImage(Tools.HotClicks) = My.Resources.Resources.imageHC
+				ToolToImage(Tools.HotClicks) = My.Resources.Resources.ImageHC16
 				ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
 				ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
 				ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
-				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.iconWSTScreenSaverEnabled.ToBitmap
+				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS16
 				ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
 				ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
 

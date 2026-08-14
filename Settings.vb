@@ -35,8 +35,8 @@ Partial Friend Class Settings
         Text = "Settings For " + My.Application.Info.Title + "  v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
         ILPageSelector.Images.Add(My.Resources.Resources.ImageApp32)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWST48)
-        ILPageSelector.Images.Add(My.Resources.Resources.imageWSTScreenSaverEnabled)
-        ILPageSelector.Images.Add(My.Resources.Resources.ImageAC48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageWSTSS48)
+        ILPageSelector.Images.Add(My.Resources.Resources.imageAC48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWL48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHC48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHK48)
