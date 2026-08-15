@@ -43,7 +43,7 @@
     <Compile Update="MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
     </Compile>
-    <PackageReference Include="SkyeLibrary" Version="1.5.35" />
+    <PackageReference Include="SkyeLibrary" Version="1.5.36" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <FileAlignment>4096</FileAlignment>

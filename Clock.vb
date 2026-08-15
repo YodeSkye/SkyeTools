@@ -117,15 +117,17 @@ Public Class Clock
         Return Skye.WinAPI.DefWindowProc(hWnd, msg, wParam, lParam)
     End Function
     Public Sub New()
-        ClassName = "SkyeClockClass_" & Guid.NewGuid().ToString("N")
-        Debug.Print(ClassName)
+
         ' Bind delegate to prevent GC collection
         wndProcDelegateInstance = AddressOf WindowProc
+
+        ClassName = "SkyeClockClass_" & Guid.NewGuid().ToString("N")
         RegisterWindowClass()
         InitializeContextMenu()
 
         ' Theme Listener
         AddHandler Skye.UI.ThemeManager.ThemeChanged, AddressOf OnThemeChanged
+
     End Sub
     Public Sub Show()
         If hWnd = IntPtr.Zero Then CreateNativeWindow()
@@ -182,6 +184,10 @@ Public Class Clock
                 Skye.WinAPI.DestroyWindow(hWnd)
                 hWnd = IntPtr.Zero
             End If
+
+            ' Immediately frees the unique class name atom from the process table
+            Dim hInstance As IntPtr = Skye.WinAPI.GetModuleHandle(Nothing)
+            Skye.WinAPI.UnregisterClass(ClassName, hInstance)
 
             isDisposed = True
         End If
