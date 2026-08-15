@@ -36,6 +36,13 @@
         BtnHelp = New Button()
         BtnLog = New Button()
         PanelApp = New Panel()
+        LblTheme = New Skye.UI.Label()
+        CoBoxTheme = New Skye.UI.ComboBox()
+        LblLoadOnOSStartupPath = New Label()
+        BtnLoadOnOSStartupPath = New Button()
+        TxtBoxLoadOnOSStartupArgs = New TextBox()
+        ChkBoxThemeAuto = New CheckBox()
+        ChkBoxLoadOnOSStartup = New CheckBox()
         PanelWST = New Panel()
         PanelSS = New Panel()
         PanelActions = New Panel()
@@ -47,6 +54,7 @@
         PanelWL = New Panel()
         PanelHC = New Panel()
         PanelHK = New Panel()
+        PanelApp.SuspendLayout()
         PanelActions.SuspendLayout()
         PanelPageSelector.SuspendLayout()
         SuspendLayout()
@@ -326,6 +334,13 @@
         ' 
         ' PanelApp
         ' 
+        PanelApp.Controls.Add(LblTheme)
+        PanelApp.Controls.Add(CoBoxTheme)
+        PanelApp.Controls.Add(LblLoadOnOSStartupPath)
+        PanelApp.Controls.Add(BtnLoadOnOSStartupPath)
+        PanelApp.Controls.Add(TxtBoxLoadOnOSStartupArgs)
+        PanelApp.Controls.Add(ChkBoxThemeAuto)
+        PanelApp.Controls.Add(ChkBoxLoadOnOSStartup)
         PanelApp.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelApp, Nothing)
         PanelApp.Location = New Point(187, 0)
@@ -333,6 +348,91 @@
         PanelApp.Size = New Size(730, 534)
         PanelApp.TabIndex = 107
         TipInfoEX.SetText(PanelApp, Nothing)
+        ' 
+        ' LblTheme
+        ' 
+        LblTheme.Font = New Font("Segoe UI", 12F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
+        TipInfoEX.SetImage(LblTheme, Nothing)
+        LblTheme.Location = New Point(282, 70)
+        LblTheme.Name = "LblTheme"
+        LblTheme.Size = New Size(166, 23)
+        LblTheme.TabIndex = 150
+        LblTheme.Text = "Theme"
+        TipInfoEX.SetText(LblTheme, Nothing)
+        LblTheme.TextAlign = ContentAlignment.MiddleCenter
+        ' 
+        ' CoBoxTheme
+        ' 
+        CoBoxTheme.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxTheme, Nothing)
+        CoBoxTheme.Location = New Point(282, 118)
+        CoBoxTheme.Name = "CoBoxTheme"
+        CoBoxTheme.Size = New Size(166, 30)
+        CoBoxTheme.TabIndex = 148
+        TipInfoEX.SetText(CoBoxTheme, Nothing)
+        ' 
+        ' LblLoadOnOSStartupPath
+        ' 
+        LblLoadOnOSStartupPath.BorderStyle = BorderStyle.FixedSingle
+        TipInfoEX.SetImage(LblLoadOnOSStartupPath, Nothing)
+        LblLoadOnOSStartupPath.Location = New Point(255, 263)
+        LblLoadOnOSStartupPath.Name = "LblLoadOnOSStartupPath"
+        LblLoadOnOSStartupPath.Size = New Size(214, 27)
+        LblLoadOnOSStartupPath.TabIndex = 145
+        LblLoadOnOSStartupPath.Text = "Sample Text"
+        TipInfoEX.SetText(LblLoadOnOSStartupPath, "Path")
+        LblLoadOnOSStartupPath.TextAlign = ContentAlignment.TopRight
+        ' 
+        ' BtnLoadOnOSStartupPath
+        ' 
+        BtnLoadOnOSStartupPath.FlatAppearance.BorderSize = 0
+        BtnLoadOnOSStartupPath.FlatAppearance.MouseDownBackColor = Color.Transparent
+        BtnLoadOnOSStartupPath.FlatAppearance.MouseOverBackColor = Color.Transparent
+        BtnLoadOnOSStartupPath.Image = My.Resources.Resources.ImageFolder
+        TipInfoEX.SetImage(BtnLoadOnOSStartupPath, Nothing)
+        BtnLoadOnOSStartupPath.Location = New Point(223, 262)
+        BtnLoadOnOSStartupPath.Name = "BtnLoadOnOSStartupPath"
+        BtnLoadOnOSStartupPath.Size = New Size(32, 29)
+        BtnLoadOnOSStartupPath.TabIndex = 146
+        BtnLoadOnOSStartupPath.TabStop = False
+        TipInfoEX.SetText(BtnLoadOnOSStartupPath, "Select An Application")
+        BtnLoadOnOSStartupPath.TextAlign = ContentAlignment.MiddleLeft
+        BtnLoadOnOSStartupPath.UseVisualStyleBackColor = True
+        ' 
+        ' TxtBoxLoadOnOSStartupArgs
+        ' 
+        TipInfoEX.SetImage(TxtBoxLoadOnOSStartupArgs, Nothing)
+        TxtBoxLoadOnOSStartupArgs.Location = New Point(255, 290)
+        TxtBoxLoadOnOSStartupArgs.Name = "TxtBoxLoadOnOSStartupArgs"
+        TxtBoxLoadOnOSStartupArgs.Size = New Size(215, 29)
+        TxtBoxLoadOnOSStartupArgs.TabIndex = 147
+        TipInfoEX.SetText(TxtBoxLoadOnOSStartupArgs, "Args")
+        TxtBoxLoadOnOSStartupArgs.Text = "Sample Text"
+        TxtBoxLoadOnOSStartupArgs.WordWrap = False
+        ' 
+        ' ChkBoxThemeAuto
+        ' 
+        ChkBoxThemeAuto.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxThemeAuto, Nothing)
+        ChkBoxThemeAuto.Location = New Point(282, 96)
+        ChkBoxThemeAuto.Name = "ChkBoxThemeAuto"
+        ChkBoxThemeAuto.Size = New Size(161, 25)
+        ChkBoxThemeAuto.TabIndex = 149
+        TipInfoEX.SetText(ChkBoxThemeAuto, Nothing)
+        ChkBoxThemeAuto.Text = "Use System Theme"
+        ChkBoxThemeAuto.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxLoadOnOSStartup
+        ' 
+        TipInfoEX.SetImage(ChkBoxLoadOnOSStartup, Nothing)
+        ChkBoxLoadOnOSStartup.Location = New Point(236, 238)
+        ChkBoxLoadOnOSStartup.Name = "ChkBoxLoadOnOSStartup"
+        ChkBoxLoadOnOSStartup.RightToLeft = RightToLeft.Yes
+        ChkBoxLoadOnOSStartup.Size = New Size(234, 29)
+        ChkBoxLoadOnOSStartup.TabIndex = 144
+        TipInfoEX.SetText(ChkBoxLoadOnOSStartup, Nothing)
+        ChkBoxLoadOnOSStartup.Text = "Load On Windows StartUp"
+        ChkBoxLoadOnOSStartup.UseVisualStyleBackColor = True
         ' 
         ' PanelWST
         ' 
@@ -462,11 +562,11 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
+        Controls.Add(PanelApp)
         Controls.Add(PanelHK)
         Controls.Add(PanelHC)
         Controls.Add(PanelWL)
         Controls.Add(PanelAC)
-        Controls.Add(PanelApp)
         Controls.Add(PanelSS)
         Controls.Add(PanelWST)
         Controls.Add(PanelPageSelector)
@@ -481,6 +581,8 @@
         SizeGripStyle = SizeGripStyle.Hide
         StartPosition = FormStartPosition.CenterScreen
         TipInfoEX.SetText(Me, Nothing)
+        PanelApp.ResumeLayout(False)
+        PanelApp.PerformLayout()
         PanelActions.ResumeLayout(False)
         PanelPageSelector.ResumeLayout(False)
         ResumeLayout(False)
@@ -521,4 +623,11 @@
     Friend WithEvents PanelWL As Panel
     Friend WithEvents PanelHC As Panel
     Friend WithEvents PanelHK As Panel
+    Friend WithEvents LblTheme As Skye.UI.Label
+    Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
+    Private WithEvents LblLoadOnOSStartupPath As Label
+    Private WithEvents BtnLoadOnOSStartupPath As Button
+    Private WithEvents ChkBoxLoadOnOSStartup As CheckBox
+    Private WithEvents TxtBoxLoadOnOSStartupArgs As TextBox
+    Friend WithEvents ChkBoxThemeAuto As CheckBox
 End Class

@@ -43,8 +43,6 @@
         btnSettingsRestore = New Button()
         tabcontrolSettings = New TabControl()
         tabpageWST = New TabPage()
-        LblTheme = New Skye.UI.Label()
-        CoBoxTheme = New Skye.UI.ComboBox()
         checkboxWSTShowSleep = New CheckBox()
         checkboxWSTSSToolEnabled = New CheckBox()
         checkboxWSTShowLog = New CheckBox()
@@ -56,7 +54,6 @@
         checkboxWSTShowAC = New CheckBox()
         checkboxWSTShowHelp = New CheckBox()
         checkboxWSTShowClock = New CheckBox()
-        lblLoadOnOSStartupPath = New Label()
         checkboxWSTShowWLTray = New CheckBox()
         checkboxWSTShowWLMenu = New CheckBox()
         groupboxWSTSS = New GroupBox()
@@ -67,11 +64,7 @@
         checkboxWSTShowScreenSaverEnabled = New CheckBox()
         checkboxWSTShowScreenSaverActivate = New CheckBox()
         checkboxWSTShowScreenSaverIcon = New CheckBox()
-        btnLoadOnOSStartupPath = New Button()
-        checkboxLoadOnOSStartup = New CheckBox()
-        txbxLoadOnOSStartupArgs = New TextBox()
         checkboxWSTEnabled = New CheckBox()
-        ChkBoxThemeAuto = New CheckBox()
         tabpageAC = New TabPage()
         lblACAlarmChime = New Label()
         lblACOffHourChimePath = New Label()
@@ -288,7 +281,7 @@
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
         cmWST.ShowItemToolTips = False
-        cmWST.Size = New Size(240, 492)
+        cmWST.Size = New Size(240, 470)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -552,8 +545,6 @@
         ' 
         ' tabpageWST
         ' 
-        tabpageWST.Controls.Add(LblTheme)
-        tabpageWST.Controls.Add(CoBoxTheme)
         tabpageWST.Controls.Add(checkboxWSTShowSleep)
         tabpageWST.Controls.Add(checkboxWSTSSToolEnabled)
         tabpageWST.Controls.Add(checkboxWSTShowLog)
@@ -565,15 +556,10 @@
         tabpageWST.Controls.Add(checkboxWSTShowAC)
         tabpageWST.Controls.Add(checkboxWSTShowHelp)
         tabpageWST.Controls.Add(checkboxWSTShowClock)
-        tabpageWST.Controls.Add(lblLoadOnOSStartupPath)
         tabpageWST.Controls.Add(checkboxWSTShowWLTray)
         tabpageWST.Controls.Add(checkboxWSTShowWLMenu)
         tabpageWST.Controls.Add(groupboxWSTSS)
-        tabpageWST.Controls.Add(btnLoadOnOSStartupPath)
-        tabpageWST.Controls.Add(checkboxLoadOnOSStartup)
-        tabpageWST.Controls.Add(txbxLoadOnOSStartupArgs)
         tabpageWST.Controls.Add(checkboxWSTEnabled)
-        tabpageWST.Controls.Add(ChkBoxThemeAuto)
         TipHCEX.SetImage(tabpageWST, Nothing)
         TipInfoEX.SetImage(tabpageWST, Nothing)
         tabpageWST.Location = New Point(4, 26)
@@ -585,32 +571,6 @@
         TipInfoEX.SetText(tabpageWST, Nothing)
         tabpageWST.Text = "****WorkSpace Tools****"
         tabpageWST.UseVisualStyleBackColor = True
-        ' 
-        ' LblTheme
-        ' 
-        LblTheme.Font = New Font("Segoe UI", 9.75F, FontStyle.Underline, GraphicsUnit.Point, CByte(0))
-        TipHCEX.SetImage(LblTheme, Nothing)
-        TipInfoEX.SetImage(LblTheme, Nothing)
-        LblTheme.Location = New Point(209, 3)
-        LblTheme.Name = "LblTheme"
-        LblTheme.Size = New Size(100, 23)
-        LblTheme.TabIndex = 143
-        TipInfoEX.SetText(LblTheme, Nothing)
-        LblTheme.Text = "Theme"
-        TipHCEX.SetText(LblTheme, Nothing)
-        LblTheme.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' CoBoxTheme
-        ' 
-        CoBoxTheme.FormattingEnabled = True
-        TipInfoEX.SetImage(CoBoxTheme, Nothing)
-        TipHCEX.SetImage(CoBoxTheme, Nothing)
-        CoBoxTheme.Location = New Point(209, 43)
-        CoBoxTheme.Name = "CoBoxTheme"
-        CoBoxTheme.Size = New Size(166, 26)
-        CoBoxTheme.TabIndex = 141
-        TipInfoEX.SetText(CoBoxTheme, Nothing)
-        TipHCEX.SetText(CoBoxTheme, Nothing)
         ' 
         ' checkboxWSTShowSleep
         ' 
@@ -755,19 +715,6 @@
         TipInfoEX.SetText(checkboxWSTShowClock, Nothing)
         checkboxWSTShowClock.Text = "Show Clock"
         checkboxWSTShowClock.UseVisualStyleBackColor = True
-        ' 
-        ' lblLoadOnOSStartupPath
-        ' 
-        lblLoadOnOSStartupPath.BorderStyle = BorderStyle.FixedSingle
-        TipHCEX.SetImage(lblLoadOnOSStartupPath, Nothing)
-        TipInfoEX.SetImage(lblLoadOnOSStartupPath, Nothing)
-        lblLoadOnOSStartupPath.Location = New Point(460, 22)
-        lblLoadOnOSStartupPath.Name = "lblLoadOnOSStartupPath"
-        lblLoadOnOSStartupPath.Size = New Size(150, 20)
-        lblLoadOnOSStartupPath.TabIndex = 101
-        TipHCEX.SetText(lblLoadOnOSStartupPath, Nothing)
-        TipInfoEX.SetText(lblLoadOnOSStartupPath, "Path")
-        lblLoadOnOSStartupPath.TextAlign = ContentAlignment.TopRight
         ' 
         ' checkboxWSTShowWLTray
         ' 
@@ -920,51 +867,6 @@
         checkboxWSTShowScreenSaverIcon.Text = "Show Tray Icon"
         checkboxWSTShowScreenSaverIcon.UseVisualStyleBackColor = True
         ' 
-        ' btnLoadOnOSStartupPath
-        ' 
-        btnLoadOnOSStartupPath.FlatAppearance.BorderSize = 0
-        btnLoadOnOSStartupPath.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnLoadOnOSStartupPath.FlatAppearance.MouseOverBackColor = Color.Transparent
-        btnLoadOnOSStartupPath.FlatStyle = FlatStyle.Flat
-        TipHCEX.SetImage(btnLoadOnOSStartupPath, Nothing)
-        btnLoadOnOSStartupPath.Image = My.Resources.Resources.ImageFolder
-        TipInfoEX.SetImage(btnLoadOnOSStartupPath, Nothing)
-        btnLoadOnOSStartupPath.Location = New Point(440, 21)
-        btnLoadOnOSStartupPath.Name = "btnLoadOnOSStartupPath"
-        btnLoadOnOSStartupPath.Size = New Size(21, 21)
-        btnLoadOnOSStartupPath.TabIndex = 101
-        btnLoadOnOSStartupPath.TabStop = False
-        TipInfoEX.SetText(btnLoadOnOSStartupPath, "Select An Application")
-        TipHCEX.SetText(btnLoadOnOSStartupPath, Nothing)
-        btnLoadOnOSStartupPath.TextAlign = ContentAlignment.MiddleLeft
-        btnLoadOnOSStartupPath.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxLoadOnOSStartup
-        ' 
-        TipInfoEX.SetImage(checkboxLoadOnOSStartup, Nothing)
-        TipHCEX.SetImage(checkboxLoadOnOSStartup, Nothing)
-        checkboxLoadOnOSStartup.Location = New Point(459, 5)
-        checkboxLoadOnOSStartup.Name = "checkboxLoadOnOSStartup"
-        checkboxLoadOnOSStartup.RightToLeft = RightToLeft.Yes
-        checkboxLoadOnOSStartup.Size = New Size(152, 20)
-        checkboxLoadOnOSStartup.TabIndex = 100
-        TipHCEX.SetText(checkboxLoadOnOSStartup, Nothing)
-        TipInfoEX.SetText(checkboxLoadOnOSStartup, Nothing)
-        checkboxLoadOnOSStartup.Text = "Load On Windows StartUp"
-        checkboxLoadOnOSStartup.UseVisualStyleBackColor = True
-        ' 
-        ' txbxLoadOnOSStartupArgs
-        ' 
-        TipHCEX.SetImage(txbxLoadOnOSStartupArgs, Nothing)
-        TipInfoEX.SetImage(txbxLoadOnOSStartupArgs, Nothing)
-        txbxLoadOnOSStartupArgs.Location = New Point(460, 41)
-        txbxLoadOnOSStartupArgs.Name = "txbxLoadOnOSStartupArgs"
-        txbxLoadOnOSStartupArgs.Size = New Size(150, 25)
-        txbxLoadOnOSStartupArgs.TabIndex = 102
-        TipInfoEX.SetText(txbxLoadOnOSStartupArgs, "Args")
-        TipHCEX.SetText(txbxLoadOnOSStartupArgs, Nothing)
-        txbxLoadOnOSStartupArgs.WordWrap = False
-        ' 
         ' checkboxWSTEnabled
         ' 
         TipInfoEX.SetImage(checkboxWSTEnabled, Nothing)
@@ -977,20 +879,6 @@
         TipInfoEX.SetText(checkboxWSTEnabled, Nothing)
         checkboxWSTEnabled.Text = "Show Tray Icon"
         checkboxWSTEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' ChkBoxThemeAuto
-        ' 
-        ChkBoxThemeAuto.AutoSize = True
-        TipInfoEX.SetImage(ChkBoxThemeAuto, Nothing)
-        TipHCEX.SetImage(ChkBoxThemeAuto, Nothing)
-        ChkBoxThemeAuto.Location = New Point(209, 23)
-        ChkBoxThemeAuto.Name = "ChkBoxThemeAuto"
-        ChkBoxThemeAuto.Size = New Size(137, 21)
-        ChkBoxThemeAuto.TabIndex = 142
-        TipHCEX.SetText(ChkBoxThemeAuto, Nothing)
-        TipInfoEX.SetText(ChkBoxThemeAuto, Nothing)
-        ChkBoxThemeAuto.Text = "Use System Theme"
-        ChkBoxThemeAuto.UseVisualStyleBackColor = True
         ' 
         ' tabpageAC
         ' 
@@ -2926,7 +2814,6 @@
         cmWST.ResumeLayout(False)
         tabcontrolSettings.ResumeLayout(False)
         tabpageWST.ResumeLayout(False)
-        tabpageWST.PerformLayout()
         groupboxWSTSS.ResumeLayout(False)
         tabpageAC.ResumeLayout(False)
         tabpageAC.PerformLayout()
@@ -2948,7 +2835,6 @@
     End Sub
     Private toolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
     Private toolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents txbxLoadOnOSStartupArgs As System.Windows.Forms.TextBox
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnClockTest As System.Windows.Forms.Button
     Private WithEvents cmiWSTClock As System.Windows.Forms.ToolStripMenuItem
@@ -3083,9 +2969,6 @@
     Private WithEvents lblACOffHourChimePath As System.Windows.Forms.Label
     Private WithEvents lblACTopHourChimePath As System.Windows.Forms.Label
     Private WithEvents lblACAlarmChimePath As System.Windows.Forms.Label
-    Private WithEvents lblLoadOnOSStartupPath As System.Windows.Forms.Label
-    Private WithEvents btnLoadOnOSStartupPath As System.Windows.Forms.Button
-    Private WithEvents checkboxLoadOnOSStartup As System.Windows.Forms.CheckBox
     Private WithEvents btnErrorTest As System.Windows.Forms.Button
     Private label32 As System.Windows.Forms.Label
     Private WithEvents btnInfo As System.Windows.Forms.Button
@@ -3132,9 +3015,6 @@
     Private WithEvents groupboxACTopHourChimeType As System.Windows.Forms.GroupBox
     Private WithEvents radiobtnACTopHourChimeExtended As System.Windows.Forms.RadioButton
     Private WithEvents tabcontrolSettings As System.Windows.Forms.TabControl
-    Friend WithEvents LblTheme As Skye.UI.Label
-    Friend WithEvents ChkBoxThemeAuto As CheckBox
-    Friend WithEvents CoBoxTheme As Skye.UI.ComboBox
     Friend WithEvents TipHCEX As Skye.UI.ToolTipEX
     Friend WithEvents TipInfoEX As Skye.UI.ToolTipEX
     Private WithEvents BtnSettings As Button

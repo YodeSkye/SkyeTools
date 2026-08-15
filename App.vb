@@ -387,8 +387,7 @@ Namespace My
 
 			Catch ex As Exception
 				WriteToLog(Tools.SkyeTools, $"Critical Error During Startup: {ex.Message}")
-				MessageBox.Show($"An error occurred while starting the application:{Environment.NewLine}{ex.Message}",
-								"Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+				MessageBox.Show($"An error occurred while starting the application:{Environment.NewLine}{ex.Message}", "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
 			End Try
 		End Sub
 		Friend Sub Finalize()
@@ -422,26 +421,7 @@ Namespace My
 			ErrorNotify()
 		End Sub
 		Friend Sub ErrorNotify()
-			If ErrorAlert Then
-				'notifyiconSkyeShow.Text = Application.Info.Title
-				'TipInfoEX.SetText(btnLog, "Show Log")
-				'If App.IsGeneratingFileList Then
-				'	notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppLoading
-				'	notifyiconSkyeShow.Text += Environment.NewLine + App.GeneratingFileListAlertText
-				'ElseIf App.ErrorAlert Then
-				'	notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppError
-				'	notifyiconSkyeShow.Text += Environment.NewLine + "** ERROR **" + Environment.NewLine + "LeftClick = Clear" + Environment.NewLine + "RightClick = View Log"
-				'	btnLog.BackColor = Color.Red
-				'	TipInfoEX.SetText(btnLog, TipInfoEX.GetText(btnLog) + Environment.NewLine + "An Error Has Occurred")
-				'Else
-				'	If App.ImageIsOnTop And App.VideoIsOnTop Then : notifyiconSkyeShow.Icon = My.Resources.Resources.iconApp
-				'	Else
-				'		notifyiconSkyeShow.Icon = My.Resources.Resources.IconAppHidden
-				'		notifyiconSkyeShow.Text += Environment.NewLine + "One Or More Windows Are Hidden. Click To Restore."
-				'	End If
-				'	btnLog.BackColor = Skye.UI.ThemeManager.CurrentTheme.ButtonBack
-			Else
-			End If
+			FrmMain.UpdateWST()
 		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
@@ -825,6 +805,8 @@ Namespace My
 			SaveSettingsWST()
 			SaveSettingsAC()
 			SaveSettingsWL()
+
+			SetLoadOnOSStartup()
 
 			Skye.Common.Log.Write("Settings Saved (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
 		End Sub

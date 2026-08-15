@@ -11,6 +11,7 @@ Partial Friend Class Settings
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
     Private suppressPageSelection As Boolean = False
+    Private OFDLoadOnOSStartup As New OpenFileDialog
 
     ' Form Events
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
@@ -28,15 +29,13 @@ Partial Friend Class Settings
     End Sub
     Friend Sub New()
 
-        ' Initialize Locals
         InitializeComponent()
 
-        ' Initialize Form
         Text = "Settings For " + My.Application.Info.Title + "  v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
         ILPageSelector.Images.Add(My.Resources.Resources.ImageApp32)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWST48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWSTSS48)
-        ILPageSelector.Images.Add(My.Resources.Resources.imageAC48)
+        ILPageSelector.Images.Add(My.Resources.Resources.ImageAC48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWL48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHC48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHK48)
@@ -48,6 +47,13 @@ Partial Friend Class Settings
         LVPageSelector.Items.Add(New ListViewItem("HotClicks", 5))
         LVPageSelector.Items.Add(New ListViewItem("HotKeys", 6))
         LVPageSelector.Items(0).Selected = True
+        OFDLoadOnOSStartup.DefaultExt = "exe"
+        OFDLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
+        OFDLoadOnOSStartup.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
+        OFDLoadOnOSStartup.Title = "Select An Application..."
+        For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
+            CoBoxTheme.Items.Add(thm.Name)
+        Next
 
     End Sub
     Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -57,9 +63,13 @@ Partial Friend Class Settings
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
         BtnErrorTest.Visible = True
+        'Me.ChkBoxLoadOnOSStartup.Enabled = False
+        'Me.LblLoadOnOSStartupPath.Enabled = False
+        'Me.TxtBoxLoadOnOSStartupArgs.Enabled = False
+        'Me.BtnLoadOnOSStartupPath.Enabled = False
 #Else
 #End If
-        SetListViewSpacing(LVPageSelector, 87, 105)
+        Skye.WinAPI.SetListViewSpacing(LVPageSelector, 87, 105)
         LVPageSelector.Focus()
         Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
         Skye.UI.ThemeManager.ApplyTheme(Me)
@@ -128,7 +138,7 @@ Partial Friend Class Settings
         Dim selectedSource As String = LVPageSelector.SelectedItems(0).Text
         SetPage(LVPageSelector.SelectedItems(0).Text)
     End Sub
-    Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnHelp.MouseUp
+    Private Sub BtnHelp_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnHelp.MouseUp
         If e.X >= 0 And e.X <= CType(sender, Button).Width And e.Y >= 0 And e.Y <= CType(sender, Button).Height Then
             Select Case e.Button
                 Case MouseButtons.Left : My.App.ShowHelp(False)
@@ -136,7 +146,7 @@ Partial Friend Class Settings
             End Select
         End If
     End Sub
-    Private Sub BtnLogMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnLog.MouseUp
+    Private Sub BtnLog_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnLog.MouseUp
         If e.X >= 0 And e.X <= CType(sender, Button).Width And e.Y >= 0 And e.Y <= CType(sender, Button).Height Then
             Select Case e.Button
                 Case MouseButtons.Left : App.ShowLog(False)
@@ -145,10 +155,10 @@ Partial Friend Class Settings
             If App.ErrorAlert Then App.ClearErrorAlert()
         End If
     End Sub
-    Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles BtnClose.Click
+    Private Sub BtnClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnClose.Click
         App.HideSettings()
     End Sub
-    Private Sub BtnErrorTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnErrorTest.MouseUp
+    Private Sub BtnErrorTest_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnErrorTest.MouseUp
         If e.X >= 0 And e.X <= CType(sender, Button).Width And e.Y >= 0 And e.Y <= CType(sender, Button).Height Then
             Select Case e.Button
                 Case MouseButtons.Left
@@ -162,14 +172,63 @@ Partial Friend Class Settings
             End Select
         End If
     End Sub
-    Private Sub BtnSaveSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveSettings.Click
-        My.App.SaveSettings()
+    Private Sub BtnSaveSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveSettings.Click
+        App.SaveSettings()
         App.NeedsSaved = False
         ShowSave()
-        'HideForm()
     End Sub
-    Private Sub BtnRestoreSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles BtnRestoreSettings.Click
+    Private Sub BtnRestoreSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnRestoreSettings.Click
         RestoreSettings()
+    End Sub
+    Private Sub ChkBoxThemeAuto_Click(sender As Object, e As EventArgs) Handles ChkBoxThemeAuto.Click
+        App.ThemeAuto = ChkBoxThemeAuto.Checked
+        SetThemesList()
+        Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
+        Skye.UI.ThemeManager.SetTheme(selectedTheme)
+        App.SetSave()
+    End Sub
+    Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+        Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
+        Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
+        App.Theme = selected
+        If Not App.ThemeAuto Then
+            Skye.UI.ThemeManager.SetTheme(selected)
+            ShowSettings()
+        End If
+        App.SetSave()
+    End Sub
+    Private Sub BtnLoadOnOSStartupPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnLoadOnOSStartupPath.Click
+        If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then OFDLoadOnOSStartup.InitialDirectory = WSTLoadOnOSStartupPath.Path
+        Dim r = OFDLoadOnOSStartup.ShowDialog(Me)
+        If r = System.Windows.Forms.DialogResult.OK And Not OFDLoadOnOSStartup.FileName = "" Then
+            WSTLoadOnOSStartupPath.Path = OFDLoadOnOSStartup.FileName
+            App.SetSave()
+        ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then
+            WSTLoadOnOSStartupPath = Nothing
+        End If
+        If Not r = System.Windows.Forms.DialogResult.Cancel Then ShowSettingsApp()
+    End Sub
+    Private Sub CheckboxLoadOnOSStartup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ChkBoxLoadOnOSStartup.Click
+        WSTLoadOnOSStartup = Not WSTLoadOnOSStartup
+        ShowSettingsApp()
+        App.SetSave()
+    End Sub
+    Private Sub TxbxLoadOnOSStartupArgs_Validated(sender As Object, e As EventArgs) Handles TxtBoxLoadOnOSStartupArgs.Validated
+        If String.IsNullOrEmpty(TxtBoxLoadOnOSStartupArgs.Text) Then
+            WSTLoadOnOSStartupPath.Arguments = String.Empty
+        Else
+            WSTLoadOnOSStartupPath.Arguments = TxtBoxLoadOnOSStartupArgs.Text
+        End If
+        ShowSettingsApp()
+        App.SetSave()
+        TxtBoxLoadOnOSStartupArgs.SelectAll()
+    End Sub
+    Private Sub LoadOnOSStartupCopy_DoubleClick(sender As Object, e As EventArgs) Handles LblLoadOnOSStartupPath.DoubleClick, TxtBoxLoadOnOSStartupArgs.DoubleClick
+        If sender Is LblLoadOnOSStartupPath Then
+            If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
+        ElseIf sender Is TxtBoxLoadOnOSStartupArgs Then
+            If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
+        End If
     End Sub
 
     ' Methods
@@ -203,10 +262,38 @@ Partial Friend Class Settings
     End Sub
     Private Sub ShowSettings()
 
+        ShowSettingsApp()
+
+        SetThemesList()
         UpdateSettings()
     End Sub
     Friend Sub UpdateSettings() 'Settings that can change on other forms
 
+    End Sub
+    Private Sub ShowSettingsApp()
+        CoBoxTheme.SelectedItem = App.Theme.Name
+        ChkBoxThemeAuto.Checked = App.ThemeAuto
+        If My.App.WSTLoadOnOSStartup Then
+            Me.ChkBoxLoadOnOSStartup.Checked = True
+            Me.BtnLoadOnOSStartupPath.Enabled = True
+            Me.LblLoadOnOSStartupPath.Enabled = True
+            Me.TxtBoxLoadOnOSStartupArgs.Enabled = True
+            Me.TipInfoEX.SetText(Me.LblLoadOnOSStartupPath, If(String.IsNullOrWhiteSpace(App.WSTLoadOnOSStartupPath.Path), "Path", App.WSTLoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path"))
+            Me.TipInfoEX.SetText(Me.TxtBoxLoadOnOSStartupArgs, If(String.IsNullOrEmpty(App.WSTLoadOnOSStartupPath.Arguments), "Arguments", App.WSTLoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
+        Else
+            Me.ChkBoxLoadOnOSStartup.Checked = False
+            Me.BtnLoadOnOSStartupPath.Enabled = False
+            Me.LblLoadOnOSStartupPath.Enabled = False
+            Me.TxtBoxLoadOnOSStartupArgs.Enabled = False
+            Me.TipInfoEX.SetText(Me.LblLoadOnOSStartupPath, Nothing)
+            Me.TipInfoEX.SetText(Me.TxtBoxLoadOnOSStartupArgs, Nothing)
+        End If
+        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then : Me.LblLoadOnOSStartupPath.Text = String.Empty
+        Else : Me.LblLoadOnOSStartupPath.Text = IIf(My.App.WSTLoadOnOSStartupPath.Path.Contains("\"c), "...\", Nothing).ToString + My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).GetValue(My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).Length - 1).ToString
+        End If
+        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments) Then : Me.TxtBoxLoadOnOSStartupArgs.Text = String.Empty
+        Else : Me.TxtBoxLoadOnOSStartupArgs.Text = My.App.WSTLoadOnOSStartupPath.Arguments
+        End If
     End Sub
     Friend Sub RestoreSettings()
         My.App.GetSettings()
@@ -225,21 +312,11 @@ Partial Friend Class Settings
             TipInfoEX.SetText(BtnSaveSettings, "Save All Settings")
         End If
     End Sub
-    Private Sub SetListViewSpacing(lv As ListView, cx As Integer, cy As Integer)
-        ' cy controls vertical spacing between rows (e.g. try 80 to 100)
-        ' cx controls horizontal spacing (e.g. try 90 to 120)
-        Const LVM_SETICONSPACING As Integer = &H1035
-        Dim lParam As IntPtr = CType((CInt(cy) << 16) Or (CInt(cx) And &HFFFF), IntPtr)
-        Skye.WinAPI.SendMessage(lv.Handle, LVM_SETICONSPACING, IntPtr.Zero, lParam)
-
-        ' Force the ListView to rearrange items with the new grid spacing
-        lv.ArrangeIcons()
-    End Sub
     Private Sub SetThemesList()
         If App.ThemeAuto Then
-            'CoBoxTheme.Enabled = False
+            CoBoxTheme.Enabled = False
         Else
-            'CoBoxTheme.Enabled = True
+            CoBoxTheme.Enabled = True
         End If
     End Sub
     Private Sub CheckMove(ByRef location As Point)

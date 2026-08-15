@@ -32,8 +32,6 @@ Partial Friend Class MainForm
     Private mMove As Boolean = False
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
-    Private ErrorWarning As Boolean = False
-    Private ProcessList As Collections.Generic.List(Of ProcessListType)
     Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
 
     ' Form Events
@@ -67,10 +65,6 @@ Partial Friend Class MainForm
         TimerAC.Interval = 1000
         BackgroundworkerWL.WorkerSupportsCancellation = True
         BackgroundworkerAC.WorkerSupportsCancellation = True
-        openfiledialogLoadOnOSStartup.DefaultExt = "exe"
-        openfiledialogLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
-        openfiledialogLoadOnOSStartup.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
-        openfiledialogLoadOnOSStartup.Title = "Select An Application..."
         uiACOpenFile.DefaultExt = "wav"
         uiACOpenFile.Filter = "WAV Files|*.wav"
         uiACOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
@@ -125,9 +119,6 @@ Partial Friend Class MainForm
         Next
 #Enable Warning CA2263
         Me.TipInfoEX.SetText(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
-        For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
-            CoBoxTheme.Items.Add(thm.Name)
-        Next
         AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
         AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
         WLSetSettingsState(True)
@@ -187,10 +178,6 @@ Partial Friend Class MainForm
         Me.Top = CInt(My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2)
         Me.btnErrorTest.Show()
         Me.btnClockTest.Show()
-        Me.checkboxLoadOnOSStartup.Enabled = False
-        Me.lblLoadOnOSStartupPath.Enabled = False
-        Me.txbxLoadOnOSStartupArgs.Enabled = False
-        Me.btnLoadOnOSStartupPath.Enabled = False
         Me.Show()
 #Else
 #End If
@@ -270,7 +257,7 @@ Partial Friend Class MainForm
             End Select
         End If
     End Sub
-    Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnLoadOnOSStartupPath.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
+    Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
         btnClose.Focus()
     End Sub
     Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHelp.MouseUp, btnInfo.MouseUp
@@ -288,8 +275,8 @@ Partial Friend Class MainForm
                 Case MouseButtons.Right : My.App.ShowLog(True)
             End Select
         End If
-        ErrorWarning = False
-        UpdateWST()
+        App.ClearErrorAlert()
+        ' UpdateWST()
     End Sub
     Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
         HideForm()
@@ -298,7 +285,7 @@ Partial Friend Class MainForm
         If e.X >= 0 And e.X <= btnErrorTest.Width And e.Y >= 0 And e.Y <= btnErrorTest.Height Then
             Select Case e.Button
                 Case MouseButtons.Left
-                    ErrorNotification()
+                    App.SetErrorAlert()
                     App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", SystemIcons.Error, True)
                 Case MouseButtons.Right
                     Throw New Exception("Test Exception - DO NOT PANIC!!")
@@ -318,10 +305,6 @@ Partial Friend Class MainForm
     End Sub
 
     ' Methods
-    Friend Sub ErrorNotification()
-        ErrorWarning = True
-        UpdateWST()
-    End Sub
     Private Sub ShowTools()
         If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
         Else 'Any One or More Tools Running(That Have A Tray Icon)
@@ -405,7 +388,6 @@ Partial Friend Class MainForm
 
     ' Declarations
     Private imagelisttabcontrolSettings As ImageList
-    Private openfiledialogLoadOnOSStartup As New OpenFileDialog
 
     ' Control Events
     Private Sub TabcontrolSettingsSelected(ByVal sender As Object, ByVal e As TabControlEventArgs) Handles tabcontrolSettings.Selected
@@ -436,7 +418,7 @@ Partial Friend Class MainForm
     Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress, textboxACAlarmTimer.KeyPress, textboxACAlarmTime.KeyPress
         If nonNumberEntered Then e.Handled = True
     End Sub
-    Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs) Handles txbxLoadOnOSStartupArgs.KeyDown
+    Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs)
         If e.KeyCode = Keys.Enter Then Validate()
     End Sub
 
@@ -551,27 +533,6 @@ Partial Friend Class MainForm
         End If
     End Sub
     Private Sub ShowSettingsWST()
-        If My.App.WSTLoadOnOSStartup Then
-            Me.checkboxLoadOnOSStartup.Checked = True
-            Me.btnLoadOnOSStartupPath.Enabled = True
-            Me.lblLoadOnOSStartupPath.Enabled = True
-            Me.txbxLoadOnOSStartupArgs.Enabled = True
-            Me.TipInfoEX.SetText(Me.lblLoadOnOSStartupPath, My.App.WSTLoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path")
-            Me.TipInfoEX.SetText(Me.txbxLoadOnOSStartupArgs, IIf(String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments), "Arguments", My.App.WSTLoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
-        Else
-            Me.checkboxLoadOnOSStartup.Checked = False
-            Me.btnLoadOnOSStartupPath.Enabled = False
-            Me.lblLoadOnOSStartupPath.Enabled = False
-            Me.txbxLoadOnOSStartupArgs.Enabled = False
-            Me.TipInfoEX.SetText(Me.lblLoadOnOSStartupPath, Nothing)
-            Me.TipInfoEX.SetText(Me.txbxLoadOnOSStartupArgs, Nothing)
-        End If
-        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then : Me.lblLoadOnOSStartupPath.Text = String.Empty
-        Else : Me.lblLoadOnOSStartupPath.Text = IIf(My.App.WSTLoadOnOSStartupPath.Path.Contains("\"c), "...\", Nothing).ToString + My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).GetValue(My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).Length - 1).ToString
-        End If
-        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments) Then : Me.txbxLoadOnOSStartupArgs.Text = String.Empty
-        Else : Me.txbxLoadOnOSStartupArgs.Text = My.App.WSTLoadOnOSStartupPath.Arguments
-        End If
         If My.App.WSTEnabled Then : Me.checkboxWSTEnabled.Checked = True
         Else : Me.checkboxWSTEnabled.Checked = False
         End If
@@ -611,9 +572,6 @@ Partial Friend Class MainForm
         If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
         Else : Me.checkboxWSTShowLog.Checked = False
         End If
-        CoBoxTheme.SelectedItem = App.Theme.Name
-        ChkBoxThemeAuto.Checked = App.ThemeAuto
-        SetThemesList()
     End Sub
     Private Sub ShowSettingsSS()
         If My.App.WSTSSToolEnabled Then
@@ -1235,67 +1193,22 @@ Partial Friend Class MainForm
         End Select
         ShowTools()
     End Sub
-    Private Sub BtnLoadOnOSStartupPathClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnLoadOnOSStartupPath.Click
-        If Not String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then Me.openfiledialogLoadOnOSStartup.InitialDirectory = My.App.WSTLoadOnOSStartupPath.Path
-        Dim r As DialogResult = Me.openfiledialogLoadOnOSStartup.ShowDialog(Me)
-        If r = System.Windows.Forms.DialogResult.OK And Not Me.openfiledialogLoadOnOSStartup.FileName = "" Then : My.App.WSTLoadOnOSStartupPath.Path = Me.openfiledialogLoadOnOSStartup.FileName
-        ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then : My.App.WSTLoadOnOSStartupPath = Nothing
-        End If
-        If Not r = System.Windows.Forms.DialogResult.Cancel Then
-            ShowSettings(My.App.Tools.WorkSpaceTools)
-            My.App.SetLoadOnOSStartup()
-            'DebugLog.ShowMessage(My.SkyeTools.Tools.SkyeTools, "btnLoadOnOSStartupPathClick", My.SkyeTools.LoadOnOSStartupPath)
-        End If
-    End Sub
-    Private Sub CheckboxLoadOnOSStartupClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxLoadOnOSStartup.Click
-        My.App.WSTLoadOnOSStartup = Not My.App.WSTLoadOnOSStartup
-        My.App.SetLoadOnOSStartup()
-        ShowSettings(My.App.Tools.WorkSpaceTools)
-    End Sub
-    Private Sub TxbxLoadOnOSStartupArgsValidated(sender As Object, e As EventArgs) Handles txbxLoadOnOSStartupArgs.Validated
-        If String.IsNullOrEmpty(Me.txbxLoadOnOSStartupArgs.Text) Then : My.App.WSTLoadOnOSStartupPath.Arguments = String.Empty
-        Else : My.App.WSTLoadOnOSStartupPath.Arguments = Me.txbxLoadOnOSStartupArgs.Text
-        End If
-        My.App.SetLoadOnOSStartup()
-        ShowSettingsWST()
-        Me.txbxLoadOnOSStartupArgs.SelectAll()
-    End Sub
-    Private Sub TxbxWSTCopyDoubleClick(sender As Object, e As EventArgs) Handles txbxLoadOnOSStartupArgs.DoubleClick, lblLoadOnOSStartupPath.DoubleClick
-        If sender Is lblLoadOnOSStartupPath Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
-        ElseIf sender Is txbxLoadOnOSStartupArgs Then : If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
-        End If
-    End Sub
-    Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
-        Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
-        Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
-        App.Theme = selected
-        If Not App.ThemeAuto Then
-            Skye.UI.ThemeManager.SetTheme(selected)
-            ShowSettings()
-        End If
-    End Sub
-    Private Sub ChkBoxThemeAuto_Click(sender As Object, e As EventArgs) Handles ChkBoxThemeAuto.Click
-        App.ThemeAuto = ChkBoxThemeAuto.Checked
-        SetThemesList()
-        Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
-        Skye.UI.ThemeManager.SetTheme(selectedTheme)
-    End Sub
 
     ' Methods
     Friend Sub UpdateWST()
         'Settings Window
         Me.TipInfoEX.SetText(Me.btnLog, "Log" + Chr(13) + "RightClick = Show Maximized")
-        If ErrorWarning Then Me.TipInfoEX.SetText(Me.btnLog, Me.TipInfoEX.GetText(Me.btnLog) + Chr(13) + "An Application Error Has Occured. View Log For Details.")
+        If App.ErrorAlert Then Me.TipInfoEX.SetText(Me.btnLog, Me.TipInfoEX.GetText(Me.btnLog) + Chr(13) + "An Application Error Has Occured. View Log For Details.")
         'WorkSpace Tools
         If My.App.WSTEnabled Then
-            Me.notifyiconWST.Icon = My.Resources.Resources.iconWST 'CType(My.App.AppResources.GetObject("iconWST"), Icon)
+            Me.notifyiconWST.Icon = My.Resources.Resources.IconWST
             Me.notifyiconWST.Text = My.App.WSTName
             Me.cmiWSTLog.ToolTipText = "RightClick = Show Maximized"
             Me.cmiWSTLog.ResetFont()
             Me.cmiWSTLog.ResetForeColor()
-            If ErrorWarning Then
+            If App.ErrorAlert Then
                 Me.notifyiconWST.Text += Chr(13) + "** ERROR **"
-                Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
+                Me.notifyiconWST.Icon = My.Resources.Resources.IconWSTAlert
                 Me.cmiWSTLog.Font = App.MenuFontBold
                 Me.cmiWSTLog.ForeColor = Color.Firebrick
                 Me.cmiWSTLog.ToolTipText += Chr(13) + "An Application Error Has Occured. View Log For Details."
@@ -1307,8 +1220,8 @@ Partial Friend Class MainForm
             End If
             If ACAlarmTripped And ACChimeCount = Byte.MaxValue Then
                 Me.notifyiconWST.Text += Chr(13) + "** ALARM **"
-                Me.notifyiconWST.Icon = My.Resources.Resources.iconWSTAlert 'CType(My.App.AppResources.GetObject("iconWSTAlert"), Icon)
-                Me.cmiWSTAC.ToolTipText = Me.TipInfoEX.GetText(Me.btnACAlarmCancel) '"THE ALARM HAS SOUNDED"
+                Me.notifyiconWST.Icon = My.Resources.Resources.IconWSTAlert
+                Me.cmiWSTAC.ToolTipText = Me.TipInfoEX.GetText(Me.btnACAlarmCancel) ' "THE ALARM HAS SOUNDED"
                 Me.cmiWSTAC.Checked = True
                 Me.cmiWSTAC.Font = App.MenuFontBold
             ElseIf ACAlarmActive Then
@@ -1409,13 +1322,6 @@ Partial Friend Class MainForm
                 WSTSSSet()
             End If
             Skye.WinAPI.LockWorkStation()
-        End If
-    End Sub
-    Private Sub SetThemesList()
-        If App.ThemeAuto Then
-            CoBoxTheme.Enabled = False
-        Else
-            CoBoxTheme.Enabled = True
         End If
     End Sub
 
