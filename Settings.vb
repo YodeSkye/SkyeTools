@@ -6,14 +6,14 @@ Imports SkyeTools.My
 
 Partial Friend Class Settings
 
-    ' Declarations
+    ' DECLARATIONS
     Private mMove As Boolean = False
     Private mOffset, mPosition As Point
     Private nonNumberEntered As Boolean
     Private suppressPageSelection As Boolean = False
     Private OFDLoadOnOSStartup As New OpenFileDialog
 
-    ' Form Events
+    ' FORM EVENTS
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
         Select Case m.Msg
             Case Skye.WinAPI.WM_SYSCOMMAND
@@ -63,10 +63,6 @@ Partial Friend Class Settings
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
         BtnErrorTest.Visible = True
-        'Me.ChkBoxLoadOnOSStartup.Enabled = False
-        'Me.LblLoadOnOSStartupPath.Enabled = False
-        'Me.TxtBoxLoadOnOSStartupArgs.Enabled = False
-        'Me.BtnLoadOnOSStartupPath.Enabled = False
 #Else
 #End If
         Skye.WinAPI.SetListViewSpacing(LVPageSelector, 87, 105)
@@ -100,7 +96,7 @@ Partial Friend Class Settings
         If Not mMove AndAlso Me.WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
     End Sub
 
-    ' Control Events
+    ' CONTROL EVENTS
     Private Sub PanelPage_Paint(sender As Object, e As PaintEventArgs) Handles PanelApp.Paint, PanelWST.Paint, PanelSS.Paint, PanelAC.Paint, PanelWL.Paint, PanelHC.Paint, PanelHK.Paint
         Dim pagePanel As Panel = DirectCast(sender, Panel)
         Using p As New Pen(Color.FromArgb(100, 100, 100))
@@ -180,6 +176,22 @@ Partial Friend Class Settings
     Private Sub BtnRestoreSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnRestoreSettings.Click
         RestoreSettings()
     End Sub
+    ''' <summary>
+    ''' Suppresses the system ding on Enter and forces the form to validate the control.
+    ''' Call this from the TextBox KeyDown handler.
+    ''' </summary>
+    Public Shared Sub HandleEnterKey(sender As Object, e As KeyEventArgs) Handles TxtBoxLoadOnOSStartupArgs.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            ' 1. Silence the system ding
+            e.SuppressKeyPress = True
+
+            ' 2. Trigger validation on the form/control
+            Dim tb As TextBox = TryCast(sender, TextBox)
+            tb?.FindForm()?.ValidateChildren()
+        End If
+    End Sub
+
+    ' App
     Private Sub ChkBoxThemeAuto_Click(sender As Object, e As EventArgs) Handles ChkBoxThemeAuto.Click
         App.ThemeAuto = ChkBoxThemeAuto.Checked
         SetThemesList()
@@ -214,14 +226,14 @@ Partial Friend Class Settings
         App.SetSave()
     End Sub
     Private Sub TxbxLoadOnOSStartupArgs_Validated(sender As Object, e As EventArgs) Handles TxtBoxLoadOnOSStartupArgs.Validated
-        If String.IsNullOrEmpty(TxtBoxLoadOnOSStartupArgs.Text) Then
-            WSTLoadOnOSStartupPath.Arguments = String.Empty
+        If String.IsNullOrEmpty(Me.TxtBoxLoadOnOSStartupArgs.Text) Then
+            App.WSTLoadOnOSStartupPath.Arguments = String.Empty
         Else
-            WSTLoadOnOSStartupPath.Arguments = TxtBoxLoadOnOSStartupArgs.Text
+            App.WSTLoadOnOSStartupPath.Arguments = Me.TxtBoxLoadOnOSStartupArgs.Text
         End If
         ShowSettingsApp()
         App.SetSave()
-        TxtBoxLoadOnOSStartupArgs.SelectAll()
+        Me.TxtBoxLoadOnOSStartupArgs.SelectAll()
     End Sub
     Private Sub LoadOnOSStartupCopy_DoubleClick(sender As Object, e As EventArgs) Handles LblLoadOnOSStartupPath.DoubleClick, TxtBoxLoadOnOSStartupArgs.DoubleClick
         If sender Is LblLoadOnOSStartupPath Then
@@ -231,7 +243,14 @@ Partial Friend Class Settings
         End If
     End Sub
 
-    ' Methods
+    ' Workspace Tools
+    ' Screen Saver
+    ' Alarm & Chime
+    ' WinLinks
+    ' HotClicks
+    ' HotKeys
+
+    ' METHODS
     Private Sub SetPage(page As String)
         PanelApp.Enabled = False
         PanelWST.Enabled = False
@@ -263,6 +282,12 @@ Partial Friend Class Settings
     Private Sub ShowSettings()
 
         ShowSettingsApp()
+        ShowSettingsWST()
+        ShowSettingsSS()
+        ShowSettingsAC()
+        ShowSettingsWL()
+        ShowSettingsHC()
+        ShowSettingsHK()
 
         SetThemesList()
         UpdateSettings()
@@ -294,6 +319,18 @@ Partial Friend Class Settings
         If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments) Then : Me.TxtBoxLoadOnOSStartupArgs.Text = String.Empty
         Else : Me.TxtBoxLoadOnOSStartupArgs.Text = My.App.WSTLoadOnOSStartupPath.Arguments
         End If
+    End Sub
+    Private Sub ShowSettingsWST()
+    End Sub
+    Private Sub ShowSettingsSS()
+    End Sub
+    Private Sub ShowSettingsAC()
+    End Sub
+    Private Sub ShowSettingsWL()
+    End Sub
+    Private Sub ShowSettingsHC()
+    End Sub
+    Private Sub ShowSettingsHK()
     End Sub
     Friend Sub RestoreSettings()
         My.App.GetSettings()

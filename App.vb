@@ -719,8 +719,9 @@ Namespace My
 
 		End Sub
 
-		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-			HKEnabled = False
+        <Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
+            WSTLoadOnOSStartup = False
+            HKEnabled = False
 			GetSettingsDebugHK()
 			'WorkSpace Tools (WST)
 			'WSTLoadOnOSStartup = True
