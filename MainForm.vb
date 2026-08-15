@@ -305,7 +305,7 @@ Partial Friend Class MainForm
     End Sub
 
     ' Methods
-    Private Sub ShowTools()
+    Friend Sub ShowTools()
         If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
         Else 'Any One or More Tools Running(That Have A Tray Icon)
             If My.App.WSTEnabled Then
@@ -314,21 +314,20 @@ Partial Friend Class MainForm
                 Me.notifyiconWST.Visible = True
             Else : Me.notifyiconWST.Visible = False
             End If
-            If My.App.WSTSSToolEnabled Then
+            If App.WSTSSToolEnabled Then
                 Select Case My.App.WSTSSStartUp
                     Case My.App.WSTSSStartUpMode.Enabled : WSTSSEnabled = True
                     Case My.App.WSTSSStartUpMode.Disabled : WSTSSEnabled = False
                 End Select
                 WSTSSSet()
-
-                If My.App.WSTShowSSIcon Then : Me.notifyiconWSTScreenSaver.Visible = True
-                Else : Me.notifyiconWSTScreenSaver.Visible = False
+                If App.WSTSSToolEnabled AndAlso App.WSTShowSSIcon Then
+                    Me.notifyiconWSTScreenSaver.Visible = True
+                Else
+                    Me.notifyiconWSTScreenSaver.Visible = False
                 End If
-            Else : If Me.notifyiconWSTScreenSaver.Visible Then Me.notifyiconWSTScreenSaver.Visible = False
+            Else
+                Me.notifyiconWSTScreenSaver.Visible = False
             End If
-
-            WLSetSettingsTab()
-
             If Not My.Application.AlternateStart AndAlso My.App.WSTShowWLTray Then : If WLTrayIcons.Count = 0 Then ShowWL()
             Else : If WLTrayIcons.Count > 0 Then WLClose()
             End If
@@ -428,7 +427,6 @@ Partial Friend Class MainForm
         Me.SuspendLayout()
         ShowSettingsHC()
         ShowSettingsHK()
-        ShowSettingsWST()
         ShowSettingsSS()
         ShowSettingsAC()
         ShowSettingsWL()
@@ -444,7 +442,6 @@ Partial Friend Class MainForm
             Select Case tool
                 Case My.App.Tools.HotClicks : ShowSettingsHC()
                 Case My.App.Tools.HotKeys : ShowSettingsHK()
-                Case My.App.Tools.WorkSpaceTools : ShowSettingsWST()
                 Case My.App.Tools.ScreenSaver : ShowSettingsSS()
                 Case My.App.Tools.AlarmChime : ShowSettingsAC()
                 Case My.App.Tools.WinLinks : ShowSettingsWL()
@@ -530,47 +527,6 @@ Partial Friend Class MainForm
             Me.btnHKWLDisable.Enabled = False
             Me.btnHKEnabled.Text = "Enable"
             Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
-        End If
-    End Sub
-    Private Sub ShowSettingsWST()
-        If My.App.WSTEnabled Then : Me.checkboxWSTEnabled.Checked = True
-        Else : Me.checkboxWSTEnabled.Checked = False
-        End If
-        If My.App.WSTShowWLMenu Then : Me.checkboxWSTShowWLMenu.Checked = True
-        Else : Me.checkboxWSTShowWLMenu.Checked = False
-        End If
-        If My.App.WSTShowWLTray Then : Me.checkboxWSTShowWLTray.Checked = True
-        Else : Me.checkboxWSTShowWLTray.Checked = False
-        End If
-        If My.App.WSTShowAC Then : Me.checkboxWSTShowAC.Checked = True
-        Else : Me.checkboxWSTShowAC.Checked = False
-        End If
-        If My.App.WSTShowClock Then : Me.checkboxWSTShowClock.Checked = True
-        Else : Me.checkboxWSTShowClock.Checked = False
-        End If
-        If My.App.WSTShowLockWorkSpace Then : Me.checkboxWSTShowLockWorkSpace.Checked = True
-        Else : Me.checkboxWSTShowLockWorkSpace.Checked = False
-        End If
-        If My.App.WSTShowLogOff Then : Me.checkboxWSTShowLogOff.Checked = True
-        Else : Me.checkboxWSTShowLogOff.Checked = False
-        End If
-        If My.App.WSTShowSleep Then : Me.checkboxWSTShowSleep.Checked = True
-        Else : Me.checkboxWSTShowSleep.Checked = False
-        End If
-        If My.App.WSTShowHibernate Then : Me.checkboxWSTShowHibernate.Checked = True
-        Else : Me.checkboxWSTShowHibernate.Checked = False
-        End If
-        If My.App.WSTShowReStart Then : Me.checkboxWSTShowReStart.Checked = True
-        Else : Me.checkboxWSTShowReStart.Checked = False
-        End If
-        If My.App.WSTShowShutDown Then : Me.checkboxWSTShowShutDown.Checked = True
-        Else : Me.checkboxWSTShowShutDown.Checked = False
-        End If
-        If My.App.WSTShowHelp Then : Me.checkboxWSTShowHelp.Checked = True
-        Else : Me.checkboxWSTShowHelp.Checked = False
-        End If
-        If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
-        Else : Me.checkboxWSTShowLog.Checked = False
         End If
     End Sub
     Private Sub ShowSettingsSS()
@@ -1132,67 +1088,6 @@ Partial Friend Class MainForm
             ShowSettings()
         End If
     End Sub
-    Private Sub CheckboxWSTEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTEnabled.Click
-        My.App.WSTEnabled = Not My.App.WSTEnabled
-        ShowTools()
-    End Sub
-    Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTShowWLMenu.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowScreenSaverEnabled.Click, checkboxWSTShowScreenSaverActivate.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
-        Select Case CType(sender, CheckBox).Name
-            Case checkboxWSTShowWLMenu.Name
-                WSTShowWLMenu = Not WSTShowWLMenu
-                WLSetSettingsTab()
-
-                If WSTShowWLMenu Then
-                    For index = 0 To WLData.Count - 1
-                        If WLData(index).ShowInMenu Then
-                            Dim link = WLData(index)
-                            link.RefreshMenu = True
-                            WLData(index) = link
-                        End If
-                    Next
-                    ShowWL()
-                Else : WLClose()
-                End If
-            Case checkboxWSTShowScreenSaverActivate.Name : WSTShowSSActivate = Not WSTShowSSActivate
-            Case checkboxWSTShowScreenSaverEnabled.Name : WSTShowSSEnabled = Not WSTShowSSEnabled
-            Case checkboxWSTShowClock.Name
-                App.WSTShowClock = Not App.WSTShowClock
-            Case checkboxWSTShowAC.Name
-                WSTShowAC = Not WSTShowAC
-                ACSet()
-            Case checkboxWSTShowLockWorkSpace.Name : WSTShowLockWorkSpace = Not WSTShowLockWorkSpace
-            Case checkboxWSTShowLogOff.Name : WSTShowLogOff = Not WSTShowLogOff
-            Case checkboxWSTShowSleep.Name : WSTShowSleep = Not WSTShowSleep
-            Case checkboxWSTShowHibernate.Name : WSTShowHibernate = Not WSTShowHibernate
-            Case checkboxWSTShowReStart.Name : WSTShowReStart = Not WSTShowReStart
-            Case checkboxWSTShowShutDown.Name : WSTShowShutDown = Not WSTShowShutDown
-            Case checkboxWSTShowHelp.Name : WSTShowHelp = Not WSTShowHelp
-            Case checkboxWSTShowLog.Name : WSTShowLog = Not WSTShowLog
-        End Select
-        ShowWST()
-    End Sub
-    Private Sub CheckboxWSTShowIconClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTSSToolEnabled.Click, checkboxWSTShowWLTray.Click, checkboxWSTShowScreenSaverIcon.Click
-        Select Case CType(sender, CheckBox).Name
-            Case checkboxWSTShowWLTray.Name
-                WSTShowWLTray = Not WSTShowWLTray
-                For index = 0 To WLData.Count - 1
-                    If WLData(index).ShowInTray Then
-                        Dim link = WLData(index)
-                        link.RefreshMenu = True
-                        WLData(index) = link
-                    End If
-                Next
-            Case checkboxWSTShowScreenSaverIcon.Name : WSTShowSSIcon = Not WSTShowSSIcon
-            Case checkboxWSTSSToolEnabled.Name
-                If WSTSSToolEnabled AndAlso Not WSTSSEnabled Then
-                    WSTSSEnabled = True
-                    WSTSSSet()
-                End If
-                WSTSSToolEnabled = Not WSTSSToolEnabled
-                ShowSettingsSS()
-        End Select
-        ShowTools()
-    End Sub
 
     ' Methods
     Friend Sub UpdateWST()
@@ -1249,7 +1144,7 @@ Partial Friend Class MainForm
         If Not BackgroundworkerAC.IsBusy Then Me.cmiWSTACAlarmCancel.Visible = False
         UpdateWST()
     End Sub
-    Private Sub ShowWST()
+    Friend Sub ShowWST()
         'Main Section
         If My.App.WSTSSToolEnabled And My.App.WSTShowSSEnabled Then : Me.cmiWSTScreenSaverEnabled.Visible = True
         Else : Me.cmiWSTScreenSaverEnabled.Visible = False
@@ -1329,7 +1224,7 @@ Partial Friend Class MainForm
 #Region "ScreenSaver (SS)"
 
     'Declarations
-    Private WSTSSEnabled As Boolean
+    Friend WSTSSEnabled As Boolean
 
     'Control Events
     Private Sub CMIWSTScreenSaverActivateMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTScreenSaverActivate.MouseUp, cmiScreenSaverActivate.MouseUp
@@ -1366,7 +1261,7 @@ Partial Friend Class MainForm
     End Sub
 
     'Procedures
-    Private Sub WSTSSSet()
+    Friend Sub WSTSSSet()
         Debug.Print("WSTSSSet: SS Enabled = " + WSTSSEnabled.ToString)
         If My.App.WSTSSToolEnabled Then
             If WSTSSEnabled Then
@@ -1422,7 +1317,7 @@ Partial Friend Class MainForm
     Private WithEvents TimerAC As New Timer
     Private WithEvents BackgroundworkerAC As New System.ComponentModel.BackgroundWorker
     Private uiACOpenFile As New OpenFileDialog
-    Private ACAlarmActive As Boolean
+    Friend ACAlarmActive As Boolean
     Private ACAlarmTripped As Boolean = False
     Private ACMute As Boolean = False
     Private ACChimePath As String
@@ -1766,12 +1661,10 @@ Partial Friend Class MainForm
             Me.TipInfoEX.SetText(Me.btnACMute, "Mute All Chimes")
         End If
     End Sub
-    Private Sub ACSet()
-        Me.tabpageAC.Enabled = My.App.WSTShowAC
+    Friend Sub ACSet()
         If My.App.WSTShowAC Then : ACAlarmActive = My.App.ACAlarmRecurring
         Else : ACAlarmActive = False
         End If
-        ShowSettings(My.App.Tools.AlarmChime)
         ACSetTimer()
     End Sub
     Private Sub ACSetTimer()
@@ -2373,7 +2266,7 @@ Partial Friend Class MainForm
     End Sub
 
     ' Methods
-    Private Sub ShowWL()
+    Friend Sub ShowWL()
         Try
             ShowSettings(My.App.Tools.WinLinks)
             If (My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLData.Count > 0 And Not BackgroundworkerWL.IsBusy Then
@@ -2552,7 +2445,7 @@ Partial Friend Class MainForm
         App.HookTSItemsForCMTooltip(cmWLItem, TipCM)
         cmWLItem.Show(MousePosition)
     End Sub
-    Private Sub WLClose(Optional ByRef forcecloseall As Boolean = False)
+    Friend Sub WLClose(Optional ByRef forcecloseall As Boolean = False)
         Try
             If Not My.App.WSTShowWLMenu Or forcecloseall Then
                 For Each cmi As ToolStripMenuItem In WLMenus
@@ -2696,11 +2589,6 @@ Partial Friend Class MainForm
         Me.lblWLRoot.ResetFont()
         Me.lblWLRoot.Text = "Root Folder"
         Me.textboxWLRoot.Select()
-    End Sub
-    Private Sub WLSetSettingsTab()
-        If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.tabpageWL.Enabled = True
-        Else : Me.tabpageWL.Enabled = False
-        End If
     End Sub
     Private Sub WLSetSettingsState(state As Boolean)
         'On Error Resume Next

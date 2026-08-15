@@ -244,6 +244,62 @@ Partial Friend Class Settings
     End Sub
 
     ' Workspace Tools
+    Private Sub CheckboxWSTEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTEnabled.Click
+        My.App.WSTEnabled = Not My.App.WSTEnabled
+        App.FrmMain.ShowTools()
+    End Sub
+    Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTSSToolEnabled.Click, checkboxWSTShowWLTray.Click, checkboxWSTShowWLMenu.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
+        Select Case CType(sender, CheckBox).Name
+            Case checkboxWSTSSToolEnabled.Name
+                App.WSTSSToolEnabled = Not App.WSTSSToolEnabled
+                SetSS()
+                ShowSettingsSS()
+                If App.WSTSSToolEnabled AndAlso Not App.FrmMain.WSTSSEnabled Then
+                    App.FrmMain.WSTSSEnabled = True
+                    App.FrmMain.WSTSSSet()
+                End If
+            Case checkboxWSTShowAC.Name
+                WSTShowAC = Not WSTShowAC
+                SetAC()
+            Case checkboxWSTShowClock.Name
+                App.WSTShowClock = Not App.WSTShowClock
+            Case checkboxWSTShowWLMenu.Name
+                WSTShowWLMenu = Not WSTShowWLMenu
+                SetWLSettingsTab()
+                If WSTShowWLMenu Then
+                    For index = 0 To WLData.Count - 1
+                        If WLData(index).ShowInMenu Then
+                            Dim link = WLData(index)
+                            link.RefreshMenu = True
+                            WLData(index) = link
+                        End If
+                    Next
+                    App.FrmMain.ShowWL()
+                Else
+                    App.FrmMain.WLClose()
+                End If
+            Case checkboxWSTShowWLTray.Name
+                WSTShowWLTray = Not WSTShowWLTray
+                For index = 0 To WLData.Count - 1
+                    If WLData(index).ShowInTray Then
+                        Dim link = WLData(index)
+                        link.RefreshMenu = True
+                        WLData(index) = link
+                    End If
+                Next
+            Case checkboxWSTShowLockWorkSpace.Name : WSTShowLockWorkSpace = Not WSTShowLockWorkSpace
+            Case checkboxWSTShowLogOff.Name : WSTShowLogOff = Not WSTShowLogOff
+            Case checkboxWSTShowSleep.Name : WSTShowSleep = Not WSTShowSleep
+            Case checkboxWSTShowHibernate.Name : WSTShowHibernate = Not WSTShowHibernate
+            Case checkboxWSTShowReStart.Name : WSTShowReStart = Not WSTShowReStart
+            Case checkboxWSTShowShutDown.Name : WSTShowShutDown = Not WSTShowShutDown
+            Case checkboxWSTShowHelp.Name : WSTShowHelp = Not WSTShowHelp
+            Case checkboxWSTShowLog.Name : WSTShowLog = Not WSTShowLog
+        End Select
+        App.FrmMain.ShowTools()
+        App.FrmMain.ShowWST()
+    End Sub
+
     ' Screen Saver
     ' Alarm & Chime
     ' WinLinks
@@ -321,6 +377,45 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub ShowSettingsWST()
+        If My.App.WSTEnabled Then : Me.checkboxWSTEnabled.Checked = True
+        Else : Me.checkboxWSTEnabled.Checked = False
+        End If
+        If My.App.WSTShowWLMenu Then : Me.checkboxWSTShowWLMenu.Checked = True
+        Else : Me.checkboxWSTShowWLMenu.Checked = False
+        End If
+        If My.App.WSTShowWLTray Then : Me.checkboxWSTShowWLTray.Checked = True
+        Else : Me.checkboxWSTShowWLTray.Checked = False
+        End If
+        If My.App.WSTShowAC Then : Me.checkboxWSTShowAC.Checked = True
+        Else : Me.checkboxWSTShowAC.Checked = False
+        End If
+        If My.App.WSTShowClock Then : Me.checkboxWSTShowClock.Checked = True
+        Else : Me.checkboxWSTShowClock.Checked = False
+        End If
+        If My.App.WSTShowLockWorkSpace Then : Me.checkboxWSTShowLockWorkSpace.Checked = True
+        Else : Me.checkboxWSTShowLockWorkSpace.Checked = False
+        End If
+        If My.App.WSTShowLogOff Then : Me.checkboxWSTShowLogOff.Checked = True
+        Else : Me.checkboxWSTShowLogOff.Checked = False
+        End If
+        If My.App.WSTShowSleep Then : Me.checkboxWSTShowSleep.Checked = True
+        Else : Me.checkboxWSTShowSleep.Checked = False
+        End If
+        If My.App.WSTShowHibernate Then : Me.checkboxWSTShowHibernate.Checked = True
+        Else : Me.checkboxWSTShowHibernate.Checked = False
+        End If
+        If My.App.WSTShowReStart Then : Me.checkboxWSTShowReStart.Checked = True
+        Else : Me.checkboxWSTShowReStart.Checked = False
+        End If
+        If My.App.WSTShowShutDown Then : Me.checkboxWSTShowShutDown.Checked = True
+        Else : Me.checkboxWSTShowShutDown.Checked = False
+        End If
+        If My.App.WSTShowHelp Then : Me.checkboxWSTShowHelp.Checked = True
+        Else : Me.checkboxWSTShowHelp.Checked = False
+        End If
+        If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
+        Else : Me.checkboxWSTShowLog.Checked = False
+        End If
     End Sub
     Private Sub ShowSettingsSS()
     End Sub
@@ -354,6 +449,21 @@ Partial Friend Class Settings
             CoBoxTheme.Enabled = False
         Else
             CoBoxTheme.Enabled = True
+        End If
+    End Sub
+    Private Sub SetSS()
+        If App.WSTSSToolEnabled Then : Me.PanelSS.Enabled = True
+        Else : Me.PanelSS.Enabled = False
+        End If
+    End Sub
+    Friend Sub SetAC()
+        Me.PanelAC.Enabled = My.App.WSTShowAC
+        ShowSettingsAC()
+        FrmMain.ACSet()
+    End Sub
+    Private Sub SetWLSettingsTab()
+        If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.PanelWL.Enabled = True
+        Else : Me.PanelWL.Enabled = False
         End If
     End Sub
     Private Sub CheckMove(ByRef location As Point)
