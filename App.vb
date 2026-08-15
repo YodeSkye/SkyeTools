@@ -444,16 +444,20 @@ Namespace My
 			If addtolog Then WriteToLog(tool, title & " --> " & message)
 		End Sub
 		Friend Sub ShowClock()
-            If My.App.WSTShowClock Then
-				If FrmClock Is Nothing Then FrmClock = New Clock
-				If FrmClock.IsVisible Then
-					FrmClock.Hide()
-					FrmClock.Dispose()
-				Else
-					FrmClock.Show()
-				End If
-				FrmMain.UpdateWST()
+			If FrmClock Is Nothing Then FrmClock = New Clock
+			If FrmClock.IsVisible Then
+				FrmClock.Hide()
+			Else
+				FrmClock.Show()
 			End If
+			FrmMain.UpdateWST()
+		End Sub
+		Friend Sub HideClock()
+			If FrmClock IsNot Nothing Then
+				FrmClock.Hide()
+                FrmClock.Dispose()
+                FrmClock = Nothing
+            End If
 		End Sub
 		Friend Sub ShowSettings()
 			If FrmSettings Is Nothing Then

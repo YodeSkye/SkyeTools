@@ -43,19 +43,6 @@
         btnSettingsRestore = New Button()
         tabcontrolSettings = New TabControl()
         tabpageWST = New TabPage()
-        checkboxWSTShowSleep = New CheckBox()
-        checkboxWSTSSToolEnabled = New CheckBox()
-        checkboxWSTShowLog = New CheckBox()
-        checkboxWSTShowReStart = New CheckBox()
-        checkboxWSTShowShutDown = New CheckBox()
-        checkboxWSTShowHibernate = New CheckBox()
-        checkboxWSTShowLogOff = New CheckBox()
-        checkboxWSTShowLockWorkSpace = New CheckBox()
-        checkboxWSTShowAC = New CheckBox()
-        checkboxWSTShowHelp = New CheckBox()
-        checkboxWSTShowClock = New CheckBox()
-        checkboxWSTShowWLTray = New CheckBox()
-        checkboxWSTShowWLMenu = New CheckBox()
         groupboxWSTSS = New GroupBox()
         btnWSTScreenSaverEnabled = New RadioButton()
         comboboxWSTSSStartUp = New ComboBox()
@@ -64,7 +51,6 @@
         checkboxWSTShowScreenSaverEnabled = New CheckBox()
         checkboxWSTShowScreenSaverActivate = New CheckBox()
         checkboxWSTShowScreenSaverIcon = New CheckBox()
-        checkboxWSTEnabled = New CheckBox()
         tabpageAC = New TabPage()
         lblACAlarmChime = New Label()
         lblACOffHourChimePath = New Label()
@@ -545,21 +531,7 @@
         ' 
         ' tabpageWST
         ' 
-        tabpageWST.Controls.Add(checkboxWSTShowSleep)
-        tabpageWST.Controls.Add(checkboxWSTSSToolEnabled)
-        tabpageWST.Controls.Add(checkboxWSTShowLog)
-        tabpageWST.Controls.Add(checkboxWSTShowReStart)
-        tabpageWST.Controls.Add(checkboxWSTShowShutDown)
-        tabpageWST.Controls.Add(checkboxWSTShowHibernate)
-        tabpageWST.Controls.Add(checkboxWSTShowLogOff)
-        tabpageWST.Controls.Add(checkboxWSTShowLockWorkSpace)
-        tabpageWST.Controls.Add(checkboxWSTShowAC)
-        tabpageWST.Controls.Add(checkboxWSTShowHelp)
-        tabpageWST.Controls.Add(checkboxWSTShowClock)
-        tabpageWST.Controls.Add(checkboxWSTShowWLTray)
-        tabpageWST.Controls.Add(checkboxWSTShowWLMenu)
         tabpageWST.Controls.Add(groupboxWSTSS)
-        tabpageWST.Controls.Add(checkboxWSTEnabled)
         TipHCEX.SetImage(tabpageWST, Nothing)
         TipInfoEX.SetImage(tabpageWST, Nothing)
         tabpageWST.Location = New Point(4, 26)
@@ -571,176 +543,6 @@
         TipInfoEX.SetText(tabpageWST, Nothing)
         tabpageWST.Text = "****WorkSpace Tools****"
         tabpageWST.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowSleep
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowSleep, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowSleep, Nothing)
-        checkboxWSTShowSleep.Location = New Point(5, 294)
-        checkboxWSTShowSleep.Name = "checkboxWSTShowSleep"
-        checkboxWSTShowSleep.Size = New Size(110, 21)
-        checkboxWSTShowSleep.TabIndex = 53
-        TipHCEX.SetText(checkboxWSTShowSleep, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowSleep, Nothing)
-        checkboxWSTShowSleep.Text = "Show 'Sleep'"
-        checkboxWSTShowSleep.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTSSToolEnabled
-        ' 
-        TipInfoEX.SetImage(checkboxWSTSSToolEnabled, Nothing)
-        TipHCEX.SetImage(checkboxWSTSSToolEnabled, Nothing)
-        checkboxWSTSSToolEnabled.Location = New Point(492, 179)
-        checkboxWSTSSToolEnabled.Name = "checkboxWSTSSToolEnabled"
-        checkboxWSTSSToolEnabled.RightToLeft = RightToLeft.Yes
-        checkboxWSTSSToolEnabled.Size = New Size(104, 20)
-        checkboxWSTSSToolEnabled.TabIndex = 135
-        TipHCEX.SetText(checkboxWSTSSToolEnabled, Nothing)
-        TipInfoEX.SetText(checkboxWSTSSToolEnabled, Nothing)
-        checkboxWSTSSToolEnabled.Text = "Screen Saver"
-        checkboxWSTSSToolEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowLog
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowLog, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowLog, Nothing)
-        checkboxWSTShowLog.Location = New Point(148, 330)
-        checkboxWSTShowLog.Name = "checkboxWSTShowLog"
-        checkboxWSTShowLog.Size = New Size(95, 21)
-        checkboxWSTShowLog.TabIndex = 68
-        TipHCEX.SetText(checkboxWSTShowLog, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowLog, Nothing)
-        checkboxWSTShowLog.Text = "Show 'Log'"
-        checkboxWSTShowLog.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowReStart
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowReStart, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowReStart, Nothing)
-        checkboxWSTShowReStart.Location = New Point(5, 276)
-        checkboxWSTShowReStart.Name = "checkboxWSTShowReStart"
-        checkboxWSTShowReStart.Size = New Size(110, 21)
-        checkboxWSTShowReStart.TabIndex = 52
-        TipHCEX.SetText(checkboxWSTShowReStart, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowReStart, Nothing)
-        checkboxWSTShowReStart.Text = "Show 'ReStart'"
-        checkboxWSTShowReStart.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowShutDown
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowShutDown, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowShutDown, Nothing)
-        checkboxWSTShowShutDown.Location = New Point(5, 330)
-        checkboxWSTShowShutDown.Name = "checkboxWSTShowShutDown"
-        checkboxWSTShowShutDown.Size = New Size(130, 21)
-        checkboxWSTShowShutDown.TabIndex = 55
-        TipHCEX.SetText(checkboxWSTShowShutDown, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowShutDown, Nothing)
-        checkboxWSTShowShutDown.Text = "Show 'Shut Down'"
-        checkboxWSTShowShutDown.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowHibernate
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowHibernate, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowHibernate, Nothing)
-        checkboxWSTShowHibernate.Location = New Point(5, 312)
-        checkboxWSTShowHibernate.Name = "checkboxWSTShowHibernate"
-        checkboxWSTShowHibernate.Size = New Size(125, 21)
-        checkboxWSTShowHibernate.TabIndex = 54
-        TipHCEX.SetText(checkboxWSTShowHibernate, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowHibernate, Nothing)
-        checkboxWSTShowHibernate.Text = "Show 'Hibernate'"
-        checkboxWSTShowHibernate.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowLogOff
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowLogOff, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowLogOff, Nothing)
-        checkboxWSTShowLogOff.Location = New Point(5, 258)
-        checkboxWSTShowLogOff.Name = "checkboxWSTShowLogOff"
-        checkboxWSTShowLogOff.Size = New Size(114, 21)
-        checkboxWSTShowLogOff.TabIndex = 51
-        TipHCEX.SetText(checkboxWSTShowLogOff, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowLogOff, Nothing)
-        checkboxWSTShowLogOff.Text = "Show 'Log Off'"
-        checkboxWSTShowLogOff.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowLockWorkSpace
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowLockWorkSpace, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowLockWorkSpace, Nothing)
-        checkboxWSTShowLockWorkSpace.Location = New Point(5, 240)
-        checkboxWSTShowLockWorkSpace.Name = "checkboxWSTShowLockWorkSpace"
-        checkboxWSTShowLockWorkSpace.Size = New Size(169, 21)
-        checkboxWSTShowLockWorkSpace.TabIndex = 50
-        TipHCEX.SetText(checkboxWSTShowLockWorkSpace, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowLockWorkSpace, Nothing)
-        checkboxWSTShowLockWorkSpace.Text = "Show 'Lock WorkSpace'"
-        checkboxWSTShowLockWorkSpace.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowAC
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowAC, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowAC, Nothing)
-        checkboxWSTShowAC.Location = New Point(5, 200)
-        checkboxWSTShowAC.Name = "checkboxWSTShowAC"
-        checkboxWSTShowAC.Size = New Size(155, 21)
-        checkboxWSTShowAC.TabIndex = 33
-        TipHCEX.SetText(checkboxWSTShowAC, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowAC, Nothing)
-        checkboxWSTShowAC.Text = "Show 'Alarm / Chime'"
-        checkboxWSTShowAC.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowHelp
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowHelp, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowHelp, Nothing)
-        checkboxWSTShowHelp.Location = New Point(148, 312)
-        checkboxWSTShowHelp.Name = "checkboxWSTShowHelp"
-        checkboxWSTShowHelp.Size = New Size(95, 21)
-        checkboxWSTShowHelp.TabIndex = 65
-        TipHCEX.SetText(checkboxWSTShowHelp, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowHelp, Nothing)
-        checkboxWSTShowHelp.Text = "Show 'Help'"
-        checkboxWSTShowHelp.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowClock
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowClock, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowClock, Nothing)
-        checkboxWSTShowClock.Location = New Point(5, 182)
-        checkboxWSTShowClock.Name = "checkboxWSTShowClock"
-        checkboxWSTShowClock.Size = New Size(94, 21)
-        checkboxWSTShowClock.TabIndex = 32
-        TipHCEX.SetText(checkboxWSTShowClock, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowClock, Nothing)
-        checkboxWSTShowClock.Text = "Show Clock"
-        checkboxWSTShowClock.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowWLTray
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowWLTray, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowWLTray, Nothing)
-        checkboxWSTShowWLTray.Location = New Point(5, 160)
-        checkboxWSTShowWLTray.Name = "checkboxWSTShowWLTray"
-        checkboxWSTShowWLTray.Size = New Size(145, 21)
-        checkboxWSTShowWLTray.TabIndex = 31
-        TipHCEX.SetText(checkboxWSTShowWLTray, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowWLTray, Nothing)
-        checkboxWSTShowWLTray.Text = "Show WinLinks Tray Icon"
-        checkboxWSTShowWLTray.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowWLMenu
-        ' 
-        TipInfoEX.SetImage(checkboxWSTShowWLMenu, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowWLMenu, Nothing)
-        checkboxWSTShowWLMenu.Location = New Point(5, 143)
-        checkboxWSTShowWLMenu.Name = "checkboxWSTShowWLMenu"
-        checkboxWSTShowWLMenu.Size = New Size(126, 21)
-        checkboxWSTShowWLMenu.TabIndex = 30
-        TipHCEX.SetText(checkboxWSTShowWLMenu, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowWLMenu, Nothing)
-        checkboxWSTShowWLMenu.Text = "Show 'WinLinks'"
-        checkboxWSTShowWLMenu.UseVisualStyleBackColor = True
         ' 
         ' groupboxWSTSS
         ' 
@@ -866,19 +668,6 @@
         TipInfoEX.SetText(checkboxWSTShowScreenSaverIcon, Nothing)
         checkboxWSTShowScreenSaverIcon.Text = "Show Tray Icon"
         checkboxWSTShowScreenSaverIcon.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTEnabled
-        ' 
-        TipInfoEX.SetImage(checkboxWSTEnabled, Nothing)
-        TipHCEX.SetImage(checkboxWSTEnabled, Nothing)
-        checkboxWSTEnabled.Location = New Point(5, 5)
-        checkboxWSTEnabled.Name = "checkboxWSTEnabled"
-        checkboxWSTEnabled.Size = New Size(115, 21)
-        checkboxWSTEnabled.TabIndex = 10
-        TipHCEX.SetText(checkboxWSTEnabled, Nothing)
-        TipInfoEX.SetText(checkboxWSTEnabled, Nothing)
-        checkboxWSTEnabled.Text = "Show Tray Icon"
-        checkboxWSTEnabled.UseVisualStyleBackColor = True
         ' 
         ' tabpageAC
         ' 
@@ -2838,7 +2627,6 @@
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnClockTest As System.Windows.Forms.Button
     Private WithEvents cmiWSTClock As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents checkboxWSTShowClock As System.Windows.Forms.CheckBox
     Private WithEvents btnWSTScreenSaverEnabled As System.Windows.Forms.RadioButton
     Private WithEvents cmseparatorWSTWLBottom As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmseparatorWSTWLTop As System.Windows.Forms.ToolStripSeparator
@@ -2848,7 +2636,6 @@
     Private WithEvents lblWLAutoRefreshIdleInterval As System.Windows.Forms.Label
     Private label36 As System.Windows.Forms.Label
     Private WithEvents comboboxWSTSSStartUp As System.Windows.Forms.ComboBox
-    Private WithEvents checkboxWSTSSToolEnabled As System.Windows.Forms.CheckBox
     Private WithEvents groupboxWSTSS As System.Windows.Forms.GroupBox
     Private cmseparatorWSTTopSpacer As System.Windows.Forms.ToolStripSeparator
     Private WithEvents panelWL As System.Windows.Forms.Panel
@@ -2923,18 +2710,6 @@
     Private WithEvents cmiWSTCancelStartUp As System.Windows.Forms.ToolStripMenuItem
     Private cmseparatorWSTSettings As System.Windows.Forms.ToolStripSeparator
     Private cmseparatorWSTCancel As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents checkboxWSTEnabled As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowLockWorkSpace As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowLogOff As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowSleep As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowHibernate As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowShutDown As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowReStart As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowAC As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowWLTray As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowWLMenu As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowLog As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowHelp As System.Windows.Forms.CheckBox
     Private WithEvents cmWSTScreenSaver As System.Windows.Forms.ContextMenuStrip
     Private WithEvents checkboxWSTShowScreenSaverIcon As System.Windows.Forms.CheckBox
     Private WithEvents checkboxWSTShowScreenSaverEnabled As System.Windows.Forms.CheckBox

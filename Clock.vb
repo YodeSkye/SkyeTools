@@ -7,8 +7,7 @@ Public Class Clock
     Implements IDisposable
 
     ' DECLARATIONS
-    Private Shared ClassRegistered As Boolean = False
-    Private Shared ReadOnly ClassName As String = "SkyeNativeClockClass"
+    Private ReadOnly ClassName As String
     Private hWnd As IntPtr = IntPtr.Zero
     Private ReadOnly wndProcDelegateInstance As Skye.WinAPI.UTypedWndProcDelegate
     Private Const TIMER_CLOCK_ID As Integer = 1001
@@ -118,6 +117,8 @@ Public Class Clock
         Return Skye.WinAPI.DefWindowProc(hWnd, msg, wParam, lParam)
     End Function
     Public Sub New()
+        ClassName = "SkyeClockClass_" & Guid.NewGuid().ToString("N")
+        Debug.Print(ClassName)
         ' Bind delegate to prevent GC collection
         wndProcDelegateInstance = AddressOf WindowProc
         RegisterWindowClass()
@@ -195,8 +196,6 @@ Public Class Clock
 
     ' Window Class Registration and Creation
     Private Sub RegisterWindowClass()
-        If ClassRegistered Then Exit Sub
-
         Dim wcx As New Skye.WinAPI.WNDCLASSEX()
         wcx.cbSize = CType(Marshal.SizeOf(wcx), UInteger)
         wcx.style = 0
@@ -210,9 +209,9 @@ Public Class Clock
         wcx.lpszMenuName = Nothing
         wcx.lpszClassName = ClassName
         wcx.hIconSm = IntPtr.Zero
-
-        If Skye.WinAPI.RegisterClassEx(wcx) <> 0 Then
-            ClassRegistered = True
+        If Skye.WinAPI.RegisterClassEx(wcx) = 0 Then
+            Dim err As Integer = System.Runtime.InteropServices.Marshal.GetLastWin32Error()
+            Throw New InvalidOperationException($"Failed to register window class '{ClassName}'. Win32 Error: {err}")
         End If
     End Sub
     Private Sub CreateNativeWindow()

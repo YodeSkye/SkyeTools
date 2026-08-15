@@ -417,9 +417,6 @@ Partial Friend Class MainForm
     Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress, textboxACAlarmTimer.KeyPress, textboxACAlarmTime.KeyPress
         If nonNumberEntered Then e.Handled = True
     End Sub
-    Private Sub TxbxKeyDown(sender As Object, e As KeyEventArgs)
-        If e.KeyCode = Keys.Enter Then Validate()
-    End Sub
 
     ' Methods
     Private Overloads Sub ShowSettings()
@@ -530,13 +527,6 @@ Partial Friend Class MainForm
         End If
     End Sub
     Private Sub ShowSettingsSS()
-        If My.App.WSTSSToolEnabled Then
-            Me.checkboxWSTSSToolEnabled.Checked = True
-            Me.groupboxWSTSS.Enabled = True
-        Else
-            Me.checkboxWSTSSToolEnabled.Checked = False
-            Me.groupboxWSTSS.Enabled = False
-        End If
         Me.comboboxWSTSSStartUp.SelectedIndex = My.App.WSTSSStartUp
         If My.App.WSTSSEnableOnActivate Then : Me.checkboxWSTScreenSaverEnableOnActivate.Checked = True
         Else : Me.checkboxWSTScreenSaverEnableOnActivate.Checked = False
@@ -1295,7 +1285,7 @@ Partial Friend Class MainForm
             UpdateWST()
         End If
     End Sub
-    Private Sub WSTSSActivate(Optional hotkeymode As Boolean = False)
+    Friend Sub WSTSSActivate(Optional hotkeymode As Boolean = False)
         If My.App.WSTSSToolEnabled And (My.App.WSTShowSSActivate Or My.App.WSTShowSSEnabled Or My.App.WSTShowSSIcon) Then
             Dim SSActive As Boolean
             Skye.WinAPI.SystemParametersInfo(Skye.WinAPI.SPI_GETSCREENSAVERRUNNING, 0, SSActive, 0)
@@ -1304,7 +1294,6 @@ Partial Friend Class MainForm
                     WSTSSEnabled = True
                     WSTSSSet()
                 End If
-                '				My.WinAPI.SendMessage(CType(My.WinAPI.HWND_BROADCAST, IntPtr), CUInt(My.WinAPI.WM_SYSCOMMAND), CType(My.WinAPI.SC_SCREENSAVE, IntPtr), CType(0, IntPtr))
                 Skye.WinAPI.PostMessage(CType(Skye.WinAPI.HWND_BROADCAST, IntPtr), CUInt(Skye.WinAPI.WM_SYSCOMMAND), CType(Skye.WinAPI.SC_SCREENSAVE, IntPtr), CType(0, IntPtr))
             End If
         End If
@@ -2591,7 +2580,6 @@ Partial Friend Class MainForm
         Me.textboxWLRoot.Select()
     End Sub
     Private Sub WLSetSettingsState(state As Boolean)
-        'On Error Resume Next
         Me.listviewWL.Enabled = state
         For Each cmi As ToolStripMenuItem In WLMenus
             For Each mi As ToolStripItem In cmi.DropDown.Items
@@ -2611,8 +2599,6 @@ Partial Friend Class MainForm
                 End If
             Next
         Next
-        Me.checkboxWSTShowWLMenu.Enabled = state
-        Me.checkboxWSTShowWLTray.Enabled = state
         If WLStartUp Then : Me.btnWLRefresh.Enabled = False
         Else : Me.btnWLRefresh.Enabled = True
         End If

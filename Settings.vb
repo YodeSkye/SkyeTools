@@ -244,13 +244,14 @@ Partial Friend Class Settings
     End Sub
 
     ' Workspace Tools
-    Private Sub CheckboxWSTEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTEnabled.Click
+    Private Sub CheckboxWSTEnabled_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ChkBoxWSTEnabled.Click
         My.App.WSTEnabled = Not My.App.WSTEnabled
         App.FrmMain.ShowTools()
+        App.SetSave()
     End Sub
-    Private Sub CheckboxWSTShowClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTSSToolEnabled.Click, checkboxWSTShowWLTray.Click, checkboxWSTShowWLMenu.Click, checkboxWSTShowSleep.Click, checkboxWSTShowShutDown.Click, checkboxWSTShowReStart.Click, checkboxWSTShowLogOff.Click, checkboxWSTShowLog.Click, checkboxWSTShowLockWorkSpace.Click, checkboxWSTShowHibernate.Click, checkboxWSTShowHelp.Click, checkboxWSTShowClock.Click, checkboxWSTShowAC.Click
+    Private Sub CheckboxWSTShow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ChkBoxWSTSSToolEnabled.Click, ChkBoxWSTShowWLTray.Click, ChkBoxWSTShowWLMenu.Click, ChkBoxWSTShowSleep.Click, ChkBoxWSTShowShutDown.Click, ChkBoxWSTShowReStart.Click, ChkBoxWSTShowLogOff.Click, ChkBoxWSTShowLog.Click, ChkBoxWSTShowLockWorkSpace.Click, ChkBoxWSTShowHibernate.Click, ChkBoxWSTShowHelp.Click, ChkBoxWSTShowClock.Click, ChkBoxWSTShowAC.Click
         Select Case CType(sender, CheckBox).Name
-            Case checkboxWSTSSToolEnabled.Name
+            Case ChkBoxWSTSSToolEnabled.Name
                 App.WSTSSToolEnabled = Not App.WSTSSToolEnabled
                 SetSS()
                 ShowSettingsSS()
@@ -258,12 +259,13 @@ Partial Friend Class Settings
                     App.FrmMain.WSTSSEnabled = True
                     App.FrmMain.WSTSSSet()
                 End If
-            Case checkboxWSTShowAC.Name
+            Case ChkBoxWSTShowAC.Name
                 WSTShowAC = Not WSTShowAC
                 SetAC()
-            Case checkboxWSTShowClock.Name
+            Case ChkBoxWSTShowClock.Name
                 App.WSTShowClock = Not App.WSTShowClock
-            Case checkboxWSTShowWLMenu.Name
+                App.HideClock()
+            Case ChkBoxWSTShowWLMenu.Name
                 WSTShowWLMenu = Not WSTShowWLMenu
                 SetWLSettingsTab()
                 If WSTShowWLMenu Then
@@ -278,7 +280,7 @@ Partial Friend Class Settings
                 Else
                     App.FrmMain.WLClose()
                 End If
-            Case checkboxWSTShowWLTray.Name
+            Case ChkBoxWSTShowWLTray.Name
                 WSTShowWLTray = Not WSTShowWLTray
                 For index = 0 To WLData.Count - 1
                     If WLData(index).ShowInTray Then
@@ -287,17 +289,18 @@ Partial Friend Class Settings
                         WLData(index) = link
                     End If
                 Next
-            Case checkboxWSTShowLockWorkSpace.Name : WSTShowLockWorkSpace = Not WSTShowLockWorkSpace
-            Case checkboxWSTShowLogOff.Name : WSTShowLogOff = Not WSTShowLogOff
-            Case checkboxWSTShowSleep.Name : WSTShowSleep = Not WSTShowSleep
-            Case checkboxWSTShowHibernate.Name : WSTShowHibernate = Not WSTShowHibernate
-            Case checkboxWSTShowReStart.Name : WSTShowReStart = Not WSTShowReStart
-            Case checkboxWSTShowShutDown.Name : WSTShowShutDown = Not WSTShowShutDown
-            Case checkboxWSTShowHelp.Name : WSTShowHelp = Not WSTShowHelp
-            Case checkboxWSTShowLog.Name : WSTShowLog = Not WSTShowLog
+            Case ChkBoxWSTShowLockWorkSpace.Name : WSTShowLockWorkSpace = Not WSTShowLockWorkSpace
+            Case ChkBoxWSTShowLogOff.Name : WSTShowLogOff = Not WSTShowLogOff
+            Case ChkBoxWSTShowSleep.Name : WSTShowSleep = Not WSTShowSleep
+            Case ChkBoxWSTShowHibernate.Name : WSTShowHibernate = Not WSTShowHibernate
+            Case ChkBoxWSTShowReStart.Name : WSTShowReStart = Not WSTShowReStart
+            Case ChkBoxWSTShowShutDown.Name : WSTShowShutDown = Not WSTShowShutDown
+            Case ChkBoxWSTShowHelp.Name : WSTShowHelp = Not WSTShowHelp
+            Case ChkBoxWSTShowLog.Name : WSTShowLog = Not WSTShowLog
         End Select
         App.FrmMain.ShowTools()
         App.FrmMain.ShowWST()
+        App.SetSave()
     End Sub
 
     ' Screen Saver
@@ -377,44 +380,47 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub ShowSettingsWST()
-        If My.App.WSTEnabled Then : Me.checkboxWSTEnabled.Checked = True
-        Else : Me.checkboxWSTEnabled.Checked = False
+        If My.App.WSTEnabled Then : Me.ChkBoxWSTEnabled.Checked = True
+        Else : Me.ChkBoxWSTEnabled.Checked = False
         End If
-        If My.App.WSTShowWLMenu Then : Me.checkboxWSTShowWLMenu.Checked = True
-        Else : Me.checkboxWSTShowWLMenu.Checked = False
+        If App.WSTSSToolEnabled Then : Me.ChkBoxWSTSSToolEnabled.Checked = True
+        Else : Me.ChkBoxWSTSSToolEnabled.Checked = False
         End If
-        If My.App.WSTShowWLTray Then : Me.checkboxWSTShowWLTray.Checked = True
-        Else : Me.checkboxWSTShowWLTray.Checked = False
+        If My.App.WSTShowAC Then : Me.ChkBoxWSTShowAC.Checked = True
+        Else : Me.ChkBoxWSTShowAC.Checked = False
         End If
-        If My.App.WSTShowAC Then : Me.checkboxWSTShowAC.Checked = True
-        Else : Me.checkboxWSTShowAC.Checked = False
+        If My.App.WSTShowClock Then : Me.ChkBoxWSTShowClock.Checked = True
+        Else : Me.ChkBoxWSTShowClock.Checked = False
         End If
-        If My.App.WSTShowClock Then : Me.checkboxWSTShowClock.Checked = True
-        Else : Me.checkboxWSTShowClock.Checked = False
+        If My.App.WSTShowWLMenu Then : Me.ChkBoxWSTShowWLMenu.Checked = True
+        Else : Me.ChkBoxWSTShowWLMenu.Checked = False
         End If
-        If My.App.WSTShowLockWorkSpace Then : Me.checkboxWSTShowLockWorkSpace.Checked = True
-        Else : Me.checkboxWSTShowLockWorkSpace.Checked = False
+        If My.App.WSTShowWLTray Then : Me.ChkBoxWSTShowWLTray.Checked = True
+        Else : Me.ChkBoxWSTShowWLTray.Checked = False
         End If
-        If My.App.WSTShowLogOff Then : Me.checkboxWSTShowLogOff.Checked = True
-        Else : Me.checkboxWSTShowLogOff.Checked = False
+        If My.App.WSTShowLockWorkSpace Then : Me.ChkBoxWSTShowLockWorkSpace.Checked = True
+        Else : Me.ChkBoxWSTShowLockWorkSpace.Checked = False
         End If
-        If My.App.WSTShowSleep Then : Me.checkboxWSTShowSleep.Checked = True
-        Else : Me.checkboxWSTShowSleep.Checked = False
+        If My.App.WSTShowLogOff Then : Me.ChkBoxWSTShowLogOff.Checked = True
+        Else : Me.ChkBoxWSTShowLogOff.Checked = False
         End If
-        If My.App.WSTShowHibernate Then : Me.checkboxWSTShowHibernate.Checked = True
-        Else : Me.checkboxWSTShowHibernate.Checked = False
+        If My.App.WSTShowSleep Then : Me.ChkBoxWSTShowSleep.Checked = True
+        Else : Me.ChkBoxWSTShowSleep.Checked = False
         End If
-        If My.App.WSTShowReStart Then : Me.checkboxWSTShowReStart.Checked = True
-        Else : Me.checkboxWSTShowReStart.Checked = False
+        If My.App.WSTShowHibernate Then : Me.ChkBoxWSTShowHibernate.Checked = True
+        Else : Me.ChkBoxWSTShowHibernate.Checked = False
         End If
-        If My.App.WSTShowShutDown Then : Me.checkboxWSTShowShutDown.Checked = True
-        Else : Me.checkboxWSTShowShutDown.Checked = False
+        If My.App.WSTShowReStart Then : Me.ChkBoxWSTShowReStart.Checked = True
+        Else : Me.ChkBoxWSTShowReStart.Checked = False
         End If
-        If My.App.WSTShowHelp Then : Me.checkboxWSTShowHelp.Checked = True
-        Else : Me.checkboxWSTShowHelp.Checked = False
+        If My.App.WSTShowShutDown Then : Me.ChkBoxWSTShowShutDown.Checked = True
+        Else : Me.ChkBoxWSTShowShutDown.Checked = False
         End If
-        If My.App.WSTShowLog Then : Me.checkboxWSTShowLog.Checked = True
-        Else : Me.checkboxWSTShowLog.Checked = False
+        If My.App.WSTShowHelp Then : Me.ChkBoxWSTShowHelp.Checked = True
+        Else : Me.ChkBoxWSTShowHelp.Checked = False
+        End If
+        If My.App.WSTShowLog Then : Me.ChkBoxWSTShowLog.Checked = True
+        Else : Me.ChkBoxWSTShowLog.Checked = False
         End If
     End Sub
     Private Sub ShowSettingsSS()
