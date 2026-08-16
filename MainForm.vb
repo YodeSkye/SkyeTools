@@ -1647,9 +1647,10 @@ Partial Friend Class MainForm
     Private WLStartUp As Boolean = False
     Private WLAutoRefreshUpdate As Boolean = False
     Private WLLoadStartTime As TimeSpan
-    Private WLInsertIndex As Integer
     Private WLMenuItemCount As Integer
     Private cmWLItem As New ContextMenuStrip
+
+    Private WLInsertIndex As Integer
     Private uiWLFolderBrowser As New FolderBrowserDialog
 
     ' Control Events
