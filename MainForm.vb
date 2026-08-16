@@ -113,11 +113,11 @@ Partial Friend Class MainForm
             .ContextMenuStrip = cmWSTScreenSaver}
         Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
         Me.cmiScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
-#Disable Warning CA2263
-        For Each s As String In [Enum].GetNames(GetType(My.App.WSTSSStartUpMode))
+        '#Disable Warning CA2263
+        For Each s As String In [Enum].GetNames(Of WSTSSStartUpMode)()
             Me.comboboxWSTSSStartUp.Items.Add(s)
         Next
-#Enable Warning CA2263
+        '#Enable Warning CA2263
         Me.TipInfoEX.SetText(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
         AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
         AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown

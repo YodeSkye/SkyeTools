@@ -729,7 +729,6 @@ Namespace My
 			GetSettingsDebugHK()
 			'WorkSpace Tools (WST)
 			'WSTLoadOnOSStartup = True
-			'WSTLoadOnOSStartupPath = New FileType("C:\Tools\YMTag.exe", "test args")
 			WSTEnabled = True
 			WSTShowClock = True
 			'WSTClockSize = ClockSize.Medium
