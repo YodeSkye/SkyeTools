@@ -54,6 +54,9 @@ Partial Friend Class Settings
         For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
             CoBoxTheme.Items.Add(thm.Name)
         Next
+        For Each s As String In [Enum].GetNames(Of WSTSSStartUpMode)()
+            Me.CoBoxSSStartUp.Items.Add(s)
+        Next
 
     End Sub
     Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -255,10 +258,6 @@ Partial Friend Class Settings
                 App.WSTSSToolEnabled = Not App.WSTSSToolEnabled
                 SetSS()
                 ShowSettingsSS()
-                If App.WSTSSToolEnabled AndAlso Not App.FrmMain.WSTSSEnabled Then
-                    App.FrmMain.WSTSSEnabled = True
-                    App.FrmMain.WSTSSSet()
-                End If
             Case ChkBoxWSTShowAC.Name
                 WSTShowAC = Not WSTShowAC
                 SetAC()
@@ -304,6 +303,38 @@ Partial Friend Class Settings
     End Sub
 
     ' Screen Saver
+    Private Sub BtnSSEnabled_MouseUp(sender As Object, e As MouseEventArgs) Handles BtnSSEnabled.MouseUp
+        Select Case e.Button
+            Case MouseButtons.Left
+                App.FrmMain.WSTSSEnabled = Not App.FrmMain.WSTSSEnabled
+            Case MouseButtons.Right
+                App.SSActivate()
+        End Select
+    End Sub
+    Private Sub ChkBoxSSShowIcon_Click(sender As Object, e As EventArgs) Handles ChkBoxSSShowIcon.Click
+        App.WSTShowSSIcon = Not App.WSTShowSSIcon
+        App.FrmMain.ShowTools()
+        App.SetSave()
+    End Sub
+    Private Sub ChkBoxSSShowActivate_Click(sender As Object, e As EventArgs) Handles ChkBoxSSShowActivate.Click
+        App.WSTShowSSActivate = Not App.WSTShowSSActivate
+        App.FrmMain.ShowWST()
+        App.SetSave()
+    End Sub
+    Private Sub ChkBoxSSShowEnabled_Click(sender As Object, e As EventArgs) Handles ChkBoxSSShowEnabled.Click
+        App.WSTShowSSEnabled = Not App.WSTShowSSEnabled
+        App.FrmMain.ShowWST()
+        App.SetSave()
+    End Sub
+    Private Sub ChkBoxSSEnableOnActivate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ChkBoxSSEnableOnActivate.Click
+        WSTSSEnableOnActivate = Not WSTSSEnableOnActivate
+        App.SetSave()
+    End Sub
+    Private Sub CoBoxSSStartUp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxSSStartUp.SelectedIndexChanged
+        WSTSSStartUp = CType(CoBoxSSStartUp.SelectedIndex, WSTSSStartUpMode)
+        App.SetSave()
+    End Sub
+
     ' Alarm & Chime
     ' WinLinks
     ' HotClicks
@@ -311,30 +342,20 @@ Partial Friend Class Settings
 
     ' METHODS
     Private Sub SetPage(page As String)
-        PanelApp.Enabled = False
-        PanelWST.Enabled = False
-        PanelSS.Enabled = False
         Select Case page
             Case "App"
-                PanelApp.Enabled = True
                 PanelApp.BringToFront()
             Case "Workspace Tools"
-                PanelWST.Enabled = True
                 PanelWST.BringToFront()
             Case "Screen Saver"
-                PanelSS.Enabled = True
                 PanelSS.BringToFront()
             Case "Alarm & Chime"
-                PanelAC.Enabled = True
                 PanelAC.BringToFront()
             Case "WinLinks"
-                PanelWL.Enabled = True
                 PanelWL.BringToFront()
             Case "HotClicks"
-                PanelHC.Enabled = True
                 PanelHC.BringToFront()
             Case "HotKeys"
-                PanelHK.Enabled = True
                 PanelHK.BringToFront()
         End Select
     End Sub
@@ -352,7 +373,16 @@ Partial Friend Class Settings
         UpdateSettings()
     End Sub
     Friend Sub UpdateSettings() 'Settings that can change on other forms
-
+        If My.App.WSTSSToolEnabled Then
+            If App.FrmMain.WSTSSEnabled Then
+                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSS16
+                Me.TipInfoEX.SetText(Me.BtnSSEnabled, "Screen Saver ENABLED")
+            Else
+                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
+                Me.TipInfoEX.SetText(Me.BtnSSEnabled, "Screen Saver DISABLED")
+            End If
+            Me.TipInfoEX.SetText(Me.BtnSSEnabled, Me.TipInfoEX.GetText(Me.BtnSSEnabled) + vbCr + "RightClick = Activate")
+        End If
     End Sub
     Private Sub ShowSettingsApp()
         CoBoxTheme.SelectedItem = App.Theme.Name
@@ -423,7 +453,20 @@ Partial Friend Class Settings
         Else : Me.ChkBoxWSTShowLog.Checked = False
         End If
     End Sub
-    Private Sub ShowSettingsSS()
+    Friend Sub ShowSettingsSS()
+        If App.WSTShowSSIcon Then : Me.ChkBoxSSShowIcon.Checked = True
+        Else : Me.ChkBoxSSShowIcon.Checked = False
+        End If
+        If App.WSTShowSSActivate Then : Me.ChkBoxSSShowActivate.Checked = True
+        Else : Me.ChkBoxSSShowActivate.Checked = False
+        End If
+        If App.WSTShowSSEnabled Then : Me.ChkBoxSSShowEnabled.Checked = True
+        Else : Me.ChkBoxSSShowEnabled.Checked = False
+        End If
+        If App.WSTSSEnableOnActivate Then : Me.ChkBoxSSEnableOnActivate.Checked = True
+        Else : Me.ChkBoxSSEnableOnActivate.Checked = False
+        End If
+        Me.CoBoxSSStartUp.SelectedIndex = App.WSTSSStartUp
     End Sub
     Private Sub ShowSettingsAC()
     End Sub
@@ -458,9 +501,7 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub SetSS()
-        If App.WSTSSToolEnabled Then : Me.PanelSS.Enabled = True
-        Else : Me.PanelSS.Enabled = False
-        End If
+        Me.PanelSS.Enabled = App.WSTSSToolEnabled
     End Sub
     Friend Sub SetAC()
         Me.PanelAC.Enabled = My.App.WSTShowAC

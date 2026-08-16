@@ -1,4 +1,5 @@
 
+Imports System.ComponentModel
 Imports System.Data.Common
 Imports System.IO
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
@@ -113,11 +114,6 @@ Partial Friend Class MainForm
             .ContextMenuStrip = cmWSTScreenSaver}
         Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
         Me.cmiScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
-        '#Disable Warning CA2263
-        For Each s As String In [Enum].GetNames(Of WSTSSStartUpMode)()
-            Me.comboboxWSTSSStartUp.Items.Add(s)
-        Next
-        '#Enable Warning CA2263
         Me.TipInfoEX.SetText(Me.btnACAlarmCancel, "THE ALARM HAS SOUNDED")
         AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
         AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
@@ -162,6 +158,12 @@ Partial Friend Class MainForm
         Me.Opacity = 1
         If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then WLStartUp = True
         If Not My.Application.AlternateStart AndAlso (My.App.WSTShowWLMenu And Not My.App.WSTShowWLTray) Then ShowWL()
+        Select Case My.App.WSTSSStartUp
+            Case My.App.WSTSSStartUpMode.Enabled
+                WSTSSEnabled = True
+            Case My.App.WSTSSStartUpMode.Disabled
+                WSTSSEnabled = False
+        End Select
         ShowTools()
 
         If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then
@@ -257,7 +259,7 @@ Partial Friend Class MainForm
             End Select
         End If
     End Sub
-    Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWSTScreenSaverEnabled.Enter, btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
+    Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter, btnACTopHourChimePlay.Enter, btnACTopHourChimeManual.Enter, btnACTopHourChimeDefault.Enter, btnACOffHourChimePlay.Enter, btnACOffHourChimeManual.Enter, btnACOffHourChimeDefault.Enter, btnACMute.Enter, btnACAlarmSet.Enter, btnACAlarmChimePlay.Enter, btnACAlarmChimeManual.Enter, btnACAlarmChimeDefault.Enter, btnACAlarmCancel.Enter
         btnClose.Focus()
     End Sub
     Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHelp.MouseUp, btnInfo.MouseUp
@@ -315,11 +317,7 @@ Partial Friend Class MainForm
             Else : Me.notifyiconWST.Visible = False
             End If
             If App.WSTSSToolEnabled Then
-                Select Case My.App.WSTSSStartUp
-                    Case My.App.WSTSSStartUpMode.Enabled : WSTSSEnabled = True
-                    Case My.App.WSTSSStartUpMode.Disabled : WSTSSEnabled = False
-                End Select
-                WSTSSSet()
+                'WSTSSSet()
                 If App.WSTSSToolEnabled AndAlso App.WSTShowSSIcon Then
                     Me.notifyiconWSTScreenSaver.Visible = True
                 Else
@@ -424,7 +422,6 @@ Partial Friend Class MainForm
         Me.SuspendLayout()
         ShowSettingsHC()
         ShowSettingsHK()
-        ShowSettingsSS()
         ShowSettingsAC()
         ShowSettingsWL()
         Me.ResumeLayout()
@@ -439,7 +436,6 @@ Partial Friend Class MainForm
             Select Case tool
                 Case My.App.Tools.HotClicks : ShowSettingsHC()
                 Case My.App.Tools.HotKeys : ShowSettingsHK()
-                Case My.App.Tools.ScreenSaver : ShowSettingsSS()
                 Case My.App.Tools.AlarmChime : ShowSettingsAC()
                 Case My.App.Tools.WinLinks : ShowSettingsWL()
             End Select
@@ -524,21 +520,6 @@ Partial Friend Class MainForm
             Me.btnHKWLDisable.Enabled = False
             Me.btnHKEnabled.Text = "Enable"
             Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
-        End If
-    End Sub
-    Private Sub ShowSettingsSS()
-        Me.comboboxWSTSSStartUp.SelectedIndex = My.App.WSTSSStartUp
-        If My.App.WSTSSEnableOnActivate Then : Me.checkboxWSTScreenSaverEnableOnActivate.Checked = True
-        Else : Me.checkboxWSTScreenSaverEnableOnActivate.Checked = False
-        End If
-        If My.App.WSTShowSSIcon Then : Me.checkboxWSTShowScreenSaverIcon.Checked = True
-        Else : Me.checkboxWSTShowScreenSaverIcon.Checked = False
-        End If
-        If My.App.WSTShowSSActivate Then : Me.checkboxWSTShowScreenSaverActivate.Checked = True
-        Else : Me.checkboxWSTShowScreenSaverActivate.Checked = False
-        End If
-        If My.App.WSTShowSSEnabled Then : Me.checkboxWSTShowScreenSaverEnabled.Checked = True
-        Else : Me.checkboxWSTShowScreenSaverEnabled.Checked = False
         End If
     End Sub
     Private Sub ShowSettingsAC()
@@ -822,10 +803,10 @@ Partial Friend Class MainForm
                 My.App.WLData(CInt(argument)) = link
                 ShowWL()
             Case My.App.HCAction.WSTLockWorkSpace : WSTLockWorkSpace(True)
-            Case My.App.HCAction.WSTScreenSaverActivate : WSTSSActivate()
+            Case My.App.HCAction.WSTScreenSaverActivate : App.SSActivate()
             Case My.App.HCAction.WSTScreenSaverDisable
                 WSTSSEnabled = Not WSTSSEnabled
-                WSTSSSet()
+                'WSTSSSet()
             Case My.App.HCAction.WSTClock : App.ShowClock()
             Case My.App.HCAction.ShowSettings : SelectTab(Nothing)
             Case My.App.HCAction.ShowSettingsWST : SelectTab(Me.tabpageWST)
@@ -993,7 +974,7 @@ Partial Friend Class MainForm
     Private Sub HKPerformAction(hotkey As Integer)
         Select Case hotkey
             Case My.App.HKWSTLockWorkSpace.WinID : WSTLockWorkSpace()
-            Case My.App.HKWSTScreenSaver.WinID : WSTSSActivate(True)
+            Case My.App.HKWSTScreenSaver.WinID : App.SSActivate(True)
             Case My.App.HKWSTClock.WinID : App.ShowClock()
             Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then WLStartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
         End Select
@@ -1204,7 +1185,7 @@ Partial Friend Class MainForm
         If My.App.WSTShowLockWorkSpace Then
             If hcmode AndAlso My.App.WSTSSEnableOnActivate Then
                 WSTSSEnabled = True
-                WSTSSSet()
+                'WSTSSSet()
             End If
             Skye.WinAPI.LockWorkStation()
         End If
@@ -1213,44 +1194,37 @@ Partial Friend Class MainForm
 #End Region
 #Region "ScreenSaver (SS)"
 
-    'Declarations
-    Friend WSTSSEnabled As Boolean
+    ' Declarations
+    Private _wSTSSEnabled As Boolean? = Nothing
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Friend Property WSTSSEnabled As Boolean
+        Get
+            Return _wSTSSEnabled.GetValueOrDefault(False)
+        End Get
+        Set(value As Boolean)
+            If Not _wSTSSEnabled.HasValue OrElse _wSTSSEnabled.Value <> value Then
+                _wSTSSEnabled = value
+                WSTSSSet()
+            End If
+        End Set
+    End Property
 
-    'Control Events
+    ' Control Events
     Private Sub CMIWSTScreenSaverActivateMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTScreenSaverActivate.MouseUp, cmiScreenSaverActivate.MouseUp
-        If e.Button = MouseButtons.Left Then WSTSSActivate()
+        If e.Button = MouseButtons.Left Then App.SSActivate()
     End Sub
     Private Sub CMIWSTScreenSaverEnabledMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTScreenSaverEnabled.MouseUp, cmiScreenSaverEnabled.MouseUp
-        If e.Button = MouseButtons.Left Then
-            WSTSSEnabled = Not WSTSSEnabled
-            WSTSSSet()
-        End If
+        If e.Button = MouseButtons.Left Then WSTSSEnabled = Not WSTSSEnabled
     End Sub
     Private Sub CMIScreenSaverCloseMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiScreenSaverClose.MouseUp
         If e.Button = MouseButtons.Left Then
             My.App.WSTShowSSIcon = False
             ShowTools()
-            ShowSettingsSS()
+            App.FrmSettings?.ShowSettingsSS()
         End If
-    End Sub
-    Private Sub BtnWSTScreenSaverEnabledMouseUp(sender As Object, e As MouseEventArgs) Handles btnWSTScreenSaverEnabled.MouseUp
-        If My.App.MouseInBounds(CType(sender, Control), New Point(e.X, e.Y)) Then
-            Select Case e.Button
-                Case MouseButtons.Left
-                    WSTSSEnabled = Not WSTSSEnabled
-                    WSTSSSet()
-                Case MouseButtons.Right : WSTSSActivate()
-            End Select
-        End If
-    End Sub
-    Private Sub CheckboxWSTScreenSaverEnableOnActivateClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWSTScreenSaverEnableOnActivate.Click
-        My.App.WSTSSEnableOnActivate = Not My.App.WSTSSEnableOnActivate
-    End Sub
-    Private Sub ComboboxWSTSSStartUpSelectedIndexChanged(sender As Object, e As EventArgs) Handles comboboxWSTSSStartUp.SelectedIndexChanged
-        My.App.WSTSSStartUp = CType(Me.comboboxWSTSSStartUp.SelectedIndex, My.App.WSTSSStartUpMode)
     End Sub
 
-    'Procedures
+    ' Methods
     Friend Sub WSTSSSet()
         Debug.Print("WSTSSSet: SS Enabled = " + WSTSSEnabled.ToString)
         If My.App.WSTSSToolEnabled Then
@@ -1264,9 +1238,6 @@ Partial Friend Class MainForm
                 Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSS16
                 Me.cmiScreenSaverEnabled.ForeColor = Color.Teal
                 Me.cmiScreenSaverEnabled.Text = "Screen Saver ENABLED"
-                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSS16
-                Me.btnWSTScreenSaverEnabled.Checked = True
-                Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver ENABLED")
             Else
                 Skye.WinAPI.SetThreadExecutionState(Skye.WinAPI.EXECUTION_STATE.ES_DISPLAY_REQUIRED Or Skye.WinAPI.EXECUTION_STATE.ES_CONTINUOUS)
                 Me.cmiWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
@@ -1277,25 +1248,9 @@ Partial Friend Class MainForm
                 Me.cmiScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
                 Me.cmiScreenSaverEnabled.ForeColor = Color.Maroon
                 Me.cmiScreenSaverEnabled.Text = "Screen Saver DISABLED"
-                Me.btnWSTScreenSaverEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
-                Me.btnWSTScreenSaverEnabled.Checked = False
-                Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, "Screen Saver DISABLED")
             End If
-            Me.TipInfoEX.SetText(Me.btnWSTScreenSaverEnabled, Me.TipInfoEX.GetText(Me.btnWSTScreenSaverEnabled) + vbCr + "RightClick = Activate")
+            FrmSettings?.UpdateSettings()
             UpdateWST()
-        End If
-    End Sub
-    Friend Sub WSTSSActivate(Optional hotkeymode As Boolean = False)
-        If My.App.WSTSSToolEnabled And (My.App.WSTShowSSActivate Or My.App.WSTShowSSEnabled Or My.App.WSTShowSSIcon) Then
-            Dim SSActive As Boolean
-            Skye.WinAPI.SystemParametersInfo(Skye.WinAPI.SPI_GETSCREENSAVERRUNNING, 0, SSActive, 0)
-            If Not SSActive Then
-                If My.App.WSTSSEnableOnActivate And Not hotkeymode Then
-                    WSTSSEnabled = True
-                    WSTSSSet()
-                End If
-                Skye.WinAPI.PostMessage(CType(Skye.WinAPI.HWND_BROADCAST, IntPtr), CUInt(Skye.WinAPI.WM_SYSCOMMAND), CType(Skye.WinAPI.SC_SCREENSAVE, IntPtr), CType(0, IntPtr))
-            End If
         End If
     End Sub
 

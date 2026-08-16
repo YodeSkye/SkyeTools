@@ -43,14 +43,6 @@
         btnSettingsRestore = New Button()
         tabcontrolSettings = New TabControl()
         tabpageWST = New TabPage()
-        groupboxWSTSS = New GroupBox()
-        btnWSTScreenSaverEnabled = New RadioButton()
-        comboboxWSTSSStartUp = New ComboBox()
-        label36 = New Label()
-        checkboxWSTScreenSaverEnableOnActivate = New CheckBox()
-        checkboxWSTShowScreenSaverEnabled = New CheckBox()
-        checkboxWSTShowScreenSaverActivate = New CheckBox()
-        checkboxWSTShowScreenSaverIcon = New CheckBox()
         tabpageAC = New TabPage()
         lblACAlarmChime = New Label()
         lblACOffHourChimePath = New Label()
@@ -182,8 +174,6 @@
         TipHCEX = New Skye.UI.ToolTipEX(components)
         cmWST.SuspendLayout()
         tabcontrolSettings.SuspendLayout()
-        tabpageWST.SuspendLayout()
-        groupboxWSTSS.SuspendLayout()
         tabpageAC.SuspendLayout()
         groupboxACTopHourChimeType.SuspendLayout()
         groupboxACAlarmChimeType.SuspendLayout()
@@ -531,7 +521,6 @@
         ' 
         ' tabpageWST
         ' 
-        tabpageWST.Controls.Add(groupboxWSTSS)
         TipHCEX.SetImage(tabpageWST, Nothing)
         TipInfoEX.SetImage(tabpageWST, Nothing)
         tabpageWST.Location = New Point(4, 26)
@@ -543,131 +532,6 @@
         TipInfoEX.SetText(tabpageWST, Nothing)
         tabpageWST.Text = "****WorkSpace Tools****"
         tabpageWST.UseVisualStyleBackColor = True
-        ' 
-        ' groupboxWSTSS
-        ' 
-        groupboxWSTSS.Controls.Add(btnWSTScreenSaverEnabled)
-        groupboxWSTSS.Controls.Add(comboboxWSTSSStartUp)
-        groupboxWSTSS.Controls.Add(label36)
-        groupboxWSTSS.Controls.Add(checkboxWSTScreenSaverEnableOnActivate)
-        groupboxWSTSS.Controls.Add(checkboxWSTShowScreenSaverEnabled)
-        groupboxWSTSS.Controls.Add(checkboxWSTShowScreenSaverActivate)
-        groupboxWSTSS.Controls.Add(checkboxWSTShowScreenSaverIcon)
-        groupboxWSTSS.ForeColor = SystemColors.ControlText
-        TipHCEX.SetImage(groupboxWSTSS, Nothing)
-        TipInfoEX.SetImage(groupboxWSTSS, Nothing)
-        groupboxWSTSS.Location = New Point(403, 190)
-        groupboxWSTSS.Name = "groupboxWSTSS"
-        groupboxWSTSS.RightToLeft = RightToLeft.Yes
-        groupboxWSTSS.Size = New Size(207, 155)
-        groupboxWSTSS.TabIndex = 140
-        groupboxWSTSS.TabStop = False
-        TipHCEX.SetText(groupboxWSTSS, Nothing)
-        TipInfoEX.SetText(groupboxWSTSS, Nothing)
-        ' 
-        ' btnWSTScreenSaverEnabled
-        ' 
-        btnWSTScreenSaverEnabled.Appearance = Appearance.Button
-        TipInfoEX.SetImage(btnWSTScreenSaverEnabled, Nothing)
-        TipHCEX.SetImage(btnWSTScreenSaverEnabled, Nothing)
-        btnWSTScreenSaverEnabled.Location = New Point(14, 21)
-        btnWSTScreenSaverEnabled.Name = "btnWSTScreenSaverEnabled"
-        btnWSTScreenSaverEnabled.Size = New Size(24, 24)
-        btnWSTScreenSaverEnabled.TabIndex = 30
-        btnWSTScreenSaverEnabled.TabStop = True
-        TipHCEX.SetText(btnWSTScreenSaverEnabled, Nothing)
-        TipInfoEX.SetText(btnWSTScreenSaverEnabled, "SS")
-        btnWSTScreenSaverEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxWSTSSStartUp
-        ' 
-        comboboxWSTSSStartUp.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        comboboxWSTSSStartUp.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWSTSSStartUp.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWSTSSStartUp, Nothing)
-        TipHCEX.SetImage(comboboxWSTSSStartUp, Nothing)
-        comboboxWSTSSStartUp.Location = New Point(14, 120)
-        comboboxWSTSSStartUp.Name = "comboboxWSTSSStartUp"
-        comboboxWSTSSStartUp.RightToLeft = RightToLeft.No
-        comboboxWSTSSStartUp.Size = New Size(179, 25)
-        comboboxWSTSSStartUp.TabIndex = 25
-        TipInfoEX.SetText(comboboxWSTSSStartUp, Nothing)
-        TipHCEX.SetText(comboboxWSTSSStartUp, Nothing)
-        ' 
-        ' label36
-        ' 
-        label36.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
-        TipHCEX.SetImage(label36, Nothing)
-        TipInfoEX.SetImage(label36, Nothing)
-        label36.Location = New Point(14, 100)
-        label36.Name = "label36"
-        label36.RightToLeft = RightToLeft.No
-        label36.Size = New Size(179, 21)
-        label36.TabIndex = 25
-        TipHCEX.SetText(label36, Nothing)
-        label36.Text = "StartUp Mode"
-        TipInfoEX.SetText(label36, Nothing)
-        label36.TextAlign = ContentAlignment.BottomCenter
-        ' 
-        ' checkboxWSTScreenSaverEnableOnActivate
-        ' 
-        checkboxWSTScreenSaverEnableOnActivate.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWSTScreenSaverEnableOnActivate, Nothing)
-        TipHCEX.SetImage(checkboxWSTScreenSaverEnableOnActivate, Nothing)
-        checkboxWSTScreenSaverEnableOnActivate.Location = New Point(55, 75)
-        checkboxWSTScreenSaverEnableOnActivate.Name = "checkboxWSTScreenSaverEnableOnActivate"
-        checkboxWSTScreenSaverEnableOnActivate.RightToLeft = RightToLeft.Yes
-        checkboxWSTScreenSaverEnableOnActivate.Size = New Size(138, 21)
-        checkboxWSTScreenSaverEnableOnActivate.TabIndex = 20
-        TipHCEX.SetText(checkboxWSTScreenSaverEnableOnActivate, Nothing)
-        TipInfoEX.SetText(checkboxWSTScreenSaverEnableOnActivate, Nothing)
-        checkboxWSTScreenSaverEnableOnActivate.Text = "Enable On Activate"
-        checkboxWSTScreenSaverEnableOnActivate.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowScreenSaverEnabled
-        ' 
-        checkboxWSTShowScreenSaverEnabled.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWSTShowScreenSaverEnabled, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowScreenSaverEnabled, Nothing)
-        checkboxWSTShowScreenSaverEnabled.Location = New Point(20, 57)
-        checkboxWSTShowScreenSaverEnabled.Name = "checkboxWSTShowScreenSaverEnabled"
-        checkboxWSTShowScreenSaverEnabled.RightToLeft = RightToLeft.Yes
-        checkboxWSTShowScreenSaverEnabled.Size = New Size(173, 21)
-        checkboxWSTShowScreenSaverEnabled.TabIndex = 15
-        TipHCEX.SetText(checkboxWSTShowScreenSaverEnabled, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowScreenSaverEnabled, Nothing)
-        checkboxWSTShowScreenSaverEnabled.Text = "Show 'Enabled/Disabled'"
-        checkboxWSTShowScreenSaverEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowScreenSaverActivate
-        ' 
-        checkboxWSTShowScreenSaverActivate.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWSTShowScreenSaverActivate, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowScreenSaverActivate, Nothing)
-        checkboxWSTShowScreenSaverActivate.Location = New Point(75, 39)
-        checkboxWSTShowScreenSaverActivate.Name = "checkboxWSTShowScreenSaverActivate"
-        checkboxWSTShowScreenSaverActivate.RightToLeft = RightToLeft.Yes
-        checkboxWSTShowScreenSaverActivate.Size = New Size(118, 21)
-        checkboxWSTShowScreenSaverActivate.TabIndex = 10
-        TipHCEX.SetText(checkboxWSTShowScreenSaverActivate, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowScreenSaverActivate, Nothing)
-        checkboxWSTShowScreenSaverActivate.Text = "Show 'Activate'"
-        checkboxWSTShowScreenSaverActivate.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWSTShowScreenSaverIcon
-        ' 
-        checkboxWSTShowScreenSaverIcon.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWSTShowScreenSaverIcon, Nothing)
-        TipHCEX.SetImage(checkboxWSTShowScreenSaverIcon, Nothing)
-        checkboxWSTShowScreenSaverIcon.Location = New Point(75, 21)
-        checkboxWSTShowScreenSaverIcon.Name = "checkboxWSTShowScreenSaverIcon"
-        checkboxWSTShowScreenSaverIcon.RightToLeft = RightToLeft.Yes
-        checkboxWSTShowScreenSaverIcon.Size = New Size(118, 21)
-        checkboxWSTShowScreenSaverIcon.TabIndex = 1
-        TipHCEX.SetText(checkboxWSTShowScreenSaverIcon, Nothing)
-        TipInfoEX.SetText(checkboxWSTShowScreenSaverIcon, Nothing)
-        checkboxWSTShowScreenSaverIcon.Text = "Show Tray Icon"
-        checkboxWSTShowScreenSaverIcon.UseVisualStyleBackColor = True
         ' 
         ' tabpageAC
         ' 
@@ -2602,8 +2466,6 @@
         TipHCEX.SetText(Me, Nothing)
         cmWST.ResumeLayout(False)
         tabcontrolSettings.ResumeLayout(False)
-        tabpageWST.ResumeLayout(False)
-        groupboxWSTSS.ResumeLayout(False)
         tabpageAC.ResumeLayout(False)
         tabpageAC.PerformLayout()
         groupboxACTopHourChimeType.ResumeLayout(False)
@@ -2627,16 +2489,12 @@
     Private WithEvents btnClose As System.Windows.Forms.Button
     Private WithEvents btnClockTest As System.Windows.Forms.Button
     Private WithEvents cmiWSTClock As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents btnWSTScreenSaverEnabled As System.Windows.Forms.RadioButton
     Private WithEvents cmseparatorWSTWLBottom As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmseparatorWSTWLTop As System.Windows.Forms.ToolStripSeparator
     Private WithEvents lblWLStartUpDelay As System.Windows.Forms.Label
     Private WithEvents lblWLMaxLinksPerFolder As System.Windows.Forms.Label
     Private WithEvents lblWLAutoRefreshInterval As System.Windows.Forms.Label
     Private WithEvents lblWLAutoRefreshIdleInterval As System.Windows.Forms.Label
-    Private label36 As System.Windows.Forms.Label
-    Private WithEvents comboboxWSTSSStartUp As System.Windows.Forms.ComboBox
-    Private WithEvents groupboxWSTSS As System.Windows.Forms.GroupBox
     Private cmseparatorWSTTopSpacer As System.Windows.Forms.ToolStripSeparator
     Private WithEvents panelWL As System.Windows.Forms.Panel
     Private WithEvents cmiWLMoveUp As System.Windows.Forms.ToolStripMenuItem
@@ -2686,7 +2544,6 @@
     Private WithEvents checkboxACTopHourBeforeChimeEnabled As System.Windows.Forms.CheckBox
     Private WithEvents picboxACClock As System.Windows.Forms.PictureBox
     Private WithEvents btnACAlarmCancel As System.Windows.Forms.Button
-    Private WithEvents checkboxWSTScreenSaverEnableOnActivate As System.Windows.Forms.CheckBox
     Private WithEvents cmiWSTScreenSaverEnabled As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTScreenSaverActivate As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiScreenSaverCloseAll As System.Windows.Forms.ToolStripMenuItem
@@ -2711,9 +2568,6 @@
     Private cmseparatorWSTSettings As System.Windows.Forms.ToolStripSeparator
     Private cmseparatorWSTCancel As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmWSTScreenSaver As System.Windows.Forms.ContextMenuStrip
-    Private WithEvents checkboxWSTShowScreenSaverIcon As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowScreenSaverEnabled As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWSTShowScreenSaverActivate As System.Windows.Forms.CheckBox
     Private WithEvents textboxHKWSTLockWorkSpace As System.Windows.Forms.TextBox
     Private WithEvents lblHKWSTLockWorkSpace As System.Windows.Forms.Label
     Private WithEvents textboxHKWSTScreenSaver As System.Windows.Forms.TextBox

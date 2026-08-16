@@ -59,6 +59,13 @@
         ChkBoxWSTShowWLMenu = New CheckBox()
         ChkBoxWSTEnabled = New CheckBox()
         PanelSS = New Panel()
+        BtnSSEnabled = New RadioButton()
+        CoBoxSSStartUp = New ComboBox()
+        LblSSStartupMode = New Label()
+        ChkBoxSSShowIcon = New CheckBox()
+        ChkBoxSSEnableOnActivate = New CheckBox()
+        ChkBoxSSShowActivate = New CheckBox()
+        ChkBoxSSShowEnabled = New CheckBox()
         PanelActions = New Panel()
         PanelPageSelector = New Panel()
         LVPageSelector = New Skye.UI.ListViewEX()
@@ -70,6 +77,7 @@
         PanelHK = New Panel()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
+        PanelSS.SuspendLayout()
         PanelActions.SuspendLayout()
         PanelPageSelector.SuspendLayout()
         SuspendLayout()
@@ -642,6 +650,13 @@
         ' 
         ' PanelSS
         ' 
+        PanelSS.Controls.Add(BtnSSEnabled)
+        PanelSS.Controls.Add(CoBoxSSStartUp)
+        PanelSS.Controls.Add(LblSSStartupMode)
+        PanelSS.Controls.Add(ChkBoxSSShowIcon)
+        PanelSS.Controls.Add(ChkBoxSSEnableOnActivate)
+        PanelSS.Controls.Add(ChkBoxSSShowActivate)
+        PanelSS.Controls.Add(ChkBoxSSShowEnabled)
         PanelSS.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelSS, Nothing)
         PanelSS.Location = New Point(187, 0)
@@ -649,6 +664,95 @@
         PanelSS.Size = New Size(730, 534)
         PanelSS.TabIndex = 109
         TipInfoEX.SetText(PanelSS, Nothing)
+        ' 
+        ' BtnSSEnabled
+        ' 
+        BtnSSEnabled.Appearance = Appearance.Button
+        TipInfoEX.SetImage(BtnSSEnabled, Nothing)
+        BtnSSEnabled.Location = New Point(19, 18)
+        BtnSSEnabled.Name = "BtnSSEnabled"
+        BtnSSEnabled.Size = New Size(32, 32)
+        BtnSSEnabled.TabIndex = 10
+        BtnSSEnabled.TabStop = True
+        TipInfoEX.SetText(BtnSSEnabled, "SS")
+        BtnSSEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' CoBoxSSStartUp
+        ' 
+        CoBoxSSStartUp.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        CoBoxSSStartUp.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxSSStartUp.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxSSStartUp, Nothing)
+        CoBoxSSStartUp.Location = New Point(264, 261)
+        CoBoxSSStartUp.Name = "CoBoxSSStartUp"
+        CoBoxSSStartUp.RightToLeft = RightToLeft.No
+        CoBoxSSStartUp.Size = New Size(170, 29)
+        CoBoxSSStartUp.TabIndex = 140
+        TipInfoEX.SetText(CoBoxSSStartUp, Nothing)
+        ' 
+        ' LblSSStartupMode
+        ' 
+        LblSSStartupMode.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        TipInfoEX.SetImage(LblSSStartupMode, Nothing)
+        LblSSStartupMode.Location = New Point(264, 238)
+        LblSSStartupMode.Name = "LblSSStartupMode"
+        LblSSStartupMode.Size = New Size(170, 21)
+        LblSSStartupMode.TabIndex = 25
+        LblSSStartupMode.Text = "StartUp Mode"
+        TipInfoEX.SetText(LblSSStartupMode, Nothing)
+        LblSSStartupMode.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' ChkBoxSSShowIcon
+        ' 
+        ChkBoxSSShowIcon.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        ChkBoxSSShowIcon.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxSSShowIcon, Nothing)
+        ChkBoxSSShowIcon.Location = New Point(265, 79)
+        ChkBoxSSShowIcon.Name = "ChkBoxSSShowIcon"
+        ChkBoxSSShowIcon.Size = New Size(134, 25)
+        ChkBoxSSShowIcon.TabIndex = 100
+        TipInfoEX.SetText(ChkBoxSSShowIcon, Nothing)
+        ChkBoxSSShowIcon.Text = "Show Tray Icon"
+        ChkBoxSSShowIcon.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxSSEnableOnActivate
+        ' 
+        ChkBoxSSEnableOnActivate.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        ChkBoxSSEnableOnActivate.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxSSEnableOnActivate, Nothing)
+        ChkBoxSSEnableOnActivate.Location = New Point(265, 188)
+        ChkBoxSSEnableOnActivate.Name = "ChkBoxSSEnableOnActivate"
+        ChkBoxSSEnableOnActivate.Size = New Size(159, 25)
+        ChkBoxSSEnableOnActivate.TabIndex = 130
+        TipInfoEX.SetText(ChkBoxSSEnableOnActivate, Nothing)
+        ChkBoxSSEnableOnActivate.Text = "Enable On Activate"
+        ChkBoxSSEnableOnActivate.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxSSShowActivate
+        ' 
+        ChkBoxSSShowActivate.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        ChkBoxSSShowActivate.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxSSShowActivate, Nothing)
+        ChkBoxSSShowActivate.Location = New Point(265, 110)
+        ChkBoxSSShowActivate.Name = "ChkBoxSSShowActivate"
+        ChkBoxSSShowActivate.Size = New Size(135, 25)
+        ChkBoxSSShowActivate.TabIndex = 110
+        TipInfoEX.SetText(ChkBoxSSShowActivate, Nothing)
+        ChkBoxSSShowActivate.Text = "Show 'Activate'"
+        ChkBoxSSShowActivate.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxSSShowEnabled
+        ' 
+        ChkBoxSSShowEnabled.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        ChkBoxSSShowEnabled.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxSSShowEnabled, Nothing)
+        ChkBoxSSShowEnabled.Location = New Point(265, 141)
+        ChkBoxSSShowEnabled.Name = "ChkBoxSSShowEnabled"
+        ChkBoxSSShowEnabled.Size = New Size(201, 25)
+        ChkBoxSSShowEnabled.TabIndex = 120
+        TipInfoEX.SetText(ChkBoxSSShowEnabled, Nothing)
+        ChkBoxSSShowEnabled.Text = "Show 'Enabled/Disabled'"
+        ChkBoxSSShowEnabled.UseVisualStyleBackColor = True
         ' 
         ' PanelActions
         ' 
@@ -758,13 +862,13 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
+        Controls.Add(PanelSS)
         Controls.Add(PanelWST)
         Controls.Add(PanelApp)
         Controls.Add(PanelHK)
         Controls.Add(PanelHC)
         Controls.Add(PanelWL)
         Controls.Add(PanelAC)
-        Controls.Add(PanelSS)
         Controls.Add(PanelPageSelector)
         Controls.Add(PanelActions)
         DoubleBuffered = True
@@ -781,6 +885,8 @@
         PanelApp.PerformLayout()
         PanelWST.ResumeLayout(False)
         PanelWST.PerformLayout()
+        PanelSS.ResumeLayout(False)
+        PanelSS.PerformLayout()
         PanelActions.ResumeLayout(False)
         PanelPageSelector.ResumeLayout(False)
         ResumeLayout(False)
@@ -842,4 +948,11 @@
     Private WithEvents ChkBoxWSTShowWLTray As CheckBox
     Private WithEvents ChkBoxWSTShowWLMenu As CheckBox
     Private WithEvents ChkBoxWSTEnabled As CheckBox
+    Private WithEvents BtnSSEnabled As RadioButton
+    Private WithEvents CoBoxSSStartUp As ComboBox
+    Private WithEvents LblSSStartupMode As Label
+    Private WithEvents ChkBoxSSEnableOnActivate As CheckBox
+    Private WithEvents ChkBoxSSShowEnabled As CheckBox
+    Private WithEvents ChkBoxSSShowActivate As CheckBox
+    Private WithEvents ChkBoxSSShowIcon As CheckBox
 End Class

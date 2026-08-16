@@ -65,6 +65,18 @@ Namespace My
 		Friend WSTShowSSActivate As Boolean
         Friend WSTShowSSEnabled As Boolean
 
+		' METHODS
+		Friend Sub SSActivate(Optional hotkeymode As Boolean = False)
+			If WSTSSToolEnabled And (WSTShowSSActivate Or WSTShowSSEnabled Or WSTShowSSIcon) Then
+				Dim SSActive As Boolean
+				Skye.WinAPI.SystemParametersInfo(Skye.WinAPI.SPI_GETSCREENSAVERRUNNING, 0, SSActive, 0)
+				If Not SSActive Then
+					If WSTSSEnableOnActivate And Not hotkeymode Then FrmMain.WSTSSEnabled = True
+					Skye.WinAPI.PostMessage(CType(Skye.WinAPI.HWND_BROADCAST, IntPtr), CUInt(Skye.WinAPI.WM_SYSCOMMAND), CType(Skye.WinAPI.SC_SCREENSAVE, IntPtr), CType(0, IntPtr))
+				End If
+			End If
+		End Sub
+
 #End Region
 #Region "Alarm & Chime (AC)"
 
@@ -525,19 +537,6 @@ Namespace My
 			Skye.Common.Log.Write(logentry)
 			Debug.Print("WriteToLog: " & logentry)
 		End Sub
-		''' <summary>
-		''' Checks whether the Mouse Pointer is within the bounds of the Control. Useful for MouseUp Control Events so a user can 'wander' off the control, while holding the button down, without the event triggering.
-		''' </summary>
-		''' <param name="control">A reference to a Control.</param>
-		''' <param name="mouseposition">A reference to the current Mouse Position.</param>
-		''' <returns>True if 'mouseposition' is within the bounds of 'control'; otherwise False.</returns>
-		Friend Function MouseInBounds(ByRef control As Control, ByRef mouseposition As Point) As Boolean
-			If mouseposition.X >= 0 AndAlso mouseposition.X <= control.Width AndAlso mouseposition.Y >= 0 AndAlso mouseposition.Y <= control.Height Then Return True
-			Return False
-		End Function
-		''' <summary>
-		''' Replaces one ampersand with x ampersands for controls that interpret ampersands as HotKeys. For ContextMenus, x=2. For TrayIcons, x=3. To Replace With "+", x=0. For No Change, x=1.
-		''' </summary>
 		Friend Function FixAmpersand(source As String, x As Integer) As String '
 			Try
 				Select Case x
