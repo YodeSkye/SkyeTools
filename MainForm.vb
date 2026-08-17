@@ -802,19 +802,33 @@ Partial Friend Class MainForm
                 link.RefreshMenu = True
                 My.App.WLData(CInt(argument)) = link
                 ShowWL()
-            Case My.App.HCAction.WSTLockWorkSpace : WSTLockWorkSpace(True)
-            Case My.App.HCAction.WSTScreenSaverActivate : App.SSActivate()
+            Case My.App.HCAction.WSTLockWorkSpace
+                WSTLockWorkSpace(True)
+            Case My.App.HCAction.WSTScreenSaverActivate
+                App.SSActivate()
             Case My.App.HCAction.WSTScreenSaverDisable
                 WSTSSEnabled = Not WSTSSEnabled
-                'WSTSSSet()
-            Case My.App.HCAction.WSTClock : App.ShowClock()
-            Case My.App.HCAction.ShowSettings : SelectTab(Nothing)
-            Case My.App.HCAction.ShowSettingsWST : SelectTab(Me.tabpageWST)
-            Case My.App.HCAction.ShowSettingsWL : SelectTab(Me.tabpageWL)
-            Case My.App.HCAction.ShowSettingsWSTSS : SelectTab(Me.tabpageWST)
-            Case My.App.HCAction.ShowSettingsAC : ACActivateTimer()
-            Case My.App.HCAction.ShowSettingsHC : SelectTab(Me.tabpageHC)
-            Case My.App.HCAction.ShowSettingsHK : SelectTab(Me.tabpageHK)
+            Case My.App.HCAction.WSTClock
+                App.ShowClock()
+            Case My.App.HCAction.ShowSettings
+                App.ShowSettings()
+            Case My.App.HCAction.ShowSettingsWST
+                App.ShowSettings()
+                App.FrmSettings.SetPage("WST")
+            Case My.App.HCAction.ShowSettingsWSTSS
+                App.ShowSettings()
+                App.FrmSettings.SetPage("SS")
+            Case My.App.HCAction.ShowSettingsWL
+                App.ShowSettings()
+                App.FrmSettings.SetPage("WL")
+            Case My.App.HCAction.ShowSettingsAC
+                ACActivateTimer()
+            Case My.App.HCAction.ShowSettingsHC
+                App.ShowSettings()
+                App.FrmSettings.SetPage("HC")
+            Case My.App.HCAction.ShowSettingsHK
+                App.ShowSettings()
+                App.FrmSettings.SetPage("HK")
         End Select
     End Sub
     Private Sub HCShowActions(tool As My.App.TrayTools)
@@ -1261,9 +1275,20 @@ Partial Friend Class MainForm
     Private WithEvents TimerAC As New Timer
     Private WithEvents BackgroundworkerAC As New System.ComponentModel.BackgroundWorker
     Private uiACOpenFile As New OpenFileDialog
-    Friend ACAlarmActive As Boolean
-    Private ACAlarmTripped As Boolean = False
-    Private ACMute As Boolean = False
+    Private _aCAlarmActive As Boolean
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Friend Property ACAlarmActive As Boolean
+        Get
+            Return _aCAlarmActive
+        End Get
+        Set(value As Boolean)
+            If _aCAlarmActive <> value Then
+                _aCAlarmActive = value
+            End If
+        End Set
+    End Property
+    Private ACMute As Boolean
+    Private ACAlarmTripped As Boolean
     Private ACChimePath As String
     Private ACChimeCount As Byte
     Private ACLastMinute As Integer = My.Computer.Clock.LocalTime.Minute

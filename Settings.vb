@@ -39,13 +39,13 @@ Partial Friend Class Settings
         ILPageSelector.Images.Add(My.Resources.Resources.ImageWL48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHC48)
         ILPageSelector.Images.Add(My.Resources.Resources.ImageHK48)
-        LVPageSelector.Items.Add(New ListViewItem("App", 0))
-        LVPageSelector.Items.Add(New ListViewItem("Workspace Tools", 1))
-        LVPageSelector.Items.Add(New ListViewItem("Screen Saver", 2))
-        LVPageSelector.Items.Add(New ListViewItem("Alarm & Chime", 3))
-        LVPageSelector.Items.Add(New ListViewItem("WinLinks", 4))
-        LVPageSelector.Items.Add(New ListViewItem("HotClicks", 5))
-        LVPageSelector.Items.Add(New ListViewItem("HotKeys", 6))
+        LVPageSelector.Items.Add(New ListViewItem("App", 0) With {.Tag = "APP"})
+        LVPageSelector.Items.Add(New ListViewItem("Workspace Tools", 1) With {.Tag = "WST"})
+        LVPageSelector.Items.Add(New ListViewItem("Screen Saver", 2) With {.Tag = "SS"})
+        LVPageSelector.Items.Add(New ListViewItem("Alarm & Chime", 3) With {.Tag = "AC"})
+        LVPageSelector.Items.Add(New ListViewItem("WinLinks", 4) With {.Tag = "WL"})
+        LVPageSelector.Items.Add(New ListViewItem("HotClicks", 5) With {.Tag = "HC"})
+        LVPageSelector.Items.Add(New ListViewItem("HotKeys", 6) With {.Tag = "HK"})
         LVPageSelector.Items(0).Selected = True
         OFDLoadOnOSStartup.DefaultExt = "exe"
         OFDLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
@@ -123,7 +123,7 @@ Partial Friend Class Settings
 
         ' Ensure it becomes selected (for visual feedback)
         item.Selected = True
-        Dim selectedSource As String = item.Text
+        Dim selectedSource As String = item.Tag.ToString
 
         Select Case e.Clicks
             Case 1
@@ -135,7 +135,7 @@ Partial Friend Class Settings
     Private Sub LVPageSelector_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LVPageSelector.SelectedIndexChanged
         If suppressPageSelection OrElse LVPageSelector.SelectedItems.Count = 0 Then Return
         Dim selectedSource As String = LVPageSelector.SelectedItems(0).Text
-        SetPage(LVPageSelector.SelectedItems(0).Text)
+        SetPage(LVPageSelector.SelectedItems(0).Tag.ToString)
     End Sub
     Private Sub BtnHelp_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles BtnHelp.MouseUp
         If e.X >= 0 And e.X <= CType(sender, Button).Width And e.Y >= 0 And e.Y <= CType(sender, Button).Height Then
@@ -183,15 +183,27 @@ Partial Friend Class Settings
     ''' Suppresses the system ding on Enter and forces the form to validate the control.
     ''' Call this from the TextBox KeyDown handler.
     ''' </summary>
-    Public Shared Sub HandleEnterKey(sender As Object, e As KeyEventArgs) Handles TxtBoxLoadOnOSStartupArgs.KeyDown
+    Public Shared Sub TextboxHandleEnterKey(sender As Object, e As KeyEventArgs) Handles TxtBoxLoadOnOSStartupArgs.KeyDown
         If e.KeyCode = Keys.Enter Then
             ' 1. Silence the system ding
             e.SuppressKeyPress = True
-
             ' 2. Trigger validation on the form/control
             Dim tb As TextBox = TryCast(sender, TextBox)
             tb?.FindForm()?.ValidateChildren()
         End If
+    End Sub
+    Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+        nonNumberEntered = False
+        If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
+            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
+            ElseIf e.KeyCode = Keys.Enter Then
+                e.SuppressKeyPress = True
+                Validate()
+            End If
+        End If
+    End Sub
+    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+        If nonNumberEntered Then e.Handled = True
     End Sub
 
     ' App
@@ -343,23 +355,42 @@ Partial Friend Class Settings
     ' HotKeys
 
     ' METHODS
-    Private Sub SetPage(page As String)
-        Select Case page
-            Case "App"
+    Friend Sub SetPage(page As String)
+        Select Case page.ToUpper()
+            Case "APP"
                 PanelApp.BringToFront()
-            Case "Workspace Tools"
+            Case "WST"
                 PanelWST.BringToFront()
-            Case "Screen Saver"
+            Case "SS"
                 PanelSS.BringToFront()
-            Case "Alarm & Chime"
+            Case "AC"
                 PanelAC.BringToFront()
-            Case "WinLinks"
+            Case "WL"
                 PanelWL.BringToFront()
-            Case "HotClicks"
+            Case "HC"
                 PanelHC.BringToFront()
-            Case "HotKeys"
+            Case "HK"
                 PanelHK.BringToFront()
         End Select
+        SelectPage(page)
+    End Sub
+    Private Sub SelectPage(page As String)
+        If LVPageSelector.Items.Count = 0 Then Exit Sub ' Guard against empty list
+
+        suppressPageSelection = True
+        LVPageSelector.BeginUpdate() ' Suspend UI layout redrawing briefly to avoid flicker
+        For Each item As ListViewItem In LVPageSelector.Items
+            Dim itemTag As String = TryCast(item.Tag, String)
+            If String.Equals(itemTag, page, StringComparison.OrdinalIgnoreCase) Then
+                item.Selected = True
+                item.Focused = True
+            Else
+                item.Selected = False
+            End If
+        Next
+        LVPageSelector.EndUpdate()
+        suppressPageSelection = False
+
     End Sub
     Private Sub ShowSettings()
 

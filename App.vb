@@ -476,8 +476,11 @@ Namespace My
 				FrmSettings = New Settings
 				FrmSettings.Show()
 			Else
+				If FrmSettings.WindowState = FormWindowState.Minimized Then
+					FrmSettings.WindowState = FormWindowState.Normal
+				End If
 				FrmSettings.BringToFront()
-				FrmSettings.Focus()
+				FrmSettings.Activate() ' <-- Crucial: Activates the window and forces focus in Win32
 			End If
 		End Sub
 		Friend Sub HideSettings()
@@ -747,7 +750,7 @@ Namespace My
 			WSTShowSSActivate = True
 			WSTShowSSEnabled = True
 			'Alarm & Chime (AC)
-			WSTShowAC = False
+			WSTShowAC = True
 			ACAlarmRecurring = False
 			'WinLinks (WL)
 			WSTShowWLMenu = False
