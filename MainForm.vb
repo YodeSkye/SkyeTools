@@ -401,9 +401,6 @@ Partial Friend Class MainForm
         FrmLoad(btnSettingsRestore, New EventArgs)
         FrmShown(btnSettingsRestore, New EventArgs)
     End Sub
-    Private Sub TextboxShortcutKeysPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs)
-        If e.KeyData = Keys.A + Keys.Control Then CType(sender, TextBox).SelectAll()
-    End Sub
     Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown
         nonNumberEntered = False
         If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
@@ -1287,7 +1284,18 @@ Partial Friend Class MainForm
             End If
         End Set
     End Property
-    Private ACMute As Boolean
+    Private _ACMute As Boolean
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Friend Property ACMute As Boolean
+        Get
+            Return _ACMute
+        End Get
+        Set(value As Boolean)
+            If _ACMute <> value Then
+                _ACMute = value
+            End If
+        End Set
+    End Property
     Private ACAlarmTripped As Boolean
     Private ACChimePath As String
     Private ACChimeCount As Byte
@@ -1494,6 +1502,7 @@ Partial Friend Class MainForm
 
     'Handlers
     Private Sub TimerACTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerAC.Tick
+        Debug.WriteLine("ACAlarmTripped" & ACAlarmTripped.ToString)
         If ACLastMinute <> My.Computer.Clock.LocalTime.Minute And Not ACAlarmTripped Then
             ACLastMinute = My.Computer.Clock.LocalTime.Minute
             ACChimePath = ""
@@ -1571,7 +1580,10 @@ Partial Friend Class MainForm
                     UpdateACAlarmCancel(True)
                 End If
             End If
-            If ACMute Then App.ShowMessage(My.App.Tools.AlarmChime, "** " + If(ACAlarmTripped, "ALARM", "CHIME") + " IS SOUNDING **", Nothing)
+            If ACMute Then
+                App.ShowMessage(My.App.Tools.AlarmChime, "** " + If(ACAlarmTripped, "ALARM", "CHIME") + " IS SOUNDING **", Nothing)
+                ACAlarmTripped = False
+            End If
         End If
     End Sub
     Private Sub BackgroundworkerACDoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundworkerAC.DoWork
@@ -1623,10 +1635,10 @@ Partial Friend Class MainForm
     End Sub
     Private Sub UpdateACMute()
         If ACMute Then
-            Me.btnACMute.Image = My.Resources.Resources.imageACMute 'CType(My.App.AppResources.GetObject("imageACMute"), Image)
+            Me.btnACMute.Image = My.Resources.Resources.imageACMute
             Me.TipInfoEX.SetText(Me.btnACMute, "Sound All Chimes")
         Else
-            Me.btnACMute.Image = My.Resources.Resources.imageACSound 'CType(My.App.AppResources.GetObject("imageACSound"), Image)
+            Me.btnACMute.Image = My.Resources.Resources.imageACSound
             Me.TipInfoEX.SetText(Me.btnACMute, "Mute All Chimes")
         End If
     End Sub

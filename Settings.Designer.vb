@@ -75,6 +75,7 @@
         PanelWL = New Panel()
         PanelHC = New Panel()
         PanelHK = New Panel()
+        CMBlankForTextBoxes = New ContextMenuStrip(components)
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -424,6 +425,7 @@
         ' 
         ' TxtBoxLoadOnOSStartupArgs
         ' 
+        TxtBoxLoadOnOSStartupArgs.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(TxtBoxLoadOnOSStartupArgs, Nothing)
         TxtBoxLoadOnOSStartupArgs.Location = New Point(255, 290)
         TxtBoxLoadOnOSStartupArgs.Name = "TxtBoxLoadOnOSStartupArgs"
@@ -857,6 +859,13 @@
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
         ' 
+        ' CMBlankForTextBoxes
+        ' 
+        TipInfoEX.SetImage(CMBlankForTextBoxes, Nothing)
+        CMBlankForTextBoxes.Name = "CMBlankForTextBoxes"
+        CMBlankForTextBoxes.Size = New Size(61, 4)
+        TipInfoEX.SetText(CMBlankForTextBoxes, Nothing)
+        ' 
         ' Settings
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -956,4 +965,5 @@
     Private WithEvents ChkBoxSSShowEnabled As CheckBox
     Private WithEvents ChkBoxSSShowActivate As CheckBox
     Private WithEvents ChkBoxSSShowIcon As CheckBox
+    Friend WithEvents CMBlankForTextBoxes As ContextMenuStrip
 End Class
