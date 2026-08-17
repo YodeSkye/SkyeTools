@@ -1502,7 +1502,6 @@ Partial Friend Class MainForm
 
     'Handlers
     Private Sub TimerACTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerAC.Tick
-        Debug.WriteLine("ACAlarmTripped" & ACAlarmTripped.ToString)
         If ACLastMinute <> My.Computer.Clock.LocalTime.Minute And Not ACAlarmTripped Then
             ACLastMinute = My.Computer.Clock.LocalTime.Minute
             ACChimePath = ""
