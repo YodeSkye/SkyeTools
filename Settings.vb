@@ -61,7 +61,6 @@ Partial Friend Class Settings
     End Sub
     Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         ShowSettings()
-        ShowSave()
     End Sub
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
@@ -72,6 +71,7 @@ Partial Friend Class Settings
         LVPageSelector.Focus()
         Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
         Skye.UI.ThemeManager.ApplyTheme(Me)
+        ShowSave()
     End Sub
     Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelWST.MouseDown, PanelSS.MouseDown, PanelActions.MouseDown
         If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
@@ -202,8 +202,9 @@ Partial Friend Class Settings
         Skye.UI.ThemeManager.SetTheme(selectedTheme)
         App.SetSave()
     End Sub
-    Private Sub CoBxTheme_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectedIndexChanged
+    Private Sub CoBxTheme_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles CoBoxTheme.SelectionChangeCommitted
         Dim selectedName As String = CoBoxTheme.SelectedItem.ToString()
+        If selectedName = App.Theme.Name Then Return
         Dim selected As Skye.UI.SkyeTheme = Skye.UI.SkyeThemes.GetTheme(selectedName)
         App.Theme = selected
         If Not App.ThemeAuto Then
@@ -330,7 +331,8 @@ Partial Friend Class Settings
         WSTSSEnableOnActivate = Not WSTSSEnableOnActivate
         App.SetSave()
     End Sub
-    Private Sub CoBoxSSStartUp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CoBoxSSStartUp.SelectedIndexChanged
+    Private Sub CoBoxSSStartUp_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles CoBoxSSStartUp.SelectionChangeCommitted
+        If WSTSSStartUp = CType(CoBoxSSStartUp.SelectedIndex, WSTSSStartUpMode) Then Return
         WSTSSStartUp = CType(CoBoxSSStartUp.SelectedIndex, WSTSSStartUpMode)
         App.SetSave()
     End Sub

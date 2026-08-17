@@ -386,6 +386,7 @@
         ' 
         ' CoBoxTheme
         ' 
+        CoBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxTheme.FormattingEnabled = True
         TipInfoEX.SetImage(CoBoxTheme, Nothing)
         CoBoxTheme.Location = New Point(282, 118)
@@ -862,9 +863,9 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
+        Controls.Add(PanelApp)
         Controls.Add(PanelSS)
         Controls.Add(PanelWST)
-        Controls.Add(PanelApp)
         Controls.Add(PanelHK)
         Controls.Add(PanelHC)
         Controls.Add(PanelWL)
