@@ -2040,8 +2040,8 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
-        Controls.Add(PanelAC)
         Controls.Add(PanelWL)
+        Controls.Add(PanelAC)
         Controls.Add(PanelApp)
         Controls.Add(PanelSS)
         Controls.Add(PanelWST)

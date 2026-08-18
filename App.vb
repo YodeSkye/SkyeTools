@@ -346,8 +346,9 @@ Namespace My
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
 		Friend NeedsSaved As Boolean = False
-		Friend ErrorAlert As Boolean = False
-		Friend FrmMain As MainForm
+        Friend ErrorAlert As Boolean = False
+        Friend LastSettingsPage As String = "APP" ' The last settings page that was opened, used to return to the same page when reopening the settings window.
+        Friend FrmMain As MainForm
 		Friend FrmClock As Clock
 		Friend FrmSettings As Settings
 		Friend FrmHelp As Help
@@ -471,17 +472,20 @@ Namespace My
                 FrmClock = Nothing
             End If
 		End Sub
-		Friend Sub ShowSettings()
+		Friend Sub ShowSettings(Optional page As String = "")
+			Dim targetPage As String = If(String.IsNullOrWhiteSpace(page), LastSettingsPage, page)
 			If FrmSettings Is Nothing Then
 				FrmSettings = New Settings
 				FrmSettings.Show()
 			Else
 				If FrmSettings.WindowState = FormWindowState.Minimized Then
-					FrmSettings.WindowState = FormWindowState.Normal
-				End If
-				FrmSettings.BringToFront()
-				FrmSettings.Activate() ' <-- Crucial: Activates the window and forces focus in Win32
-			End If
+                    FrmSettings.WindowState = FormWindowState.Normal
+                End If
+                FrmSettings.BringToFront()
+                FrmSettings.Activate() ' <-- Crucial: Activates the window and forces focus in Win32
+            End If
+			FrmSettings.SetPage(targetPage)
+			LastSettingsPage = targetPage
 		End Sub
 		Friend Sub HideSettings()
 			FrmSettings.Close()

@@ -8,11 +8,11 @@ Partial Friend Class Settings
 
     ' DECLARATIONS
     Private mMove As Boolean = False
-    Private mOffset, mPosition As Point
+    Private mOffset As Point
     Private nonNumberEntered As Boolean
     Private suppressPageSelection As Boolean = False
     Private OFDLoadOnOSStartup As New OpenFileDialog
-    Private OFDACOpenFile As New OpenFileDialog
+    Private OFDACSelectWAV As New OpenFileDialog
 
     ' FORM EVENTS
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
@@ -52,10 +52,10 @@ Partial Friend Class Settings
         OFDLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
         OFDLoadOnOSStartup.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
         OFDLoadOnOSStartup.Title = "Select An Application..."
-        OFDACOpenFile.DefaultExt = "wav"
-        OFDACOpenFile.Filter = "WAV Files|*.wav"
-        OFDACOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
-        OFDACOpenFile.Title = "Select a WAV File..."
+        OFDACSelectWAV.DefaultExt = "wav"
+        OFDACSelectWAV.Filter = "WAV Files|*.wav"
+        OFDACSelectWAV.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
+        OFDACSelectWAV.Title = "Select a WAV File..."
         For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
             CoBoxTheme.Items.Add(thm.Name)
         Next
@@ -85,20 +85,22 @@ Partial Friend Class Settings
     Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelWST.MouseDown, PanelSS.MouseDown, PanelAC.MouseDown, PanelWL.MouseDown, PanelHC.MouseDown, PanelHK.MouseDown, PanelActions.MouseDown
         If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
             mMove = True
+            ' Convert the click point inside the panel/control directly into Screen coordinates
             Dim ctrl As Control = DirectCast(sender, Control)
-            If TypeOf ctrl Is Panel Then
-                mOffset = New Point(-e.X - 4 - ctrl.Left - SystemInformation.FrameBorderSize.Width, -e.Y - 4 - ctrl.Top - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
-            Else
-                mOffset = New Point(-e.X - SystemInformation.FrameBorderSize.Width, -e.Y - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
-            End If
+            Dim clickScreenPoint As Point = ctrl.PointToScreen(e.Location)
+
+            ' Calculate how far the mouse is from the Form's top-left screen Location
+            mOffset = New Point(clickScreenPoint.X - Me.Location.X, clickScreenPoint.Y - Me.Location.Y)
         End If
     End Sub
     Private Sub Settings_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove, PanelApp.MouseMove, PanelWST.MouseMove, PanelSS.MouseMove, PanelAC.MouseMove, PanelWL.MouseMove, PanelHC.MouseMove, PanelHK.MouseMove, PanelActions.MouseMove
         If mMove Then
-            mPosition = MousePosition
-            mPosition.Offset(mOffset.X, mOffset.Y)
-            CheckMove(mPosition)
-            Location = mPosition
+            Dim currentMouseScreenPoint As Point = Cursor.Position
+            Dim newLocation As New Point(currentMouseScreenPoint.X - mOffset.X, currentMouseScreenPoint.Y - mOffset.Y)
+
+            CheckMove(newLocation)
+
+            Me.Location = newLocation
         End If
     End Sub
     Private Sub Settings_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseUp, PanelApp.MouseUp, PanelWST.MouseUp, PanelSS.MouseUp, PanelAC.MouseUp, PanelWL.MouseUp, PanelHC.MouseUp, PanelHK.MouseUp, PanelActions.MouseUp
@@ -192,7 +194,7 @@ Partial Friend Class Settings
     ''' Suppresses the system ding on Enter and forces the form to validate the control.
     ''' Call this from the TextBox KeyDown handler.
     ''' </summary>
-    Public Shared Sub TextboxHandleEnterKey(sender As Object, e As KeyEventArgs) Handles TxtBoxLoadOnOSStartupArgs.KeyDown
+    Private Shared Sub TextboxHandleEnterKey(sender As Object, e As KeyEventArgs) Handles TxtBoxLoadOnOSStartupArgs.KeyDown
         If e.KeyCode = Keys.Enter Then
             ' 1. Silence the system ding
             e.SuppressKeyPress = True
@@ -376,11 +378,11 @@ Partial Friend Class Settings
         App.SetSave()
     End Sub
     Private Sub BtnACChimeManualClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACTopHourChimeManual.Click, btnACOffHourChimeManual.Click, btnACAlarmChimeManual.Click
-        Dim r As DialogResult = Me.OFDACOpenFile.ShowDialog(Me)
-        If r = System.Windows.Forms.DialogResult.OK And Not Me.OFDACOpenFile.FileName = "" Then
-            If sender Is Me.btnACAlarmChimeManual Then : My.App.ACAlarmChimePath = Me.OFDACOpenFile.FileName
-            ElseIf sender Is Me.btnACTopHourChimeManual Then : My.App.ACTopHourChimePath = Me.OFDACOpenFile.FileName
-            ElseIf sender Is Me.btnACOffHourChimeManual Then : My.App.ACOffHourChimePath = Me.OFDACOpenFile.FileName
+        Dim r As DialogResult = Me.OFDACSelectWAV.ShowDialog(Me)
+        If r = System.Windows.Forms.DialogResult.OK And Not Me.OFDACSelectWAV.FileName = "" Then
+            If sender Is Me.btnACAlarmChimeManual Then : My.App.ACAlarmChimePath = Me.OFDACSelectWAV.FileName
+            ElseIf sender Is Me.btnACTopHourChimeManual Then : My.App.ACTopHourChimePath = Me.OFDACSelectWAV.FileName
+            ElseIf sender Is Me.btnACOffHourChimeManual Then : My.App.ACOffHourChimePath = Me.OFDACSelectWAV.FileName
             End If
         ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then
             If sender Is Me.btnACAlarmChimeManual Then : My.App.ACAlarmChimePath = ""
@@ -589,6 +591,7 @@ Partial Friend Class Settings
                 PanelHK.BringToFront()
         End Select
         SelectPage(page)
+        App.LastSettingsPage = page
     End Sub
     Private Sub SelectPage(page As String)
         If LVPageSelector.Items.Count = 0 Then Exit Sub ' Guard against empty list
