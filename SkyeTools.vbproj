@@ -16,8 +16,8 @@
     <StartupObject>SkyeTools.My.MyApplication</StartupObject>
     <Title>Skye's ToolKit</Title>
     <Description>Skye's WorkSpace &amp; Environment ToolKit</Description>
-    <AssemblyVersion>2.1</AssemblyVersion>
-    <FileVersion>2.1</FileVersion>
+    <AssemblyVersion>2.2</AssemblyVersion>
+    <FileVersion>2.2</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG=1,TRACE=1</DefineConstants>
