@@ -364,6 +364,7 @@ Partial Friend Class Settings
     Private Sub BtnACAlarmSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACAlarmSet.Click
         App.FrmMain.ACAlarmActive = Not App.FrmMain.ACAlarmActive
         App.FrmMain.ACSetTimer()
+        App.FrmMain.UpdateWST()
         ShowSettingsAC()
     End Sub
     Private Sub BtnACAlarmCancelClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACAlarmCancel.Click
@@ -546,6 +547,7 @@ Partial Friend Class Settings
                 My.App.ACAlarmTime = New TimeSpan(My.Computer.Clock.LocalTime.AddMinutes(Int(Val(Me.textboxACAlarmTimer.Text))).Hour, My.Computer.Clock.LocalTime.AddMinutes(Int(Val(Me.textboxACAlarmTimer.Text))).Minute, 0)
                 App.FrmMain.ACAlarmActive = True
                 App.FrmMain.ACSetTimer()
+                App.FrmMain.UpdateWST()
                 ShowSettingsAC()
                 Me.textboxACAlarmTime.Focus()
                 Me.textboxACAlarmTime.SelectAll()
@@ -635,6 +637,7 @@ Partial Friend Class Settings
             End If
             Me.TipInfoEX.SetText(Me.BtnSSEnabled, Me.TipInfoEX.GetText(Me.BtnSSEnabled) + vbCr + "RightClick = Activate")
         End If
+        Me.ChkBoxSSShowIcon.Checked = App.WSTShowSSIcon
     End Sub
     Private Sub ShowSettingsApp()
         CoBoxTheme.SelectedItem = App.Theme.Name
@@ -705,19 +708,10 @@ Partial Friend Class Settings
         Else : Me.ChkBoxWSTShowLog.Checked = False
         End If
     End Sub
-    Friend Sub ShowSettingsSS()
-        If App.WSTShowSSIcon Then : Me.ChkBoxSSShowIcon.Checked = True
-        Else : Me.ChkBoxSSShowIcon.Checked = False
-        End If
-        If App.WSTShowSSActivate Then : Me.ChkBoxSSShowActivate.Checked = True
-        Else : Me.ChkBoxSSShowActivate.Checked = False
-        End If
-        If App.WSTShowSSEnabled Then : Me.ChkBoxSSShowEnabled.Checked = True
-        Else : Me.ChkBoxSSShowEnabled.Checked = False
-        End If
-        If App.WSTSSEnableOnActivate Then : Me.ChkBoxSSEnableOnActivate.Checked = True
-        Else : Me.ChkBoxSSEnableOnActivate.Checked = False
-        End If
+    Private Sub ShowSettingsSS()
+        Me.ChkBoxSSShowActivate.Checked = App.WSTShowSSActivate
+        Me.ChkBoxSSShowEnabled.Checked = App.WSTShowSSEnabled
+        Me.ChkBoxSSEnableOnActivate.Checked = App.WSTSSEnableOnActivate
         Me.CoBoxSSStartUp.SelectedIndex = App.WSTSSStartUp
     End Sub
     Private Sub ShowSettingsAC()
@@ -812,7 +806,7 @@ Partial Friend Class Settings
     End Sub
     Private Sub ShowSettingsHK()
     End Sub
-    Friend Sub RestoreSettings()
+    Private Sub RestoreSettings()
         My.App.GetSettings()
         ShowSettings()
         Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
@@ -839,7 +833,7 @@ Partial Friend Class Settings
     Private Sub SetSS()
         Me.PanelSS.Enabled = App.WSTSSToolEnabled
     End Sub
-    Friend Sub SetAC()
+    Private Sub SetAC()
         Me.PanelAC.Enabled = My.App.WSTShowAC
         ShowSettingsAC()
         FrmMain.ACSet()
@@ -851,6 +845,13 @@ Partial Friend Class Settings
         Else
             Me.btnACMute.Image = My.Resources.Resources.imageACSound
             Me.TipInfoEX.SetText(Me.btnACMute, "Mute All Chimes")
+        End If
+    End Sub
+    Friend Sub ACUpdateCancel(visible As Boolean)
+        If visible Then
+            Me.btnACAlarmCancel.Visible = True
+        Else
+            Me.btnACAlarmCancel.Visible = False
         End If
     End Sub
     Private Sub SetWL()
