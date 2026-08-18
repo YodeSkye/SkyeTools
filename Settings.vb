@@ -12,6 +12,7 @@ Partial Friend Class Settings
     Private nonNumberEntered As Boolean
     Private suppressPageSelection As Boolean = False
     Private OFDLoadOnOSStartup As New OpenFileDialog
+    Private OFDACOpenFile As New OpenFileDialog
 
     ' FORM EVENTS
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
@@ -51,6 +52,10 @@ Partial Friend Class Settings
         OFDLoadOnOSStartup.Filter = "Executable Files|*.exe|Batch Files|*.bat"
         OFDLoadOnOSStartup.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
         OFDLoadOnOSStartup.Title = "Select An Application..."
+        OFDACOpenFile.DefaultExt = "wav"
+        OFDACOpenFile.Filter = "WAV Files|*.wav"
+        OFDACOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
+        OFDACOpenFile.Title = "Select a WAV File..."
         For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
             CoBoxTheme.Items.Add(thm.Name)
         Next
@@ -61,6 +66,10 @@ Partial Friend Class Settings
     End Sub
     Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         ShowSettings()
+        ACUpdateMute()
+        SetSS()
+        SetAC()
+        SetWL()
     End Sub
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
@@ -73,7 +82,7 @@ Partial Friend Class Settings
         Skye.UI.ThemeManager.ApplyTheme(Me)
         ShowSave()
     End Sub
-    Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelWST.MouseDown, PanelSS.MouseDown, PanelActions.MouseDown
+    Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelWST.MouseDown, PanelSS.MouseDown, PanelAC.MouseDown, PanelWL.MouseDown, PanelHC.MouseDown, PanelHK.MouseDown, PanelActions.MouseDown
         If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
             mMove = True
             Dim ctrl As Control = DirectCast(sender, Control)
@@ -84,7 +93,7 @@ Partial Friend Class Settings
             End If
         End If
     End Sub
-    Private Sub Settings_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove, PanelApp.MouseMove, PanelWST.MouseMove, PanelSS.MouseMove, PanelActions.MouseMove
+    Private Sub Settings_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseMove, PanelApp.MouseMove, PanelWST.MouseMove, PanelSS.MouseMove, PanelAC.MouseMove, PanelWL.MouseMove, PanelHC.MouseMove, PanelHK.MouseMove, PanelActions.MouseMove
         If mMove Then
             mPosition = MousePosition
             mPosition.Offset(mOffset.X, mOffset.Y)
@@ -92,7 +101,7 @@ Partial Friend Class Settings
             Location = mPosition
         End If
     End Sub
-    Private Sub Settings_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseUp, PanelApp.MouseUp, PanelWST.MouseUp, PanelSS.MouseUp, PanelActions.MouseUp
+    Private Sub Settings_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles MyBase.MouseUp, PanelApp.MouseUp, PanelWST.MouseUp, PanelSS.MouseUp, PanelAC.MouseUp, PanelWL.MouseUp, PanelHC.MouseUp, PanelHK.MouseUp, PanelActions.MouseUp
         mMove = False
     End Sub
     Private Sub Settings_Move(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Move
@@ -202,7 +211,7 @@ Partial Friend Class Settings
             End If
         End If
     End Sub
-    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxACAlarmTime.KeyPress, textboxACAlarmTimer.KeyPress
         If nonNumberEntered Then e.Handled = True
     End Sub
 
@@ -279,7 +288,7 @@ Partial Friend Class Settings
                 App.HideClock()
             Case ChkBoxWSTShowWLMenu.Name
                 WSTShowWLMenu = Not WSTShowWLMenu
-                SetWLSettingsTab()
+                SetWL()
                 If WSTShowWLMenu Then
                     For index = 0 To WLData.Count - 1
                         If WLData(index).ShowInMenu Then
@@ -350,26 +359,233 @@ Partial Friend Class Settings
     End Sub
 
     ' Alarm & Chime
+    Private Sub BtnACAlarmSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACAlarmSet.Click
+        App.FrmMain.ACAlarmActive = Not App.FrmMain.ACAlarmActive
+        App.FrmMain.ACSetTimer()
+        ShowSettingsAC()
+    End Sub
+    Private Sub BtnACAlarmCancelClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACAlarmCancel.Click
+        App.FrmMain.ACAlarmCancel()
+    End Sub
+    Private Sub BtnACChimeDefaultClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACTopHourChimeDefault.Click, btnACOffHourChimeDefault.Click, btnACAlarmChimeDefault.Click
+        If sender Is Me.btnACAlarmChimeDefault Then : My.App.ACAlarmChimePath = ""
+        ElseIf sender Is Me.btnACTopHourChimeDefault Then : My.App.ACTopHourChimePath = ""
+        ElseIf sender Is Me.btnACOffHourChimeDefault Then : My.App.ACOffHourChimePath = ""
+        End If
+        ShowSettingsAC()
+        App.SetSave()
+    End Sub
+    Private Sub BtnACChimeManualClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACTopHourChimeManual.Click, btnACOffHourChimeManual.Click, btnACAlarmChimeManual.Click
+        Dim r As DialogResult = Me.OFDACOpenFile.ShowDialog(Me)
+        If r = System.Windows.Forms.DialogResult.OK And Not Me.OFDACOpenFile.FileName = "" Then
+            If sender Is Me.btnACAlarmChimeManual Then : My.App.ACAlarmChimePath = Me.OFDACOpenFile.FileName
+            ElseIf sender Is Me.btnACTopHourChimeManual Then : My.App.ACTopHourChimePath = Me.OFDACOpenFile.FileName
+            ElseIf sender Is Me.btnACOffHourChimeManual Then : My.App.ACOffHourChimePath = Me.OFDACOpenFile.FileName
+            End If
+        ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then
+            If sender Is Me.btnACAlarmChimeManual Then : My.App.ACAlarmChimePath = ""
+            ElseIf sender Is Me.btnACTopHourChimeManual Then : My.App.ACTopHourChimePath = ""
+            ElseIf sender Is Me.btnACOffHourChimeManual Then : My.App.ACOffHourChimePath = ""
+            End If
+        End If
+        ShowSettingsAC()
+        App.SetSave()
+    End Sub
+    Private Sub BtnACChimePlayClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACTopHourChimePlay.Click, btnACOffHourChimePlay.Click, btnACAlarmChimePlay.Click
+        Dim counter As Byte = 0
+        Dim chime As String = ""
+        Dim chimecount As Byte = 0
+        If sender Is Me.btnACAlarmChimePlay Then
+            Me.lblACAlarmChime.ForeColor = Color.Maroon
+            Me.lblACAlarmChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.lblACAlarmChime.Refresh()
+            chime = My.App.ACAlarmChimePath
+            Select Case My.App.ACAlarmChimeType
+                Case My.App.ACChimeType.Simple : chimecount = 1
+                Case Else : chimecount = 4
+            End Select
+        ElseIf sender Is Me.btnACTopHourChimePlay Then
+            Me.lblACTopHourChime.ForeColor = Color.Maroon
+            Me.lblACTopHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.lblACTopHourChime.Refresh()
+            chime = My.App.ACTopHourChimePath
+            Select Case My.App.ACTopHourChimeType
+                Case My.App.ACChimeType.Simple : chimecount = 1
+                Case My.App.ACChimeType.Extended : chimecount = 4
+                Case My.App.ACChimeType.HourTick
+                    If My.Computer.Clock.LocalTime.Hour = 0 Then : chimecount = 12
+                    ElseIf My.Computer.Clock.LocalTime.Hour >= 13 And My.Computer.Clock.LocalTime.Hour <= 23 Then : chimecount = CByte(My.Computer.Clock.LocalTime.Hour - 12)
+                    Else : chimecount = CByte(My.Computer.Clock.LocalTime.Hour)
+                    End If
+            End Select
+        ElseIf sender Is Me.btnACOffHourChimePlay Then
+            Me.lblACOffHourChime.ForeColor = Color.Maroon
+            Me.lblACOffHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.lblACOffHourChime.Refresh()
+            chime = My.App.ACOffHourChimePath
+            chimecount = 1
+        End If
+        If chimecount > 0 And Not App.FrmMain.ACMute Then
+            Do
+                If chime = "" Then
+                    Try : My.Computer.Audio.Play(My.App.ACChime, AudioPlayMode.WaitToComplete) : Catch : End Try
+                Else
+                    Try : My.Computer.Audio.Play(chime, AudioPlayMode.WaitToComplete)
+                    Catch : Try : My.Computer.Audio.Play(My.App.ACChime, AudioPlayMode.WaitToComplete) : Catch : End Try
+                    End Try
+                End If
+                counter += CByte(1)
+            Loop While counter < chimecount
+        Else
+            If sender Is Me.btnACAlarmChimePlay And My.App.ACAlarmChimeType = My.App.ACChimeType.Forever Then chimecount = Byte.MaxValue
+            App.ShowMessage(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", Nothing)
+        End If
+        Me.lblACAlarmChime.ResetForeColor()
+        Me.lblACAlarmChime.ResetFont()
+        Me.lblACAlarmChime.Refresh()
+        Me.lblACTopHourChime.ResetForeColor()
+        Me.lblACTopHourChime.ResetFont()
+        Me.lblACTopHourChime.Refresh()
+        Me.lblACOffHourChime.ResetForeColor()
+        Me.lblACOffHourChime.ResetFont()
+        Me.lblACOffHourChime.Refresh()
+        Me.BtnClose.Select()
+    End Sub
+    Private Sub BtnACMuteClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACMute.Click
+        App.FrmMain.ACMute = Not App.FrmMain.ACMute
+        App.FrmMain.CancelBackgroundworkerAC()
+        ACUpdateMute()
+    End Sub
+    Private Sub CheckboxACAlarmRecurringClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxACAlarmRecurring.Click
+        App.ACAlarmRecurring = Not App.ACAlarmRecurring
+        If App.ACAlarmRecurring And Not App.FrmMain.ACAlarmActive Then
+            App.FrmMain.ACAlarmActive = True
+            App.FrmMain.ACSetTimer()
+            ShowSettingsAC()
+        End If
+        SetSave()
+    End Sub
+    Private Sub CheckboxACChimeEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxACTopHourChimeEnabled.Click, checkboxACTopHourBeforeChimeEnabled.Click, checkboxACTopHourAfterChimeEnabled.Click, checkboxACThirdQuarterHourChimeEnabled.Click, checkboxACThirdQuarterHourBeforeChimeEnabled.Click, checkboxACThirdQuarterHourAfterChimeEnabled.Click, checkboxACFirstQuarterHourChimeEnabled.Click, checkboxACFirstQuarterHourBeforeChimeEnabled.Click, checkboxACFirstQuarterHourAfterChimeEnabled.Click, checkboxACBottomHourChimeEnabled.Click, checkboxACBottomHourBeforeChimeEnabled.Click, checkboxACBottomHourAfterChimeEnabled.Click
+        Select Case CType(sender, System.Windows.Forms.CheckBox).Name
+            Case Me.checkboxACTopHourChimeEnabled.Name : My.App.ACTopHourChimeEnabled = Not My.App.ACTopHourChimeEnabled
+            Case Me.checkboxACTopHourBeforeChimeEnabled.Name : My.App.ACTopHourBeforeChimeEnabled = Not My.App.ACTopHourBeforeChimeEnabled
+            Case Me.checkboxACTopHourAfterChimeEnabled.Name : My.App.ACTopHourAfterChimeEnabled = Not My.App.ACTopHourAfterChimeEnabled
+            Case Me.checkboxACFirstQuarterHourChimeEnabled.Name : My.App.ACFirstQuarterHourChimeEnabled = Not My.App.ACFirstQuarterHourChimeEnabled
+            Case Me.checkboxACFirstQuarterHourBeforeChimeEnabled.Name : My.App.ACFirstQuarterHourBeforeChimeEnabled = Not My.App.ACFirstQuarterHourBeforeChimeEnabled
+            Case Me.checkboxACFirstQuarterHourAfterChimeEnabled.Name : My.App.ACFirstQuarterHourAfterChimeEnabled = Not My.App.ACFirstQuarterHourAfterChimeEnabled
+            Case Me.checkboxACBottomHourChimeEnabled.Name : My.App.ACBottomHourChimeEnabled = Not My.App.ACBottomHourChimeEnabled
+            Case Me.checkboxACBottomHourBeforeChimeEnabled.Name : My.App.ACBottomHourBeforeChimeEnabled = Not My.App.ACBottomHourBeforeChimeEnabled
+            Case Me.checkboxACBottomHourAfterChimeEnabled.Name : My.App.ACBottomHourAfterChimeEnabled = Not My.App.ACBottomHourAfterChimeEnabled
+            Case Me.checkboxACThirdQuarterHourChimeEnabled.Name : My.App.ACThirdQuarterHourChimeEnabled = Not My.App.ACThirdQuarterHourChimeEnabled
+            Case Me.checkboxACThirdQuarterHourBeforeChimeEnabled.Name : My.App.ACThirdQuarterHourBeforeChimeEnabled = Not My.App.ACThirdQuarterHourBeforeChimeEnabled
+            Case Me.checkboxACThirdQuarterHourAfterChimeEnabled.Name : My.App.ACThirdQuarterHourAfterChimeEnabled = Not My.App.ACThirdQuarterHourAfterChimeEnabled
+        End Select
+        App.SetSave()
+    End Sub
+    Private Sub RadiobtnACChimeTypeClick(ByVal sender As Object, ByVal e As EventArgs) Handles radiobtnACTopHourChimeSimple.Click, radiobtnACTopHourChimeHourTick.Click, radiobtnACTopHourChimeExtended.Click, radiobtnACAlarmChimeSimple.Click, radiobtnACAlarmChimeForever.Click, radiobtnACAlarmChimeExtended.Click
+        If sender Is Me.radiobtnACAlarmChimeSimple Then : My.App.ACAlarmChimeType = My.App.ACChimeType.Simple
+        ElseIf sender Is Me.radiobtnACAlarmChimeExtended Then : My.App.ACAlarmChimeType = My.App.ACChimeType.Extended
+        ElseIf sender Is Me.radiobtnACAlarmChimeForever Then : My.App.ACAlarmChimeType = My.App.ACChimeType.Forever
+        ElseIf sender Is Me.radiobtnACTopHourChimeSimple Then : My.App.ACTopHourChimeType = My.App.ACChimeType.Simple
+        ElseIf sender Is Me.radiobtnACTopHourChimeExtended Then : My.App.ACTopHourChimeType = My.App.ACChimeType.Extended
+        ElseIf sender Is Me.radiobtnACTopHourChimeHourTick Then : My.App.ACTopHourChimeType = My.App.ACChimeType.HourTick
+        End If
+        App.SetSave()
+    End Sub
+    Private Sub TextboxACAlarmTimeKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxACAlarmTime.KeyDown
+        nonNumberEntered = False
+        If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
+            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter And Not (e.Shift And e.KeyCode = Keys.OemSemicolon And sender Is Me.textboxACAlarmTime) Then : nonNumberEntered = True
+            ElseIf e.KeyCode = Keys.Enter Then
+                e.SuppressKeyPress = True
+                Dim h, m As Integer
+                Try
+                    Dim split As String() = Me.textboxACAlarmTime.Text.Split(CChar(":"))
+                    If split.Length = 1 Then
+                        Dim s As String = split(0)
+                        If s.Length = 3 Then
+                            h = CInt(Val(s.Substring(0, 1)))
+                            m = CInt(Val(s.Substring(1, 2)))
+                        ElseIf s.Length = 4 Then
+                            h = CInt(Val(s.Substring(0, 2)))
+                            m = CInt(Val(s.Substring(2, 2)))
+                        Else : Throw New Exception
+                        End If
+                    ElseIf split.Length = 2 Then
+                        h = CInt(Val(split(0)))
+                        m = CInt(Val(split(1)))
+                    Else : Throw New Exception
+                    End If
+                    If h < 0 Or h > 23 Or m < 0 Or m > 59 Then Throw New Exception
+                    My.App.ACAlarmTime = New TimeSpan(h, m, 0)
+                    App.FrmMain.ACAlarmActive = True
+                    App.FrmMain.ACSetTimer()
+                    ShowSettingsAC()
+                    Me.textboxACAlarmTime.ResetBackColor()
+                    Me.textboxACAlarmTime.ResetForeColor()
+                    Me.textboxACAlarmTime.SelectAll()
+                Catch
+                    Me.textboxACAlarmTime.BackColor = Color.Red
+                    Me.textboxACAlarmTime.ForeColor = Color.Yellow
+                    Me.textboxACAlarmTime.SelectAll()
+                End Try
+                App.SetSave()
+            End If
+        End If
+    End Sub
+    Private Sub TextboxACTimerKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxACAlarmTimer.KeyDown
+        nonNumberEntered = False
+        If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
+            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
+            ElseIf e.KeyCode = Keys.Enter Then
+                e.SuppressKeyPress = True
+                If Int(Val(Me.textboxACAlarmTimer.Text)) < 1 Then Me.textboxACAlarmTimer.Text = "1"
+                If Int(Val(Me.textboxACAlarmTimer.Text)) > 720 Then Me.textboxACAlarmTimer.Text = "720"
+                My.App.ACAlarmTime = New TimeSpan(My.Computer.Clock.LocalTime.AddMinutes(Int(Val(Me.textboxACAlarmTimer.Text))).Hour, My.Computer.Clock.LocalTime.AddMinutes(Int(Val(Me.textboxACAlarmTimer.Text))).Minute, 0)
+                App.FrmMain.ACAlarmActive = True
+                App.FrmMain.ACSetTimer()
+                ShowSettingsAC()
+                Me.textboxACAlarmTime.Focus()
+                Me.textboxACAlarmTime.SelectAll()
+                App.SetSave()
+            End If
+        End If
+    End Sub
+
     ' WinLinks
     ' HotClicks
     ' HotKeys
 
     ' METHODS
     Friend Sub SetPage(page As String)
+        PanelApp.Visible = False
+        PanelWST.Visible = False
+        PanelSS.Visible = False
+        PanelAC.Visible = False
+        PanelWL.Visible = False
+        PanelHC.Visible = False
+        PanelHK.Visible = False
         Select Case page.ToUpper()
             Case "APP"
+                PanelApp.Visible = True
                 PanelApp.BringToFront()
             Case "WST"
+                PanelWST.Visible = True
                 PanelWST.BringToFront()
             Case "SS"
+                PanelSS.Visible = True
                 PanelSS.BringToFront()
             Case "AC"
+                PanelAC.Visible = True
                 PanelAC.BringToFront()
             Case "WL"
+                PanelWL.Visible = True
                 PanelWL.BringToFront()
             Case "HC"
+                PanelHC.Visible = True
                 PanelHC.BringToFront()
             Case "HK"
+                PanelHK.Visible = True
                 PanelHK.BringToFront()
         End Select
         SelectPage(page)
@@ -502,6 +718,90 @@ Partial Friend Class Settings
         Me.CoBoxSSStartUp.SelectedIndex = App.WSTSSStartUp
     End Sub
     Private Sub ShowSettingsAC()
+        If App.FrmMain.ACAlarmActive Then
+            Me.btnACAlarmSet.Text = "Alarm Active"
+            Me.btnACAlarmSet.Font = New Font(Me.Font, FontStyle.Bold)
+            Me.btnACAlarmSet.ForeColor = Color.Teal
+            Dim alarmText As String = My.App.ACAlarmTime.ToString()
+            Me.TipInfoEX.SetText(Me.btnACAlarmSet, String.Concat("Alarm Set for ", alarmText.AsSpan(0, alarmText.Length - 3)))
+        Else
+            Me.btnACAlarmSet.Text = "Alarm InActive"
+            Me.btnACAlarmSet.Font = New Font(Me.Font, FontStyle.Regular)
+            Me.btnACAlarmSet.ForeColor = Color.Maroon
+            Dim alarmText As String = My.App.ACAlarmTime.ToString()
+            Me.TipInfoEX.SetText(Me.btnACAlarmSet, String.Concat("Activate Alarm for ", alarmText.AsSpan(0, alarmText.Length - 3)))
+        End If
+        Me.textboxACAlarmTime.Text = My.App.ACAlarmTime.ToString().Substring(0, My.App.ACAlarmTime.ToString().Length - 3)
+        If My.App.ACAlarmRecurring Then : Me.checkboxACAlarmRecurring.Checked = True
+        Else : Me.checkboxACAlarmRecurring.Checked = False
+        End If
+        If My.App.ACAlarmChimePath = "" Then
+            Me.lblACAlarmChimePath.Text = "Default Chime"
+            Me.TipInfoEX.SetText(Me.lblACAlarmChimePath, "Use Built-In Chime")
+        Else
+            Me.lblACAlarmChimePath.Text = "...\" + My.App.ACAlarmChimePath.Split(CChar("\"))(My.App.ACAlarmChimePath.Split(CChar("\")).Length - 1)
+            Me.TipInfoEX.SetText(Me.lblACAlarmChimePath, My.App.ACAlarmChimePath)
+        End If
+        Select Case My.App.ACAlarmChimeType
+            Case My.App.ACChimeType.Simple : Me.radiobtnACAlarmChimeSimple.Checked = True
+            Case My.App.ACChimeType.Extended : Me.radiobtnACAlarmChimeExtended.Checked = True
+            Case My.App.ACChimeType.Forever : Me.radiobtnACAlarmChimeForever.Checked = True
+        End Select
+        If My.App.ACTopHourChimeEnabled Then : Me.checkboxACTopHourChimeEnabled.Checked = True
+        Else : Me.checkboxACTopHourChimeEnabled.Checked = False
+        End If
+        If My.App.ACTopHourBeforeChimeEnabled Then : Me.checkboxACTopHourBeforeChimeEnabled.Checked = True
+        Else : Me.checkboxACTopHourBeforeChimeEnabled.Checked = False
+        End If
+        If My.App.ACTopHourAfterChimeEnabled Then : Me.checkboxACTopHourAfterChimeEnabled.Checked = True
+        Else : Me.checkboxACTopHourAfterChimeEnabled.Checked = False
+        End If
+        If My.App.ACFirstQuarterHourChimeEnabled Then : Me.checkboxACFirstQuarterHourChimeEnabled.Checked = True
+        Else : Me.checkboxACFirstQuarterHourChimeEnabled.Checked = False
+        End If
+        If My.App.ACFirstQuarterHourBeforeChimeEnabled Then : Me.checkboxACFirstQuarterHourBeforeChimeEnabled.Checked = True
+        Else : Me.checkboxACFirstQuarterHourBeforeChimeEnabled.Checked = False
+        End If
+        If My.App.ACFirstQuarterHourAfterChimeEnabled Then : Me.checkboxACFirstQuarterHourAfterChimeEnabled.Checked = True
+        Else : Me.checkboxACFirstQuarterHourAfterChimeEnabled.Checked = False
+        End If
+        If My.App.ACBottomHourChimeEnabled Then : Me.checkboxACBottomHourChimeEnabled.Checked = True
+        Else : Me.checkboxACBottomHourChimeEnabled.Checked = False
+        End If
+        If My.App.ACBottomHourBeforeChimeEnabled Then : Me.checkboxACBottomHourBeforeChimeEnabled.Checked = True
+        Else : Me.checkboxACBottomHourBeforeChimeEnabled.Checked = False
+        End If
+        If My.App.ACBottomHourAfterChimeEnabled Then : Me.checkboxACBottomHourAfterChimeEnabled.Checked = True
+        Else : Me.checkboxACBottomHourAfterChimeEnabled.Checked = False
+        End If
+        If My.App.ACThirdQuarterHourChimeEnabled Then : Me.checkboxACThirdQuarterHourChimeEnabled.Checked = True
+        Else : Me.checkboxACThirdQuarterHourChimeEnabled.Checked = False
+        End If
+        If My.App.ACThirdQuarterHourBeforeChimeEnabled Then : Me.checkboxACThirdQuarterHourBeforeChimeEnabled.Checked = True
+        Else : Me.checkboxACThirdQuarterHourBeforeChimeEnabled.Checked = False
+        End If
+        If My.App.ACThirdQuarterHourAfterChimeEnabled Then : Me.checkboxACThirdQuarterHourAfterChimeEnabled.Checked = True
+        Else : Me.checkboxACThirdQuarterHourAfterChimeEnabled.Checked = False
+        End If
+        If My.App.ACTopHourChimePath = "" Then
+            Me.lblACTopHourChimePath.Text = "Default Chime"
+            Me.TipInfoEX.SetText(Me.lblACTopHourChimePath, "Use Built-In Chime")
+        Else
+            Me.lblACTopHourChimePath.Text = "...\" + My.App.ACTopHourChimePath.Split(CChar("\"))(My.App.ACTopHourChimePath.Split(CChar("\")).Length - 1)
+            Me.TipInfoEX.SetText(Me.lblACTopHourChimePath, My.App.ACTopHourChimePath)
+        End If
+        Select Case My.App.ACTopHourChimeType
+            Case My.App.ACChimeType.Simple : Me.radiobtnACTopHourChimeSimple.Checked = True
+            Case My.App.ACChimeType.Extended : Me.radiobtnACTopHourChimeExtended.Checked = True
+            Case My.App.ACChimeType.HourTick : Me.radiobtnACTopHourChimeHourTick.Checked = True
+        End Select
+        If My.App.ACOffHourChimePath = "" Then
+            Me.lblACOffHourChimePath.Text = "Default Chime"
+            Me.TipInfoEX.SetText(Me.lblACOffHourChimePath, "Use Built-In Chime")
+        Else
+            Me.lblACOffHourChimePath.Text = "...\" + My.App.ACOffHourChimePath.Split(CChar("\")).GetValue(My.App.ACOffHourChimePath.Split(CChar("\")).Length - 1).ToString
+            Me.TipInfoEX.SetText(Me.lblACOffHourChimePath, My.App.ACOffHourChimePath)
+        End If
     End Sub
     Private Sub ShowSettingsWL()
     End Sub
@@ -541,7 +841,16 @@ Partial Friend Class Settings
         ShowSettingsAC()
         FrmMain.ACSet()
     End Sub
-    Private Sub SetWLSettingsTab()
+    Private Sub ACUpdateMute()
+        If App.FrmMain.ACMute Then
+            Me.btnACMute.Image = My.Resources.Resources.imageACMute
+            Me.TipInfoEX.SetText(Me.btnACMute, "Sound All Chimes")
+        Else
+            Me.btnACMute.Image = My.Resources.Resources.imageACSound
+            Me.TipInfoEX.SetText(Me.btnACMute, "Mute All Chimes")
+        End If
+    End Sub
+    Private Sub SetWL()
         If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.PanelWL.Enabled = True
         Else : Me.PanelWL.Enabled = False
         End If

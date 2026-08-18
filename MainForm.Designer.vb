@@ -575,10 +575,10 @@
         tabpageAC.Controls.Add(btnACAlarmChimeManual)
         TipHCEX.SetImage(tabpageAC, Nothing)
         TipInfoEX.SetImage(tabpageAC, Nothing)
-        tabpageAC.Location = New Point(4, 24)
+        tabpageAC.Location = New Point(4, 26)
         tabpageAC.Name = "tabpageAC"
         tabpageAC.Padding = New Padding(3)
-        tabpageAC.Size = New Size(618, 375)
+        tabpageAC.Size = New Size(618, 373)
         tabpageAC.TabIndex = 3
         TipHCEX.SetText(tabpageAC, Nothing)
         TipInfoEX.SetText(tabpageAC, Nothing)
@@ -1271,10 +1271,10 @@
         tabpageWL.Controls.Add(btnWLRefresh)
         TipHCEX.SetImage(tabpageWL, Nothing)
         TipInfoEX.SetImage(tabpageWL, Nothing)
-        tabpageWL.Location = New Point(4, 24)
+        tabpageWL.Location = New Point(4, 26)
         tabpageWL.Name = "tabpageWL"
         tabpageWL.Padding = New Padding(3)
-        tabpageWL.Size = New Size(618, 375)
+        tabpageWL.Size = New Size(618, 373)
         tabpageWL.TabIndex = 8
         TipHCEX.SetText(tabpageWL, Nothing)
         TipInfoEX.SetText(tabpageWL, Nothing)

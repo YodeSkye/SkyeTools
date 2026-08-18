@@ -819,7 +819,8 @@ Partial Friend Class MainForm
                 App.ShowSettings()
                 App.FrmSettings.SetPage("WL")
             Case My.App.HCAction.ShowSettingsAC
-                ACActivateTimer()
+                App.ShowSettings()
+                App.FrmSettings.SetPage("AC")
             Case My.App.HCAction.ShowSettingsHC
                 App.ShowSettings()
                 App.FrmSettings.SetPage("HC")
@@ -1272,15 +1273,15 @@ Partial Friend Class MainForm
     Private WithEvents TimerAC As New Timer
     Private WithEvents BackgroundworkerAC As New System.ComponentModel.BackgroundWorker
     Private uiACOpenFile As New OpenFileDialog
-    Private _aCAlarmActive As Boolean
+    Private _ACAlarmActive As Boolean
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend Property ACAlarmActive As Boolean
         Get
-            Return _aCAlarmActive
+            Return _ACAlarmActive
         End Get
         Set(value As Boolean)
-            If _aCAlarmActive <> value Then
-                _aCAlarmActive = value
+            If _ACAlarmActive <> value Then
+                _ACAlarmActive = value
             End If
         End Set
     End Property
@@ -1647,7 +1648,7 @@ Partial Friend Class MainForm
         End If
         ACSetTimer()
     End Sub
-    Private Sub ACSetTimer()
+    Friend Sub ACSetTimer()
         If (ACAlarmActive Or My.App.ACTopHourChimeEnabled Or My.App.ACTopHourBeforeChimeEnabled Or My.App.ACTopHourAfterChimeEnabled Or My.App.ACThirdQuarterHourChimeEnabled Or My.App.ACFirstQuarterHourChimeEnabled Or My.App.ACBottomHourChimeEnabled) And My.App.WSTShowAC Then : Me.TimerAC.Start()
         Else : Me.TimerAC.Stop()
         End If
@@ -1659,7 +1660,9 @@ Partial Friend Class MainForm
             Me.textboxACAlarmTimer.SelectAll()
         End If
     End Sub
-
+    Friend Sub CancelBackgroundworkerAC()
+        If Me.BackgroundworkerAC.IsBusy Then Me.BackgroundworkerAC.CancelAsync()
+    End Sub
 #End Region
 #Region "WinLinks(WL)"
 
