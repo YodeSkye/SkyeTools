@@ -120,57 +120,47 @@
         PanelWL = New Panel()
         TxtBoxWLMaxLinksPerFolder = New TextBox()
         PanelWLItem = New Panel()
-        checkboxWLShowNoMenu = New CheckBox()
-        textboxWLName = New TextBox()
-        checkboxWLShowMenuIcons = New CheckBox()
-        checkboxWLShowInTray = New CheckBox()
-        checkboxWLShowInMenu = New CheckBox()
-        comboboxWLFolderPlacement = New ComboBox()
-        comboboxWLFolderMode = New ComboBox()
-        comboboxWLSort = New ComboBox()
-        textboxWLRoot = New TextBox()
-        btnWLSelectFolder = New Button()
-        btnWLCancel = New Button()
-        btnWLSet = New Button()
-        checkboxWLUseDefaultIcon = New CheckBox()
-        LblWLSortOrder = New Label()
-        LblWLFolderMode = New Label()
-        LblWLFolderPlacement = New Label()
-        LblWLDisplayName = New Label()
-        lblWLRoot = New Label()
+        ChkBoxWLShowNoMenu = New CheckBox()
+        TxtBoxWLName = New TextBox()
+        ChkBoxWLShowMenuIcons = New CheckBox()
+        ChkBoxWLShowInTray = New CheckBox()
+        ChkBoxWLShowInMenu = New CheckBox()
+        CoBoxWLFolderPlacement = New ComboBox()
+        CoBoxWLFolderMode = New ComboBox()
+        CoBoxWLSort = New ComboBox()
+        TxtBoxWLRoot = New TextBox()
+        BtnWLSelectFolder = New Button()
+        BtnWLCancel = New Button()
+        BtnWLSet = New Button()
+        ChkBoxWLUseDefaultIcon = New CheckBox()
+        LblWLFolderPlacement = New Skye.UI.Label()
+        LblWLFolderMode = New Skye.UI.Label()
+        LblWLSortOrder = New Skye.UI.Label()
+        LblWLDisplayName = New Skye.UI.Label()
+        LblWLRoot = New Skye.UI.Label()
         TxtBoxWLStartUpDelay = New TextBox()
         TxtBoxWLAutoRefreshInterval = New TextBox()
         LVWL = New ListView()
         CMLVWL = New ContextMenuStrip(components)
-        cmiWLMoveUp = New ToolStripMenuItem()
-        cmiWLMoveDown = New ToolStripMenuItem()
-        toolStripSeparator11 = New ToolStripSeparator()
-        cmiWLNew = New ToolStripMenuItem()
-        toolStripSeparator6 = New ToolStripSeparator()
-        cmiWLDelete = New ToolStripMenuItem()
+        CMIWLMoveUp = New ToolStripMenuItem()
+        CMIWLMoveDown = New ToolStripMenuItem()
+        TSSWL1 = New ToolStripSeparator()
+        CMIWLNew = New ToolStripMenuItem()
+        TSSWL2 = New ToolStripSeparator()
+        CMIWLDelete = New ToolStripMenuItem()
         TxtBoxWLAutoRefreshIdleInterval = New TextBox()
-        lblWLAutoRefreshIdleInterval = New Label()
-        lblWLAutoRefreshInterval = New Label()
-        checkboxWLShowFilePathToolTips = New CheckBox()
-        lblWLMaxLinksPerFolder = New Label()
-        lblWLStartUpDelay = New Label()
-        checkboxWLAutoRefresh = New CheckBox()
-        checkboxWLShowFileInfoToolTips = New CheckBox()
-        checkboxWLShowFolderPathToolTips = New CheckBox()
-        lblWLAutoRefresh = New Label()
-        btnWLRefresh = New Button()
+        ChkBoxWLShowFilePathToolTips = New CheckBox()
+        ChkBoxWLAutoRefresh = New CheckBox()
+        ChkBoxWLShowFileInfoToolTips = New CheckBox()
+        ChkBoxWLShowFolderPathToolTips = New CheckBox()
+        BtnWLRefresh = New Button()
+        LblWLStartUpDelay = New Skye.UI.Label()
+        LblWLAutoRefresh = New Skye.UI.Label()
+        LblWLAutoRefreshIdleInterval = New Skye.UI.Label()
+        LblWLAutoRefreshInterval = New Skye.UI.Label()
+        LblWLMaxLinksPerFolder = New Skye.UI.Label()
         PanelHC = New Panel()
         PanelHK = New Panel()
-        Label1 = New Skye.UI.Label()
-        Label2 = New Skye.UI.Label()
-        Label3 = New Skye.UI.Label()
-        Label4 = New Skye.UI.Label()
-        Label5 = New Skye.UI.Label()
-        Label6 = New Skye.UI.Label()
-        Label7 = New Skye.UI.Label()
-        Label8 = New Skye.UI.Label()
-        Label9 = New Skye.UI.Label()
-        Label10 = New Skye.UI.Label()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -1544,27 +1534,22 @@
         ' 
         ' PanelWL
         ' 
-        PanelWL.Controls.Add(Label5)
-        PanelWL.Controls.Add(Label4)
-        PanelWL.Controls.Add(Label3)
-        PanelWL.Controls.Add(Label2)
-        PanelWL.Controls.Add(Label1)
         PanelWL.Controls.Add(TxtBoxWLMaxLinksPerFolder)
         PanelWL.Controls.Add(PanelWLItem)
         PanelWL.Controls.Add(TxtBoxWLStartUpDelay)
         PanelWL.Controls.Add(TxtBoxWLAutoRefreshInterval)
         PanelWL.Controls.Add(LVWL)
         PanelWL.Controls.Add(TxtBoxWLAutoRefreshIdleInterval)
-        PanelWL.Controls.Add(lblWLAutoRefreshIdleInterval)
-        PanelWL.Controls.Add(lblWLAutoRefreshInterval)
-        PanelWL.Controls.Add(checkboxWLShowFilePathToolTips)
-        PanelWL.Controls.Add(lblWLMaxLinksPerFolder)
-        PanelWL.Controls.Add(lblWLStartUpDelay)
-        PanelWL.Controls.Add(checkboxWLAutoRefresh)
-        PanelWL.Controls.Add(checkboxWLShowFileInfoToolTips)
-        PanelWL.Controls.Add(checkboxWLShowFolderPathToolTips)
-        PanelWL.Controls.Add(lblWLAutoRefresh)
-        PanelWL.Controls.Add(btnWLRefresh)
+        PanelWL.Controls.Add(ChkBoxWLShowFilePathToolTips)
+        PanelWL.Controls.Add(ChkBoxWLAutoRefresh)
+        PanelWL.Controls.Add(ChkBoxWLShowFileInfoToolTips)
+        PanelWL.Controls.Add(ChkBoxWLShowFolderPathToolTips)
+        PanelWL.Controls.Add(BtnWLRefresh)
+        PanelWL.Controls.Add(LblWLStartUpDelay)
+        PanelWL.Controls.Add(LblWLAutoRefresh)
+        PanelWL.Controls.Add(LblWLAutoRefreshIdleInterval)
+        PanelWL.Controls.Add(LblWLAutoRefreshInterval)
+        PanelWL.Controls.Add(LblWLMaxLinksPerFolder)
         PanelWL.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelWL, Nothing)
         PanelWL.Location = New Point(187, 0)
@@ -1589,29 +1574,24 @@
         ' 
         PanelWLItem.AutoSize = True
         PanelWLItem.BorderStyle = BorderStyle.FixedSingle
-        PanelWLItem.Controls.Add(Label10)
-        PanelWLItem.Controls.Add(Label9)
-        PanelWLItem.Controls.Add(Label8)
-        PanelWLItem.Controls.Add(Label7)
-        PanelWLItem.Controls.Add(Label6)
-        PanelWLItem.Controls.Add(checkboxWLShowNoMenu)
-        PanelWLItem.Controls.Add(textboxWLName)
-        PanelWLItem.Controls.Add(checkboxWLShowMenuIcons)
-        PanelWLItem.Controls.Add(checkboxWLShowInTray)
-        PanelWLItem.Controls.Add(checkboxWLShowInMenu)
-        PanelWLItem.Controls.Add(comboboxWLFolderPlacement)
-        PanelWLItem.Controls.Add(comboboxWLFolderMode)
-        PanelWLItem.Controls.Add(comboboxWLSort)
-        PanelWLItem.Controls.Add(textboxWLRoot)
-        PanelWLItem.Controls.Add(btnWLSelectFolder)
-        PanelWLItem.Controls.Add(btnWLCancel)
-        PanelWLItem.Controls.Add(btnWLSet)
-        PanelWLItem.Controls.Add(checkboxWLUseDefaultIcon)
-        PanelWLItem.Controls.Add(LblWLSortOrder)
-        PanelWLItem.Controls.Add(LblWLFolderMode)
+        PanelWLItem.Controls.Add(ChkBoxWLShowNoMenu)
+        PanelWLItem.Controls.Add(TxtBoxWLName)
+        PanelWLItem.Controls.Add(ChkBoxWLShowMenuIcons)
+        PanelWLItem.Controls.Add(ChkBoxWLShowInTray)
+        PanelWLItem.Controls.Add(ChkBoxWLShowInMenu)
+        PanelWLItem.Controls.Add(CoBoxWLFolderPlacement)
+        PanelWLItem.Controls.Add(CoBoxWLFolderMode)
+        PanelWLItem.Controls.Add(CoBoxWLSort)
+        PanelWLItem.Controls.Add(TxtBoxWLRoot)
+        PanelWLItem.Controls.Add(BtnWLSelectFolder)
+        PanelWLItem.Controls.Add(BtnWLCancel)
+        PanelWLItem.Controls.Add(BtnWLSet)
+        PanelWLItem.Controls.Add(ChkBoxWLUseDefaultIcon)
         PanelWLItem.Controls.Add(LblWLFolderPlacement)
+        PanelWLItem.Controls.Add(LblWLFolderMode)
+        PanelWLItem.Controls.Add(LblWLSortOrder)
         PanelWLItem.Controls.Add(LblWLDisplayName)
-        PanelWLItem.Controls.Add(lblWLRoot)
+        PanelWLItem.Controls.Add(LblWLRoot)
         TipInfoEX.SetImage(PanelWLItem, Nothing)
         PanelWLItem.Location = New Point(13, 318)
         PanelWLItem.Name = "PanelWLItem"
@@ -1620,186 +1600,163 @@
         TipInfoEX.SetText(PanelWLItem, Nothing)
         PanelWLItem.Visible = False
         ' 
-        ' checkboxWLShowNoMenu
+        ' ChkBoxWLShowNoMenu
         ' 
-        checkboxWLShowNoMenu.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Location = New Point(546, 107)
-        checkboxWLShowNoMenu.Name = "checkboxWLShowNoMenu"
-        checkboxWLShowNoMenu.Size = New Size(136, 25)
-        checkboxWLShowNoMenu.TabIndex = 50
-        TipInfoEX.SetText(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Text = "No Menu Items"
-        checkboxWLShowNoMenu.UseVisualStyleBackColor = True
+        ChkBoxWLShowNoMenu.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowNoMenu, Nothing)
+        ChkBoxWLShowNoMenu.Location = New Point(546, 107)
+        ChkBoxWLShowNoMenu.Name = "ChkBoxWLShowNoMenu"
+        ChkBoxWLShowNoMenu.Size = New Size(136, 25)
+        ChkBoxWLShowNoMenu.TabIndex = 50
+        TipInfoEX.SetText(ChkBoxWLShowNoMenu, Nothing)
+        ChkBoxWLShowNoMenu.Text = "No Menu Items"
+        ChkBoxWLShowNoMenu.UseVisualStyleBackColor = True
         ' 
-        ' textboxWLName
+        ' TxtBoxWLName
         ' 
-        textboxWLName.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLName, Nothing)
-        textboxWLName.Location = New Point(8, 79)
-        textboxWLName.Name = "textboxWLName"
-        textboxWLName.Size = New Size(463, 29)
-        textboxWLName.TabIndex = 15
-        TipInfoEX.SetText(textboxWLName, Nothing)
+        TxtBoxWLName.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLName, Nothing)
+        TxtBoxWLName.Location = New Point(8, 79)
+        TxtBoxWLName.Name = "TxtBoxWLName"
+        TxtBoxWLName.Size = New Size(463, 29)
+        TxtBoxWLName.TabIndex = 15
+        TipInfoEX.SetText(TxtBoxWLName, Nothing)
         ' 
-        ' checkboxWLShowMenuIcons
+        ' ChkBoxWLShowMenuIcons
         ' 
-        checkboxWLShowMenuIcons.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Location = New Point(546, 88)
-        checkboxWLShowMenuIcons.Name = "checkboxWLShowMenuIcons"
-        checkboxWLShowMenuIcons.Size = New Size(152, 25)
-        checkboxWLShowMenuIcons.TabIndex = 40
-        TipInfoEX.SetText(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Text = "Show Menu Icons"
-        checkboxWLShowMenuIcons.UseVisualStyleBackColor = True
+        ChkBoxWLShowMenuIcons.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowMenuIcons, Nothing)
+        ChkBoxWLShowMenuIcons.Location = New Point(546, 88)
+        ChkBoxWLShowMenuIcons.Name = "ChkBoxWLShowMenuIcons"
+        ChkBoxWLShowMenuIcons.Size = New Size(152, 25)
+        ChkBoxWLShowMenuIcons.TabIndex = 40
+        TipInfoEX.SetText(ChkBoxWLShowMenuIcons, Nothing)
+        ChkBoxWLShowMenuIcons.Text = "Show Menu Icons"
+        ChkBoxWLShowMenuIcons.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWLShowInTray
+        ' ChkBoxWLShowInTray
         ' 
-        checkboxWLShowInTray.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Location = New Point(546, 57)
-        checkboxWLShowInTray.Name = "checkboxWLShowInTray"
-        checkboxWLShowInTray.Size = New Size(118, 25)
-        checkboxWLShowInTray.TabIndex = 30
-        TipInfoEX.SetText(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Text = "Show In Tray"
-        checkboxWLShowInTray.UseVisualStyleBackColor = True
+        ChkBoxWLShowInTray.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowInTray, Nothing)
+        ChkBoxWLShowInTray.Location = New Point(546, 57)
+        ChkBoxWLShowInTray.Name = "ChkBoxWLShowInTray"
+        ChkBoxWLShowInTray.Size = New Size(118, 25)
+        ChkBoxWLShowInTray.TabIndex = 30
+        TipInfoEX.SetText(ChkBoxWLShowInTray, Nothing)
+        ChkBoxWLShowInTray.Text = "Show In Tray"
+        ChkBoxWLShowInTray.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWLShowInMenu
+        ' ChkBoxWLShowInMenu
         ' 
-        checkboxWLShowInMenu.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Location = New Point(546, 37)
-        checkboxWLShowInMenu.Name = "checkboxWLShowInMenu"
-        checkboxWLShowInMenu.Size = New Size(129, 25)
-        checkboxWLShowInMenu.TabIndex = 25
-        TipInfoEX.SetText(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Text = "Show In Menu"
-        checkboxWLShowInMenu.UseVisualStyleBackColor = True
+        ChkBoxWLShowInMenu.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowInMenu, Nothing)
+        ChkBoxWLShowInMenu.Location = New Point(546, 37)
+        ChkBoxWLShowInMenu.Name = "ChkBoxWLShowInMenu"
+        ChkBoxWLShowInMenu.Size = New Size(129, 25)
+        ChkBoxWLShowInMenu.TabIndex = 25
+        TipInfoEX.SetText(ChkBoxWLShowInMenu, Nothing)
+        ChkBoxWLShowInMenu.Text = "Show In Menu"
+        ChkBoxWLShowInMenu.UseVisualStyleBackColor = True
         ' 
-        ' comboboxWLFolderPlacement
+        ' CoBoxWLFolderPlacement
         ' 
-        comboboxWLFolderPlacement.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLFolderPlacement.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLFolderPlacement, Nothing)
-        comboboxWLFolderPlacement.Items.AddRange(New Object() {"Top", "Bottom", "Merged"})
-        comboboxWLFolderPlacement.Location = New Point(296, 165)
-        comboboxWLFolderPlacement.Name = "comboboxWLFolderPlacement"
-        comboboxWLFolderPlacement.Size = New Size(139, 29)
-        comboboxWLFolderPlacement.TabIndex = 80
-        TipInfoEX.SetText(comboboxWLFolderPlacement, Nothing)
+        CoBoxWLFolderPlacement.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxWLFolderPlacement.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxWLFolderPlacement, Nothing)
+        CoBoxWLFolderPlacement.Items.AddRange(New Object() {"Top", "Bottom", "Merged"})
+        CoBoxWLFolderPlacement.Location = New Point(296, 165)
+        CoBoxWLFolderPlacement.Name = "CoBoxWLFolderPlacement"
+        CoBoxWLFolderPlacement.Size = New Size(139, 29)
+        CoBoxWLFolderPlacement.TabIndex = 80
+        TipInfoEX.SetText(CoBoxWLFolderPlacement, Nothing)
         ' 
-        ' comboboxWLFolderMode
+        ' CoBoxWLFolderMode
         ' 
-        comboboxWLFolderMode.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLFolderMode.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLFolderMode, Nothing)
-        comboboxWLFolderMode.Items.AddRange(New Object() {"No Folders", "Show As Link", "Show As Link Menu", "Show As Menu", "Folders Only"})
-        comboboxWLFolderMode.Location = New Point(123, 165)
-        comboboxWLFolderMode.Name = "comboboxWLFolderMode"
-        comboboxWLFolderMode.Size = New Size(167, 29)
-        comboboxWLFolderMode.TabIndex = 70
-        TipInfoEX.SetText(comboboxWLFolderMode, Nothing)
+        CoBoxWLFolderMode.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxWLFolderMode.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxWLFolderMode, Nothing)
+        CoBoxWLFolderMode.Items.AddRange(New Object() {"No Folders", "Show As Link", "Show As Link Menu", "Show As Menu", "Folders Only"})
+        CoBoxWLFolderMode.Location = New Point(123, 165)
+        CoBoxWLFolderMode.Name = "CoBoxWLFolderMode"
+        CoBoxWLFolderMode.Size = New Size(167, 29)
+        CoBoxWLFolderMode.TabIndex = 70
+        TipInfoEX.SetText(CoBoxWLFolderMode, Nothing)
         ' 
-        ' comboboxWLSort
+        ' CoBoxWLSort
         ' 
-        comboboxWLSort.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLSort.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLSort, Nothing)
-        comboboxWLSort.Items.AddRange(New Object() {"Ascending", "Descending"})
-        comboboxWLSort.Location = New Point(8, 166)
-        comboboxWLSort.Name = "comboboxWLSort"
-        comboboxWLSort.Size = New Size(109, 29)
-        comboboxWLSort.TabIndex = 60
-        TipInfoEX.SetText(comboboxWLSort, Nothing)
+        CoBoxWLSort.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxWLSort.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxWLSort, Nothing)
+        CoBoxWLSort.Items.AddRange(New Object() {"Ascending", "Descending"})
+        CoBoxWLSort.Location = New Point(8, 166)
+        CoBoxWLSort.Name = "CoBoxWLSort"
+        CoBoxWLSort.Size = New Size(109, 29)
+        CoBoxWLSort.TabIndex = 60
+        TipInfoEX.SetText(CoBoxWLSort, Nothing)
         ' 
-        ' textboxWLRoot
+        ' TxtBoxWLRoot
         ' 
-        textboxWLRoot.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLRoot, Nothing)
-        textboxWLRoot.Location = New Point(8, 25)
-        textboxWLRoot.Name = "textboxWLRoot"
-        textboxWLRoot.Size = New Size(463, 29)
-        textboxWLRoot.TabIndex = 10
-        TipInfoEX.SetText(textboxWLRoot, Nothing)
+        TxtBoxWLRoot.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLRoot, Nothing)
+        TxtBoxWLRoot.Location = New Point(8, 25)
+        TxtBoxWLRoot.Name = "TxtBoxWLRoot"
+        TxtBoxWLRoot.Size = New Size(463, 29)
+        TxtBoxWLRoot.TabIndex = 10
+        TipInfoEX.SetText(TxtBoxWLRoot, Nothing)
         ' 
-        ' btnWLSelectFolder
+        ' BtnWLSelectFolder
         ' 
-        btnWLSelectFolder.FlatAppearance.BorderSize = 0
-        btnWLSelectFolder.Image = My.Resources.Resources.imageRestore
-        TipInfoEX.SetImage(btnWLSelectFolder, Nothing)
-        btnWLSelectFolder.Location = New Point(472, 24)
-        btnWLSelectFolder.Name = "btnWLSelectFolder"
-        btnWLSelectFolder.Size = New Size(32, 32)
-        btnWLSelectFolder.TabIndex = 10
-        btnWLSelectFolder.TabStop = False
-        TipInfoEX.SetText(btnWLSelectFolder, Nothing)
-        btnWLSelectFolder.UseVisualStyleBackColor = True
+        BtnWLSelectFolder.FlatAppearance.BorderSize = 0
+        BtnWLSelectFolder.Image = My.Resources.Resources.imageRestore
+        TipInfoEX.SetImage(BtnWLSelectFolder, Nothing)
+        BtnWLSelectFolder.Location = New Point(472, 24)
+        BtnWLSelectFolder.Name = "BtnWLSelectFolder"
+        BtnWLSelectFolder.Size = New Size(32, 32)
+        BtnWLSelectFolder.TabIndex = 10
+        TipInfoEX.SetText(BtnWLSelectFolder, Nothing)
+        BtnWLSelectFolder.UseVisualStyleBackColor = True
         ' 
-        ' btnWLCancel
+        ' BtnWLCancel
         ' 
-        btnWLCancel.ForeColor = Color.Navy
-        btnWLCancel.Image = My.Resources.Resources.imageRemove
-        TipInfoEX.SetImage(btnWLCancel, Nothing)
-        btnWLCancel.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLCancel.Location = New Point(522, 162)
-        btnWLCancel.Name = "btnWLCancel"
-        btnWLCancel.Size = New Size(100, 32)
-        btnWLCancel.TabIndex = 100
-        TipInfoEX.SetText(btnWLCancel, Nothing)
-        btnWLCancel.Text = "Cancel"
-        btnWLCancel.TextAlign = ContentAlignment.MiddleRight
-        btnWLCancel.UseVisualStyleBackColor = True
+        BtnWLCancel.ForeColor = Color.Navy
+        BtnWLCancel.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(BtnWLCancel, Nothing)
+        BtnWLCancel.ImageAlign = ContentAlignment.MiddleLeft
+        BtnWLCancel.Location = New Point(522, 162)
+        BtnWLCancel.Name = "BtnWLCancel"
+        BtnWLCancel.Size = New Size(100, 32)
+        BtnWLCancel.TabIndex = 100
+        TipInfoEX.SetText(BtnWLCancel, Nothing)
+        BtnWLCancel.Text = "Cancel"
+        BtnWLCancel.TextAlign = ContentAlignment.MiddleRight
+        BtnWLCancel.UseVisualStyleBackColor = True
         ' 
-        ' btnWLSet
+        ' BtnWLSet
         ' 
-        btnWLSet.ForeColor = Color.Navy
-        btnWLSet.Image = My.Resources.Resources.imageGoStart
-        TipInfoEX.SetImage(btnWLSet, Nothing)
-        btnWLSet.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLSet.Location = New Point(628, 162)
-        btnWLSet.Name = "btnWLSet"
-        btnWLSet.Size = New Size(66, 32)
-        btnWLSet.TabIndex = 110
-        TipInfoEX.SetText(btnWLSet, Nothing)
-        btnWLSet.Text = "Set"
-        btnWLSet.TextAlign = ContentAlignment.MiddleRight
-        btnWLSet.UseVisualStyleBackColor = True
+        BtnWLSet.ForeColor = Color.Navy
+        BtnWLSet.Image = My.Resources.Resources.imageGoStart
+        TipInfoEX.SetImage(BtnWLSet, Nothing)
+        BtnWLSet.ImageAlign = ContentAlignment.MiddleLeft
+        BtnWLSet.Location = New Point(628, 162)
+        BtnWLSet.Name = "BtnWLSet"
+        BtnWLSet.Size = New Size(66, 32)
+        BtnWLSet.TabIndex = 110
+        TipInfoEX.SetText(BtnWLSet, Nothing)
+        BtnWLSet.Text = "Set"
+        BtnWLSet.TextAlign = ContentAlignment.MiddleRight
+        BtnWLSet.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWLUseDefaultIcon
+        ' ChkBoxWLUseDefaultIcon
         ' 
-        checkboxWLUseDefaultIcon.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLUseDefaultIcon, Nothing)
-        checkboxWLUseDefaultIcon.Location = New Point(546, 6)
-        checkboxWLUseDefaultIcon.Name = "checkboxWLUseDefaultIcon"
-        checkboxWLUseDefaultIcon.Size = New Size(142, 25)
-        checkboxWLUseDefaultIcon.TabIndex = 20
-        TipInfoEX.SetText(checkboxWLUseDefaultIcon, Nothing)
-        checkboxWLUseDefaultIcon.Text = "Use Default Icon"
-        checkboxWLUseDefaultIcon.UseVisualStyleBackColor = True
-        ' 
-        ' LblWLSortOrder
-        ' 
-        LblWLSortOrder.AutoSize = True
-        TipInfoEX.SetImage(LblWLSortOrder, Nothing)
-        LblWLSortOrder.Location = New Point(8, 148)
-        LblWLSortOrder.Name = "LblWLSortOrder"
-        LblWLSortOrder.Size = New Size(84, 21)
-        LblWLSortOrder.TabIndex = 165
-        LblWLSortOrder.Text = "Sort Order"
-        TipInfoEX.SetText(LblWLSortOrder, Nothing)
-        ' 
-        ' LblWLFolderMode
-        ' 
-        LblWLFolderMode.AutoSize = True
-        TipInfoEX.SetImage(LblWLFolderMode, Nothing)
-        LblWLFolderMode.Location = New Point(123, 147)
-        LblWLFolderMode.Name = "LblWLFolderMode"
-        LblWLFolderMode.Size = New Size(98, 21)
-        LblWLFolderMode.TabIndex = 161
-        LblWLFolderMode.Text = "Folder Mode"
-        TipInfoEX.SetText(LblWLFolderMode, Nothing)
+        ChkBoxWLUseDefaultIcon.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLUseDefaultIcon, Nothing)
+        ChkBoxWLUseDefaultIcon.Location = New Point(546, 6)
+        ChkBoxWLUseDefaultIcon.Name = "ChkBoxWLUseDefaultIcon"
+        ChkBoxWLUseDefaultIcon.Size = New Size(142, 25)
+        ChkBoxWLUseDefaultIcon.TabIndex = 20
+        TipInfoEX.SetText(ChkBoxWLUseDefaultIcon, Nothing)
+        ChkBoxWLUseDefaultIcon.Text = "Use Default Icon"
+        ChkBoxWLUseDefaultIcon.UseVisualStyleBackColor = True
         ' 
         ' LblWLFolderPlacement
         ' 
@@ -1808,9 +1765,31 @@
         LblWLFolderPlacement.Location = New Point(296, 147)
         LblWLFolderPlacement.Name = "LblWLFolderPlacement"
         LblWLFolderPlacement.Size = New Size(130, 21)
-        LblWLFolderPlacement.TabIndex = 166
+        LblWLFolderPlacement.TabIndex = 173
         LblWLFolderPlacement.Text = "Folder Placement"
         TipInfoEX.SetText(LblWLFolderPlacement, Nothing)
+        ' 
+        ' LblWLFolderMode
+        ' 
+        LblWLFolderMode.AutoSize = True
+        TipInfoEX.SetImage(LblWLFolderMode, Nothing)
+        LblWLFolderMode.Location = New Point(123, 147)
+        LblWLFolderMode.Name = "LblWLFolderMode"
+        LblWLFolderMode.Size = New Size(98, 21)
+        LblWLFolderMode.TabIndex = 172
+        LblWLFolderMode.Text = "Folder Mode"
+        TipInfoEX.SetText(LblWLFolderMode, Nothing)
+        ' 
+        ' LblWLSortOrder
+        ' 
+        LblWLSortOrder.AutoSize = True
+        TipInfoEX.SetImage(LblWLSortOrder, Nothing)
+        LblWLSortOrder.Location = New Point(8, 148)
+        LblWLSortOrder.Name = "LblWLSortOrder"
+        LblWLSortOrder.Size = New Size(84, 21)
+        LblWLSortOrder.TabIndex = 171
+        LblWLSortOrder.Text = "Sort Order"
+        TipInfoEX.SetText(LblWLSortOrder, Nothing)
         ' 
         ' LblWLDisplayName
         ' 
@@ -1819,20 +1798,20 @@
         LblWLDisplayName.Location = New Point(8, 58)
         LblWLDisplayName.Name = "LblWLDisplayName"
         LblWLDisplayName.Size = New Size(107, 21)
-        LblWLDisplayName.TabIndex = 168
+        LblWLDisplayName.TabIndex = 170
         LblWLDisplayName.Text = "Display Name"
         TipInfoEX.SetText(LblWLDisplayName, "Leave Blank To Use FolderName")
         ' 
-        ' lblWLRoot
+        ' LblWLRoot
         ' 
-        lblWLRoot.AutoSize = True
-        TipInfoEX.SetImage(lblWLRoot, Nothing)
-        lblWLRoot.Location = New Point(7, 4)
-        lblWLRoot.Name = "lblWLRoot"
-        lblWLRoot.Size = New Size(68, 21)
-        lblWLRoot.TabIndex = 160
-        lblWLRoot.Text = "SAMPLE"
-        TipInfoEX.SetText(lblWLRoot, Nothing)
+        LblWLRoot.AutoSize = True
+        TipInfoEX.SetImage(LblWLRoot, Nothing)
+        LblWLRoot.Location = New Point(7, 4)
+        LblWLRoot.Name = "LblWLRoot"
+        LblWLRoot.Size = New Size(68, 21)
+        LblWLRoot.TabIndex = 169
+        LblWLRoot.Text = "SAMPLE"
+        TipInfoEX.SetText(LblWLRoot, Nothing)
         ' 
         ' TxtBoxWLStartUpDelay
         ' 
@@ -1882,47 +1861,47 @@
         ' 
         CMLVWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         TipInfoEX.SetImage(CMLVWL, Nothing)
-        CMLVWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
+        CMLVWL.Items.AddRange(New ToolStripItem() {CMIWLMoveUp, CMIWLMoveDown, TSSWL1, CMIWLNew, TSSWL2, CMIWLDelete})
         CMLVWL.Name = "contextmenulistviewHotLinks"
-        CMLVWL.Size = New Size(125, 120)
+        CMLVWL.Size = New Size(181, 142)
         TipInfoEX.SetText(CMLVWL, Nothing)
         ' 
-        ' cmiWLMoveUp
+        ' CMIWLMoveUp
         ' 
-        cmiWLMoveUp.Image = My.Resources.Resources.imageMoveUp
-        cmiWLMoveUp.Name = "cmiWLMoveUp"
-        cmiWLMoveUp.Size = New Size(124, 26)
-        cmiWLMoveUp.Text = "Up"
+        CMIWLMoveUp.Image = My.Resources.Resources.imageMoveUp
+        CMIWLMoveUp.Name = "CMIWLMoveUp"
+        CMIWLMoveUp.Size = New Size(180, 26)
+        CMIWLMoveUp.Text = "Up"
         ' 
-        ' cmiWLMoveDown
+        ' CMIWLMoveDown
         ' 
-        cmiWLMoveDown.Image = My.Resources.Resources.imageMoveDown
-        cmiWLMoveDown.Name = "cmiWLMoveDown"
-        cmiWLMoveDown.Size = New Size(124, 26)
-        cmiWLMoveDown.Text = "Down"
+        CMIWLMoveDown.Image = My.Resources.Resources.imageMoveDown
+        CMIWLMoveDown.Name = "CMIWLMoveDown"
+        CMIWLMoveDown.Size = New Size(180, 26)
+        CMIWLMoveDown.Text = "Down"
         ' 
-        ' toolStripSeparator11
+        ' TSSWL1
         ' 
-        toolStripSeparator11.Name = "toolStripSeparator11"
-        toolStripSeparator11.Size = New Size(121, 6)
+        TSSWL1.Name = "TSSWL1"
+        TSSWL1.Size = New Size(177, 6)
         ' 
-        ' cmiWLNew
+        ' CMIWLNew
         ' 
-        cmiWLNew.Image = My.Resources.Resources.imageWLNew
-        cmiWLNew.Name = "cmiWLNew"
-        cmiWLNew.Size = New Size(124, 26)
+        CMIWLNew.Image = My.Resources.Resources.imageWLNew
+        CMIWLNew.Name = "CMIWLNew"
+        CMIWLNew.Size = New Size(180, 26)
         ' 
-        ' toolStripSeparator6
+        ' TSSWL2
         ' 
-        toolStripSeparator6.Name = "toolStripSeparator6"
-        toolStripSeparator6.Size = New Size(121, 6)
+        TSSWL2.Name = "TSSWL2"
+        TSSWL2.Size = New Size(177, 6)
         ' 
-        ' cmiWLDelete
+        ' CMIWLDelete
         ' 
-        cmiWLDelete.Image = My.Resources.Resources.imageRemove
-        cmiWLDelete.Name = "cmiWLDelete"
-        cmiWLDelete.Size = New Size(124, 26)
-        cmiWLDelete.Text = "Delete"
+        CMIWLDelete.Image = My.Resources.Resources.imageRemove
+        CMIWLDelete.Name = "CMIWLDelete"
+        CMIWLDelete.Size = New Size(180, 26)
+        CMIWLDelete.Text = "Delete"
         ' 
         ' TxtBoxWLAutoRefreshIdleInterval
         ' 
@@ -1937,143 +1916,130 @@
         TipInfoEX.SetText(TxtBoxWLAutoRefreshIdleInterval, Nothing)
         TxtBoxWLAutoRefreshIdleInterval.TextAlign = HorizontalAlignment.Center
         ' 
-        ' lblWLAutoRefreshIdleInterval
+        ' ChkBoxWLShowFilePathToolTips
         ' 
-        lblWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefreshIdleInterval.AutoSize = True
-        lblWLAutoRefreshIdleInterval.CausesValidation = False
-        TipInfoEX.SetImage(lblWLAutoRefreshIdleInterval, Nothing)
-        lblWLAutoRefreshIdleInterval.Location = New Point(500, 52)
-        lblWLAutoRefreshIdleInterval.Name = "lblWLAutoRefreshIdleInterval"
-        lblWLAutoRefreshIdleInterval.RightToLeft = RightToLeft.No
-        lblWLAutoRefreshIdleInterval.Size = New Size(181, 21)
-        lblWLAutoRefreshIdleInterval.TabIndex = 183
-        lblWLAutoRefreshIdleInterval.Text = "AutoRefresh Idle Interval"
-        TipInfoEX.SetText(lblWLAutoRefreshIdleInterval, "Refresh Only When Folder Idle For 20-240 Seconds")
-        lblWLAutoRefreshIdleInterval.TextAlign = ContentAlignment.MiddleRight
+        ChkBoxWLShowFilePathToolTips.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowFilePathToolTips, Nothing)
+        ChkBoxWLShowFilePathToolTips.Location = New Point(13, 95)
+        ChkBoxWLShowFilePathToolTips.Name = "ChkBoxWLShowFilePathToolTips"
+        ChkBoxWLShowFilePathToolTips.Size = New Size(200, 25)
+        ChkBoxWLShowFilePathToolTips.TabIndex = 30
+        TipInfoEX.SetText(ChkBoxWLShowFilePathToolTips, "Show Full File Path In ToolTip")
+        ChkBoxWLShowFilePathToolTips.Text = "Show File Path In ToolTip"
+        ChkBoxWLShowFilePathToolTips.UseVisualStyleBackColor = True
         ' 
-        ' lblWLAutoRefreshInterval
+        ' ChkBoxWLAutoRefresh
         ' 
-        lblWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefreshInterval.AutoSize = True
-        lblWLAutoRefreshInterval.CausesValidation = False
-        TipInfoEX.SetImage(lblWLAutoRefreshInterval, Nothing)
-        lblWLAutoRefreshInterval.Location = New Point(529, 17)
-        lblWLAutoRefreshInterval.Name = "lblWLAutoRefreshInterval"
-        lblWLAutoRefreshInterval.RightToLeft = RightToLeft.No
-        lblWLAutoRefreshInterval.Size = New Size(152, 21)
-        lblWLAutoRefreshInterval.TabIndex = 182
-        lblWLAutoRefreshInterval.Text = "AutoRefresh Interval"
-        TipInfoEX.SetText(lblWLAutoRefreshInterval, "Check For Changes Every 1-90 Minutes")
-        lblWLAutoRefreshInterval.TextAlign = ContentAlignment.MiddleRight
+        ChkBoxWLAutoRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        ChkBoxWLAutoRefresh.AutoSize = True
+        ChkBoxWLAutoRefresh.CheckAlign = ContentAlignment.MiddleRight
+        TipInfoEX.SetImage(ChkBoxWLAutoRefresh, Nothing)
+        ChkBoxWLAutoRefresh.Location = New Point(554, 95)
+        ChkBoxWLAutoRefresh.Name = "ChkBoxWLAutoRefresh"
+        ChkBoxWLAutoRefresh.Size = New Size(165, 25)
+        ChkBoxWLAutoRefresh.TabIndex = 80
+        TipInfoEX.SetText(ChkBoxWLAutoRefresh, "Enable AutoRefresh For Last WinLink")
+        ChkBoxWLAutoRefresh.Text = "Enable AutoRefresh"
+        ChkBoxWLAutoRefresh.TextAlign = ContentAlignment.MiddleRight
+        ChkBoxWLAutoRefresh.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWLShowFilePathToolTips
+        ' ChkBoxWLShowFileInfoToolTips
         ' 
-        checkboxWLShowFilePathToolTips.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowFilePathToolTips, Nothing)
-        checkboxWLShowFilePathToolTips.Location = New Point(13, 95)
-        checkboxWLShowFilePathToolTips.Name = "checkboxWLShowFilePathToolTips"
-        checkboxWLShowFilePathToolTips.Size = New Size(200, 25)
-        checkboxWLShowFilePathToolTips.TabIndex = 30
-        TipInfoEX.SetText(checkboxWLShowFilePathToolTips, "Show Full File Path In ToolTip")
-        checkboxWLShowFilePathToolTips.Text = "Show File Path In ToolTip"
-        checkboxWLShowFilePathToolTips.UseVisualStyleBackColor = True
+        ChkBoxWLShowFileInfoToolTips.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowFileInfoToolTips, Nothing)
+        ChkBoxWLShowFileInfoToolTips.Location = New Point(13, 135)
+        ChkBoxWLShowFileInfoToolTips.Name = "ChkBoxWLShowFileInfoToolTips"
+        ChkBoxWLShowFileInfoToolTips.Size = New Size(197, 25)
+        ChkBoxWLShowFileInfoToolTips.TabIndex = 50
+        TipInfoEX.SetText(ChkBoxWLShowFileInfoToolTips, "Show File Details In ToolTip")
+        ChkBoxWLShowFileInfoToolTips.Text = "Show File Info In ToolTip"
+        ChkBoxWLShowFileInfoToolTips.UseVisualStyleBackColor = True
         ' 
-        ' lblWLMaxLinksPerFolder
+        ' ChkBoxWLShowFolderPathToolTips
         ' 
-        lblWLMaxLinksPerFolder.AutoSize = True
-        lblWLMaxLinksPerFolder.CausesValidation = False
-        TipInfoEX.SetImage(lblWLMaxLinksPerFolder, Nothing)
-        lblWLMaxLinksPerFolder.Location = New Point(54, 51)
-        lblWLMaxLinksPerFolder.Name = "lblWLMaxLinksPerFolder"
-        lblWLMaxLinksPerFolder.RightToLeft = RightToLeft.No
-        lblWLMaxLinksPerFolder.Size = New Size(199, 21)
-        lblWLMaxLinksPerFolder.TabIndex = 176
-        lblWLMaxLinksPerFolder.Text = "Max Menu Items Per Folder"
-        TipInfoEX.SetText(lblWLMaxLinksPerFolder, "1-100")
-        lblWLMaxLinksPerFolder.TextAlign = ContentAlignment.MiddleLeft
+        ChkBoxWLShowFolderPathToolTips.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxWLShowFolderPathToolTips, Nothing)
+        ChkBoxWLShowFolderPathToolTips.Location = New Point(13, 115)
+        ChkBoxWLShowFolderPathToolTips.Name = "ChkBoxWLShowFolderPathToolTips"
+        ChkBoxWLShowFolderPathToolTips.Size = New Size(220, 25)
+        ChkBoxWLShowFolderPathToolTips.TabIndex = 40
+        TipInfoEX.SetText(ChkBoxWLShowFolderPathToolTips, "Show Full Directory Path In ToolTip")
+        ChkBoxWLShowFolderPathToolTips.Text = "Show Folder Path In ToolTip"
+        ChkBoxWLShowFolderPathToolTips.UseVisualStyleBackColor = True
         ' 
-        ' lblWLStartUpDelay
+        ' BtnWLRefresh
         ' 
-        lblWLStartUpDelay.AutoSize = True
-        lblWLStartUpDelay.CausesValidation = False
-        TipInfoEX.SetImage(lblWLStartUpDelay, Nothing)
-        lblWLStartUpDelay.Location = New Point(54, 16)
-        lblWLStartUpDelay.Name = "lblWLStartUpDelay"
-        lblWLStartUpDelay.RightToLeft = RightToLeft.No
-        lblWLStartUpDelay.Size = New Size(105, 21)
-        lblWLStartUpDelay.TabIndex = 184
-        lblWLStartUpDelay.Text = "StartUp Delay"
-        TipInfoEX.SetText(lblWLStartUpDelay, "5-300, 0 = No Delay")
-        lblWLStartUpDelay.TextAlign = ContentAlignment.MiddleLeft
+        BtnWLRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        TipInfoEX.SetImage(BtnWLRefresh, Nothing)
+        BtnWLRefresh.ImageAlign = ContentAlignment.MiddleLeft
+        BtnWLRefresh.Location = New Point(11, 174)
+        BtnWLRefresh.Name = "BtnWLRefresh"
+        BtnWLRefresh.Size = New Size(709, 32)
+        BtnWLRefresh.TabIndex = 100
+        TipInfoEX.SetText(BtnWLRefresh, "Refresh")
+        BtnWLRefresh.Text = "FULL REFRESH"
+        BtnWLRefresh.UseVisualStyleBackColor = True
         ' 
-        ' checkboxWLAutoRefresh
+        ' LblWLStartUpDelay
         ' 
-        checkboxWLAutoRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        checkboxWLAutoRefresh.AutoSize = True
-        checkboxWLAutoRefresh.CheckAlign = ContentAlignment.MiddleRight
-        TipInfoEX.SetImage(checkboxWLAutoRefresh, Nothing)
-        checkboxWLAutoRefresh.Location = New Point(554, 95)
-        checkboxWLAutoRefresh.Name = "checkboxWLAutoRefresh"
-        checkboxWLAutoRefresh.Size = New Size(165, 25)
-        checkboxWLAutoRefresh.TabIndex = 80
-        TipInfoEX.SetText(checkboxWLAutoRefresh, "Enable AutoRefresh For Last WinLink")
-        checkboxWLAutoRefresh.Text = "Enable AutoRefresh"
-        checkboxWLAutoRefresh.TextAlign = ContentAlignment.MiddleRight
-        checkboxWLAutoRefresh.UseVisualStyleBackColor = True
+        LblWLStartUpDelay.AutoSize = True
+        TipInfoEX.SetImage(LblWLStartUpDelay, Nothing)
+        LblWLStartUpDelay.Location = New Point(54, 16)
+        LblWLStartUpDelay.Name = "LblWLStartUpDelay"
+        LblWLStartUpDelay.Size = New Size(105, 21)
+        LblWLStartUpDelay.TabIndex = 201
+        LblWLStartUpDelay.Text = "StartUp Delay"
+        TipInfoEX.SetText(LblWLStartUpDelay, "5-300, 0 = No Delay")
+        LblWLStartUpDelay.TextAlign = ContentAlignment.MiddleLeft
         ' 
-        ' checkboxWLShowFileInfoToolTips
+        ' LblWLAutoRefresh
         ' 
-        checkboxWLShowFileInfoToolTips.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowFileInfoToolTips, Nothing)
-        checkboxWLShowFileInfoToolTips.Location = New Point(13, 135)
-        checkboxWLShowFileInfoToolTips.Name = "checkboxWLShowFileInfoToolTips"
-        checkboxWLShowFileInfoToolTips.Size = New Size(197, 25)
-        checkboxWLShowFileInfoToolTips.TabIndex = 50
-        TipInfoEX.SetText(checkboxWLShowFileInfoToolTips, "Show File Details In ToolTip")
-        checkboxWLShowFileInfoToolTips.Text = "Show File Info In ToolTip"
-        checkboxWLShowFileInfoToolTips.UseVisualStyleBackColor = True
+        LblWLAutoRefresh.AutoSize = True
+        LblWLAutoRefresh.Font = New Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        TipInfoEX.SetImage(LblWLAutoRefresh, Nothing)
+        LblWLAutoRefresh.Location = New Point(552, 114)
+        LblWLAutoRefresh.Name = "LblWLAutoRefresh"
+        LblWLAutoRefresh.Size = New Size(175, 21)
+        LblWLAutoRefresh.TabIndex = 205
+        LblWLAutoRefresh.Text = "AutoRefresh Engaged"
+        TipInfoEX.SetText(LblWLAutoRefresh, Nothing)
+        LblWLAutoRefresh.TextAlign = ContentAlignment.MiddleLeft
         ' 
-        ' checkboxWLShowFolderPathToolTips
+        ' LblWLAutoRefreshIdleInterval
         ' 
-        checkboxWLShowFolderPathToolTips.AutoSize = True
-        TipInfoEX.SetImage(checkboxWLShowFolderPathToolTips, Nothing)
-        checkboxWLShowFolderPathToolTips.Location = New Point(13, 115)
-        checkboxWLShowFolderPathToolTips.Name = "checkboxWLShowFolderPathToolTips"
-        checkboxWLShowFolderPathToolTips.Size = New Size(220, 25)
-        checkboxWLShowFolderPathToolTips.TabIndex = 40
-        TipInfoEX.SetText(checkboxWLShowFolderPathToolTips, "Show Full Directory Path In ToolTip")
-        checkboxWLShowFolderPathToolTips.Text = "Show Folder Path In ToolTip"
-        checkboxWLShowFolderPathToolTips.UseVisualStyleBackColor = True
+        LblWLAutoRefreshIdleInterval.AutoSize = True
+        TipInfoEX.SetImage(LblWLAutoRefreshIdleInterval, Nothing)
+        LblWLAutoRefreshIdleInterval.Location = New Point(500, 52)
+        LblWLAutoRefreshIdleInterval.Name = "LblWLAutoRefreshIdleInterval"
+        LblWLAutoRefreshIdleInterval.Size = New Size(181, 21)
+        LblWLAutoRefreshIdleInterval.TabIndex = 204
+        LblWLAutoRefreshIdleInterval.Text = "AutoRefresh Idle Interval"
+        TipInfoEX.SetText(LblWLAutoRefreshIdleInterval, "Refresh Only When Folder Idle For 20-240 Seconds")
+        LblWLAutoRefreshIdleInterval.TextAlign = ContentAlignment.MiddleRight
         ' 
-        ' lblWLAutoRefresh
+        ' LblWLAutoRefreshInterval
         ' 
-        lblWLAutoRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefresh.AutoSize = True
-        lblWLAutoRefresh.Enabled = False
-        lblWLAutoRefresh.Font = New Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, CByte(0))
-        TipInfoEX.SetImage(lblWLAutoRefresh, Nothing)
-        lblWLAutoRefresh.Location = New Point(560, 114)
-        lblWLAutoRefresh.Name = "lblWLAutoRefresh"
-        lblWLAutoRefresh.Size = New Size(159, 21)
-        lblWLAutoRefresh.TabIndex = 179
-        lblWLAutoRefresh.Text = "AutoRefresh Engaged"
-        TipInfoEX.SetText(lblWLAutoRefresh, Nothing)
-        lblWLAutoRefresh.TextAlign = ContentAlignment.MiddleLeft
-        lblWLAutoRefresh.Visible = False
+        LblWLAutoRefreshInterval.AutoSize = True
+        TipInfoEX.SetImage(LblWLAutoRefreshInterval, Nothing)
+        LblWLAutoRefreshInterval.Location = New Point(529, 17)
+        LblWLAutoRefreshInterval.Name = "LblWLAutoRefreshInterval"
+        LblWLAutoRefreshInterval.Size = New Size(152, 21)
+        LblWLAutoRefreshInterval.TabIndex = 203
+        LblWLAutoRefreshInterval.Text = "AutoRefresh Interval"
+        TipInfoEX.SetText(LblWLAutoRefreshInterval, "Check For Changes Every 1-90 Minutes")
+        LblWLAutoRefreshInterval.TextAlign = ContentAlignment.MiddleRight
         ' 
-        ' btnWLRefresh
+        ' LblWLMaxLinksPerFolder
         ' 
-        btnWLRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(btnWLRefresh, Nothing)
-        btnWLRefresh.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLRefresh.Location = New Point(11, 174)
-        btnWLRefresh.Name = "btnWLRefresh"
-        btnWLRefresh.Size = New Size(709, 32)
-        btnWLRefresh.TabIndex = 100
-        TipInfoEX.SetText(btnWLRefresh, "Refresh")
-        btnWLRefresh.Text = "FULL REFRESH"
-        btnWLRefresh.UseVisualStyleBackColor = True
+        LblWLMaxLinksPerFolder.AutoSize = True
+        TipInfoEX.SetImage(LblWLMaxLinksPerFolder, Nothing)
+        LblWLMaxLinksPerFolder.Location = New Point(54, 51)
+        LblWLMaxLinksPerFolder.Name = "LblWLMaxLinksPerFolder"
+        LblWLMaxLinksPerFolder.Size = New Size(199, 21)
+        LblWLMaxLinksPerFolder.TabIndex = 202
+        LblWLMaxLinksPerFolder.Text = "Max Menu Items Per Folder"
+        TipInfoEX.SetText(LblWLMaxLinksPerFolder, "1-100")
+        LblWLMaxLinksPerFolder.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' PanelHC
         ' 
@@ -2094,116 +2060,6 @@
         PanelHK.Size = New Size(730, 534)
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
-        ' 
-        ' Label1
-        ' 
-        Label1.AutoSize = True
-        TipInfoEX.SetImage(Label1, Nothing)
-        Label1.Location = New Point(228, 9)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(105, 21)
-        Label1.TabIndex = 201
-        Label1.Text = "StartUp Delay"
-        TipInfoEX.SetText(Label1, "5-300, 0 = No Delay")
-        Label1.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        TipInfoEX.SetImage(Label2, Nothing)
-        Label2.Location = New Point(204, 72)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(199, 21)
-        Label2.TabIndex = 202
-        Label2.Text = "Max Menu Items Per Folder"
-        TipInfoEX.SetText(Label2, "1-100")
-        Label2.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        TipInfoEX.SetImage(Label3, Nothing)
-        Label3.Location = New Point(348, 13)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(152, 21)
-        Label3.TabIndex = 203
-        Label3.Text = "AutoRefresh Interval"
-        TipInfoEX.SetText(Label3, "Check For Changes Every 1-90 Minutes")
-        Label3.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        TipInfoEX.SetImage(Label4, Nothing)
-        Label4.Location = New Point(282, 53)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(181, 21)
-        Label4.TabIndex = 204
-        Label4.Text = "AutoRefresh Idle Interval"
-        TipInfoEX.SetText(Label4, "Refresh Only When Folder Idle For 20-240 Seconds")
-        Label4.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' Label5
-        ' 
-        Label5.AutoSize = True
-        TipInfoEX.SetImage(Label5, Nothing)
-        Label5.Location = New Point(472, 143)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(160, 21)
-        Label5.TabIndex = 205
-        Label5.Text = "AutoRefresh Engaged"
-        TipInfoEX.SetText(Label5, Nothing)
-        Label5.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' Label6
-        ' 
-        TipInfoEX.SetImage(Label6, Nothing)
-        Label6.Location = New Point(209, 8)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(100, 23)
-        Label6.TabIndex = 169
-        Label6.Text = "Label6"
-        TipInfoEX.SetText(Label6, Nothing)
-        ' 
-        ' Label7
-        ' 
-        TipInfoEX.SetImage(Label7, Nothing)
-        Label7.Location = New Point(187, 56)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(100, 23)
-        Label7.TabIndex = 170
-        Label7.Text = "Label7"
-        TipInfoEX.SetText(Label7, Nothing)
-        ' 
-        ' Label8
-        ' 
-        TipInfoEX.SetImage(Label8, Nothing)
-        Label8.Location = New Point(14, 123)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(100, 23)
-        Label8.TabIndex = 171
-        Label8.Text = "Label8"
-        TipInfoEX.SetText(Label8, Nothing)
-        ' 
-        ' Label9
-        ' 
-        TipInfoEX.SetImage(Label9, Nothing)
-        Label9.Location = New Point(155, 121)
-        Label9.Name = "Label9"
-        Label9.Size = New Size(100, 23)
-        Label9.TabIndex = 172
-        Label9.Text = "Label9"
-        TipInfoEX.SetText(Label9, Nothing)
-        ' 
-        ' Label10
-        ' 
-        TipInfoEX.SetImage(Label10, Nothing)
-        Label10.Location = New Point(304, 118)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(100, 23)
-        Label10.TabIndex = 173
-        Label10.Text = "Label10"
-        TipInfoEX.SetText(Label10, Nothing)
         ' 
         ' Settings
         ' 
@@ -2318,38 +2174,28 @@
     Friend WithEvents CMBlankForTextBoxes As ContextMenuStrip
     Private WithEvents TxtBoxWLMaxLinksPerFolder As TextBox
     Private WithEvents PanelWLItem As Panel
-    Private WithEvents checkboxWLShowNoMenu As CheckBox
-    Private WithEvents textboxWLName As TextBox
-    Private WithEvents checkboxWLShowMenuIcons As CheckBox
-    Private WithEvents checkboxWLShowInTray As CheckBox
-    Private WithEvents checkboxWLShowInMenu As CheckBox
-    Private WithEvents comboboxWLFolderPlacement As ComboBox
-    Private WithEvents comboboxWLFolderMode As ComboBox
-    Private WithEvents comboboxWLSort As ComboBox
-    Private WithEvents textboxWLRoot As TextBox
-    Private WithEvents btnWLSelectFolder As Button
-    Private WithEvents btnWLCancel As Button
-    Private WithEvents btnWLSet As Button
-    Private WithEvents checkboxWLUseDefaultIcon As CheckBox
-    Private WithEvents LblWLSortOrder As Label
-    Private WithEvents LblWLFolderMode As Label
-    Private WithEvents LblWLFolderPlacement As Label
-    Private WithEvents LblWLDisplayName As Label
-    Private WithEvents lblWLRoot As Label
+    Private WithEvents ChkBoxWLShowNoMenu As CheckBox
+    Private WithEvents TxtBoxWLName As TextBox
+    Private WithEvents ChkBoxWLShowMenuIcons As CheckBox
+    Private WithEvents ChkBoxWLShowInTray As CheckBox
+    Private WithEvents ChkBoxWLShowInMenu As CheckBox
+    Private WithEvents CoBoxWLFolderPlacement As ComboBox
+    Private WithEvents CoBoxWLFolderMode As ComboBox
+    Private WithEvents CoBoxWLSort As ComboBox
+    Private WithEvents TxtBoxWLRoot As TextBox
+    Private WithEvents BtnWLSelectFolder As Button
+    Private WithEvents BtnWLCancel As Button
+    Private WithEvents BtnWLSet As Button
+    Private WithEvents ChkBoxWLUseDefaultIcon As CheckBox
     Private WithEvents TxtBoxWLStartUpDelay As TextBox
     Private WithEvents TxtBoxWLAutoRefreshInterval As TextBox
     Private WithEvents LVWL As ListView
     Private WithEvents TxtBoxWLAutoRefreshIdleInterval As TextBox
-    Private WithEvents lblWLAutoRefreshIdleInterval As Label
-    Private WithEvents lblWLAutoRefreshInterval As Label
-    Private WithEvents checkboxWLShowFilePathToolTips As CheckBox
-    Private WithEvents lblWLMaxLinksPerFolder As Label
-    Private WithEvents lblWLStartUpDelay As Label
-    Private WithEvents checkboxWLAutoRefresh As CheckBox
-    Private WithEvents checkboxWLShowFileInfoToolTips As CheckBox
-    Private WithEvents checkboxWLShowFolderPathToolTips As CheckBox
-    Private WithEvents lblWLAutoRefresh As Label
-    Private WithEvents btnWLRefresh As Button
+    Private WithEvents ChkBoxWLShowFilePathToolTips As CheckBox
+    Private WithEvents ChkBoxWLAutoRefresh As CheckBox
+    Private WithEvents ChkBoxWLShowFileInfoToolTips As CheckBox
+    Private WithEvents ChkBoxWLShowFolderPathToolTips As CheckBox
+    Private WithEvents BtnWLRefresh As Button
     Private WithEvents LblACOffHourChimePath As Label
     Private WithEvents BtnACOffHourChimeManual As Button
     Private WithEvents BtnACAlarmCancel As Button
@@ -2396,20 +2242,20 @@
     Friend WithEvents LblACTimer As Skye.UI.Label
     Friend WithEvents LblACTime As Skye.UI.Label
     Private WithEvents CMLVWL As ContextMenuStrip
-    Private WithEvents cmiWLMoveUp As ToolStripMenuItem
-    Private WithEvents cmiWLMoveDown As ToolStripMenuItem
-    Private WithEvents toolStripSeparator11 As ToolStripSeparator
-    Private WithEvents cmiWLNew As ToolStripMenuItem
-    Private WithEvents toolStripSeparator6 As ToolStripSeparator
-    Private WithEvents cmiWLDelete As ToolStripMenuItem
-    Friend WithEvents Label5 As Skye.UI.Label
-    Friend WithEvents Label4 As Skye.UI.Label
-    Friend WithEvents Label3 As Skye.UI.Label
-    Friend WithEvents Label2 As Skye.UI.Label
-    Friend WithEvents Label1 As Skye.UI.Label
-    Friend WithEvents Label10 As Skye.UI.Label
-    Friend WithEvents Label9 As Skye.UI.Label
-    Friend WithEvents Label8 As Skye.UI.Label
-    Friend WithEvents Label7 As Skye.UI.Label
-    Friend WithEvents Label6 As Skye.UI.Label
+    Private WithEvents CMIWLMoveUp As ToolStripMenuItem
+    Private WithEvents CMIWLMoveDown As ToolStripMenuItem
+    Private WithEvents TSSWL1 As ToolStripSeparator
+    Private WithEvents CMIWLNew As ToolStripMenuItem
+    Private WithEvents TSSWL2 As ToolStripSeparator
+    Private WithEvents CMIWLDelete As ToolStripMenuItem
+    Friend WithEvents LblWLAutoRefresh As Skye.UI.Label
+    Friend WithEvents LblWLAutoRefreshIdleInterval As Skye.UI.Label
+    Friend WithEvents LblWLAutoRefreshInterval As Skye.UI.Label
+    Friend WithEvents LblWLMaxLinksPerFolder As Skye.UI.Label
+    Friend WithEvents LblWLStartUpDelay As Skye.UI.Label
+    Friend WithEvents LblWLFolderPlacement As Skye.UI.Label
+    Friend WithEvents LblWLFolderMode As Skye.UI.Label
+    Friend WithEvents LblWLSortOrder As Skye.UI.Label
+    Friend WithEvents LblWLDisplayName As Skye.UI.Label
+    Friend WithEvents LblWLRoot As Skye.UI.Label
 End Class
