@@ -208,7 +208,7 @@ Partial Friend Class Settings
             tb?.FindForm()?.ValidateChildren()
         End If
     End Sub
-    Private Sub TxtBoxNumbersOnly_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown
+    Private Sub TxtBoxNumbersOnly_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TxtBoxWLStartUpDelay.KeyDown, TxtBoxWLMaxLinksPerFolder.KeyDown, TxtBoxWLAutoRefreshInterval.KeyDown, TxtBoxWLAutoRefreshIdleInterval.KeyDown
         nonNumberEntered = False
         If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
             If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
@@ -218,7 +218,7 @@ Partial Friend Class Settings
             End If
         End If
     End Sub
-    Private Sub TxtBoxNumbersOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TxtBoxACAlarmTime.KeyPress, TxtBoxACAlarmTimer.KeyPress, textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress
+    Private Sub TxtBoxNumbersOnly_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TxtBoxACAlarmTime.KeyPress, TxtBoxACAlarmTimer.KeyPress, TxtBoxWLStartUpDelay.KeyPress, TxtBoxWLMaxLinksPerFolder.KeyPress, TxtBoxWLAutoRefreshInterval.KeyPress, TxtBoxWLAutoRefreshIdleInterval.KeyPress
         If nonNumberEntered Then e.Handled = True
     End Sub
 
@@ -732,44 +732,44 @@ Partial Friend Class Settings
         ShowSettingsWL()
         App.SetSave()
     End Sub
-    Private Sub TextboxWLStartUpDelayValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLStartUpDelay.Validating
-        If Int(Val(Me.textboxWLStartUpDelay.Text)) < 5 And Int(Val(Me.textboxWLStartUpDelay.Text)) <> 0 Then Me.textboxWLStartUpDelay.Text = "5"
-        If Int(Val(Me.textboxWLStartUpDelay.Text)) > 300 Then Me.textboxWLStartUpDelay.Text = "300"
+    Private Sub TextboxWLStartUpDelayValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles TxtBoxWLStartUpDelay.Validating
+        If Int(Val(Me.TxtBoxWLStartUpDelay.Text)) < 5 And Int(Val(Me.TxtBoxWLStartUpDelay.Text)) <> 0 Then Me.TxtBoxWLStartUpDelay.Text = "5"
+        If Int(Val(Me.TxtBoxWLStartUpDelay.Text)) > 300 Then Me.TxtBoxWLStartUpDelay.Text = "300"
     End Sub
-    Private Sub TextboxWLStartUpDelayValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLStartUpDelay.Validated
-        My.App.WLStartUpDelay = CShort(Val(Me.textboxWLStartUpDelay.Text))
-        Me.textboxWLStartUpDelay.SelectAll()
+    Private Sub TextboxWLStartUpDelayValidated(ByVal sender As Object, ByVal e As EventArgs) Handles TxtBoxWLStartUpDelay.Validated
+        My.App.WLStartUpDelay = CShort(Val(Me.TxtBoxWLStartUpDelay.Text))
+        Me.TxtBoxWLStartUpDelay.SelectAll()
         App.SetSave()
     End Sub
-    Private Sub TextboxWLMaxLinksPerFolderValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLMaxLinksPerFolder.Validating
-        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) < 1 Then Me.textboxWLMaxLinksPerFolder.Text = "1"
-        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) > 100 Then Me.textboxWLMaxLinksPerFolder.Text = "100"
+    Private Sub TextboxWLMaxLinksPerFolderValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles TxtBoxWLMaxLinksPerFolder.Validating
+        If Int(Val(Me.TxtBoxWLMaxLinksPerFolder.Text)) < 1 Then Me.TxtBoxWLMaxLinksPerFolder.Text = "1"
+        If Int(Val(Me.TxtBoxWLMaxLinksPerFolder.Text)) > 100 Then Me.TxtBoxWLMaxLinksPerFolder.Text = "100"
     End Sub
-    Private Sub TextboxWLMaxLinksPerFolderValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLMaxLinksPerFolder.Validated
-        My.App.WLMaxLinksPerFolder = CByte(Val(Me.textboxWLMaxLinksPerFolder.Text))
-        Me.textboxWLMaxLinksPerFolder.SelectAll()
+    Private Sub TextboxWLMaxLinksPerFolderValidated(ByVal sender As Object, ByVal e As EventArgs) Handles TxtBoxWLMaxLinksPerFolder.Validated
+        My.App.WLMaxLinksPerFolder = CByte(Val(Me.TxtBoxWLMaxLinksPerFolder.Text))
+        Me.TxtBoxWLMaxLinksPerFolder.SelectAll()
         App.SetSave()
     End Sub
-    Private Sub TextboxWLAutoRefreshIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshInterval.Validating
-        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) < 1 Then Me.textboxWLAutoRefreshInterval.Text = "1"
-        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) > 90 Then Me.textboxWLAutoRefreshInterval.Text = "90"
+    Private Sub TextboxWLAutoRefreshIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles TxtBoxWLAutoRefreshInterval.Validating
+        If Int(Val(Me.TxtBoxWLAutoRefreshInterval.Text)) < 1 Then Me.TxtBoxWLAutoRefreshInterval.Text = "1"
+        If Int(Val(Me.TxtBoxWLAutoRefreshInterval.Text)) > 90 Then Me.TxtBoxWLAutoRefreshInterval.Text = "90"
     End Sub
-    Private Sub TextboxWLAutoRefreshIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshInterval.Validated
-        If Not My.App.WLAutoRefreshInterval = Int(Val(Me.textboxWLAutoRefreshInterval.Text)) Then
-            My.App.WLAutoRefreshInterval = CByte(Val(Me.textboxWLAutoRefreshInterval.Text))
-            Me.textboxWLAutoRefreshInterval.SelectAll()
+    Private Sub TextboxWLAutoRefreshIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles TxtBoxWLAutoRefreshInterval.Validated
+        If Not My.App.WLAutoRefreshInterval = Int(Val(Me.TxtBoxWLAutoRefreshInterval.Text)) Then
+            My.App.WLAutoRefreshInterval = CByte(Val(Me.TxtBoxWLAutoRefreshInterval.Text))
+            Me.TxtBoxWLAutoRefreshInterval.SelectAll()
             App.FrmMain.WLSetAutoRefresh()
             App.SetSave()
         End If
     End Sub
-    Private Sub TextboxWLAutoRefreshIdleIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshIdleInterval.Validating
-        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) < 20 Then Me.textboxWLAutoRefreshIdleInterval.Text = "20"
-        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) > 240 Then Me.textboxWLAutoRefreshIdleInterval.Text = "240"
+    Private Sub TextboxWLAutoRefreshIdleIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles TxtBoxWLAutoRefreshIdleInterval.Validating
+        If Int(Val(Me.TxtBoxWLAutoRefreshIdleInterval.Text)) < 20 Then Me.TxtBoxWLAutoRefreshIdleInterval.Text = "20"
+        If Int(Val(Me.TxtBoxWLAutoRefreshIdleInterval.Text)) > 240 Then Me.TxtBoxWLAutoRefreshIdleInterval.Text = "240"
     End Sub
-    Private Sub TextboxWLAutoRefreshIdleIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshIdleInterval.Validated
-        If Not My.App.WLAutoRefreshIdleInterval = Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) Then
-            My.App.WLAutoRefreshIdleInterval = CByte(Val(Me.textboxWLAutoRefreshIdleInterval.Text))
-            Me.textboxWLAutoRefreshIdleInterval.SelectAll()
+    Private Sub TextboxWLAutoRefreshIdleIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles TxtBoxWLAutoRefreshIdleInterval.Validated
+        If Not My.App.WLAutoRefreshIdleInterval = Int(Val(Me.TxtBoxWLAutoRefreshIdleInterval.Text)) Then
+            My.App.WLAutoRefreshIdleInterval = CByte(Val(Me.TxtBoxWLAutoRefreshIdleInterval.Text))
+            Me.TxtBoxWLAutoRefreshIdleInterval.SelectAll()
             App.FrmMain.WLSetAutoRefresh()
             App.SetSave()
         End If
@@ -1034,11 +1034,11 @@ Partial Friend Class Settings
         Me.checkboxWLShowFilePathToolTips.Checked = My.App.WLShowFilePathToolTips
         Me.checkboxWLShowFileInfoToolTips.Checked = My.App.WLShowFileInfoToolTips
         Me.checkboxWLShowFolderPathToolTips.Checked = My.App.WLShowFolderPathToolTips
-        Me.textboxWLStartUpDelay.Text = My.App.WLStartUpDelay.ToString
-        Me.textboxWLMaxLinksPerFolder.Text = My.App.WLMaxLinksPerFolder.ToString
+        Me.TxtBoxWLStartUpDelay.Text = My.App.WLStartUpDelay.ToString
+        Me.TxtBoxWLMaxLinksPerFolder.Text = My.App.WLMaxLinksPerFolder.ToString
         Me.checkboxWLAutoRefresh.Checked = My.App.WLAutoRefresh
-        Me.textboxWLAutoRefreshInterval.Text = My.App.WLAutoRefreshInterval.ToString
-        Me.textboxWLAutoRefreshIdleInterval.Text = My.App.WLAutoRefreshIdleInterval.ToString
+        Me.TxtBoxWLAutoRefreshInterval.Text = My.App.WLAutoRefreshInterval.ToString
+        Me.TxtBoxWLAutoRefreshIdleInterval.Text = My.App.WLAutoRefreshIdleInterval.ToString
         Me.LVWL.Columns.Add("Path", 331) '354 = Full ListView Width
         For index As Integer = 0 To My.App.WLData.Count - 1
             Dim link As My.App.WLItemType = My.App.WLData(index)
@@ -1154,10 +1154,11 @@ Partial Friend Class Settings
             Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
         End If
     End Sub
-    Private Sub WLSetNew()
+    Friend Sub WLSetNew()
         If Me.LVWL.SelectedIndices.Count = 0 Then : App.FrmMain.WLInsertIndex = -1
         Else : App.FrmMain.WLInsertIndex = Me.LVWL.SelectedIndices(0)
         End If
+        Me.LVWL.SelectedIndices.Clear()
         ShowSettingsWL()
         Me.PanelWLItem.Show()
         Me.checkboxWLShowInMenu.Checked = True
@@ -1166,6 +1167,11 @@ Partial Friend Class Settings
         Me.checkboxWLShowMenuIcons.Checked = True
         Me.lblWLRoot.ResetFont()
         Me.lblWLRoot.Text = "Root Folder"
+        Me.textboxWLRoot.Select()
+    End Sub
+    Friend Sub WLEdit(index As Integer)
+        Me.LVWL.SelectedIndices.Clear()
+        Me.LVWL.Items(index).Selected = True
         Me.textboxWLRoot.Select()
     End Sub
     Private Sub CheckMove(ByRef location As Point)

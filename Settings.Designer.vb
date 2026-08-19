@@ -118,7 +118,7 @@
         LblACTopHourChime = New Skye.UI.Label()
         LblACOffHourChime = New Skye.UI.Label()
         PanelWL = New Panel()
-        textboxWLMaxLinksPerFolder = New TextBox()
+        TxtBoxWLMaxLinksPerFolder = New TextBox()
         PanelWLItem = New Panel()
         checkboxWLShowNoMenu = New CheckBox()
         textboxWLName = New TextBox()
@@ -138,8 +138,8 @@
         LblWLFolderPlacement = New Label()
         LblWLDisplayName = New Label()
         lblWLRoot = New Label()
-        textboxWLStartUpDelay = New TextBox()
-        textboxWLAutoRefreshInterval = New TextBox()
+        TxtBoxWLStartUpDelay = New TextBox()
+        TxtBoxWLAutoRefreshInterval = New TextBox()
         LVWL = New ListView()
         CMLVWL = New ContextMenuStrip(components)
         cmiWLMoveUp = New ToolStripMenuItem()
@@ -148,7 +148,7 @@
         cmiWLNew = New ToolStripMenuItem()
         toolStripSeparator6 = New ToolStripSeparator()
         cmiWLDelete = New ToolStripMenuItem()
-        textboxWLAutoRefreshIdleInterval = New TextBox()
+        TxtBoxWLAutoRefreshIdleInterval = New TextBox()
         lblWLAutoRefreshIdleInterval = New Label()
         lblWLAutoRefreshInterval = New Label()
         checkboxWLShowFilePathToolTips = New CheckBox()
@@ -161,6 +161,16 @@
         btnWLRefresh = New Button()
         PanelHC = New Panel()
         PanelHK = New Panel()
+        Label1 = New Skye.UI.Label()
+        Label2 = New Skye.UI.Label()
+        Label3 = New Skye.UI.Label()
+        Label4 = New Skye.UI.Label()
+        Label5 = New Skye.UI.Label()
+        Label6 = New Skye.UI.Label()
+        Label7 = New Skye.UI.Label()
+        Label8 = New Skye.UI.Label()
+        Label9 = New Skye.UI.Label()
+        Label10 = New Skye.UI.Label()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -1534,12 +1544,17 @@
         ' 
         ' PanelWL
         ' 
-        PanelWL.Controls.Add(textboxWLMaxLinksPerFolder)
+        PanelWL.Controls.Add(Label5)
+        PanelWL.Controls.Add(Label4)
+        PanelWL.Controls.Add(Label3)
+        PanelWL.Controls.Add(Label2)
+        PanelWL.Controls.Add(Label1)
+        PanelWL.Controls.Add(TxtBoxWLMaxLinksPerFolder)
         PanelWL.Controls.Add(PanelWLItem)
-        PanelWL.Controls.Add(textboxWLStartUpDelay)
-        PanelWL.Controls.Add(textboxWLAutoRefreshInterval)
+        PanelWL.Controls.Add(TxtBoxWLStartUpDelay)
+        PanelWL.Controls.Add(TxtBoxWLAutoRefreshInterval)
         PanelWL.Controls.Add(LVWL)
-        PanelWL.Controls.Add(textboxWLAutoRefreshIdleInterval)
+        PanelWL.Controls.Add(TxtBoxWLAutoRefreshIdleInterval)
         PanelWL.Controls.Add(lblWLAutoRefreshIdleInterval)
         PanelWL.Controls.Add(lblWLAutoRefreshInterval)
         PanelWL.Controls.Add(checkboxWLShowFilePathToolTips)
@@ -1558,22 +1573,27 @@
         PanelWL.TabIndex = 112
         TipInfoEX.SetText(PanelWL, Nothing)
         ' 
-        ' textboxWLMaxLinksPerFolder
+        ' TxtBoxWLMaxLinksPerFolder
         ' 
-        textboxWLMaxLinksPerFolder.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLMaxLinksPerFolder, Nothing)
-        textboxWLMaxLinksPerFolder.Location = New Point(13, 47)
-        textboxWLMaxLinksPerFolder.MaxLength = 3
-        textboxWLMaxLinksPerFolder.Name = "textboxWLMaxLinksPerFolder"
-        textboxWLMaxLinksPerFolder.Size = New Size(44, 29)
-        textboxWLMaxLinksPerFolder.TabIndex = 186
-        TipInfoEX.SetText(textboxWLMaxLinksPerFolder, Nothing)
-        textboxWLMaxLinksPerFolder.TextAlign = HorizontalAlignment.Center
+        TxtBoxWLMaxLinksPerFolder.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLMaxLinksPerFolder, Nothing)
+        TxtBoxWLMaxLinksPerFolder.Location = New Point(13, 47)
+        TxtBoxWLMaxLinksPerFolder.MaxLength = 3
+        TxtBoxWLMaxLinksPerFolder.Name = "TxtBoxWLMaxLinksPerFolder"
+        TxtBoxWLMaxLinksPerFolder.Size = New Size(44, 29)
+        TxtBoxWLMaxLinksPerFolder.TabIndex = 20
+        TipInfoEX.SetText(TxtBoxWLMaxLinksPerFolder, Nothing)
+        TxtBoxWLMaxLinksPerFolder.TextAlign = HorizontalAlignment.Center
         ' 
         ' PanelWLItem
         ' 
         PanelWLItem.AutoSize = True
         PanelWLItem.BorderStyle = BorderStyle.FixedSingle
+        PanelWLItem.Controls.Add(Label10)
+        PanelWLItem.Controls.Add(Label9)
+        PanelWLItem.Controls.Add(Label8)
+        PanelWLItem.Controls.Add(Label7)
+        PanelWLItem.Controls.Add(Label6)
         PanelWLItem.Controls.Add(checkboxWLShowNoMenu)
         PanelWLItem.Controls.Add(textboxWLName)
         PanelWLItem.Controls.Add(checkboxWLShowMenuIcons)
@@ -1596,7 +1616,7 @@
         PanelWLItem.Location = New Point(13, 318)
         PanelWLItem.Name = "PanelWLItem"
         PanelWLItem.Size = New Size(706, 205)
-        PanelWLItem.TabIndex = 181
+        PanelWLItem.TabIndex = 200
         TipInfoEX.SetText(PanelWLItem, Nothing)
         PanelWLItem.Visible = False
         ' 
@@ -1607,7 +1627,7 @@
         checkboxWLShowNoMenu.Location = New Point(546, 107)
         checkboxWLShowNoMenu.Name = "checkboxWLShowNoMenu"
         checkboxWLShowNoMenu.Size = New Size(136, 25)
-        checkboxWLShowNoMenu.TabIndex = 66
+        checkboxWLShowNoMenu.TabIndex = 50
         TipInfoEX.SetText(checkboxWLShowNoMenu, Nothing)
         checkboxWLShowNoMenu.Text = "No Menu Items"
         checkboxWLShowNoMenu.UseVisualStyleBackColor = True
@@ -1629,7 +1649,7 @@
         checkboxWLShowMenuIcons.Location = New Point(546, 88)
         checkboxWLShowMenuIcons.Name = "checkboxWLShowMenuIcons"
         checkboxWLShowMenuIcons.Size = New Size(152, 25)
-        checkboxWLShowMenuIcons.TabIndex = 64
+        checkboxWLShowMenuIcons.TabIndex = 40
         TipInfoEX.SetText(checkboxWLShowMenuIcons, Nothing)
         checkboxWLShowMenuIcons.Text = "Show Menu Icons"
         checkboxWLShowMenuIcons.UseVisualStyleBackColor = True
@@ -1641,7 +1661,7 @@
         checkboxWLShowInTray.Location = New Point(546, 57)
         checkboxWLShowInTray.Name = "checkboxWLShowInTray"
         checkboxWLShowInTray.Size = New Size(118, 25)
-        checkboxWLShowInTray.TabIndex = 62
+        checkboxWLShowInTray.TabIndex = 30
         TipInfoEX.SetText(checkboxWLShowInTray, Nothing)
         checkboxWLShowInTray.Text = "Show In Tray"
         checkboxWLShowInTray.UseVisualStyleBackColor = True
@@ -1653,7 +1673,7 @@
         checkboxWLShowInMenu.Location = New Point(546, 37)
         checkboxWLShowInMenu.Name = "checkboxWLShowInMenu"
         checkboxWLShowInMenu.Size = New Size(129, 25)
-        checkboxWLShowInMenu.TabIndex = 60
+        checkboxWLShowInMenu.TabIndex = 25
         TipInfoEX.SetText(checkboxWLShowInMenu, Nothing)
         checkboxWLShowInMenu.Text = "Show In Menu"
         checkboxWLShowInMenu.UseVisualStyleBackColor = True
@@ -1667,7 +1687,7 @@
         comboboxWLFolderPlacement.Location = New Point(296, 165)
         comboboxWLFolderPlacement.Name = "comboboxWLFolderPlacement"
         comboboxWLFolderPlacement.Size = New Size(139, 29)
-        comboboxWLFolderPlacement.TabIndex = 40
+        comboboxWLFolderPlacement.TabIndex = 80
         TipInfoEX.SetText(comboboxWLFolderPlacement, Nothing)
         ' 
         ' comboboxWLFolderMode
@@ -1679,7 +1699,7 @@
         comboboxWLFolderMode.Location = New Point(123, 165)
         comboboxWLFolderMode.Name = "comboboxWLFolderMode"
         comboboxWLFolderMode.Size = New Size(167, 29)
-        comboboxWLFolderMode.TabIndex = 30
+        comboboxWLFolderMode.TabIndex = 70
         TipInfoEX.SetText(comboboxWLFolderMode, Nothing)
         ' 
         ' comboboxWLSort
@@ -1691,7 +1711,7 @@
         comboboxWLSort.Location = New Point(8, 166)
         comboboxWLSort.Name = "comboboxWLSort"
         comboboxWLSort.Size = New Size(109, 29)
-        comboboxWLSort.TabIndex = 20
+        comboboxWLSort.TabIndex = 60
         TipInfoEX.SetText(comboboxWLSort, Nothing)
         ' 
         ' textboxWLRoot
@@ -1723,10 +1743,10 @@
         btnWLCancel.Image = My.Resources.Resources.imageRemove
         TipInfoEX.SetImage(btnWLCancel, Nothing)
         btnWLCancel.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLCancel.Location = New Point(472, 163)
+        btnWLCancel.Location = New Point(522, 162)
         btnWLCancel.Name = "btnWLCancel"
         btnWLCancel.Size = New Size(100, 32)
-        btnWLCancel.TabIndex = 156
+        btnWLCancel.TabIndex = 100
         TipInfoEX.SetText(btnWLCancel, Nothing)
         btnWLCancel.Text = "Cancel"
         btnWLCancel.TextAlign = ContentAlignment.MiddleRight
@@ -1738,10 +1758,10 @@
         btnWLSet.Image = My.Resources.Resources.imageGoStart
         TipInfoEX.SetImage(btnWLSet, Nothing)
         btnWLSet.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLSet.Location = New Point(578, 162)
+        btnWLSet.Location = New Point(628, 162)
         btnWLSet.Name = "btnWLSet"
         btnWLSet.Size = New Size(66, 32)
-        btnWLSet.TabIndex = 157
+        btnWLSet.TabIndex = 110
         TipInfoEX.SetText(btnWLSet, Nothing)
         btnWLSet.Text = "Set"
         btnWLSet.TextAlign = ContentAlignment.MiddleRight
@@ -1754,7 +1774,7 @@
         checkboxWLUseDefaultIcon.Location = New Point(546, 6)
         checkboxWLUseDefaultIcon.Name = "checkboxWLUseDefaultIcon"
         checkboxWLUseDefaultIcon.Size = New Size(142, 25)
-        checkboxWLUseDefaultIcon.TabIndex = 9
+        checkboxWLUseDefaultIcon.TabIndex = 20
         TipInfoEX.SetText(checkboxWLUseDefaultIcon, Nothing)
         checkboxWLUseDefaultIcon.Text = "Use Default Icon"
         checkboxWLUseDefaultIcon.UseVisualStyleBackColor = True
@@ -1814,30 +1834,30 @@
         lblWLRoot.Text = "SAMPLE"
         TipInfoEX.SetText(lblWLRoot, Nothing)
         ' 
-        ' textboxWLStartUpDelay
+        ' TxtBoxWLStartUpDelay
         ' 
-        textboxWLStartUpDelay.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLStartUpDelay, Nothing)
-        textboxWLStartUpDelay.Location = New Point(13, 12)
-        textboxWLStartUpDelay.MaxLength = 3
-        textboxWLStartUpDelay.Name = "textboxWLStartUpDelay"
-        textboxWLStartUpDelay.Size = New Size(44, 29)
-        textboxWLStartUpDelay.TabIndex = 185
-        TipInfoEX.SetText(textboxWLStartUpDelay, Nothing)
-        textboxWLStartUpDelay.TextAlign = HorizontalAlignment.Center
+        TxtBoxWLStartUpDelay.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLStartUpDelay, Nothing)
+        TxtBoxWLStartUpDelay.Location = New Point(13, 12)
+        TxtBoxWLStartUpDelay.MaxLength = 3
+        TxtBoxWLStartUpDelay.Name = "TxtBoxWLStartUpDelay"
+        TxtBoxWLStartUpDelay.Size = New Size(44, 29)
+        TxtBoxWLStartUpDelay.TabIndex = 10
+        TipInfoEX.SetText(TxtBoxWLStartUpDelay, Nothing)
+        TxtBoxWLStartUpDelay.TextAlign = HorizontalAlignment.Center
         ' 
-        ' textboxWLAutoRefreshInterval
+        ' TxtBoxWLAutoRefreshInterval
         ' 
-        textboxWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        textboxWLAutoRefreshInterval.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLAutoRefreshInterval, Nothing)
-        textboxWLAutoRefreshInterval.Location = New Point(675, 12)
-        textboxWLAutoRefreshInterval.MaxLength = 2
-        textboxWLAutoRefreshInterval.Name = "textboxWLAutoRefreshInterval"
-        textboxWLAutoRefreshInterval.Size = New Size(44, 29)
-        textboxWLAutoRefreshInterval.TabIndex = 175
-        TipInfoEX.SetText(textboxWLAutoRefreshInterval, Nothing)
-        textboxWLAutoRefreshInterval.TextAlign = HorizontalAlignment.Center
+        TxtBoxWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        TxtBoxWLAutoRefreshInterval.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLAutoRefreshInterval, Nothing)
+        TxtBoxWLAutoRefreshInterval.Location = New Point(675, 12)
+        TxtBoxWLAutoRefreshInterval.MaxLength = 2
+        TxtBoxWLAutoRefreshInterval.Name = "TxtBoxWLAutoRefreshInterval"
+        TxtBoxWLAutoRefreshInterval.Size = New Size(44, 29)
+        TxtBoxWLAutoRefreshInterval.TabIndex = 60
+        TipInfoEX.SetText(TxtBoxWLAutoRefreshInterval, Nothing)
+        TxtBoxWLAutoRefreshInterval.TextAlign = HorizontalAlignment.Center
         ' 
         ' LVWL
         ' 
@@ -1853,7 +1873,7 @@
         LVWL.Name = "LVWL"
         LVWL.ShowGroups = False
         LVWL.Size = New Size(706, 111)
-        LVWL.TabIndex = 180
+        LVWL.TabIndex = 150
         TipInfoEX.SetText(LVWL, Nothing)
         LVWL.UseCompatibleStateImageBehavior = False
         LVWL.View = View.Details
@@ -1904,18 +1924,18 @@
         cmiWLDelete.Size = New Size(124, 26)
         cmiWLDelete.Text = "Delete"
         ' 
-        ' textboxWLAutoRefreshIdleInterval
+        ' TxtBoxWLAutoRefreshIdleInterval
         ' 
-        textboxWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        textboxWLAutoRefreshIdleInterval.ContextMenuStrip = CMBlankForTextBoxes
-        TipInfoEX.SetImage(textboxWLAutoRefreshIdleInterval, Nothing)
-        textboxWLAutoRefreshIdleInterval.Location = New Point(675, 47)
-        textboxWLAutoRefreshIdleInterval.MaxLength = 3
-        textboxWLAutoRefreshIdleInterval.Name = "textboxWLAutoRefreshIdleInterval"
-        textboxWLAutoRefreshIdleInterval.Size = New Size(44, 29)
-        textboxWLAutoRefreshIdleInterval.TabIndex = 177
-        TipInfoEX.SetText(textboxWLAutoRefreshIdleInterval, Nothing)
-        textboxWLAutoRefreshIdleInterval.TextAlign = HorizontalAlignment.Center
+        TxtBoxWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        TxtBoxWLAutoRefreshIdleInterval.ContextMenuStrip = CMBlankForTextBoxes
+        TipInfoEX.SetImage(TxtBoxWLAutoRefreshIdleInterval, Nothing)
+        TxtBoxWLAutoRefreshIdleInterval.Location = New Point(675, 47)
+        TxtBoxWLAutoRefreshIdleInterval.MaxLength = 3
+        TxtBoxWLAutoRefreshIdleInterval.Name = "TxtBoxWLAutoRefreshIdleInterval"
+        TxtBoxWLAutoRefreshIdleInterval.Size = New Size(44, 29)
+        TxtBoxWLAutoRefreshIdleInterval.TabIndex = 70
+        TipInfoEX.SetText(TxtBoxWLAutoRefreshIdleInterval, Nothing)
+        TxtBoxWLAutoRefreshIdleInterval.TextAlign = HorizontalAlignment.Center
         ' 
         ' lblWLAutoRefreshIdleInterval
         ' 
@@ -1954,7 +1974,7 @@
         checkboxWLShowFilePathToolTips.Location = New Point(13, 95)
         checkboxWLShowFilePathToolTips.Name = "checkboxWLShowFilePathToolTips"
         checkboxWLShowFilePathToolTips.Size = New Size(200, 25)
-        checkboxWLShowFilePathToolTips.TabIndex = 172
+        checkboxWLShowFilePathToolTips.TabIndex = 30
         TipInfoEX.SetText(checkboxWLShowFilePathToolTips, "Show Full File Path In ToolTip")
         checkboxWLShowFilePathToolTips.Text = "Show File Path In ToolTip"
         checkboxWLShowFilePathToolTips.UseVisualStyleBackColor = True
@@ -1996,7 +2016,7 @@
         checkboxWLAutoRefresh.Location = New Point(554, 95)
         checkboxWLAutoRefresh.Name = "checkboxWLAutoRefresh"
         checkboxWLAutoRefresh.Size = New Size(165, 25)
-        checkboxWLAutoRefresh.TabIndex = 178
+        checkboxWLAutoRefresh.TabIndex = 80
         TipInfoEX.SetText(checkboxWLAutoRefresh, "Enable AutoRefresh For Last WinLink")
         checkboxWLAutoRefresh.Text = "Enable AutoRefresh"
         checkboxWLAutoRefresh.TextAlign = ContentAlignment.MiddleRight
@@ -2009,7 +2029,7 @@
         checkboxWLShowFileInfoToolTips.Location = New Point(13, 135)
         checkboxWLShowFileInfoToolTips.Name = "checkboxWLShowFileInfoToolTips"
         checkboxWLShowFileInfoToolTips.Size = New Size(197, 25)
-        checkboxWLShowFileInfoToolTips.TabIndex = 173
+        checkboxWLShowFileInfoToolTips.TabIndex = 50
         TipInfoEX.SetText(checkboxWLShowFileInfoToolTips, "Show File Details In ToolTip")
         checkboxWLShowFileInfoToolTips.Text = "Show File Info In ToolTip"
         checkboxWLShowFileInfoToolTips.UseVisualStyleBackColor = True
@@ -2021,7 +2041,7 @@
         checkboxWLShowFolderPathToolTips.Location = New Point(13, 115)
         checkboxWLShowFolderPathToolTips.Name = "checkboxWLShowFolderPathToolTips"
         checkboxWLShowFolderPathToolTips.Size = New Size(220, 25)
-        checkboxWLShowFolderPathToolTips.TabIndex = 174
+        checkboxWLShowFolderPathToolTips.TabIndex = 40
         TipInfoEX.SetText(checkboxWLShowFolderPathToolTips, "Show Full Directory Path In ToolTip")
         checkboxWLShowFolderPathToolTips.Text = "Show Folder Path In ToolTip"
         checkboxWLShowFolderPathToolTips.UseVisualStyleBackColor = True
@@ -2050,8 +2070,7 @@
         btnWLRefresh.Location = New Point(11, 174)
         btnWLRefresh.Name = "btnWLRefresh"
         btnWLRefresh.Size = New Size(709, 32)
-        btnWLRefresh.TabIndex = 171
-        btnWLRefresh.TabStop = False
+        btnWLRefresh.TabIndex = 100
         TipInfoEX.SetText(btnWLRefresh, "Refresh")
         btnWLRefresh.Text = "FULL REFRESH"
         btnWLRefresh.UseVisualStyleBackColor = True
@@ -2075,6 +2094,116 @@
         PanelHK.Size = New Size(730, 534)
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
+        ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        TipInfoEX.SetImage(Label1, Nothing)
+        Label1.Location = New Point(228, 9)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(105, 21)
+        Label1.TabIndex = 201
+        Label1.Text = "StartUp Delay"
+        TipInfoEX.SetText(Label1, "5-300, 0 = No Delay")
+        Label1.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        TipInfoEX.SetImage(Label2, Nothing)
+        Label2.Location = New Point(204, 72)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(199, 21)
+        Label2.TabIndex = 202
+        Label2.Text = "Max Menu Items Per Folder"
+        TipInfoEX.SetText(Label2, "1-100")
+        Label2.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        TipInfoEX.SetImage(Label3, Nothing)
+        Label3.Location = New Point(348, 13)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(152, 21)
+        Label3.TabIndex = 203
+        Label3.Text = "AutoRefresh Interval"
+        TipInfoEX.SetText(Label3, "Check For Changes Every 1-90 Minutes")
+        Label3.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        TipInfoEX.SetImage(Label4, Nothing)
+        Label4.Location = New Point(282, 53)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(181, 21)
+        Label4.TabIndex = 204
+        Label4.Text = "AutoRefresh Idle Interval"
+        TipInfoEX.SetText(Label4, "Refresh Only When Folder Idle For 20-240 Seconds")
+        Label4.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' Label5
+        ' 
+        Label5.AutoSize = True
+        TipInfoEX.SetImage(Label5, Nothing)
+        Label5.Location = New Point(472, 143)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(160, 21)
+        Label5.TabIndex = 205
+        Label5.Text = "AutoRefresh Engaged"
+        TipInfoEX.SetText(Label5, Nothing)
+        Label5.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' Label6
+        ' 
+        TipInfoEX.SetImage(Label6, Nothing)
+        Label6.Location = New Point(209, 8)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(100, 23)
+        Label6.TabIndex = 169
+        Label6.Text = "Label6"
+        TipInfoEX.SetText(Label6, Nothing)
+        ' 
+        ' Label7
+        ' 
+        TipInfoEX.SetImage(Label7, Nothing)
+        Label7.Location = New Point(187, 56)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(100, 23)
+        Label7.TabIndex = 170
+        Label7.Text = "Label7"
+        TipInfoEX.SetText(Label7, Nothing)
+        ' 
+        ' Label8
+        ' 
+        TipInfoEX.SetImage(Label8, Nothing)
+        Label8.Location = New Point(14, 123)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(100, 23)
+        Label8.TabIndex = 171
+        Label8.Text = "Label8"
+        TipInfoEX.SetText(Label8, Nothing)
+        ' 
+        ' Label9
+        ' 
+        TipInfoEX.SetImage(Label9, Nothing)
+        Label9.Location = New Point(155, 121)
+        Label9.Name = "Label9"
+        Label9.Size = New Size(100, 23)
+        Label9.TabIndex = 172
+        Label9.Text = "Label9"
+        TipInfoEX.SetText(Label9, Nothing)
+        ' 
+        ' Label10
+        ' 
+        TipInfoEX.SetImage(Label10, Nothing)
+        Label10.Location = New Point(304, 118)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(100, 23)
+        Label10.TabIndex = 173
+        Label10.Text = "Label10"
+        TipInfoEX.SetText(Label10, Nothing)
         ' 
         ' Settings
         ' 
@@ -2187,7 +2316,7 @@
     Private WithEvents ChkBoxSSShowActivate As CheckBox
     Private WithEvents ChkBoxSSShowIcon As CheckBox
     Friend WithEvents CMBlankForTextBoxes As ContextMenuStrip
-    Private WithEvents textboxWLMaxLinksPerFolder As TextBox
+    Private WithEvents TxtBoxWLMaxLinksPerFolder As TextBox
     Private WithEvents PanelWLItem As Panel
     Private WithEvents checkboxWLShowNoMenu As CheckBox
     Private WithEvents textboxWLName As TextBox
@@ -2207,10 +2336,10 @@
     Private WithEvents LblWLFolderPlacement As Label
     Private WithEvents LblWLDisplayName As Label
     Private WithEvents lblWLRoot As Label
-    Private WithEvents textboxWLStartUpDelay As TextBox
-    Private WithEvents textboxWLAutoRefreshInterval As TextBox
+    Private WithEvents TxtBoxWLStartUpDelay As TextBox
+    Private WithEvents TxtBoxWLAutoRefreshInterval As TextBox
     Private WithEvents LVWL As ListView
-    Private WithEvents textboxWLAutoRefreshIdleInterval As TextBox
+    Private WithEvents TxtBoxWLAutoRefreshIdleInterval As TextBox
     Private WithEvents lblWLAutoRefreshIdleInterval As Label
     Private WithEvents lblWLAutoRefreshInterval As Label
     Private WithEvents checkboxWLShowFilePathToolTips As CheckBox
@@ -2273,4 +2402,14 @@
     Private WithEvents cmiWLNew As ToolStripMenuItem
     Private WithEvents toolStripSeparator6 As ToolStripSeparator
     Private WithEvents cmiWLDelete As ToolStripMenuItem
+    Friend WithEvents Label5 As Skye.UI.Label
+    Friend WithEvents Label4 As Skye.UI.Label
+    Friend WithEvents Label3 As Skye.UI.Label
+    Friend WithEvents Label2 As Skye.UI.Label
+    Friend WithEvents Label1 As Skye.UI.Label
+    Friend WithEvents Label10 As Skye.UI.Label
+    Friend WithEvents Label9 As Skye.UI.Label
+    Friend WithEvents Label8 As Skye.UI.Label
+    Friend WithEvents Label7 As Skye.UI.Label
+    Friend WithEvents Label6 As Skye.UI.Label
 End Class

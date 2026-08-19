@@ -2232,16 +2232,14 @@ Partial Friend Class MainForm
         Select Case action
             Case My.App.HCAction.WLNew
                 If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
-                    Me.listviewWL.SelectedIndices.Clear()
-                    WLSetNew()
-                    Me.SelectTab(Me.tabpageWL, True)
+                    App.ShowSettings("WL")
+                    App.FrmSettings.WLSetNew()
                 End If
             Case My.App.HCAction.WLEdit
                 If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
-                    Me.SelectTab(Me.tabpageWL, True)
                     If argument Is Nothing Then argument = 0
-                    Me.listviewWL.SelectedIndices.Clear()
-                    Me.listviewWL.SelectedIndices.Add(CInt(argument))
+                    App.ShowSettings("WL")
+                    App.FrmSettings.WLEdit(CInt(argument))
                 End If
             Case My.App.HCAction.WLOpenRoot
                 If argument Is Nothing Then argument = 0
