@@ -63,7 +63,7 @@ Namespace My
 		Friend WSTSSEnableOnActivate As Boolean
 		Friend WSTShowSSIcon As Boolean
 		Friend WSTShowSSActivate As Boolean
-        Friend WSTShowSSEnabled As Boolean
+		Friend WSTShowSSEnabled As Boolean
 
 		' METHODS
 		Friend Sub SSActivate(Optional hotkeymode As Boolean = False)
@@ -168,7 +168,7 @@ Namespace My
 		Friend WLStartUpDelay As Short 'Range 5-300, Default = 10, 0 = Disable Delay (Load Immediately)
 		Friend WLAutoRefresh As Boolean
 		Friend WLAutoRefreshInterval As Byte '1 - 90 minutes, Default = 5, Check For Changes Every x Minutes
-        Friend WLAutoRefreshIdleInterval As Byte '20-240 seconds, Default = 30, Refresh Only When Folder Idle For x Seconds
+		Friend WLAutoRefreshIdleInterval As Byte '20-240 seconds, Default = 30, Refresh Only When Folder Idle For x Seconds
 
 #End Region
 #Region "HotClicks (HC)"
@@ -341,9 +341,9 @@ Namespace My
 		Friend ReadOnly MenuFont As New Font("Segoe UI", 12, FontStyle.Regular) ' The font used for context menus.
 		Friend ReadOnly MenuFontBold As New Font("Segoe UI", 12, FontStyle.Bold) ' The font used for ShowMessage title.
 		Friend NeedsSaved As Boolean = False
-        Friend ErrorAlert As Boolean = False
-        Friend LastSettingsPage As String = "APP" ' The last settings page that was opened, used to return to the same page when reopening the settings window.
-        Friend FrmMain As MainForm
+		Friend ErrorAlert As Boolean = False
+		Friend LastSettingsPage As String = "APP" ' The last settings page that was opened, used to return to the same page when reopening the settings window.
+		Friend FrmMain As MainForm
 		Friend FrmClock As Clock
 		Friend FrmSettings As Settings
 		Friend FrmHelp As Help
@@ -463,9 +463,9 @@ Namespace My
 		Friend Sub HideClock()
 			If FrmClock IsNot Nothing Then
 				FrmClock.Hide()
-                FrmClock.Dispose()
-                FrmClock = Nothing
-            End If
+				FrmClock.Dispose()
+				FrmClock = Nothing
+			End If
 		End Sub
 		Friend Sub ShowSettings(Optional page As String = "")
 			Dim targetPage As String = If(String.IsNullOrWhiteSpace(page), LastSettingsPage, page)
@@ -474,11 +474,11 @@ Namespace My
 				FrmSettings.Show()
 			Else
 				If FrmSettings.WindowState = FormWindowState.Minimized Then
-                    FrmSettings.WindowState = FormWindowState.Normal
-                End If
-                FrmSettings.BringToFront()
-                FrmSettings.Activate() ' <-- Crucial: Activates the window and forces focus in Win32
-            End If
+					FrmSettings.WindowState = FormWindowState.Normal
+				End If
+				FrmSettings.BringToFront()
+				FrmSettings.Activate() ' <-- Crucial: Activates the window and forces focus in Win32
+			End If
 			FrmSettings.SetPage(targetPage)
 			LastSettingsPage = targetPage
 		End Sub
@@ -551,6 +551,15 @@ Namespace My
 			Catch : Return source
 			End Try
 		End Function
+		Friend Sub AutoFitLVColumn(lv As ListView)
+			If lv.Columns.Count = 0 Then Exit Sub
+
+			' Subtract vertical scrollbar width to prevent horizontal overflow
+			Dim visibleWidth As Integer = lv.ClientSize.Width - SystemInformation.VerticalScrollBarWidth
+
+			' Ensure width doesn't dip below zero
+			lv.Columns(0).Width = Math.Max(visibleWidth, 50)
+		End Sub
 
 		' Settings
 		Friend Sub GetSettings()
@@ -724,9 +733,9 @@ Namespace My
 
 		End Sub
 
-        <Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-            WSTLoadOnOSStartup = False
-            HKEnabled = False
+		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
+			WSTLoadOnOSStartup = False
+			HKEnabled = False
 			GetSettingsDebugHK()
 			'WorkSpace Tools (WST)
 			'WSTLoadOnOSStartup = True
@@ -1012,66 +1021,6 @@ Namespace My
 			End If
 
 			tip.ShowTooltipAt(pos, it.ToolTipText)
-		End Sub
-
-		' Custom ListView ToolTips
-		Private _currentHoveredItem As ListViewItem = Nothing
-		''' <summary>
-		''' Hooks a ListView to display ToolTipEX tooltips for items that have ToolTipText set.
-		''' </summary>
-		Friend Sub HookListViewForCMTooltip(lv As ListView, tip As ToolTipEX)
-			' Turn off native ListView tooltips so they don't interfere
-			lv.ShowItemToolTips = False
-
-			AddHandler lv.MouseMove,
-				Sub(sender As Object, e As MouseEventArgs)
-					Dim item As ListViewItem = lv.GetItemAt(e.X, e.Y)
-
-					' Case 1: Moved off any item into empty space
-					If item Is Nothing Then
-						If _currentHoveredItem IsNot Nothing Then
-							_currentHoveredItem = Nothing
-							tip.HideTooltip()
-						End If
-						Exit Sub
-					End If
-
-					' Case 2: Mouse is STILL on the same item -> DO NOTHING (keep tooltip visible!)
-					If item Is _currentHoveredItem Then
-						Exit Sub
-					End If
-
-					' Case 3: Moved onto a NEW item
-					_currentHoveredItem = item
-
-					If String.IsNullOrWhiteSpace(item.ToolTipText) Then
-						tip.HideTooltip()
-					Else
-						ShowLVItemTooltip(item, tip)
-					End If
-				End Sub
-
-			AddHandler lv.MouseLeave,
-				Sub(sender As Object, e As EventArgs)
-					' Left the ListView control completely
-					_currentHoveredItem = Nothing
-					tip.HideTooltip()
-				End Sub
-		End Sub
-		Private Sub ShowLVItemTooltip(item As ListViewItem, tip As ToolTipEX)
-			Dim textSize As Size = TextRenderer.MeasureText(item.ToolTipText, tip.Font)
-			Dim tipWidth As Integer = textSize.Width + (tip.TextPadding * 2)
-			Dim tipHeight As Integer = textSize.Height + (tip.TextPadding * 2)
-
-			Dim mousePos As Point = Cursor.Position
-			Dim pos As New Point(mousePos.X + 20, mousePos.Y + 15)
-
-			' Screen clamping
-			Dim wa As Rectangle = Screen.FromPoint(pos).WorkingArea
-			If pos.X + tipWidth > wa.Right Then pos.X = mousePos.X - tipWidth - 10
-			If pos.Y + tipHeight > wa.Bottom Then pos.Y = mousePos.Y - tipHeight - 10
-
-			tip.ShowTooltipAt(pos, item.ToolTipText)
 		End Sub
 
 	End Module

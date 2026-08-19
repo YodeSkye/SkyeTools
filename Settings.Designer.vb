@@ -73,45 +73,45 @@
         ILPageSelector = New ImageList(components)
         TipInfoEX = New Skye.UI.ToolTipEX(components)
         PanelAC = New Panel()
-        lblACOffHourChimePath = New Label()
-        btnACOffHourChimeManual = New Button()
-        btnACAlarmCancel = New Button()
-        lblACTopHourChimePath = New Label()
-        lblACAlarmChimePath = New Label()
-        checkboxACBottomHourAfterChimeEnabled = New CheckBox()
-        checkboxACFirstQuarterHourAfterChimeEnabled = New CheckBox()
-        checkboxACThirdQuarterHourBeforeChimeEnabled = New CheckBox()
-        checkboxACFirstQuarterHourBeforeChimeEnabled = New CheckBox()
-        checkboxACThirdQuarterHourAfterChimeEnabled = New CheckBox()
-        checkboxACBottomHourBeforeChimeEnabled = New CheckBox()
-        btnACMute = New Button()
-        textboxACAlarmTimer = New TextBox()
-        groupboxACTopHourChimeType = New GroupBox()
-        radiobtnACTopHourChimeHourTick = New RadioButton()
-        radiobtnACTopHourChimeSimple = New RadioButton()
-        radiobtnACTopHourChimeExtended = New RadioButton()
-        btnACOffHourChimeDefault = New Button()
-        btnACTopHourChimeDefault = New Button()
-        textboxACAlarmTime = New TextBox()
-        btnACTopHourChimeManual = New Button()
-        checkboxACThirdQuarterHourChimeEnabled = New CheckBox()
-        checkboxACBottomHourChimeEnabled = New CheckBox()
-        checkboxACFirstQuarterHourChimeEnabled = New CheckBox()
-        checkboxACTopHourAfterChimeEnabled = New CheckBox()
-        checkboxACTopHourChimeEnabled = New CheckBox()
-        checkboxACTopHourBeforeChimeEnabled = New CheckBox()
-        groupboxACAlarmChimeType = New GroupBox()
-        radiobtnACAlarmChimeSimple = New RadioButton()
-        radiobtnACAlarmChimeForever = New RadioButton()
-        radiobtnACAlarmChimeExtended = New RadioButton()
-        btnACAlarmSet = New Button()
-        checkboxACAlarmRecurring = New CheckBox()
-        btnACTopHourChimePlay = New Button()
-        btnACOffHourChimePlay = New Button()
-        picboxACClock = New PictureBox()
-        btnACAlarmChimeDefault = New Button()
-        btnACAlarmChimePlay = New Button()
-        btnACAlarmChimeManual = New Button()
+        LblACOffHourChimePath = New Label()
+        BtnACOffHourChimeManual = New Button()
+        BtnACAlarmCancel = New Button()
+        LblACTopHourChimePath = New Label()
+        LblACAlarmChimePath = New Label()
+        ChkBoxACBottomHourAfterChimeEnabled = New CheckBox()
+        ChkBoxACFirstQuarterHourAfterChimeEnabled = New CheckBox()
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled = New CheckBox()
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled = New CheckBox()
+        ChkBoxACThirdQuarterHourAfterChimeEnabled = New CheckBox()
+        ChkBoxACBottomHourBeforeChimeEnabled = New CheckBox()
+        BtnACMute = New Button()
+        TxtBoxACAlarmTimer = New TextBox()
+        GrpBoxACTopHourChimeType = New GroupBox()
+        RadBtnACTopHourChimeHourTick = New RadioButton()
+        RadBtnACTopHourChimeSimple = New RadioButton()
+        RadBtnACTopHourChimeExtended = New RadioButton()
+        BtnACOffHourChimeDefault = New Button()
+        BtnACTopHourChimeDefault = New Button()
+        TxtBoxACAlarmTime = New TextBox()
+        BtnACTopHourChimeManual = New Button()
+        ChkBoxACThirdQuarterHourChimeEnabled = New CheckBox()
+        ChkBoxACBottomHourChimeEnabled = New CheckBox()
+        ChkBoxACFirstQuarterHourChimeEnabled = New CheckBox()
+        ChkBoxACTopHourAfterChimeEnabled = New CheckBox()
+        ChkBoxACTopHourChimeEnabled = New CheckBox()
+        ChkBoxACTopHourBeforeChimeEnabled = New CheckBox()
+        GrpBoxACAlarmChimeType = New GroupBox()
+        RadBtnACAlarmChimeSimple = New RadioButton()
+        RadBtnACAlarmChimeForever = New RadioButton()
+        RadBtnACAlarmChimeExtended = New RadioButton()
+        BtnACAlarmSet = New Button()
+        ChkBoxACAlarmRecurring = New CheckBox()
+        BtnACTopHourChimePlay = New Button()
+        BtnACOffHourChimePlay = New Button()
+        PicBoxACClock = New PictureBox()
+        BtnACAlarmChimeDefault = New Button()
+        BtnACAlarmChimePlay = New Button()
+        BtnACAlarmChimeManual = New Button()
         LblACTime = New Skye.UI.Label()
         LblACTimer = New Skye.UI.Label()
         LblACAlarmChime = New Skye.UI.Label()
@@ -140,8 +140,8 @@
         lblWLRoot = New Label()
         textboxWLStartUpDelay = New TextBox()
         textboxWLAutoRefreshInterval = New TextBox()
-        listviewWL = New ListView()
-        cmlistviewWL = New ContextMenuStrip(components)
+        LVWL = New ListView()
+        CMLVWL = New ContextMenuStrip(components)
         cmiWLMoveUp = New ToolStripMenuItem()
         cmiWLMoveDown = New ToolStripMenuItem()
         toolStripSeparator11 = New ToolStripSeparator()
@@ -167,12 +167,12 @@
         PanelActions.SuspendLayout()
         PanelPageSelector.SuspendLayout()
         PanelAC.SuspendLayout()
-        groupboxACTopHourChimeType.SuspendLayout()
-        groupboxACAlarmChimeType.SuspendLayout()
-        CType(picboxACClock, ComponentModel.ISupportInitialize).BeginInit()
+        GrpBoxACTopHourChimeType.SuspendLayout()
+        GrpBoxACAlarmChimeType.SuspendLayout()
+        CType(PicBoxACClock, ComponentModel.ISupportInitialize).BeginInit()
         PanelWL.SuspendLayout()
         PanelWLItem.SuspendLayout()
-        cmlistviewWL.SuspendLayout()
+        CMLVWL.SuspendLayout()
         SuspendLayout()
         ' 
         ' BtnClose
@@ -918,39 +918,39 @@
         ' 
         ' PanelAC
         ' 
-        PanelAC.Controls.Add(lblACOffHourChimePath)
-        PanelAC.Controls.Add(btnACOffHourChimeManual)
-        PanelAC.Controls.Add(btnACAlarmCancel)
-        PanelAC.Controls.Add(lblACTopHourChimePath)
-        PanelAC.Controls.Add(lblACAlarmChimePath)
-        PanelAC.Controls.Add(checkboxACBottomHourAfterChimeEnabled)
-        PanelAC.Controls.Add(checkboxACFirstQuarterHourAfterChimeEnabled)
-        PanelAC.Controls.Add(checkboxACThirdQuarterHourBeforeChimeEnabled)
-        PanelAC.Controls.Add(checkboxACFirstQuarterHourBeforeChimeEnabled)
-        PanelAC.Controls.Add(checkboxACThirdQuarterHourAfterChimeEnabled)
-        PanelAC.Controls.Add(checkboxACBottomHourBeforeChimeEnabled)
-        PanelAC.Controls.Add(btnACMute)
-        PanelAC.Controls.Add(textboxACAlarmTimer)
-        PanelAC.Controls.Add(groupboxACTopHourChimeType)
-        PanelAC.Controls.Add(btnACOffHourChimeDefault)
-        PanelAC.Controls.Add(btnACTopHourChimeDefault)
-        PanelAC.Controls.Add(textboxACAlarmTime)
-        PanelAC.Controls.Add(btnACTopHourChimeManual)
-        PanelAC.Controls.Add(checkboxACThirdQuarterHourChimeEnabled)
-        PanelAC.Controls.Add(checkboxACBottomHourChimeEnabled)
-        PanelAC.Controls.Add(checkboxACFirstQuarterHourChimeEnabled)
-        PanelAC.Controls.Add(checkboxACTopHourAfterChimeEnabled)
-        PanelAC.Controls.Add(checkboxACTopHourChimeEnabled)
-        PanelAC.Controls.Add(checkboxACTopHourBeforeChimeEnabled)
-        PanelAC.Controls.Add(groupboxACAlarmChimeType)
-        PanelAC.Controls.Add(btnACAlarmSet)
-        PanelAC.Controls.Add(checkboxACAlarmRecurring)
-        PanelAC.Controls.Add(btnACTopHourChimePlay)
-        PanelAC.Controls.Add(btnACOffHourChimePlay)
-        PanelAC.Controls.Add(picboxACClock)
-        PanelAC.Controls.Add(btnACAlarmChimeDefault)
-        PanelAC.Controls.Add(btnACAlarmChimePlay)
-        PanelAC.Controls.Add(btnACAlarmChimeManual)
+        PanelAC.Controls.Add(LblACOffHourChimePath)
+        PanelAC.Controls.Add(BtnACOffHourChimeManual)
+        PanelAC.Controls.Add(BtnACAlarmCancel)
+        PanelAC.Controls.Add(LblACTopHourChimePath)
+        PanelAC.Controls.Add(LblACAlarmChimePath)
+        PanelAC.Controls.Add(ChkBoxACBottomHourAfterChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACFirstQuarterHourAfterChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACThirdQuarterHourBeforeChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACFirstQuarterHourBeforeChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACThirdQuarterHourAfterChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACBottomHourBeforeChimeEnabled)
+        PanelAC.Controls.Add(BtnACMute)
+        PanelAC.Controls.Add(TxtBoxACAlarmTimer)
+        PanelAC.Controls.Add(GrpBoxACTopHourChimeType)
+        PanelAC.Controls.Add(BtnACOffHourChimeDefault)
+        PanelAC.Controls.Add(BtnACTopHourChimeDefault)
+        PanelAC.Controls.Add(TxtBoxACAlarmTime)
+        PanelAC.Controls.Add(BtnACTopHourChimeManual)
+        PanelAC.Controls.Add(ChkBoxACThirdQuarterHourChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACBottomHourChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACFirstQuarterHourChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACTopHourAfterChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACTopHourChimeEnabled)
+        PanelAC.Controls.Add(ChkBoxACTopHourBeforeChimeEnabled)
+        PanelAC.Controls.Add(GrpBoxACAlarmChimeType)
+        PanelAC.Controls.Add(BtnACAlarmSet)
+        PanelAC.Controls.Add(ChkBoxACAlarmRecurring)
+        PanelAC.Controls.Add(BtnACTopHourChimePlay)
+        PanelAC.Controls.Add(BtnACOffHourChimePlay)
+        PanelAC.Controls.Add(PicBoxACClock)
+        PanelAC.Controls.Add(BtnACAlarmChimeDefault)
+        PanelAC.Controls.Add(BtnACAlarmChimePlay)
+        PanelAC.Controls.Add(BtnACAlarmChimeManual)
         PanelAC.Controls.Add(LblACTime)
         PanelAC.Controls.Add(LblACTimer)
         PanelAC.Controls.Add(LblACAlarmChime)
@@ -964,518 +964,518 @@
         PanelAC.TabIndex = 108
         TipInfoEX.SetText(PanelAC, Nothing)
         ' 
-        ' lblACOffHourChimePath
-        ' 
-        lblACOffHourChimePath.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblACOffHourChimePath.AutoEllipsis = True
-        lblACOffHourChimePath.BorderStyle = BorderStyle.FixedSingle
-        TipInfoEX.SetImage(lblACOffHourChimePath, Nothing)
-        lblACOffHourChimePath.Location = New Point(555, 499)
-        lblACOffHourChimePath.Name = "lblACOffHourChimePath"
-        lblACOffHourChimePath.Size = New Size(163, 24)
-        lblACOffHourChimePath.TabIndex = 72
-        TipInfoEX.SetText(lblACOffHourChimePath, "Path")
-        lblACOffHourChimePath.TextAlign = ContentAlignment.TopRight
-        lblACOffHourChimePath.UseMnemonic = False
-        ' 
-        ' btnACOffHourChimeManual
-        ' 
-        btnACOffHourChimeManual.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACOffHourChimeManual.FlatAppearance.BorderSize = 0
-        btnACOffHourChimeManual.Image = My.Resources.Resources.imageACFolder
-        TipInfoEX.SetImage(btnACOffHourChimeManual, Nothing)
-        btnACOffHourChimeManual.Location = New Point(687, 467)
-        btnACOffHourChimeManual.Name = "btnACOffHourChimeManual"
-        btnACOffHourChimeManual.Size = New Size(32, 32)
-        btnACOffHourChimeManual.TabIndex = 204
-        TipInfoEX.SetText(btnACOffHourChimeManual, "Select WAV File")
-        btnACOffHourChimeManual.TextAlign = ContentAlignment.MiddleLeft
-        btnACOffHourChimeManual.UseVisualStyleBackColor = True
-        ' 
-        ' btnACAlarmCancel
-        ' 
-        btnACAlarmCancel.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnACAlarmCancel.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        btnACAlarmCancel.ForeColor = Color.Maroon
-        TipInfoEX.SetImage(btnACAlarmCancel, Nothing)
-        btnACAlarmCancel.Location = New Point(101, 69)
-        btnACAlarmCancel.Name = "btnACAlarmCancel"
-        btnACAlarmCancel.Size = New Size(72, 64)
-        btnACAlarmCancel.TabIndex = 17
-        TipInfoEX.SetText(btnACAlarmCancel, "Cancel Alarm")
-        btnACAlarmCancel.Text = " CANCEL  ALARM"
-        btnACAlarmCancel.UseVisualStyleBackColor = True
-        btnACAlarmCancel.Visible = False
-        ' 
-        ' lblACTopHourChimePath
-        ' 
-        lblACTopHourChimePath.AutoEllipsis = True
-        lblACTopHourChimePath.BorderStyle = BorderStyle.FixedSingle
-        TipInfoEX.SetImage(lblACTopHourChimePath, Nothing)
-        lblACTopHourChimePath.Location = New Point(12, 430)
-        lblACTopHourChimePath.Name = "lblACTopHourChimePath"
-        lblACTopHourChimePath.Size = New Size(164, 24)
-        lblACTopHourChimePath.TabIndex = 56
-        TipInfoEX.SetText(lblACTopHourChimePath, "Path")
-        lblACTopHourChimePath.UseMnemonic = False
-        ' 
-        ' lblACAlarmChimePath
-        ' 
-        lblACAlarmChimePath.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblACAlarmChimePath.AutoEllipsis = True
-        lblACAlarmChimePath.BorderStyle = BorderStyle.FixedSingle
-        TipInfoEX.SetImage(lblACAlarmChimePath, Nothing)
-        lblACAlarmChimePath.Location = New Point(552, 65)
-        lblACAlarmChimePath.Name = "lblACAlarmChimePath"
-        lblACAlarmChimePath.Size = New Size(165, 24)
-        lblACAlarmChimePath.TabIndex = 46
-        TipInfoEX.SetText(lblACAlarmChimePath, "Path")
-        lblACAlarmChimePath.TextAlign = ContentAlignment.TopRight
-        lblACAlarmChimePath.UseMnemonic = False
-        ' 
-        ' checkboxACBottomHourAfterChimeEnabled
-        ' 
-        checkboxACBottomHourAfterChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACBottomHourAfterChimeEnabled.BackgroundImageLayout = ImageLayout.None
-        checkboxACBottomHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACBottomHourAfterChimeEnabled, Nothing)
-        checkboxACBottomHourAfterChimeEnabled.Location = New Point(305, 412)
-        checkboxACBottomHourAfterChimeEnabled.Name = "checkboxACBottomHourAfterChimeEnabled"
-        checkboxACBottomHourAfterChimeEnabled.Size = New Size(13, 13)
-        checkboxACBottomHourAfterChimeEnabled.TabIndex = 58
-        checkboxACBottomHourAfterChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACBottomHourAfterChimeEnabled, Nothing)
-        checkboxACBottomHourAfterChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACFirstQuarterHourAfterChimeEnabled
-        ' 
-        checkboxACFirstQuarterHourAfterChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACFirstQuarterHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACFirstQuarterHourAfterChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourAfterChimeEnabled.Location = New Point(445, 379)
-        checkboxACFirstQuarterHourAfterChimeEnabled.Name = "checkboxACFirstQuarterHourAfterChimeEnabled"
-        checkboxACFirstQuarterHourAfterChimeEnabled.Size = New Size(13, 13)
-        checkboxACFirstQuarterHourAfterChimeEnabled.TabIndex = 61
-        checkboxACFirstQuarterHourAfterChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACFirstQuarterHourAfterChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourAfterChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACThirdQuarterHourBeforeChimeEnabled
-        ' 
-        checkboxACThirdQuarterHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACThirdQuarterHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACThirdQuarterHourBeforeChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourBeforeChimeEnabled.Location = New Point(273, 378)
-        checkboxACThirdQuarterHourBeforeChimeEnabled.Name = "checkboxACThirdQuarterHourBeforeChimeEnabled"
-        checkboxACThirdQuarterHourBeforeChimeEnabled.Size = New Size(13, 13)
-        checkboxACThirdQuarterHourBeforeChimeEnabled.TabIndex = 60
-        checkboxACThirdQuarterHourBeforeChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACThirdQuarterHourBeforeChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourBeforeChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACFirstQuarterHourBeforeChimeEnabled
-        ' 
-        checkboxACFirstQuarterHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACFirstQuarterHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACFirstQuarterHourBeforeChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourBeforeChimeEnabled.Location = New Point(444, 276)
-        checkboxACFirstQuarterHourBeforeChimeEnabled.Name = "checkboxACFirstQuarterHourBeforeChimeEnabled"
-        checkboxACFirstQuarterHourBeforeChimeEnabled.Size = New Size(13, 13)
-        checkboxACFirstQuarterHourBeforeChimeEnabled.TabIndex = 65
-        checkboxACFirstQuarterHourBeforeChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACFirstQuarterHourBeforeChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourBeforeChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACThirdQuarterHourAfterChimeEnabled
-        ' 
-        checkboxACThirdQuarterHourAfterChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACThirdQuarterHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACThirdQuarterHourAfterChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourAfterChimeEnabled.Location = New Point(273, 274)
-        checkboxACThirdQuarterHourAfterChimeEnabled.Name = "checkboxACThirdQuarterHourAfterChimeEnabled"
-        checkboxACThirdQuarterHourAfterChimeEnabled.Size = New Size(13, 13)
-        checkboxACThirdQuarterHourAfterChimeEnabled.TabIndex = 66
-        checkboxACThirdQuarterHourAfterChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACThirdQuarterHourAfterChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourAfterChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACBottomHourBeforeChimeEnabled
-        ' 
-        checkboxACBottomHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACBottomHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
-        TipInfoEX.SetImage(checkboxACBottomHourBeforeChimeEnabled, Nothing)
-        checkboxACBottomHourBeforeChimeEnabled.Location = New Point(410, 415)
-        checkboxACBottomHourBeforeChimeEnabled.Name = "checkboxACBottomHourBeforeChimeEnabled"
-        checkboxACBottomHourBeforeChimeEnabled.Size = New Size(13, 13)
-        checkboxACBottomHourBeforeChimeEnabled.TabIndex = 57
-        checkboxACBottomHourBeforeChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACBottomHourBeforeChimeEnabled, Nothing)
-        checkboxACBottomHourBeforeChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' btnACMute
-        ' 
-        btnACMute.Anchor = AnchorStyles.Top
-        btnACMute.FlatAppearance.BorderSize = 0
-        TipInfoEX.SetImage(btnACMute, Nothing)
-        btnACMute.Location = New Point(301, 12)
-        btnACMute.Name = "btnACMute"
-        btnACMute.Size = New Size(128, 128)
-        btnACMute.TabIndex = 50
-        TipInfoEX.SetText(btnACMute, "Mute All Chimes")
-        btnACMute.TextAlign = ContentAlignment.MiddleLeft
-        btnACMute.UseVisualStyleBackColor = True
-        ' 
-        ' textboxACAlarmTimer
-        ' 
-        TipInfoEX.SetImage(textboxACAlarmTimer, Nothing)
-        textboxACAlarmTimer.Location = New Point(13, 139)
-        textboxACAlarmTimer.MaxLength = 3
-        textboxACAlarmTimer.Name = "textboxACAlarmTimer"
-        textboxACAlarmTimer.Size = New Size(89, 29)
-        textboxACAlarmTimer.TabIndex = 20
-        TipInfoEX.SetText(textboxACAlarmTimer, "Enter Timer Value In Minutes")
-        textboxACAlarmTimer.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' groupboxACTopHourChimeType
-        ' 
-        groupboxACTopHourChimeType.Controls.Add(radiobtnACTopHourChimeHourTick)
-        groupboxACTopHourChimeType.Controls.Add(radiobtnACTopHourChimeSimple)
-        groupboxACTopHourChimeType.Controls.Add(radiobtnACTopHourChimeExtended)
-        TipInfoEX.SetImage(groupboxACTopHourChimeType, Nothing)
-        groupboxACTopHourChimeType.Location = New Point(12, 444)
-        groupboxACTopHourChimeType.Name = "groupboxACTopHourChimeType"
-        groupboxACTopHourChimeType.Size = New Size(110, 80)
-        groupboxACTopHourChimeType.TabIndex = 160
-        groupboxACTopHourChimeType.TabStop = False
-        TipInfoEX.SetText(groupboxACTopHourChimeType, Nothing)
-        ' 
-        ' radiobtnACTopHourChimeHourTick
-        ' 
-        radiobtnACTopHourChimeHourTick.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACTopHourChimeHourTick, Nothing)
-        radiobtnACTopHourChimeHourTick.Location = New Point(11, 53)
-        radiobtnACTopHourChimeHourTick.Name = "radiobtnACTopHourChimeHourTick"
-        radiobtnACTopHourChimeHourTick.Size = New Size(94, 25)
-        radiobtnACTopHourChimeHourTick.TabIndex = 3
-        radiobtnACTopHourChimeHourTick.TabStop = True
-        TipInfoEX.SetText(radiobtnACTopHourChimeHourTick, "Chime Based On Hour")
-        radiobtnACTopHourChimeHourTick.Text = "Hour Tick"
-        radiobtnACTopHourChimeHourTick.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnACTopHourChimeSimple
-        ' 
-        radiobtnACTopHourChimeSimple.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACTopHourChimeSimple, Nothing)
-        radiobtnACTopHourChimeSimple.Location = New Point(11, 15)
-        radiobtnACTopHourChimeSimple.Name = "radiobtnACTopHourChimeSimple"
-        radiobtnACTopHourChimeSimple.Size = New Size(76, 25)
-        radiobtnACTopHourChimeSimple.TabIndex = 1
-        radiobtnACTopHourChimeSimple.TabStop = True
-        TipInfoEX.SetText(radiobtnACTopHourChimeSimple, "Chime Once")
-        radiobtnACTopHourChimeSimple.Text = "Simple"
-        radiobtnACTopHourChimeSimple.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnACTopHourChimeExtended
-        ' 
-        radiobtnACTopHourChimeExtended.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACTopHourChimeExtended, Nothing)
-        radiobtnACTopHourChimeExtended.Location = New Point(11, 34)
-        radiobtnACTopHourChimeExtended.Name = "radiobtnACTopHourChimeExtended"
-        radiobtnACTopHourChimeExtended.Size = New Size(91, 25)
-        radiobtnACTopHourChimeExtended.TabIndex = 2
-        radiobtnACTopHourChimeExtended.TabStop = True
-        TipInfoEX.SetText(radiobtnACTopHourChimeExtended, "Chime Several Times")
-        radiobtnACTopHourChimeExtended.Text = "Extended"
-        radiobtnACTopHourChimeExtended.UseVisualStyleBackColor = True
-        ' 
-        ' btnACOffHourChimeDefault
-        ' 
-        btnACOffHourChimeDefault.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACOffHourChimeDefault.FlatAppearance.BorderSize = 0
-        btnACOffHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
-        TipInfoEX.SetImage(btnACOffHourChimeDefault, Nothing)
-        btnACOffHourChimeDefault.Location = New Point(656, 467)
-        btnACOffHourChimeDefault.Name = "btnACOffHourChimeDefault"
-        btnACOffHourChimeDefault.Size = New Size(32, 32)
-        btnACOffHourChimeDefault.TabIndex = 202
-        TipInfoEX.SetText(btnACOffHourChimeDefault, "Use Default Chime")
-        btnACOffHourChimeDefault.TextAlign = ContentAlignment.MiddleLeft
-        btnACOffHourChimeDefault.UseVisualStyleBackColor = True
-        ' 
-        ' btnACTopHourChimeDefault
-        ' 
-        btnACTopHourChimeDefault.FlatAppearance.BorderSize = 0
-        btnACTopHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
-        TipInfoEX.SetImage(btnACTopHourChimeDefault, Nothing)
-        btnACTopHourChimeDefault.Location = New Point(42, 398)
-        btnACTopHourChimeDefault.Name = "btnACTopHourChimeDefault"
-        btnACTopHourChimeDefault.Size = New Size(32, 32)
-        btnACTopHourChimeDefault.TabIndex = 152
-        TipInfoEX.SetText(btnACTopHourChimeDefault, "Use Default Chime")
-        btnACTopHourChimeDefault.TextAlign = ContentAlignment.MiddleLeft
-        btnACTopHourChimeDefault.UseVisualStyleBackColor = True
-        ' 
-        ' textboxACAlarmTime
-        ' 
-        TipInfoEX.SetImage(textboxACAlarmTime, Nothing)
-        textboxACAlarmTime.Location = New Point(13, 35)
-        textboxACAlarmTime.MaxLength = 5
-        textboxACAlarmTime.Name = "textboxACAlarmTime"
-        textboxACAlarmTime.Size = New Size(89, 29)
-        textboxACAlarmTime.TabIndex = 10
-        TipInfoEX.SetText(textboxACAlarmTime, "Enter Alarm Time (24-Hour Format)")
-        textboxACAlarmTime.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' btnACTopHourChimeManual
-        ' 
-        btnACTopHourChimeManual.FlatAppearance.BorderSize = 0
-        btnACTopHourChimeManual.Image = My.Resources.Resources.imageACFolder
-        TipInfoEX.SetImage(btnACTopHourChimeManual, Nothing)
-        btnACTopHourChimeManual.Location = New Point(11, 398)
-        btnACTopHourChimeManual.Name = "btnACTopHourChimeManual"
-        btnACTopHourChimeManual.Size = New Size(32, 32)
-        btnACTopHourChimeManual.TabIndex = 150
-        TipInfoEX.SetText(btnACTopHourChimeManual, "Select WAV File")
-        btnACTopHourChimeManual.TextAlign = ContentAlignment.MiddleLeft
-        btnACTopHourChimeManual.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACThirdQuarterHourChimeEnabled
-        ' 
-        checkboxACThirdQuarterHourChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACThirdQuarterHourChimeEnabled.CheckAlign = ContentAlignment.TopRight
-        TipInfoEX.SetImage(checkboxACThirdQuarterHourChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourChimeEnabled.Location = New Point(259, 324)
-        checkboxACThirdQuarterHourChimeEnabled.Name = "checkboxACThirdQuarterHourChimeEnabled"
-        checkboxACThirdQuarterHourChimeEnabled.Size = New Size(15, 15)
-        checkboxACThirdQuarterHourChimeEnabled.TabIndex = 64
-        checkboxACThirdQuarterHourChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACThirdQuarterHourChimeEnabled, Nothing)
-        checkboxACThirdQuarterHourChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACBottomHourChimeEnabled
-        ' 
-        checkboxACBottomHourChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACBottomHourChimeEnabled.CheckAlign = ContentAlignment.MiddleRight
-        TipInfoEX.SetImage(checkboxACBottomHourChimeEnabled, Nothing)
-        checkboxACBottomHourChimeEnabled.Location = New Point(358, 426)
-        checkboxACBottomHourChimeEnabled.Name = "checkboxACBottomHourChimeEnabled"
-        checkboxACBottomHourChimeEnabled.Size = New Size(15, 15)
-        checkboxACBottomHourChimeEnabled.TabIndex = 63
-        checkboxACBottomHourChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACBottomHourChimeEnabled, Nothing)
-        checkboxACBottomHourChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACFirstQuarterHourChimeEnabled
-        ' 
-        checkboxACFirstQuarterHourChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACFirstQuarterHourChimeEnabled.CheckAlign = ContentAlignment.TopLeft
-        TipInfoEX.SetImage(checkboxACFirstQuarterHourChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourChimeEnabled.Location = New Point(457, 325)
-        checkboxACFirstQuarterHourChimeEnabled.Name = "checkboxACFirstQuarterHourChimeEnabled"
-        checkboxACFirstQuarterHourChimeEnabled.Size = New Size(15, 15)
-        checkboxACFirstQuarterHourChimeEnabled.TabIndex = 62
-        checkboxACFirstQuarterHourChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACFirstQuarterHourChimeEnabled, Nothing)
-        checkboxACFirstQuarterHourChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACTopHourAfterChimeEnabled
-        ' 
-        checkboxACTopHourAfterChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACTopHourAfterChimeEnabled.CheckAlign = ContentAlignment.TopRight
-        TipInfoEX.SetImage(checkboxACTopHourAfterChimeEnabled, Nothing)
-        checkboxACTopHourAfterChimeEnabled.Location = New Point(409, 240)
-        checkboxACTopHourAfterChimeEnabled.Name = "checkboxACTopHourAfterChimeEnabled"
-        checkboxACTopHourAfterChimeEnabled.Size = New Size(15, 15)
-        checkboxACTopHourAfterChimeEnabled.TabIndex = 67
-        checkboxACTopHourAfterChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACTopHourAfterChimeEnabled, Nothing)
-        checkboxACTopHourAfterChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACTopHourChimeEnabled
-        ' 
-        checkboxACTopHourChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACTopHourChimeEnabled.CheckAlign = ContentAlignment.TopRight
-        TipInfoEX.SetImage(checkboxACTopHourChimeEnabled, Nothing)
-        checkboxACTopHourChimeEnabled.Location = New Point(358, 227)
-        checkboxACTopHourChimeEnabled.Name = "checkboxACTopHourChimeEnabled"
-        checkboxACTopHourChimeEnabled.Size = New Size(15, 15)
-        checkboxACTopHourChimeEnabled.TabIndex = 0
-        checkboxACTopHourChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACTopHourChimeEnabled, Nothing)
-        checkboxACTopHourChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACTopHourBeforeChimeEnabled
-        ' 
-        checkboxACTopHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
-        checkboxACTopHourBeforeChimeEnabled.CheckAlign = ContentAlignment.TopRight
-        TipInfoEX.SetImage(checkboxACTopHourBeforeChimeEnabled, Nothing)
-        checkboxACTopHourBeforeChimeEnabled.Location = New Point(306, 239)
-        checkboxACTopHourBeforeChimeEnabled.Name = "checkboxACTopHourBeforeChimeEnabled"
-        checkboxACTopHourBeforeChimeEnabled.Size = New Size(15, 15)
-        checkboxACTopHourBeforeChimeEnabled.TabIndex = 59
-        checkboxACTopHourBeforeChimeEnabled.TabStop = False
-        TipInfoEX.SetText(checkboxACTopHourBeforeChimeEnabled, Nothing)
-        checkboxACTopHourBeforeChimeEnabled.UseVisualStyleBackColor = True
-        ' 
-        ' groupboxACAlarmChimeType
-        ' 
-        groupboxACAlarmChimeType.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        groupboxACAlarmChimeType.BackColor = Color.Transparent
-        groupboxACAlarmChimeType.Controls.Add(radiobtnACAlarmChimeSimple)
-        groupboxACAlarmChimeType.Controls.Add(radiobtnACAlarmChimeForever)
-        groupboxACAlarmChimeType.Controls.Add(radiobtnACAlarmChimeExtended)
-        TipInfoEX.SetImage(groupboxACAlarmChimeType, Nothing)
-        groupboxACAlarmChimeType.Location = New Point(607, 80)
-        groupboxACAlarmChimeType.Name = "groupboxACAlarmChimeType"
-        groupboxACAlarmChimeType.Size = New Size(110, 80)
-        groupboxACAlarmChimeType.TabIndex = 120
-        groupboxACAlarmChimeType.TabStop = False
-        TipInfoEX.SetText(groupboxACAlarmChimeType, Nothing)
-        ' 
-        ' radiobtnACAlarmChimeSimple
-        ' 
-        radiobtnACAlarmChimeSimple.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACAlarmChimeSimple, Nothing)
-        radiobtnACAlarmChimeSimple.Location = New Point(13, 13)
-        radiobtnACAlarmChimeSimple.Name = "radiobtnACAlarmChimeSimple"
-        radiobtnACAlarmChimeSimple.Size = New Size(76, 25)
-        radiobtnACAlarmChimeSimple.TabIndex = 1
-        radiobtnACAlarmChimeSimple.TabStop = True
-        TipInfoEX.SetText(radiobtnACAlarmChimeSimple, "Chime Once")
-        radiobtnACAlarmChimeSimple.Text = "Simple"
-        radiobtnACAlarmChimeSimple.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnACAlarmChimeForever
-        ' 
-        radiobtnACAlarmChimeForever.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACAlarmChimeForever, Nothing)
-        radiobtnACAlarmChimeForever.Location = New Point(13, 51)
-        radiobtnACAlarmChimeForever.Name = "radiobtnACAlarmChimeForever"
-        radiobtnACAlarmChimeForever.Size = New Size(81, 25)
-        radiobtnACAlarmChimeForever.TabIndex = 3
-        radiobtnACAlarmChimeForever.TabStop = True
-        TipInfoEX.SetText(radiobtnACAlarmChimeForever, "Chime Until Cancelled")
-        radiobtnACAlarmChimeForever.Text = "Forever"
-        radiobtnACAlarmChimeForever.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnACAlarmChimeExtended
-        ' 
-        radiobtnACAlarmChimeExtended.AutoSize = True
-        TipInfoEX.SetImage(radiobtnACAlarmChimeExtended, Nothing)
-        radiobtnACAlarmChimeExtended.Location = New Point(13, 32)
-        radiobtnACAlarmChimeExtended.Name = "radiobtnACAlarmChimeExtended"
-        radiobtnACAlarmChimeExtended.Size = New Size(91, 25)
-        radiobtnACAlarmChimeExtended.TabIndex = 2
-        radiobtnACAlarmChimeExtended.TabStop = True
-        TipInfoEX.SetText(radiobtnACAlarmChimeExtended, "Chime Several Times")
-        radiobtnACAlarmChimeExtended.Text = "Extended"
-        radiobtnACAlarmChimeExtended.UseVisualStyleBackColor = True
-        ' 
-        ' btnACAlarmSet
-        ' 
-        btnACAlarmSet.FlatAppearance.BorderColor = SystemColors.ControlDark
-        TipInfoEX.SetImage(btnACAlarmSet, Nothing)
-        btnACAlarmSet.Location = New Point(12, 69)
-        btnACAlarmSet.Name = "btnACAlarmSet"
-        btnACAlarmSet.Size = New Size(90, 64)
-        btnACAlarmSet.TabIndex = 15
-        TipInfoEX.SetText(btnACAlarmSet, "Activate / DeActivate Alarm")
-        btnACAlarmSet.Text = "Alarm InActive"
-        btnACAlarmSet.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxACAlarmRecurring
-        ' 
-        checkboxACAlarmRecurring.AutoSize = True
-        TipInfoEX.SetImage(checkboxACAlarmRecurring, Nothing)
-        checkboxACAlarmRecurring.Location = New Point(110, 39)
-        checkboxACAlarmRecurring.Name = "checkboxACAlarmRecurring"
-        checkboxACAlarmRecurring.Size = New Size(97, 25)
-        checkboxACAlarmRecurring.TabIndex = 12
-        TipInfoEX.SetText(checkboxACAlarmRecurring, "Alarm Repeats Every Day")
-        checkboxACAlarmRecurring.Text = "Recurring"
-        checkboxACAlarmRecurring.UseVisualStyleBackColor = True
-        ' 
-        ' btnACTopHourChimePlay
-        ' 
-        btnACTopHourChimePlay.FlatAppearance.BorderSize = 0
-        btnACTopHourChimePlay.Image = My.Resources.Resources.imageACPlay
-        TipInfoEX.SetImage(btnACTopHourChimePlay, Nothing)
-        btnACTopHourChimePlay.Location = New Point(73, 398)
-        btnACTopHourChimePlay.Name = "btnACTopHourChimePlay"
-        btnACTopHourChimePlay.Size = New Size(32, 32)
-        btnACTopHourChimePlay.TabIndex = 154
-        TipInfoEX.SetText(btnACTopHourChimePlay, "Play Sound")
-        btnACTopHourChimePlay.TextAlign = ContentAlignment.MiddleLeft
-        btnACTopHourChimePlay.UseVisualStyleBackColor = True
-        ' 
-        ' btnACOffHourChimePlay
-        ' 
-        btnACOffHourChimePlay.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACOffHourChimePlay.FlatAppearance.BorderSize = 0
-        btnACOffHourChimePlay.Image = My.Resources.Resources.imageACPlay
-        TipInfoEX.SetImage(btnACOffHourChimePlay, Nothing)
-        btnACOffHourChimePlay.Location = New Point(625, 467)
-        btnACOffHourChimePlay.Name = "btnACOffHourChimePlay"
-        btnACOffHourChimePlay.Size = New Size(32, 32)
-        btnACOffHourChimePlay.TabIndex = 200
-        TipInfoEX.SetText(btnACOffHourChimePlay, "Play Sound")
-        btnACOffHourChimePlay.TextAlign = ContentAlignment.MiddleLeft
-        btnACOffHourChimePlay.UseVisualStyleBackColor = True
-        ' 
-        ' picboxACClock
-        ' 
-        picboxACClock.Anchor = AnchorStyles.Top
-        picboxACClock.Image = My.Resources.Resources.imageACClock
-        TipInfoEX.SetImage(picboxACClock, Nothing)
-        picboxACClock.Location = New Point(268, 237)
-        picboxACClock.Name = "picboxACClock"
-        picboxACClock.Size = New Size(192, 192)
-        picboxACClock.SizeMode = PictureBoxSizeMode.Zoom
-        picboxACClock.TabIndex = 37
-        picboxACClock.TabStop = False
-        TipInfoEX.SetText(picboxACClock, "Select When To Sound Chime Each Hour")
-        ' 
-        ' btnACAlarmChimeDefault
-        ' 
-        btnACAlarmChimeDefault.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACAlarmChimeDefault.FlatAppearance.BorderSize = 0
-        btnACAlarmChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
-        TipInfoEX.SetImage(btnACAlarmChimeDefault, Nothing)
-        btnACAlarmChimeDefault.Location = New Point(655, 33)
-        btnACAlarmChimeDefault.Name = "btnACAlarmChimeDefault"
-        btnACAlarmChimeDefault.Size = New Size(32, 32)
-        btnACAlarmChimeDefault.TabIndex = 105
-        TipInfoEX.SetText(btnACAlarmChimeDefault, "Use Default Chime")
-        btnACAlarmChimeDefault.TextAlign = ContentAlignment.MiddleLeft
-        btnACAlarmChimeDefault.UseVisualStyleBackColor = True
-        ' 
-        ' btnACAlarmChimePlay
-        ' 
-        btnACAlarmChimePlay.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACAlarmChimePlay.FlatAppearance.BorderSize = 0
-        btnACAlarmChimePlay.Image = My.Resources.Resources.imageACPlay
-        TipInfoEX.SetImage(btnACAlarmChimePlay, Nothing)
-        btnACAlarmChimePlay.Location = New Point(624, 33)
-        btnACAlarmChimePlay.Name = "btnACAlarmChimePlay"
-        btnACAlarmChimePlay.Size = New Size(32, 32)
-        btnACAlarmChimePlay.TabIndex = 100
-        TipInfoEX.SetText(btnACAlarmChimePlay, "Play Sound")
-        btnACAlarmChimePlay.TextAlign = ContentAlignment.MiddleLeft
-        btnACAlarmChimePlay.UseVisualStyleBackColor = True
-        ' 
-        ' btnACAlarmChimeManual
-        ' 
-        btnACAlarmChimeManual.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        btnACAlarmChimeManual.FlatAppearance.BorderSize = 0
-        btnACAlarmChimeManual.Image = My.Resources.Resources.imageACFolder
-        TipInfoEX.SetImage(btnACAlarmChimeManual, Nothing)
-        btnACAlarmChimeManual.Location = New Point(686, 33)
-        btnACAlarmChimeManual.Name = "btnACAlarmChimeManual"
-        btnACAlarmChimeManual.Size = New Size(32, 32)
-        btnACAlarmChimeManual.TabIndex = 110
-        TipInfoEX.SetText(btnACAlarmChimeManual, "Select WAV File")
-        btnACAlarmChimeManual.TextAlign = ContentAlignment.MiddleLeft
-        btnACAlarmChimeManual.UseVisualStyleBackColor = True
+        ' LblACOffHourChimePath
+        ' 
+        LblACOffHourChimePath.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        LblACOffHourChimePath.AutoEllipsis = True
+        LblACOffHourChimePath.BorderStyle = BorderStyle.FixedSingle
+        TipInfoEX.SetImage(LblACOffHourChimePath, Nothing)
+        LblACOffHourChimePath.Location = New Point(555, 499)
+        LblACOffHourChimePath.Name = "LblACOffHourChimePath"
+        LblACOffHourChimePath.Size = New Size(163, 24)
+        LblACOffHourChimePath.TabIndex = 72
+        TipInfoEX.SetText(LblACOffHourChimePath, "Path")
+        LblACOffHourChimePath.TextAlign = ContentAlignment.TopRight
+        LblACOffHourChimePath.UseMnemonic = False
+        ' 
+        ' BtnACOffHourChimeManual
+        ' 
+        BtnACOffHourChimeManual.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACOffHourChimeManual.FlatAppearance.BorderSize = 0
+        BtnACOffHourChimeManual.Image = My.Resources.Resources.imageACFolder
+        TipInfoEX.SetImage(BtnACOffHourChimeManual, Nothing)
+        BtnACOffHourChimeManual.Location = New Point(687, 467)
+        BtnACOffHourChimeManual.Name = "BtnACOffHourChimeManual"
+        BtnACOffHourChimeManual.Size = New Size(32, 32)
+        BtnACOffHourChimeManual.TabIndex = 204
+        TipInfoEX.SetText(BtnACOffHourChimeManual, "Select WAV File")
+        BtnACOffHourChimeManual.TextAlign = ContentAlignment.MiddleLeft
+        BtnACOffHourChimeManual.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACAlarmCancel
+        ' 
+        BtnACAlarmCancel.FlatAppearance.BorderColor = SystemColors.ControlDark
+        BtnACAlarmCancel.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        BtnACAlarmCancel.ForeColor = Color.Maroon
+        TipInfoEX.SetImage(BtnACAlarmCancel, Nothing)
+        BtnACAlarmCancel.Location = New Point(101, 69)
+        BtnACAlarmCancel.Name = "BtnACAlarmCancel"
+        BtnACAlarmCancel.Size = New Size(72, 64)
+        BtnACAlarmCancel.TabIndex = 17
+        TipInfoEX.SetText(BtnACAlarmCancel, "Cancel Alarm")
+        BtnACAlarmCancel.Text = " CANCEL  ALARM"
+        BtnACAlarmCancel.UseVisualStyleBackColor = True
+        BtnACAlarmCancel.Visible = False
+        ' 
+        ' LblACTopHourChimePath
+        ' 
+        LblACTopHourChimePath.AutoEllipsis = True
+        LblACTopHourChimePath.BorderStyle = BorderStyle.FixedSingle
+        TipInfoEX.SetImage(LblACTopHourChimePath, Nothing)
+        LblACTopHourChimePath.Location = New Point(12, 430)
+        LblACTopHourChimePath.Name = "LblACTopHourChimePath"
+        LblACTopHourChimePath.Size = New Size(164, 24)
+        LblACTopHourChimePath.TabIndex = 56
+        TipInfoEX.SetText(LblACTopHourChimePath, "Path")
+        LblACTopHourChimePath.UseMnemonic = False
+        ' 
+        ' LblACAlarmChimePath
+        ' 
+        LblACAlarmChimePath.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        LblACAlarmChimePath.AutoEllipsis = True
+        LblACAlarmChimePath.BorderStyle = BorderStyle.FixedSingle
+        TipInfoEX.SetImage(LblACAlarmChimePath, Nothing)
+        LblACAlarmChimePath.Location = New Point(552, 65)
+        LblACAlarmChimePath.Name = "LblACAlarmChimePath"
+        LblACAlarmChimePath.Size = New Size(165, 24)
+        LblACAlarmChimePath.TabIndex = 46
+        TipInfoEX.SetText(LblACAlarmChimePath, "Path")
+        LblACAlarmChimePath.TextAlign = ContentAlignment.TopRight
+        LblACAlarmChimePath.UseMnemonic = False
+        ' 
+        ' ChkBoxACBottomHourAfterChimeEnabled
+        ' 
+        ChkBoxACBottomHourAfterChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACBottomHourAfterChimeEnabled.BackgroundImageLayout = ImageLayout.None
+        ChkBoxACBottomHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACBottomHourAfterChimeEnabled, Nothing)
+        ChkBoxACBottomHourAfterChimeEnabled.Location = New Point(305, 412)
+        ChkBoxACBottomHourAfterChimeEnabled.Name = "ChkBoxACBottomHourAfterChimeEnabled"
+        ChkBoxACBottomHourAfterChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACBottomHourAfterChimeEnabled.TabIndex = 58
+        ChkBoxACBottomHourAfterChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACBottomHourAfterChimeEnabled, Nothing)
+        ChkBoxACBottomHourAfterChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACFirstQuarterHourAfterChimeEnabled
+        ' 
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACFirstQuarterHourAfterChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.Location = New Point(445, 379)
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.Name = "ChkBoxACFirstQuarterHourAfterChimeEnabled"
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.TabIndex = 61
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACFirstQuarterHourAfterChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourAfterChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACThirdQuarterHourBeforeChimeEnabled
+        ' 
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACThirdQuarterHourBeforeChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.Location = New Point(273, 378)
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.Name = "ChkBoxACThirdQuarterHourBeforeChimeEnabled"
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.TabIndex = 60
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACThirdQuarterHourBeforeChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourBeforeChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACFirstQuarterHourBeforeChimeEnabled
+        ' 
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACFirstQuarterHourBeforeChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.Location = New Point(444, 276)
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.Name = "ChkBoxACFirstQuarterHourBeforeChimeEnabled"
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.TabIndex = 65
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACFirstQuarterHourBeforeChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourBeforeChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACThirdQuarterHourAfterChimeEnabled
+        ' 
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACThirdQuarterHourAfterChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.Location = New Point(273, 274)
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.Name = "ChkBoxACThirdQuarterHourAfterChimeEnabled"
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.TabIndex = 66
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACThirdQuarterHourAfterChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourAfterChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACBottomHourBeforeChimeEnabled
+        ' 
+        ChkBoxACBottomHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACBottomHourBeforeChimeEnabled.CheckAlign = ContentAlignment.MiddleCenter
+        TipInfoEX.SetImage(ChkBoxACBottomHourBeforeChimeEnabled, Nothing)
+        ChkBoxACBottomHourBeforeChimeEnabled.Location = New Point(410, 415)
+        ChkBoxACBottomHourBeforeChimeEnabled.Name = "ChkBoxACBottomHourBeforeChimeEnabled"
+        ChkBoxACBottomHourBeforeChimeEnabled.Size = New Size(13, 13)
+        ChkBoxACBottomHourBeforeChimeEnabled.TabIndex = 57
+        ChkBoxACBottomHourBeforeChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACBottomHourBeforeChimeEnabled, Nothing)
+        ChkBoxACBottomHourBeforeChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACMute
+        ' 
+        BtnACMute.Anchor = AnchorStyles.Top
+        BtnACMute.FlatAppearance.BorderSize = 0
+        TipInfoEX.SetImage(BtnACMute, Nothing)
+        BtnACMute.Location = New Point(301, 12)
+        BtnACMute.Name = "BtnACMute"
+        BtnACMute.Size = New Size(128, 128)
+        BtnACMute.TabIndex = 50
+        TipInfoEX.SetText(BtnACMute, "Mute All Chimes")
+        BtnACMute.TextAlign = ContentAlignment.MiddleLeft
+        BtnACMute.UseVisualStyleBackColor = True
+        ' 
+        ' TxtBoxACAlarmTimer
+        ' 
+        TipInfoEX.SetImage(TxtBoxACAlarmTimer, Nothing)
+        TxtBoxACAlarmTimer.Location = New Point(13, 139)
+        TxtBoxACAlarmTimer.MaxLength = 3
+        TxtBoxACAlarmTimer.Name = "TxtBoxACAlarmTimer"
+        TxtBoxACAlarmTimer.Size = New Size(89, 29)
+        TxtBoxACAlarmTimer.TabIndex = 20
+        TipInfoEX.SetText(TxtBoxACAlarmTimer, "Enter Timer Value In Minutes")
+        TxtBoxACAlarmTimer.TextAlign = HorizontalAlignment.Center
+        ' 
+        ' GrpBoxACTopHourChimeType
+        ' 
+        GrpBoxACTopHourChimeType.Controls.Add(RadBtnACTopHourChimeHourTick)
+        GrpBoxACTopHourChimeType.Controls.Add(RadBtnACTopHourChimeSimple)
+        GrpBoxACTopHourChimeType.Controls.Add(RadBtnACTopHourChimeExtended)
+        TipInfoEX.SetImage(GrpBoxACTopHourChimeType, Nothing)
+        GrpBoxACTopHourChimeType.Location = New Point(12, 444)
+        GrpBoxACTopHourChimeType.Name = "GrpBoxACTopHourChimeType"
+        GrpBoxACTopHourChimeType.Size = New Size(110, 80)
+        GrpBoxACTopHourChimeType.TabIndex = 160
+        GrpBoxACTopHourChimeType.TabStop = False
+        TipInfoEX.SetText(GrpBoxACTopHourChimeType, Nothing)
+        ' 
+        ' RadBtnACTopHourChimeHourTick
+        ' 
+        RadBtnACTopHourChimeHourTick.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACTopHourChimeHourTick, Nothing)
+        RadBtnACTopHourChimeHourTick.Location = New Point(11, 53)
+        RadBtnACTopHourChimeHourTick.Name = "RadBtnACTopHourChimeHourTick"
+        RadBtnACTopHourChimeHourTick.Size = New Size(94, 25)
+        RadBtnACTopHourChimeHourTick.TabIndex = 3
+        RadBtnACTopHourChimeHourTick.TabStop = True
+        TipInfoEX.SetText(RadBtnACTopHourChimeHourTick, "Chime Based On Hour")
+        RadBtnACTopHourChimeHourTick.Text = "Hour Tick"
+        RadBtnACTopHourChimeHourTick.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnACTopHourChimeSimple
+        ' 
+        RadBtnACTopHourChimeSimple.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACTopHourChimeSimple, Nothing)
+        RadBtnACTopHourChimeSimple.Location = New Point(11, 15)
+        RadBtnACTopHourChimeSimple.Name = "RadBtnACTopHourChimeSimple"
+        RadBtnACTopHourChimeSimple.Size = New Size(76, 25)
+        RadBtnACTopHourChimeSimple.TabIndex = 1
+        RadBtnACTopHourChimeSimple.TabStop = True
+        TipInfoEX.SetText(RadBtnACTopHourChimeSimple, "Chime Once")
+        RadBtnACTopHourChimeSimple.Text = "Simple"
+        RadBtnACTopHourChimeSimple.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnACTopHourChimeExtended
+        ' 
+        RadBtnACTopHourChimeExtended.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACTopHourChimeExtended, Nothing)
+        RadBtnACTopHourChimeExtended.Location = New Point(11, 34)
+        RadBtnACTopHourChimeExtended.Name = "RadBtnACTopHourChimeExtended"
+        RadBtnACTopHourChimeExtended.Size = New Size(91, 25)
+        RadBtnACTopHourChimeExtended.TabIndex = 2
+        RadBtnACTopHourChimeExtended.TabStop = True
+        TipInfoEX.SetText(RadBtnACTopHourChimeExtended, "Chime Several Times")
+        RadBtnACTopHourChimeExtended.Text = "Extended"
+        RadBtnACTopHourChimeExtended.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACOffHourChimeDefault
+        ' 
+        BtnACOffHourChimeDefault.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACOffHourChimeDefault.FlatAppearance.BorderSize = 0
+        BtnACOffHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
+        TipInfoEX.SetImage(BtnACOffHourChimeDefault, Nothing)
+        BtnACOffHourChimeDefault.Location = New Point(656, 467)
+        BtnACOffHourChimeDefault.Name = "BtnACOffHourChimeDefault"
+        BtnACOffHourChimeDefault.Size = New Size(32, 32)
+        BtnACOffHourChimeDefault.TabIndex = 202
+        TipInfoEX.SetText(BtnACOffHourChimeDefault, "Use Default Chime")
+        BtnACOffHourChimeDefault.TextAlign = ContentAlignment.MiddleLeft
+        BtnACOffHourChimeDefault.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACTopHourChimeDefault
+        ' 
+        BtnACTopHourChimeDefault.FlatAppearance.BorderSize = 0
+        BtnACTopHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
+        TipInfoEX.SetImage(BtnACTopHourChimeDefault, Nothing)
+        BtnACTopHourChimeDefault.Location = New Point(42, 398)
+        BtnACTopHourChimeDefault.Name = "BtnACTopHourChimeDefault"
+        BtnACTopHourChimeDefault.Size = New Size(32, 32)
+        BtnACTopHourChimeDefault.TabIndex = 152
+        TipInfoEX.SetText(BtnACTopHourChimeDefault, "Use Default Chime")
+        BtnACTopHourChimeDefault.TextAlign = ContentAlignment.MiddleLeft
+        BtnACTopHourChimeDefault.UseVisualStyleBackColor = True
+        ' 
+        ' TxtBoxACAlarmTime
+        ' 
+        TipInfoEX.SetImage(TxtBoxACAlarmTime, Nothing)
+        TxtBoxACAlarmTime.Location = New Point(13, 35)
+        TxtBoxACAlarmTime.MaxLength = 5
+        TxtBoxACAlarmTime.Name = "TxtBoxACAlarmTime"
+        TxtBoxACAlarmTime.Size = New Size(89, 29)
+        TxtBoxACAlarmTime.TabIndex = 10
+        TipInfoEX.SetText(TxtBoxACAlarmTime, "Enter Alarm Time (24-Hour Format)")
+        TxtBoxACAlarmTime.TextAlign = HorizontalAlignment.Center
+        ' 
+        ' BtnACTopHourChimeManual
+        ' 
+        BtnACTopHourChimeManual.FlatAppearance.BorderSize = 0
+        BtnACTopHourChimeManual.Image = My.Resources.Resources.imageACFolder
+        TipInfoEX.SetImage(BtnACTopHourChimeManual, Nothing)
+        BtnACTopHourChimeManual.Location = New Point(11, 398)
+        BtnACTopHourChimeManual.Name = "BtnACTopHourChimeManual"
+        BtnACTopHourChimeManual.Size = New Size(32, 32)
+        BtnACTopHourChimeManual.TabIndex = 150
+        TipInfoEX.SetText(BtnACTopHourChimeManual, "Select WAV File")
+        BtnACTopHourChimeManual.TextAlign = ContentAlignment.MiddleLeft
+        BtnACTopHourChimeManual.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACThirdQuarterHourChimeEnabled
+        ' 
+        ChkBoxACThirdQuarterHourChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACThirdQuarterHourChimeEnabled.CheckAlign = ContentAlignment.TopRight
+        TipInfoEX.SetImage(ChkBoxACThirdQuarterHourChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourChimeEnabled.Location = New Point(259, 324)
+        ChkBoxACThirdQuarterHourChimeEnabled.Name = "ChkBoxACThirdQuarterHourChimeEnabled"
+        ChkBoxACThirdQuarterHourChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACThirdQuarterHourChimeEnabled.TabIndex = 64
+        ChkBoxACThirdQuarterHourChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACThirdQuarterHourChimeEnabled, Nothing)
+        ChkBoxACThirdQuarterHourChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACBottomHourChimeEnabled
+        ' 
+        ChkBoxACBottomHourChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACBottomHourChimeEnabled.CheckAlign = ContentAlignment.MiddleRight
+        TipInfoEX.SetImage(ChkBoxACBottomHourChimeEnabled, Nothing)
+        ChkBoxACBottomHourChimeEnabled.Location = New Point(358, 426)
+        ChkBoxACBottomHourChimeEnabled.Name = "ChkBoxACBottomHourChimeEnabled"
+        ChkBoxACBottomHourChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACBottomHourChimeEnabled.TabIndex = 63
+        ChkBoxACBottomHourChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACBottomHourChimeEnabled, Nothing)
+        ChkBoxACBottomHourChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACFirstQuarterHourChimeEnabled
+        ' 
+        ChkBoxACFirstQuarterHourChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACFirstQuarterHourChimeEnabled.CheckAlign = ContentAlignment.TopLeft
+        TipInfoEX.SetImage(ChkBoxACFirstQuarterHourChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourChimeEnabled.Location = New Point(457, 325)
+        ChkBoxACFirstQuarterHourChimeEnabled.Name = "ChkBoxACFirstQuarterHourChimeEnabled"
+        ChkBoxACFirstQuarterHourChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACFirstQuarterHourChimeEnabled.TabIndex = 62
+        ChkBoxACFirstQuarterHourChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACFirstQuarterHourChimeEnabled, Nothing)
+        ChkBoxACFirstQuarterHourChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACTopHourAfterChimeEnabled
+        ' 
+        ChkBoxACTopHourAfterChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACTopHourAfterChimeEnabled.CheckAlign = ContentAlignment.TopRight
+        TipInfoEX.SetImage(ChkBoxACTopHourAfterChimeEnabled, Nothing)
+        ChkBoxACTopHourAfterChimeEnabled.Location = New Point(409, 240)
+        ChkBoxACTopHourAfterChimeEnabled.Name = "ChkBoxACTopHourAfterChimeEnabled"
+        ChkBoxACTopHourAfterChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACTopHourAfterChimeEnabled.TabIndex = 67
+        ChkBoxACTopHourAfterChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACTopHourAfterChimeEnabled, Nothing)
+        ChkBoxACTopHourAfterChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACTopHourChimeEnabled
+        ' 
+        ChkBoxACTopHourChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACTopHourChimeEnabled.CheckAlign = ContentAlignment.TopRight
+        TipInfoEX.SetImage(ChkBoxACTopHourChimeEnabled, Nothing)
+        ChkBoxACTopHourChimeEnabled.Location = New Point(358, 227)
+        ChkBoxACTopHourChimeEnabled.Name = "ChkBoxACTopHourChimeEnabled"
+        ChkBoxACTopHourChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACTopHourChimeEnabled.TabIndex = 0
+        ChkBoxACTopHourChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACTopHourChimeEnabled, Nothing)
+        ChkBoxACTopHourChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACTopHourBeforeChimeEnabled
+        ' 
+        ChkBoxACTopHourBeforeChimeEnabled.Anchor = AnchorStyles.Top
+        ChkBoxACTopHourBeforeChimeEnabled.CheckAlign = ContentAlignment.TopRight
+        TipInfoEX.SetImage(ChkBoxACTopHourBeforeChimeEnabled, Nothing)
+        ChkBoxACTopHourBeforeChimeEnabled.Location = New Point(306, 239)
+        ChkBoxACTopHourBeforeChimeEnabled.Name = "ChkBoxACTopHourBeforeChimeEnabled"
+        ChkBoxACTopHourBeforeChimeEnabled.Size = New Size(15, 15)
+        ChkBoxACTopHourBeforeChimeEnabled.TabIndex = 59
+        ChkBoxACTopHourBeforeChimeEnabled.TabStop = False
+        TipInfoEX.SetText(ChkBoxACTopHourBeforeChimeEnabled, Nothing)
+        ChkBoxACTopHourBeforeChimeEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' GrpBoxACAlarmChimeType
+        ' 
+        GrpBoxACAlarmChimeType.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        GrpBoxACAlarmChimeType.BackColor = Color.Transparent
+        GrpBoxACAlarmChimeType.Controls.Add(RadBtnACAlarmChimeSimple)
+        GrpBoxACAlarmChimeType.Controls.Add(RadBtnACAlarmChimeForever)
+        GrpBoxACAlarmChimeType.Controls.Add(RadBtnACAlarmChimeExtended)
+        TipInfoEX.SetImage(GrpBoxACAlarmChimeType, Nothing)
+        GrpBoxACAlarmChimeType.Location = New Point(607, 80)
+        GrpBoxACAlarmChimeType.Name = "GrpBoxACAlarmChimeType"
+        GrpBoxACAlarmChimeType.Size = New Size(110, 80)
+        GrpBoxACAlarmChimeType.TabIndex = 120
+        GrpBoxACAlarmChimeType.TabStop = False
+        TipInfoEX.SetText(GrpBoxACAlarmChimeType, Nothing)
+        ' 
+        ' RadBtnACAlarmChimeSimple
+        ' 
+        RadBtnACAlarmChimeSimple.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACAlarmChimeSimple, Nothing)
+        RadBtnACAlarmChimeSimple.Location = New Point(13, 13)
+        RadBtnACAlarmChimeSimple.Name = "RadBtnACAlarmChimeSimple"
+        RadBtnACAlarmChimeSimple.Size = New Size(76, 25)
+        RadBtnACAlarmChimeSimple.TabIndex = 1
+        RadBtnACAlarmChimeSimple.TabStop = True
+        TipInfoEX.SetText(RadBtnACAlarmChimeSimple, "Chime Once")
+        RadBtnACAlarmChimeSimple.Text = "Simple"
+        RadBtnACAlarmChimeSimple.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnACAlarmChimeForever
+        ' 
+        RadBtnACAlarmChimeForever.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACAlarmChimeForever, Nothing)
+        RadBtnACAlarmChimeForever.Location = New Point(13, 51)
+        RadBtnACAlarmChimeForever.Name = "RadBtnACAlarmChimeForever"
+        RadBtnACAlarmChimeForever.Size = New Size(81, 25)
+        RadBtnACAlarmChimeForever.TabIndex = 3
+        RadBtnACAlarmChimeForever.TabStop = True
+        TipInfoEX.SetText(RadBtnACAlarmChimeForever, "Chime Until Cancelled")
+        RadBtnACAlarmChimeForever.Text = "Forever"
+        RadBtnACAlarmChimeForever.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnACAlarmChimeExtended
+        ' 
+        RadBtnACAlarmChimeExtended.AutoSize = True
+        TipInfoEX.SetImage(RadBtnACAlarmChimeExtended, Nothing)
+        RadBtnACAlarmChimeExtended.Location = New Point(13, 32)
+        RadBtnACAlarmChimeExtended.Name = "RadBtnACAlarmChimeExtended"
+        RadBtnACAlarmChimeExtended.Size = New Size(91, 25)
+        RadBtnACAlarmChimeExtended.TabIndex = 2
+        RadBtnACAlarmChimeExtended.TabStop = True
+        TipInfoEX.SetText(RadBtnACAlarmChimeExtended, "Chime Several Times")
+        RadBtnACAlarmChimeExtended.Text = "Extended"
+        RadBtnACAlarmChimeExtended.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACAlarmSet
+        ' 
+        BtnACAlarmSet.FlatAppearance.BorderColor = SystemColors.ControlDark
+        TipInfoEX.SetImage(BtnACAlarmSet, Nothing)
+        BtnACAlarmSet.Location = New Point(12, 69)
+        BtnACAlarmSet.Name = "BtnACAlarmSet"
+        BtnACAlarmSet.Size = New Size(90, 64)
+        BtnACAlarmSet.TabIndex = 15
+        TipInfoEX.SetText(BtnACAlarmSet, "Activate / DeActivate Alarm")
+        BtnACAlarmSet.Text = "Alarm InActive"
+        BtnACAlarmSet.UseVisualStyleBackColor = True
+        ' 
+        ' ChkBoxACAlarmRecurring
+        ' 
+        ChkBoxACAlarmRecurring.AutoSize = True
+        TipInfoEX.SetImage(ChkBoxACAlarmRecurring, Nothing)
+        ChkBoxACAlarmRecurring.Location = New Point(110, 39)
+        ChkBoxACAlarmRecurring.Name = "ChkBoxACAlarmRecurring"
+        ChkBoxACAlarmRecurring.Size = New Size(97, 25)
+        ChkBoxACAlarmRecurring.TabIndex = 12
+        TipInfoEX.SetText(ChkBoxACAlarmRecurring, "Alarm Repeats Every Day")
+        ChkBoxACAlarmRecurring.Text = "Recurring"
+        ChkBoxACAlarmRecurring.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACTopHourChimePlay
+        ' 
+        BtnACTopHourChimePlay.FlatAppearance.BorderSize = 0
+        BtnACTopHourChimePlay.Image = My.Resources.Resources.imageACPlay
+        TipInfoEX.SetImage(BtnACTopHourChimePlay, Nothing)
+        BtnACTopHourChimePlay.Location = New Point(73, 398)
+        BtnACTopHourChimePlay.Name = "BtnACTopHourChimePlay"
+        BtnACTopHourChimePlay.Size = New Size(32, 32)
+        BtnACTopHourChimePlay.TabIndex = 154
+        TipInfoEX.SetText(BtnACTopHourChimePlay, "Play Sound")
+        BtnACTopHourChimePlay.TextAlign = ContentAlignment.MiddleLeft
+        BtnACTopHourChimePlay.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACOffHourChimePlay
+        ' 
+        BtnACOffHourChimePlay.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACOffHourChimePlay.FlatAppearance.BorderSize = 0
+        BtnACOffHourChimePlay.Image = My.Resources.Resources.imageACPlay
+        TipInfoEX.SetImage(BtnACOffHourChimePlay, Nothing)
+        BtnACOffHourChimePlay.Location = New Point(625, 467)
+        BtnACOffHourChimePlay.Name = "BtnACOffHourChimePlay"
+        BtnACOffHourChimePlay.Size = New Size(32, 32)
+        BtnACOffHourChimePlay.TabIndex = 200
+        TipInfoEX.SetText(BtnACOffHourChimePlay, "Play Sound")
+        BtnACOffHourChimePlay.TextAlign = ContentAlignment.MiddleLeft
+        BtnACOffHourChimePlay.UseVisualStyleBackColor = True
+        ' 
+        ' PicBoxACClock
+        ' 
+        PicBoxACClock.Anchor = AnchorStyles.Top
+        PicBoxACClock.Image = My.Resources.Resources.imageACClock
+        TipInfoEX.SetImage(PicBoxACClock, Nothing)
+        PicBoxACClock.Location = New Point(268, 237)
+        PicBoxACClock.Name = "PicBoxACClock"
+        PicBoxACClock.Size = New Size(192, 192)
+        PicBoxACClock.SizeMode = PictureBoxSizeMode.Zoom
+        PicBoxACClock.TabIndex = 37
+        PicBoxACClock.TabStop = False
+        TipInfoEX.SetText(PicBoxACClock, "Select When To Sound Chime Each Hour")
+        ' 
+        ' BtnACAlarmChimeDefault
+        ' 
+        BtnACAlarmChimeDefault.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACAlarmChimeDefault.FlatAppearance.BorderSize = 0
+        BtnACAlarmChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
+        TipInfoEX.SetImage(BtnACAlarmChimeDefault, Nothing)
+        BtnACAlarmChimeDefault.Location = New Point(655, 33)
+        BtnACAlarmChimeDefault.Name = "BtnACAlarmChimeDefault"
+        BtnACAlarmChimeDefault.Size = New Size(32, 32)
+        BtnACAlarmChimeDefault.TabIndex = 105
+        TipInfoEX.SetText(BtnACAlarmChimeDefault, "Use Default Chime")
+        BtnACAlarmChimeDefault.TextAlign = ContentAlignment.MiddleLeft
+        BtnACAlarmChimeDefault.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACAlarmChimePlay
+        ' 
+        BtnACAlarmChimePlay.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACAlarmChimePlay.FlatAppearance.BorderSize = 0
+        BtnACAlarmChimePlay.Image = My.Resources.Resources.imageACPlay
+        TipInfoEX.SetImage(BtnACAlarmChimePlay, Nothing)
+        BtnACAlarmChimePlay.Location = New Point(624, 33)
+        BtnACAlarmChimePlay.Name = "BtnACAlarmChimePlay"
+        BtnACAlarmChimePlay.Size = New Size(32, 32)
+        BtnACAlarmChimePlay.TabIndex = 100
+        TipInfoEX.SetText(BtnACAlarmChimePlay, "Play Sound")
+        BtnACAlarmChimePlay.TextAlign = ContentAlignment.MiddleLeft
+        BtnACAlarmChimePlay.UseVisualStyleBackColor = True
+        ' 
+        ' BtnACAlarmChimeManual
+        ' 
+        BtnACAlarmChimeManual.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnACAlarmChimeManual.FlatAppearance.BorderSize = 0
+        BtnACAlarmChimeManual.Image = My.Resources.Resources.imageACFolder
+        TipInfoEX.SetImage(BtnACAlarmChimeManual, Nothing)
+        BtnACAlarmChimeManual.Location = New Point(686, 33)
+        BtnACAlarmChimeManual.Name = "BtnACAlarmChimeManual"
+        BtnACAlarmChimeManual.Size = New Size(32, 32)
+        BtnACAlarmChimeManual.TabIndex = 110
+        TipInfoEX.SetText(BtnACAlarmChimeManual, "Select WAV File")
+        BtnACAlarmChimeManual.TextAlign = ContentAlignment.MiddleLeft
+        BtnACAlarmChimeManual.UseVisualStyleBackColor = True
         ' 
         ' LblACTime
         ' 
@@ -1538,7 +1538,7 @@
         PanelWL.Controls.Add(PanelWLItem)
         PanelWL.Controls.Add(textboxWLStartUpDelay)
         PanelWL.Controls.Add(textboxWLAutoRefreshInterval)
-        PanelWL.Controls.Add(listviewWL)
+        PanelWL.Controls.Add(LVWL)
         PanelWL.Controls.Add(textboxWLAutoRefreshIdleInterval)
         PanelWL.Controls.Add(lblWLAutoRefreshIdleInterval)
         PanelWL.Controls.Add(lblWLAutoRefreshInterval)
@@ -1839,33 +1839,33 @@
         TipInfoEX.SetText(textboxWLAutoRefreshInterval, Nothing)
         textboxWLAutoRefreshInterval.TextAlign = HorizontalAlignment.Center
         ' 
-        ' listviewWL
+        ' LVWL
         ' 
-        listviewWL.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        listviewWL.BorderStyle = BorderStyle.FixedSingle
-        listviewWL.ContextMenuStrip = cmlistviewWL
-        listviewWL.FullRowSelect = True
-        listviewWL.HeaderStyle = ColumnHeaderStyle.None
-        TipInfoEX.SetImage(listviewWL, Nothing)
-        listviewWL.LabelWrap = False
-        listviewWL.Location = New Point(13, 208)
-        listviewWL.MultiSelect = False
-        listviewWL.Name = "listviewWL"
-        listviewWL.ShowGroups = False
-        listviewWL.Size = New Size(706, 111)
-        listviewWL.TabIndex = 180
-        TipInfoEX.SetText(listviewWL, Nothing)
-        listviewWL.UseCompatibleStateImageBehavior = False
-        listviewWL.View = View.Details
+        LVWL.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        LVWL.BorderStyle = BorderStyle.FixedSingle
+        LVWL.ContextMenuStrip = CMLVWL
+        LVWL.FullRowSelect = True
+        LVWL.HeaderStyle = ColumnHeaderStyle.None
+        TipInfoEX.SetImage(LVWL, Nothing)
+        LVWL.LabelWrap = False
+        LVWL.Location = New Point(13, 208)
+        LVWL.MultiSelect = False
+        LVWL.Name = "LVWL"
+        LVWL.ShowGroups = False
+        LVWL.Size = New Size(706, 111)
+        LVWL.TabIndex = 180
+        TipInfoEX.SetText(LVWL, Nothing)
+        LVWL.UseCompatibleStateImageBehavior = False
+        LVWL.View = View.Details
         ' 
-        ' cmlistviewWL
+        ' CMLVWL
         ' 
-        cmlistviewWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipInfoEX.SetImage(cmlistviewWL, Nothing)
-        cmlistviewWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
-        cmlistviewWL.Name = "contextmenulistviewHotLinks"
-        cmlistviewWL.Size = New Size(125, 120)
-        TipInfoEX.SetText(cmlistviewWL, Nothing)
+        CMLVWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TipInfoEX.SetImage(CMLVWL, Nothing)
+        CMLVWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
+        CMLVWL.Name = "contextmenulistviewHotLinks"
+        CMLVWL.Size = New Size(125, 120)
+        TipInfoEX.SetText(CMLVWL, Nothing)
         ' 
         ' cmiWLMoveUp
         ' 
@@ -2111,16 +2111,16 @@
         PanelPageSelector.ResumeLayout(False)
         PanelAC.ResumeLayout(False)
         PanelAC.PerformLayout()
-        groupboxACTopHourChimeType.ResumeLayout(False)
-        groupboxACTopHourChimeType.PerformLayout()
-        groupboxACAlarmChimeType.ResumeLayout(False)
-        groupboxACAlarmChimeType.PerformLayout()
-        CType(picboxACClock, ComponentModel.ISupportInitialize).EndInit()
+        GrpBoxACTopHourChimeType.ResumeLayout(False)
+        GrpBoxACTopHourChimeType.PerformLayout()
+        GrpBoxACAlarmChimeType.ResumeLayout(False)
+        GrpBoxACAlarmChimeType.PerformLayout()
+        CType(PicBoxACClock, ComponentModel.ISupportInitialize).EndInit()
         PanelWL.ResumeLayout(False)
         PanelWL.PerformLayout()
         PanelWLItem.ResumeLayout(False)
         PanelWLItem.PerformLayout()
-        cmlistviewWL.ResumeLayout(False)
+        CMLVWL.ResumeLayout(False)
         ResumeLayout(False)
 
     End Sub
@@ -2209,7 +2209,7 @@
     Private WithEvents lblWLRoot As Label
     Private WithEvents textboxWLStartUpDelay As TextBox
     Private WithEvents textboxWLAutoRefreshInterval As TextBox
-    Private WithEvents listviewWL As ListView
+    Private WithEvents LVWL As ListView
     Private WithEvents textboxWLAutoRefreshIdleInterval As TextBox
     Private WithEvents lblWLAutoRefreshIdleInterval As Label
     Private WithEvents lblWLAutoRefreshInterval As Label
@@ -2221,52 +2221,52 @@
     Private WithEvents checkboxWLShowFolderPathToolTips As CheckBox
     Private WithEvents lblWLAutoRefresh As Label
     Private WithEvents btnWLRefresh As Button
-    Private WithEvents lblACOffHourChimePath As Label
-    Private WithEvents btnACOffHourChimeManual As Button
-    Private WithEvents btnACAlarmCancel As Button
-    Private WithEvents lblACTopHourChimePath As Label
-    Private WithEvents lblACAlarmChimePath As Label
-    Private WithEvents checkboxACBottomHourAfterChimeEnabled As CheckBox
-    Private WithEvents checkboxACFirstQuarterHourAfterChimeEnabled As CheckBox
-    Private WithEvents checkboxACThirdQuarterHourBeforeChimeEnabled As CheckBox
-    Private WithEvents checkboxACFirstQuarterHourBeforeChimeEnabled As CheckBox
-    Private WithEvents checkboxACThirdQuarterHourAfterChimeEnabled As CheckBox
-    Private WithEvents checkboxACBottomHourBeforeChimeEnabled As CheckBox
-    Private WithEvents btnACMute As Button
-    Private WithEvents textboxACAlarmTimer As TextBox
-    Private WithEvents groupboxACTopHourChimeType As GroupBox
-    Private WithEvents radiobtnACTopHourChimeSimple As RadioButton
-    Private WithEvents radiobtnACTopHourChimeExtended As RadioButton
-    Private WithEvents radiobtnACTopHourChimeHourTick As RadioButton
-    Private WithEvents btnACOffHourChimeDefault As Button
-    Private WithEvents btnACTopHourChimeDefault As Button
-    Private WithEvents textboxACAlarmTime As TextBox
-    Private WithEvents btnACTopHourChimeManual As Button
-    Private WithEvents checkboxACThirdQuarterHourChimeEnabled As CheckBox
-    Private WithEvents checkboxACBottomHourChimeEnabled As CheckBox
-    Private WithEvents checkboxACFirstQuarterHourChimeEnabled As CheckBox
-    Private WithEvents checkboxACTopHourAfterChimeEnabled As CheckBox
-    Private WithEvents checkboxACTopHourChimeEnabled As CheckBox
-    Private WithEvents checkboxACTopHourBeforeChimeEnabled As CheckBox
-    Private WithEvents groupboxACAlarmChimeType As GroupBox
-    Private WithEvents radiobtnACAlarmChimeSimple As RadioButton
-    Private WithEvents radiobtnACAlarmChimeForever As RadioButton
-    Private WithEvents radiobtnACAlarmChimeExtended As RadioButton
-    Private WithEvents btnACAlarmSet As Button
-    Private WithEvents checkboxACAlarmRecurring As CheckBox
-    Private WithEvents btnACTopHourChimePlay As Button
-    Private WithEvents btnACOffHourChimePlay As Button
-    Private WithEvents picboxACClock As PictureBox
-    Private WithEvents btnACAlarmChimeDefault As Button
-    Private WithEvents btnACAlarmChimePlay As Button
-    Private WithEvents btnACAlarmChimeManual As Button
+    Private WithEvents LblACOffHourChimePath As Label
+    Private WithEvents BtnACOffHourChimeManual As Button
+    Private WithEvents BtnACAlarmCancel As Button
+    Private WithEvents LblACTopHourChimePath As Label
+    Private WithEvents LblACAlarmChimePath As Label
+    Private WithEvents ChkBoxACBottomHourAfterChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACFirstQuarterHourAfterChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACThirdQuarterHourBeforeChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACFirstQuarterHourBeforeChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACThirdQuarterHourAfterChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACBottomHourBeforeChimeEnabled As CheckBox
+    Private WithEvents BtnACMute As Button
+    Private WithEvents TxtBoxACAlarmTimer As TextBox
+    Private WithEvents GrpBoxACTopHourChimeType As GroupBox
+    Private WithEvents RadBtnACTopHourChimeSimple As RadioButton
+    Private WithEvents RadBtnACTopHourChimeExtended As RadioButton
+    Private WithEvents RadBtnACTopHourChimeHourTick As RadioButton
+    Private WithEvents BtnACOffHourChimeDefault As Button
+    Private WithEvents BtnACTopHourChimeDefault As Button
+    Private WithEvents TxtBoxACAlarmTime As TextBox
+    Private WithEvents BtnACTopHourChimeManual As Button
+    Private WithEvents ChkBoxACThirdQuarterHourChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACBottomHourChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACFirstQuarterHourChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACTopHourAfterChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACTopHourChimeEnabled As CheckBox
+    Private WithEvents ChkBoxACTopHourBeforeChimeEnabled As CheckBox
+    Private WithEvents GrpBoxACAlarmChimeType As GroupBox
+    Private WithEvents RadBtnACAlarmChimeSimple As RadioButton
+    Private WithEvents RadBtnACAlarmChimeForever As RadioButton
+    Private WithEvents RadBtnACAlarmChimeExtended As RadioButton
+    Private WithEvents BtnACAlarmSet As Button
+    Private WithEvents ChkBoxACAlarmRecurring As CheckBox
+    Private WithEvents BtnACTopHourChimePlay As Button
+    Private WithEvents BtnACOffHourChimePlay As Button
+    Private WithEvents PicBoxACClock As PictureBox
+    Private WithEvents BtnACAlarmChimeDefault As Button
+    Private WithEvents BtnACAlarmChimePlay As Button
+    Private WithEvents BtnACAlarmChimeManual As Button
     Friend WithEvents BtnSSEnabled As Button
     Friend WithEvents LblACOffHourChime As Skye.UI.Label
     Friend WithEvents LblACTopHourChime As Skye.UI.Label
     Friend WithEvents LblACAlarmChime As Skye.UI.Label
     Friend WithEvents LblACTimer As Skye.UI.Label
     Friend WithEvents LblACTime As Skye.UI.Label
-    Private WithEvents cmlistviewWL As ContextMenuStrip
+    Private WithEvents CMLVWL As ContextMenuStrip
     Private WithEvents cmiWLMoveUp As ToolStripMenuItem
     Private WithEvents cmiWLMoveDown As ToolStripMenuItem
     Private WithEvents toolStripSeparator11 As ToolStripSeparator
