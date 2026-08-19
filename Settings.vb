@@ -589,7 +589,6 @@ Partial Friend Class Settings
             End Select
             App.FrmMain.WLSetManualRefresh()
             ShowSettingsWL()
-            SetPage("WL")
             App.SetSave()
         End If
     End Sub
@@ -602,7 +601,6 @@ Partial Friend Class Settings
             My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
             App.FrmMain.WLSetManualRefresh()
             ShowSettingsWL()
-            SetPage("WL")
             App.SetSave()
         End If
     End Sub
@@ -633,7 +631,7 @@ Partial Friend Class Settings
             If link.ShowMenuIcons Then : Me.checkboxWLShowMenuIcons.Checked = True
             Else : Me.checkboxWLShowMenuIcons.Checked = False
             End If
-            Me.PanelWL.Show()
+            Me.PanelWLItem.Show()
         ElseIf Me.listviewWL.FocusedItem IsNot Nothing Then : ShowSettingsWL()
         End If
     End Sub
@@ -1023,7 +1021,7 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub ShowSettingsWL()
-        Me.PanelWL.Hide()
+        Me.PanelWLItem.Hide()
         Me.listviewWL.Clear()
         Me.lblWLRoot.ResetFont()
         Me.textboxWLRoot.ResetText()
@@ -1131,7 +1129,7 @@ Partial Friend Class Settings
         Else : App.FrmMain.WLInsertIndex = Me.listviewWL.SelectedIndices(0)
         End If
         ShowSettingsWL()
-        Me.PanelWL.Show()
+        Me.PanelWLItem.Show()
         Me.checkboxWLShowInMenu.Checked = True
         Me.checkboxWLShowInTray.Checked = True
         Me.checkboxWLShowNoMenu.Checked = False

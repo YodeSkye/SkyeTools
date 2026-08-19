@@ -119,7 +119,7 @@
         LblACOffHourChime = New Skye.UI.Label()
         PanelWL = New Panel()
         textboxWLMaxLinksPerFolder = New TextBox()
-        Panel1 = New Panel()
+        PanelWLItem = New Panel()
         checkboxWLShowNoMenu = New CheckBox()
         textboxWLName = New TextBox()
         checkboxWLShowMenuIcons = New CheckBox()
@@ -141,6 +141,13 @@
         textboxWLStartUpDelay = New TextBox()
         textboxWLAutoRefreshInterval = New TextBox()
         listviewWL = New ListView()
+        cmlistviewWL = New ContextMenuStrip(components)
+        cmiWLMoveUp = New ToolStripMenuItem()
+        cmiWLMoveDown = New ToolStripMenuItem()
+        toolStripSeparator11 = New ToolStripSeparator()
+        cmiWLNew = New ToolStripMenuItem()
+        toolStripSeparator6 = New ToolStripSeparator()
+        cmiWLDelete = New ToolStripMenuItem()
         textboxWLAutoRefreshIdleInterval = New TextBox()
         lblWLAutoRefreshIdleInterval = New Label()
         lblWLAutoRefreshInterval = New Label()
@@ -154,13 +161,6 @@
         btnWLRefresh = New Button()
         PanelHC = New Panel()
         PanelHK = New Panel()
-        cmlistviewWL = New ContextMenuStrip(components)
-        cmiWLMoveUp = New ToolStripMenuItem()
-        cmiWLMoveDown = New ToolStripMenuItem()
-        toolStripSeparator11 = New ToolStripSeparator()
-        cmiWLNew = New ToolStripMenuItem()
-        toolStripSeparator6 = New ToolStripSeparator()
-        cmiWLDelete = New ToolStripMenuItem()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -171,7 +171,7 @@
         groupboxACAlarmChimeType.SuspendLayout()
         CType(picboxACClock, ComponentModel.ISupportInitialize).BeginInit()
         PanelWL.SuspendLayout()
-        Panel1.SuspendLayout()
+        PanelWLItem.SuspendLayout()
         cmlistviewWL.SuspendLayout()
         SuspendLayout()
         ' 
@@ -1535,7 +1535,7 @@
         ' PanelWL
         ' 
         PanelWL.Controls.Add(textboxWLMaxLinksPerFolder)
-        PanelWL.Controls.Add(Panel1)
+        PanelWL.Controls.Add(PanelWLItem)
         PanelWL.Controls.Add(textboxWLStartUpDelay)
         PanelWL.Controls.Add(textboxWLAutoRefreshInterval)
         PanelWL.Controls.Add(listviewWL)
@@ -1570,43 +1570,41 @@
         TipInfoEX.SetText(textboxWLMaxLinksPerFolder, Nothing)
         textboxWLMaxLinksPerFolder.TextAlign = HorizontalAlignment.Center
         ' 
-        ' Panel1
+        ' PanelWLItem
         ' 
-        Panel1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Panel1.AutoSize = True
-        Panel1.BorderStyle = BorderStyle.FixedSingle
-        Panel1.Controls.Add(checkboxWLShowNoMenu)
-        Panel1.Controls.Add(textboxWLName)
-        Panel1.Controls.Add(checkboxWLShowMenuIcons)
-        Panel1.Controls.Add(checkboxWLShowInTray)
-        Panel1.Controls.Add(checkboxWLShowInMenu)
-        Panel1.Controls.Add(comboboxWLFolderPlacement)
-        Panel1.Controls.Add(comboboxWLFolderMode)
-        Panel1.Controls.Add(comboboxWLSort)
-        Panel1.Controls.Add(textboxWLRoot)
-        Panel1.Controls.Add(btnWLSelectFolder)
-        Panel1.Controls.Add(btnWLCancel)
-        Panel1.Controls.Add(btnWLSet)
-        Panel1.Controls.Add(checkboxWLUseDefaultIcon)
-        Panel1.Controls.Add(LblWLSortOrder)
-        Panel1.Controls.Add(LblWLFolderMode)
-        Panel1.Controls.Add(LblWLFolderPlacement)
-        Panel1.Controls.Add(LblWLDisplayName)
-        Panel1.Controls.Add(lblWLRoot)
-        TipInfoEX.SetImage(Panel1, Nothing)
-        Panel1.Location = New Point(13, 318)
-        Panel1.Name = "Panel1"
-        Panel1.Size = New Size(706, 205)
-        Panel1.TabIndex = 181
-        TipInfoEX.SetText(Panel1, Nothing)
-        Panel1.Visible = False
+        PanelWLItem.AutoSize = True
+        PanelWLItem.BorderStyle = BorderStyle.FixedSingle
+        PanelWLItem.Controls.Add(checkboxWLShowNoMenu)
+        PanelWLItem.Controls.Add(textboxWLName)
+        PanelWLItem.Controls.Add(checkboxWLShowMenuIcons)
+        PanelWLItem.Controls.Add(checkboxWLShowInTray)
+        PanelWLItem.Controls.Add(checkboxWLShowInMenu)
+        PanelWLItem.Controls.Add(comboboxWLFolderPlacement)
+        PanelWLItem.Controls.Add(comboboxWLFolderMode)
+        PanelWLItem.Controls.Add(comboboxWLSort)
+        PanelWLItem.Controls.Add(textboxWLRoot)
+        PanelWLItem.Controls.Add(btnWLSelectFolder)
+        PanelWLItem.Controls.Add(btnWLCancel)
+        PanelWLItem.Controls.Add(btnWLSet)
+        PanelWLItem.Controls.Add(checkboxWLUseDefaultIcon)
+        PanelWLItem.Controls.Add(LblWLSortOrder)
+        PanelWLItem.Controls.Add(LblWLFolderMode)
+        PanelWLItem.Controls.Add(LblWLFolderPlacement)
+        PanelWLItem.Controls.Add(LblWLDisplayName)
+        PanelWLItem.Controls.Add(lblWLRoot)
+        TipInfoEX.SetImage(PanelWLItem, Nothing)
+        PanelWLItem.Location = New Point(13, 318)
+        PanelWLItem.Name = "PanelWLItem"
+        PanelWLItem.Size = New Size(693, 205)
+        PanelWLItem.TabIndex = 181
+        TipInfoEX.SetText(PanelWLItem, Nothing)
+        PanelWLItem.Visible = False
         ' 
         ' checkboxWLShowNoMenu
         ' 
-        checkboxWLShowNoMenu.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         checkboxWLShowNoMenu.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Location = New Point(1050, 105)
+        checkboxWLShowNoMenu.Location = New Point(500, 117)
         checkboxWLShowNoMenu.Name = "checkboxWLShowNoMenu"
         checkboxWLShowNoMenu.Size = New Size(136, 25)
         checkboxWLShowNoMenu.TabIndex = 66
@@ -1626,10 +1624,9 @@
         ' 
         ' checkboxWLShowMenuIcons
         ' 
-        checkboxWLShowMenuIcons.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         checkboxWLShowMenuIcons.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Location = New Point(1050, 86)
+        checkboxWLShowMenuIcons.Location = New Point(500, 93)
         checkboxWLShowMenuIcons.Name = "checkboxWLShowMenuIcons"
         checkboxWLShowMenuIcons.Size = New Size(152, 25)
         checkboxWLShowMenuIcons.TabIndex = 64
@@ -1639,10 +1636,9 @@
         ' 
         ' checkboxWLShowInTray
         ' 
-        checkboxWLShowInTray.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         checkboxWLShowInTray.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Location = New Point(1050, 56)
+        checkboxWLShowInTray.Location = New Point(500, 56)
         checkboxWLShowInTray.Name = "checkboxWLShowInTray"
         checkboxWLShowInTray.Size = New Size(118, 25)
         checkboxWLShowInTray.TabIndex = 62
@@ -1652,10 +1648,9 @@
         ' 
         ' checkboxWLShowInMenu
         ' 
-        checkboxWLShowInMenu.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         checkboxWLShowInMenu.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Location = New Point(1050, 37)
+        checkboxWLShowInMenu.Location = New Point(533, 37)
         checkboxWLShowInMenu.Name = "checkboxWLShowInMenu"
         checkboxWLShowInMenu.Size = New Size(129, 25)
         checkboxWLShowInMenu.TabIndex = 60
@@ -1724,12 +1719,11 @@
         ' 
         ' btnWLCancel
         ' 
-        btnWLCancel.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnWLCancel.ForeColor = Color.Navy
         btnWLCancel.Image = My.Resources.Resources.imageRemove
         TipInfoEX.SetImage(btnWLCancel, Nothing)
         btnWLCancel.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLCancel.Location = New Point(1029, 267)
+        btnWLCancel.Location = New Point(472, 163)
         btnWLCancel.Name = "btnWLCancel"
         btnWLCancel.Size = New Size(100, 32)
         btnWLCancel.TabIndex = 156
@@ -1740,12 +1734,11 @@
         ' 
         ' btnWLSet
         ' 
-        btnWLSet.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
         btnWLSet.ForeColor = Color.Navy
         btnWLSet.Image = My.Resources.Resources.imageGoStart
         TipInfoEX.SetImage(btnWLSet, Nothing)
         btnWLSet.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLSet.Location = New Point(1134, 267)
+        btnWLSet.Location = New Point(578, 162)
         btnWLSet.Name = "btnWLSet"
         btnWLSet.Size = New Size(66, 32)
         btnWLSet.TabIndex = 157
@@ -1864,6 +1857,52 @@
         TipInfoEX.SetText(listviewWL, Nothing)
         listviewWL.UseCompatibleStateImageBehavior = False
         listviewWL.View = View.Details
+        ' 
+        ' cmlistviewWL
+        ' 
+        cmlistviewWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TipInfoEX.SetImage(cmlistviewWL, Nothing)
+        cmlistviewWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
+        cmlistviewWL.Name = "contextmenulistviewHotLinks"
+        cmlistviewWL.Size = New Size(125, 120)
+        TipInfoEX.SetText(cmlistviewWL, Nothing)
+        ' 
+        ' cmiWLMoveUp
+        ' 
+        cmiWLMoveUp.Image = My.Resources.Resources.imageMoveUp
+        cmiWLMoveUp.Name = "cmiWLMoveUp"
+        cmiWLMoveUp.Size = New Size(124, 26)
+        cmiWLMoveUp.Text = "Up"
+        ' 
+        ' cmiWLMoveDown
+        ' 
+        cmiWLMoveDown.Image = My.Resources.Resources.imageMoveDown
+        cmiWLMoveDown.Name = "cmiWLMoveDown"
+        cmiWLMoveDown.Size = New Size(124, 26)
+        cmiWLMoveDown.Text = "Down"
+        ' 
+        ' toolStripSeparator11
+        ' 
+        toolStripSeparator11.Name = "toolStripSeparator11"
+        toolStripSeparator11.Size = New Size(121, 6)
+        ' 
+        ' cmiWLNew
+        ' 
+        cmiWLNew.Image = My.Resources.Resources.imageWLNew
+        cmiWLNew.Name = "cmiWLNew"
+        cmiWLNew.Size = New Size(124, 26)
+        ' 
+        ' toolStripSeparator6
+        ' 
+        toolStripSeparator6.Name = "toolStripSeparator6"
+        toolStripSeparator6.Size = New Size(121, 6)
+        ' 
+        ' cmiWLDelete
+        ' 
+        cmiWLDelete.Image = My.Resources.Resources.imageRemove
+        cmiWLDelete.Name = "cmiWLDelete"
+        cmiWLDelete.Size = New Size(124, 26)
+        cmiWLDelete.Text = "Delete"
         ' 
         ' textboxWLAutoRefreshIdleInterval
         ' 
@@ -2037,52 +2076,6 @@
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
         ' 
-        ' cmlistviewWL
-        ' 
-        cmlistviewWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipInfoEX.SetImage(cmlistviewWL, Nothing)
-        cmlistviewWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
-        cmlistviewWL.Name = "contextmenulistviewHotLinks"
-        cmlistviewWL.Size = New Size(125, 120)
-        TipInfoEX.SetText(cmlistviewWL, Nothing)
-        ' 
-        ' cmiWLMoveUp
-        ' 
-        cmiWLMoveUp.Image = My.Resources.Resources.imageMoveUp
-        cmiWLMoveUp.Name = "cmiWLMoveUp"
-        cmiWLMoveUp.Size = New Size(124, 26)
-        cmiWLMoveUp.Text = "Up"
-        ' 
-        ' cmiWLMoveDown
-        ' 
-        cmiWLMoveDown.Image = My.Resources.Resources.imageMoveDown
-        cmiWLMoveDown.Name = "cmiWLMoveDown"
-        cmiWLMoveDown.Size = New Size(124, 26)
-        cmiWLMoveDown.Text = "Down"
-        ' 
-        ' toolStripSeparator11
-        ' 
-        toolStripSeparator11.Name = "toolStripSeparator11"
-        toolStripSeparator11.Size = New Size(121, 6)
-        ' 
-        ' cmiWLNew
-        ' 
-        cmiWLNew.Image = My.Resources.Resources.imageWLNew
-        cmiWLNew.Name = "cmiWLNew"
-        cmiWLNew.Size = New Size(124, 26)
-        ' 
-        ' toolStripSeparator6
-        ' 
-        toolStripSeparator6.Name = "toolStripSeparator6"
-        toolStripSeparator6.Size = New Size(121, 6)
-        ' 
-        ' cmiWLDelete
-        ' 
-        cmiWLDelete.Image = My.Resources.Resources.imageRemove
-        cmiWLDelete.Name = "cmiWLDelete"
-        cmiWLDelete.Size = New Size(124, 26)
-        cmiWLDelete.Text = "Delete"
-        ' 
         ' Settings
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -2125,8 +2118,8 @@
         CType(picboxACClock, ComponentModel.ISupportInitialize).EndInit()
         PanelWL.ResumeLayout(False)
         PanelWL.PerformLayout()
-        Panel1.ResumeLayout(False)
-        Panel1.PerformLayout()
+        PanelWLItem.ResumeLayout(False)
+        PanelWLItem.PerformLayout()
         cmlistviewWL.ResumeLayout(False)
         ResumeLayout(False)
 
@@ -2195,7 +2188,7 @@
     Private WithEvents ChkBoxSSShowIcon As CheckBox
     Friend WithEvents CMBlankForTextBoxes As ContextMenuStrip
     Private WithEvents textboxWLMaxLinksPerFolder As TextBox
-    Private WithEvents Panel1 As Panel
+    Private WithEvents PanelWLItem As Panel
     Private WithEvents checkboxWLShowNoMenu As CheckBox
     Private WithEvents textboxWLName As TextBox
     Private WithEvents checkboxWLShowMenuIcons As CheckBox
