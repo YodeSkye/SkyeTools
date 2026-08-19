@@ -757,8 +757,8 @@ Namespace My
 			WSTShowAC = True
 			ACAlarmRecurring = False
 			'WinLinks (WL)
-			WSTShowWLMenu = False
-			WSTShowWLTray = False
+			WSTShowWLMenu = True
+			WSTShowWLTray = True
 			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
 			'GetSettingsDebugWL()
 		End Sub
@@ -1017,6 +1017,66 @@ Namespace My
 			End If
 
 			tip.ShowTooltipAt(pos, it.ToolTipText)
+		End Sub
+
+		' Custom ListView ToolTips
+		Private _currentHoveredItem As ListViewItem = Nothing
+		''' <summary>
+		''' Hooks a ListView to display ToolTipEX tooltips for items that have ToolTipText set.
+		''' </summary>
+		Friend Sub HookListViewForCMTooltip(lv As ListView, tip As ToolTipEX)
+			' Turn off native ListView tooltips so they don't interfere
+			lv.ShowItemToolTips = False
+
+			AddHandler lv.MouseMove,
+				Sub(sender As Object, e As MouseEventArgs)
+					Dim item As ListViewItem = lv.GetItemAt(e.X, e.Y)
+
+					' Case 1: Moved off any item into empty space
+					If item Is Nothing Then
+						If _currentHoveredItem IsNot Nothing Then
+							_currentHoveredItem = Nothing
+							tip.HideTooltip()
+						End If
+						Exit Sub
+					End If
+
+					' Case 2: Mouse is STILL on the same item -> DO NOTHING (keep tooltip visible!)
+					If item Is _currentHoveredItem Then
+						Exit Sub
+					End If
+
+					' Case 3: Moved onto a NEW item
+					_currentHoveredItem = item
+
+					If String.IsNullOrWhiteSpace(item.ToolTipText) Then
+						tip.HideTooltip()
+					Else
+						ShowLVItemTooltip(item, tip)
+					End If
+				End Sub
+
+			AddHandler lv.MouseLeave,
+				Sub(sender As Object, e As EventArgs)
+					' Left the ListView control completely
+					_currentHoveredItem = Nothing
+					tip.HideTooltip()
+				End Sub
+		End Sub
+		Private Sub ShowLVItemTooltip(item As ListViewItem, tip As ToolTipEX)
+			Dim textSize As Size = TextRenderer.MeasureText(item.ToolTipText, tip.Font)
+			Dim tipWidth As Integer = textSize.Width + (tip.TextPadding * 2)
+			Dim tipHeight As Integer = textSize.Height + (tip.TextPadding * 2)
+
+			Dim mousePos As Point = Cursor.Position
+			Dim pos As New Point(mousePos.X + 20, mousePos.Y + 15)
+
+			' Screen clamping
+			Dim wa As Rectangle = Screen.FromPoint(pos).WorkingArea
+			If pos.X + tipWidth > wa.Right Then pos.X = mousePos.X - tipWidth - 10
+			If pos.Y + tipHeight > wa.Bottom Then pos.Y = mousePos.Y - tipHeight - 10
+
+			tip.ShowTooltipAt(pos, item.ToolTipText)
 		End Sub
 
 	End Module

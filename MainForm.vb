@@ -1053,24 +1053,57 @@ Partial Friend Class MainForm
     Private WithEvents BackgroundworkerWL As New System.ComponentModel.BackgroundWorker
     Private Const WLMaxItems As Integer = 2000
     Private Structure WLMenuDataItem
-        Dim Text As String
-        Dim File As String
-        Dim Icon As Image
-        Dim IsFolder As Boolean
-        Dim SubMenu As Collections.Generic.List(Of WLMenuDataItem)
+        Public Text As String
+        Public File As String
+        Public Icon As Image
+        Public IsFolder As Boolean
+        Public SubMenu As Collections.Generic.List(Of WLMenuDataItem)
     End Structure
     Private WLMenuData As New Collections.Generic.List(Of Collections.Generic.List(Of WLMenuDataItem))
+    Public ReadOnly Property WLMenuDataCount As Integer
+        Get
+            Return WLMenuData.Count
+        End Get
+    End Property
     Private WLMenus As New Collections.Generic.List(Of ToolStripMenuItem)
     Private WLTrayIcons As New Collections.Generic.List(Of NotifyIcon)
-    Private WLStartUp As Boolean = False
+    Private _WLStartUp As Boolean
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Friend Property WLStartUp As Boolean
+        Get
+            Return _WLStartUp
+        End Get
+        Set(value As Boolean)
+            If _WLStartUp <> value Then
+                _WLStartUp = value
+            End If
+        End Set
+    End Property
     Private WLAutoRefreshUpdate As Boolean = False
     Private WLLoadStartTime As TimeSpan
     Private WLMenuItemCount As Integer
     Private cmWLItem As New ContextMenuStrip
 
-    Private WLInsertIndex As Integer
+    Private _WLInsertIndex As Integer
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property WLInsertIndex As Integer
+        Get
+            Return _WLInsertIndex
+        End Get
+        Set(value As Integer)
+            If _WLInsertIndex <> value Then
+                _WLInsertIndex = value
+            End If
+        End Set
+    End Property
     Private uiWLFolderBrowser As New FolderBrowserDialog
-
+    Private _WLShowAutoRefresh As Boolean
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Friend ReadOnly Property WLShowAutoRefresh As Boolean
+        Get
+            Return _WLShowAutoRefresh
+        End Get
+    End Property
     ' Control Events
     Private Sub ListviewWLSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles listviewWL.SelectedIndexChanged
         If Me.listviewWL.SelectedIndices.Count > 0 Then
@@ -1808,6 +1841,9 @@ Partial Friend Class MainForm
         App.HookTSItemsForCMTooltip(cmWLItem, TipCM)
         cmWLItem.Show(MousePosition)
     End Sub
+    Friend Sub CancelBackgroundworkerWL()
+        If Me.BackgroundworkerWL.IsBusy Then Me.BackgroundworkerWL.CancelAsync()
+    End Sub
     Friend Sub WLClose(Optional ByRef forcecloseall As Boolean = False)
         Try
             If Not My.App.WSTShowWLMenu Or forcecloseall Then
@@ -1890,7 +1926,7 @@ Partial Friend Class MainForm
         Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Error In WinLinks Watcher" + Chr(13) + ex.ToString)
         End Try
     End Sub
-    Private Sub WLSetAutoRefresh(Optional forceterminate As Boolean = False)
+    Friend Sub WLSetAutoRefresh(Optional forceterminate As Boolean = False)
         If Not BackgroundworkerWL.IsBusy Then
             'Turn Off Watcher
             If WatcherWLAutoRefresh.EnableRaisingEvents Then
@@ -1899,9 +1935,10 @@ Partial Friend Class MainForm
                     TimerWLAutoRefresh.Stop()
                     TimerWLAutoRefreshIdle.Stop()
                     Me.lblWLAutoRefresh.Visible = False
+                    _WLShowAutoRefresh = False
                     Debug.Print("SetWinLinksAutoRefresh :Watcher Terminated")
                 Catch ex As Exception
-                    My.App.WriteToLog(My.App.Tools.WinLinks, "AutoRefresh could not be DeActivated." + Chr(13) + ex.ToString)
+                    My.App.WriteToLog(My.App.Tools.WinLinks, "AutoRefresh could not be DeActivated." & Environment.NewLine & ex.ToString)
                     forceterminate = True
                 End Try
             End If
@@ -1921,14 +1958,16 @@ Partial Friend Class MainForm
                         WatcherWLAutoRefresh.EnableRaisingEvents = True
                         TimerWLAutoRefresh.Start()
                         Me.lblWLAutoRefresh.Visible = True
+                        _WLShowAutoRefresh = True
                         Debug.Print("SetWinLinksAutoRefresh: Watcher Activated")
-                    Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "AutoRefresh could not be Activated." + Chr(13) + ex.ToString)
+                    Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "AutoRefresh could not be Activated." & Environment.NewLine & ex.ToString)
                     End Try
                 End If
             End If
+            App.FrmSettings?.WLShowAutoRefreshState()
         End If
     End Sub
-    Private Sub WLSetManualRefresh()
+    Friend Sub WLSetManualRefresh()
         WLClose(True)
         ShowSettings(My.App.Tools.WinLinks)
         If My.App.WLData.Count > 0 Then
@@ -1980,13 +2019,13 @@ Partial Friend Class MainForm
             Me.btnSettingsRestore.Enabled = True
             Me.btnWLRefresh.Text = "Full Refresh"
             Me.TipInfoEX.SetText(Me.btnWLRefresh, "Refresh ALL Data & Menus")
-            Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap 'DirectCast(My.App.AppResources.GetObject("imageSwap"), Image)
+            Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap
             Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
         Else
             Me.btnSettingsRestore.Enabled = False
             Me.btnWLRefresh.Text = "CANCEL"
             Me.TipInfoEX.SetText(Me.btnWLRefresh, "Cancel File Search")
-            Me.btnWLRefresh.Image = My.Resources.Resources.imageClose 'DirectCast(My.App.AppResources.GetObject("imageClose"), Image)
+            Me.btnWLRefresh.Image = My.Resources.Resources.imageClose
             Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
         End If
     End Sub

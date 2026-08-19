@@ -60,7 +60,7 @@
         ChkBoxWSTShowWLMenu = New CheckBox()
         ChkBoxWSTEnabled = New CheckBox()
         PanelSS = New Panel()
-        BtnSSEnabled = New RadioButton()
+        BtnSSEnabled = New Button()
         CoBoxSSStartUp = New ComboBox()
         LblSSStartupMode = New Label()
         ChkBoxSSShowIcon = New CheckBox()
@@ -106,17 +106,17 @@
         radiobtnACAlarmChimeExtended = New RadioButton()
         btnACAlarmSet = New Button()
         checkboxACAlarmRecurring = New CheckBox()
-        LblACTimer = New Label()
         btnACTopHourChimePlay = New Button()
         btnACOffHourChimePlay = New Button()
-        LblACTime = New Label()
         picboxACClock = New PictureBox()
         btnACAlarmChimeDefault = New Button()
         btnACAlarmChimePlay = New Button()
         btnACAlarmChimeManual = New Button()
-        lblACAlarmChime = New Label()
-        lblACOffHourChime = New Label()
-        lblACTopHourChime = New Label()
+        LblACTime = New Skye.UI.Label()
+        LblACTimer = New Skye.UI.Label()
+        LblACAlarmChime = New Skye.UI.Label()
+        LblACTopHourChime = New Skye.UI.Label()
+        LblACOffHourChime = New Skye.UI.Label()
         PanelWL = New Panel()
         textboxWLMaxLinksPerFolder = New TextBox()
         Panel1 = New Panel()
@@ -154,6 +154,13 @@
         btnWLRefresh = New Button()
         PanelHC = New Panel()
         PanelHK = New Panel()
+        cmlistviewWL = New ContextMenuStrip(components)
+        cmiWLMoveUp = New ToolStripMenuItem()
+        cmiWLMoveDown = New ToolStripMenuItem()
+        toolStripSeparator11 = New ToolStripSeparator()
+        cmiWLNew = New ToolStripMenuItem()
+        toolStripSeparator6 = New ToolStripSeparator()
+        cmiWLDelete = New ToolStripMenuItem()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -165,6 +172,7 @@
         CType(picboxACClock, ComponentModel.ISupportInitialize).BeginInit()
         PanelWL.SuspendLayout()
         Panel1.SuspendLayout()
+        cmlistviewWL.SuspendLayout()
         SuspendLayout()
         ' 
         ' BtnClose
@@ -761,14 +769,12 @@
         ' 
         ' BtnSSEnabled
         ' 
-        BtnSSEnabled.Appearance = Appearance.Button
         TipInfoEX.SetImage(BtnSSEnabled, Nothing)
-        BtnSSEnabled.Location = New Point(19, 18)
+        BtnSSEnabled.Location = New Point(21, 20)
         BtnSSEnabled.Name = "BtnSSEnabled"
-        BtnSSEnabled.Size = New Size(32, 32)
-        BtnSSEnabled.TabIndex = 10
-        BtnSSEnabled.TabStop = True
-        TipInfoEX.SetText(BtnSSEnabled, "SS")
+        BtnSSEnabled.Size = New Size(128, 128)
+        BtnSSEnabled.TabIndex = 141
+        TipInfoEX.SetText(BtnSSEnabled, "Screen Saver")
         BtnSSEnabled.UseVisualStyleBackColor = True
         ' 
         ' CoBoxSSStartUp
@@ -939,17 +945,17 @@
         PanelAC.Controls.Add(groupboxACAlarmChimeType)
         PanelAC.Controls.Add(btnACAlarmSet)
         PanelAC.Controls.Add(checkboxACAlarmRecurring)
-        PanelAC.Controls.Add(LblACTimer)
         PanelAC.Controls.Add(btnACTopHourChimePlay)
         PanelAC.Controls.Add(btnACOffHourChimePlay)
-        PanelAC.Controls.Add(LblACTime)
         PanelAC.Controls.Add(picboxACClock)
         PanelAC.Controls.Add(btnACAlarmChimeDefault)
         PanelAC.Controls.Add(btnACAlarmChimePlay)
         PanelAC.Controls.Add(btnACAlarmChimeManual)
-        PanelAC.Controls.Add(lblACAlarmChime)
-        PanelAC.Controls.Add(lblACOffHourChime)
-        PanelAC.Controls.Add(lblACTopHourChime)
+        PanelAC.Controls.Add(LblACTime)
+        PanelAC.Controls.Add(LblACTimer)
+        PanelAC.Controls.Add(LblACAlarmChime)
+        PanelAC.Controls.Add(LblACTopHourChime)
+        PanelAC.Controls.Add(LblACOffHourChime)
         PanelAC.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelAC, Nothing)
         PanelAC.Location = New Point(187, 0)
@@ -964,9 +970,9 @@
         lblACOffHourChimePath.AutoEllipsis = True
         lblACOffHourChimePath.BorderStyle = BorderStyle.FixedSingle
         TipInfoEX.SetImage(lblACOffHourChimePath, Nothing)
-        lblACOffHourChimePath.Location = New Point(555, 503)
+        lblACOffHourChimePath.Location = New Point(555, 499)
         lblACOffHourChimePath.Name = "lblACOffHourChimePath"
-        lblACOffHourChimePath.Size = New Size(163, 20)
+        lblACOffHourChimePath.Size = New Size(163, 24)
         lblACOffHourChimePath.TabIndex = 72
         TipInfoEX.SetText(lblACOffHourChimePath, "Path")
         lblACOffHourChimePath.TextAlign = ContentAlignment.TopRight
@@ -978,7 +984,7 @@
         btnACOffHourChimeManual.FlatAppearance.BorderSize = 0
         btnACOffHourChimeManual.Image = My.Resources.Resources.imageACFolder
         TipInfoEX.SetImage(btnACOffHourChimeManual, Nothing)
-        btnACOffHourChimeManual.Location = New Point(687, 471)
+        btnACOffHourChimeManual.Location = New Point(687, 467)
         btnACOffHourChimeManual.Name = "btnACOffHourChimeManual"
         btnACOffHourChimeManual.Size = New Size(32, 32)
         btnACOffHourChimeManual.TabIndex = 204
@@ -1006,9 +1012,9 @@
         lblACTopHourChimePath.AutoEllipsis = True
         lblACTopHourChimePath.BorderStyle = BorderStyle.FixedSingle
         TipInfoEX.SetImage(lblACTopHourChimePath, Nothing)
-        lblACTopHourChimePath.Location = New Point(12, 434)
+        lblACTopHourChimePath.Location = New Point(12, 430)
         lblACTopHourChimePath.Name = "lblACTopHourChimePath"
-        lblACTopHourChimePath.Size = New Size(164, 20)
+        lblACTopHourChimePath.Size = New Size(164, 24)
         lblACTopHourChimePath.TabIndex = 56
         TipInfoEX.SetText(lblACTopHourChimePath, "Path")
         lblACTopHourChimePath.UseMnemonic = False
@@ -1021,7 +1027,7 @@
         TipInfoEX.SetImage(lblACAlarmChimePath, Nothing)
         lblACAlarmChimePath.Location = New Point(552, 65)
         lblACAlarmChimePath.Name = "lblACAlarmChimePath"
-        lblACAlarmChimePath.Size = New Size(165, 20)
+        lblACAlarmChimePath.Size = New Size(165, 24)
         lblACAlarmChimePath.TabIndex = 46
         TipInfoEX.SetText(lblACAlarmChimePath, "Path")
         lblACAlarmChimePath.TextAlign = ContentAlignment.TopRight
@@ -1188,7 +1194,7 @@
         btnACOffHourChimeDefault.FlatAppearance.BorderSize = 0
         btnACOffHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
         TipInfoEX.SetImage(btnACOffHourChimeDefault, Nothing)
-        btnACOffHourChimeDefault.Location = New Point(656, 471)
+        btnACOffHourChimeDefault.Location = New Point(656, 467)
         btnACOffHourChimeDefault.Name = "btnACOffHourChimeDefault"
         btnACOffHourChimeDefault.Size = New Size(32, 32)
         btnACOffHourChimeDefault.TabIndex = 202
@@ -1201,7 +1207,7 @@
         btnACTopHourChimeDefault.FlatAppearance.BorderSize = 0
         btnACTopHourChimeDefault.Image = My.Resources.Resources.imageACDefaultChime
         TipInfoEX.SetImage(btnACTopHourChimeDefault, Nothing)
-        btnACTopHourChimeDefault.Location = New Point(42, 402)
+        btnACTopHourChimeDefault.Location = New Point(42, 398)
         btnACTopHourChimeDefault.Name = "btnACTopHourChimeDefault"
         btnACTopHourChimeDefault.Size = New Size(32, 32)
         btnACTopHourChimeDefault.TabIndex = 152
@@ -1225,7 +1231,7 @@
         btnACTopHourChimeManual.FlatAppearance.BorderSize = 0
         btnACTopHourChimeManual.Image = My.Resources.Resources.imageACFolder
         TipInfoEX.SetImage(btnACTopHourChimeManual, Nothing)
-        btnACTopHourChimeManual.Location = New Point(11, 402)
+        btnACTopHourChimeManual.Location = New Point(11, 398)
         btnACTopHourChimeManual.Name = "btnACTopHourChimeManual"
         btnACTopHourChimeManual.Size = New Size(32, 32)
         btnACTopHourChimeManual.TabIndex = 150
@@ -1319,7 +1325,7 @@
         groupboxACAlarmChimeType.Controls.Add(radiobtnACAlarmChimeForever)
         groupboxACAlarmChimeType.Controls.Add(radiobtnACAlarmChimeExtended)
         TipInfoEX.SetImage(groupboxACAlarmChimeType, Nothing)
-        groupboxACAlarmChimeType.Location = New Point(607, 76)
+        groupboxACAlarmChimeType.Location = New Point(607, 80)
         groupboxACAlarmChimeType.Name = "groupboxACAlarmChimeType"
         groupboxACAlarmChimeType.Size = New Size(110, 80)
         groupboxACAlarmChimeType.TabIndex = 120
@@ -1389,24 +1395,12 @@
         checkboxACAlarmRecurring.Text = "Recurring"
         checkboxACAlarmRecurring.UseVisualStyleBackColor = True
         ' 
-        ' LblACTimer
-        ' 
-        LblACTimer.ForeColor = SystemColors.ControlText
-        TipInfoEX.SetImage(LblACTimer, Nothing)
-        LblACTimer.Location = New Point(13, 164)
-        LblACTimer.Name = "LblACTimer"
-        LblACTimer.Size = New Size(89, 20)
-        LblACTimer.TabIndex = 73
-        LblACTimer.Text = "Timer"
-        TipInfoEX.SetText(LblACTimer, Nothing)
-        LblACTimer.TextAlign = ContentAlignment.BottomCenter
-        ' 
         ' btnACTopHourChimePlay
         ' 
         btnACTopHourChimePlay.FlatAppearance.BorderSize = 0
         btnACTopHourChimePlay.Image = My.Resources.Resources.imageACPlay
         TipInfoEX.SetImage(btnACTopHourChimePlay, Nothing)
-        btnACTopHourChimePlay.Location = New Point(73, 402)
+        btnACTopHourChimePlay.Location = New Point(73, 398)
         btnACTopHourChimePlay.Name = "btnACTopHourChimePlay"
         btnACTopHourChimePlay.Size = New Size(32, 32)
         btnACTopHourChimePlay.TabIndex = 154
@@ -1420,25 +1414,13 @@
         btnACOffHourChimePlay.FlatAppearance.BorderSize = 0
         btnACOffHourChimePlay.Image = My.Resources.Resources.imageACPlay
         TipInfoEX.SetImage(btnACOffHourChimePlay, Nothing)
-        btnACOffHourChimePlay.Location = New Point(625, 471)
+        btnACOffHourChimePlay.Location = New Point(625, 467)
         btnACOffHourChimePlay.Name = "btnACOffHourChimePlay"
         btnACOffHourChimePlay.Size = New Size(32, 32)
         btnACOffHourChimePlay.TabIndex = 200
         TipInfoEX.SetText(btnACOffHourChimePlay, "Play Sound")
         btnACOffHourChimePlay.TextAlign = ContentAlignment.MiddleLeft
         btnACOffHourChimePlay.UseVisualStyleBackColor = True
-        ' 
-        ' LblACTime
-        ' 
-        LblACTime.ForeColor = SystemColors.ControlText
-        TipInfoEX.SetImage(LblACTime, Nothing)
-        LblACTime.Location = New Point(13, 14)
-        LblACTime.Name = "LblACTime"
-        LblACTime.Size = New Size(89, 24)
-        LblACTime.TabIndex = 74
-        LblACTime.Text = "Time"
-        TipInfoEX.SetText(LblACTime, Nothing)
-        LblACTime.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' picboxACClock
         ' 
@@ -1495,45 +1477,60 @@
         btnACAlarmChimeManual.TextAlign = ContentAlignment.MiddleLeft
         btnACAlarmChimeManual.UseVisualStyleBackColor = True
         ' 
-        ' lblACAlarmChime
+        ' LblACTime
         ' 
-        lblACAlarmChime.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblACAlarmChime.ForeColor = SystemColors.ControlText
-        TipInfoEX.SetImage(lblACAlarmChime, Nothing)
-        lblACAlarmChime.Location = New Point(615, 11)
-        lblACAlarmChime.Name = "lblACAlarmChime"
-        lblACAlarmChime.Size = New Size(104, 24)
-        lblACAlarmChime.TabIndex = 68
-        lblACAlarmChime.Text = "Alarm"
-        TipInfoEX.SetText(lblACAlarmChime, Nothing)
-        lblACAlarmChime.TextAlign = ContentAlignment.BottomRight
+        TipInfoEX.SetImage(LblACTime, Nothing)
+        LblACTime.Location = New Point(13, 15)
+        LblACTime.Name = "LblACTime"
+        LblACTime.Size = New Size(89, 23)
+        LblACTime.TabIndex = 205
+        LblACTime.Text = "Time"
+        TipInfoEX.SetText(LblACTime, Nothing)
+        LblACTime.TextAlign = ContentAlignment.BottomCenter
         ' 
-        ' lblACOffHourChime
+        ' LblACTimer
         ' 
-        lblACOffHourChime.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblACOffHourChime.AutoSize = True
-        lblACOffHourChime.ForeColor = SystemColors.ControlText
-        TipInfoEX.SetImage(lblACOffHourChime, Nothing)
-        lblACOffHourChime.Location = New Point(592, 452)
-        lblACOffHourChime.Name = "lblACOffHourChime"
-        lblACOffHourChime.Size = New Size(129, 21)
-        lblACOffHourChime.TabIndex = 51
-        lblACOffHourChime.Text = "Off-Hour Chimes"
-        TipInfoEX.SetText(lblACOffHourChime, Nothing)
-        lblACOffHourChime.TextAlign = ContentAlignment.BottomRight
+        TipInfoEX.SetImage(LblACTimer, Nothing)
+        LblACTimer.Location = New Point(13, 164)
+        LblACTimer.Name = "LblACTimer"
+        LblACTimer.Size = New Size(89, 23)
+        LblACTimer.TabIndex = 206
+        LblACTimer.Text = "Timer"
+        TipInfoEX.SetText(LblACTimer, Nothing)
+        LblACTimer.TextAlign = ContentAlignment.TopCenter
         ' 
-        ' lblACTopHourChime
+        ' LblACAlarmChime
         ' 
-        lblACTopHourChime.AutoSize = True
-        lblACTopHourChime.ForeColor = SystemColors.ControlText
-        TipInfoEX.SetImage(lblACTopHourChime, Nothing)
-        lblACTopHourChime.Location = New Point(11, 381)
-        lblACTopHourChime.Name = "lblACTopHourChime"
-        lblACTopHourChime.Size = New Size(124, 21)
-        lblACTopHourChime.TabIndex = 50
-        lblACTopHourChime.Text = "Top-Hour Chime"
-        TipInfoEX.SetText(lblACTopHourChime, Nothing)
-        lblACTopHourChime.TextAlign = ContentAlignment.BottomLeft
+        TipInfoEX.SetImage(LblACAlarmChime, Nothing)
+        LblACAlarmChime.Location = New Point(619, 13)
+        LblACAlarmChime.Name = "LblACAlarmChime"
+        LblACAlarmChime.Size = New Size(100, 23)
+        LblACAlarmChime.TabIndex = 207
+        LblACAlarmChime.Text = "Alarm"
+        TipInfoEX.SetText(LblACAlarmChime, Nothing)
+        LblACAlarmChime.TextAlign = ContentAlignment.BottomRight
+        ' 
+        ' LblACTopHourChime
+        ' 
+        TipInfoEX.SetImage(LblACTopHourChime, Nothing)
+        LblACTopHourChime.Location = New Point(11, 376)
+        LblACTopHourChime.Name = "LblACTopHourChime"
+        LblACTopHourChime.Size = New Size(161, 23)
+        LblACTopHourChime.TabIndex = 208
+        LblACTopHourChime.Text = "Top-Hour Chime"
+        TipInfoEX.SetText(LblACTopHourChime, Nothing)
+        LblACTopHourChime.TextAlign = ContentAlignment.BottomLeft
+        ' 
+        ' LblACOffHourChime
+        ' 
+        TipInfoEX.SetImage(LblACOffHourChime, Nothing)
+        LblACOffHourChime.Location = New Point(558, 447)
+        LblACOffHourChime.Name = "LblACOffHourChime"
+        LblACOffHourChime.Size = New Size(163, 23)
+        LblACOffHourChime.TabIndex = 209
+        LblACOffHourChime.Text = "Off-Hour Chimes"
+        TipInfoEX.SetText(LblACOffHourChime, Nothing)
+        LblACOffHourChime.TextAlign = ContentAlignment.BottomRight
         ' 
         ' PanelWL
         ' 
@@ -1563,6 +1560,7 @@
         ' 
         ' textboxWLMaxLinksPerFolder
         ' 
+        textboxWLMaxLinksPerFolder.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLMaxLinksPerFolder, Nothing)
         textboxWLMaxLinksPerFolder.Location = New Point(13, 47)
         textboxWLMaxLinksPerFolder.MaxLength = 3
@@ -1618,6 +1616,7 @@
         ' 
         ' textboxWLName
         ' 
+        textboxWLName.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLName, Nothing)
         textboxWLName.Location = New Point(8, 79)
         textboxWLName.Name = "textboxWLName"
@@ -1702,6 +1701,7 @@
         ' 
         ' textboxWLRoot
         ' 
+        textboxWLRoot.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLRoot, Nothing)
         textboxWLRoot.Location = New Point(8, 25)
         textboxWLRoot.Name = "textboxWLRoot"
@@ -1823,6 +1823,7 @@
         ' 
         ' textboxWLStartUpDelay
         ' 
+        textboxWLStartUpDelay.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLStartUpDelay, Nothing)
         textboxWLStartUpDelay.Location = New Point(13, 12)
         textboxWLStartUpDelay.MaxLength = 3
@@ -1835,6 +1836,7 @@
         ' textboxWLAutoRefreshInterval
         ' 
         textboxWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        textboxWLAutoRefreshInterval.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLAutoRefreshInterval, Nothing)
         textboxWLAutoRefreshInterval.Location = New Point(675, 12)
         textboxWLAutoRefreshInterval.MaxLength = 2
@@ -1848,6 +1850,7 @@
         ' 
         listviewWL.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         listviewWL.BorderStyle = BorderStyle.FixedSingle
+        listviewWL.ContextMenuStrip = cmlistviewWL
         listviewWL.FullRowSelect = True
         listviewWL.HeaderStyle = ColumnHeaderStyle.None
         TipInfoEX.SetImage(listviewWL, Nothing)
@@ -1856,7 +1859,6 @@
         listviewWL.MultiSelect = False
         listviewWL.Name = "listviewWL"
         listviewWL.ShowGroups = False
-        listviewWL.ShowItemToolTips = True
         listviewWL.Size = New Size(706, 111)
         listviewWL.TabIndex = 180
         TipInfoEX.SetText(listviewWL, Nothing)
@@ -1866,6 +1868,7 @@
         ' textboxWLAutoRefreshIdleInterval
         ' 
         textboxWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        textboxWLAutoRefreshIdleInterval.ContextMenuStrip = CMBlankForTextBoxes
         TipInfoEX.SetImage(textboxWLAutoRefreshIdleInterval, Nothing)
         textboxWLAutoRefreshIdleInterval.Location = New Point(675, 47)
         textboxWLAutoRefreshIdleInterval.MaxLength = 3
@@ -2034,16 +2037,62 @@
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
         ' 
+        ' cmlistviewWL
+        ' 
+        cmlistviewWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        TipInfoEX.SetImage(cmlistviewWL, Nothing)
+        cmlistviewWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
+        cmlistviewWL.Name = "contextmenulistviewHotLinks"
+        cmlistviewWL.Size = New Size(125, 120)
+        TipInfoEX.SetText(cmlistviewWL, Nothing)
+        ' 
+        ' cmiWLMoveUp
+        ' 
+        cmiWLMoveUp.Image = My.Resources.Resources.imageMoveUp
+        cmiWLMoveUp.Name = "cmiWLMoveUp"
+        cmiWLMoveUp.Size = New Size(124, 26)
+        cmiWLMoveUp.Text = "Up"
+        ' 
+        ' cmiWLMoveDown
+        ' 
+        cmiWLMoveDown.Image = My.Resources.Resources.imageMoveDown
+        cmiWLMoveDown.Name = "cmiWLMoveDown"
+        cmiWLMoveDown.Size = New Size(124, 26)
+        cmiWLMoveDown.Text = "Down"
+        ' 
+        ' toolStripSeparator11
+        ' 
+        toolStripSeparator11.Name = "toolStripSeparator11"
+        toolStripSeparator11.Size = New Size(121, 6)
+        ' 
+        ' cmiWLNew
+        ' 
+        cmiWLNew.Image = My.Resources.Resources.imageWLNew
+        cmiWLNew.Name = "cmiWLNew"
+        cmiWLNew.Size = New Size(124, 26)
+        ' 
+        ' toolStripSeparator6
+        ' 
+        toolStripSeparator6.Name = "toolStripSeparator6"
+        toolStripSeparator6.Size = New Size(121, 6)
+        ' 
+        ' cmiWLDelete
+        ' 
+        cmiWLDelete.Image = My.Resources.Resources.imageRemove
+        cmiWLDelete.Name = "cmiWLDelete"
+        cmiWLDelete.Size = New Size(124, 26)
+        cmiWLDelete.Text = "Delete"
+        ' 
         ' Settings
         ' 
         AutoScaleMode = AutoScaleMode.None
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
-        Controls.Add(PanelAC)
         Controls.Add(PanelWL)
-        Controls.Add(PanelApp)
+        Controls.Add(PanelAC)
         Controls.Add(PanelSS)
+        Controls.Add(PanelApp)
         Controls.Add(PanelWST)
         Controls.Add(PanelHK)
         Controls.Add(PanelHC)
@@ -2078,6 +2127,7 @@
         PanelWL.PerformLayout()
         Panel1.ResumeLayout(False)
         Panel1.PerformLayout()
+        cmlistviewWL.ResumeLayout(False)
         ResumeLayout(False)
 
     End Sub
@@ -2137,7 +2187,6 @@
     Private WithEvents ChkBoxWSTShowWLTray As CheckBox
     Private WithEvents ChkBoxWSTShowWLMenu As CheckBox
     Private WithEvents ChkBoxWSTEnabled As CheckBox
-    Private WithEvents BtnSSEnabled As RadioButton
     Private WithEvents CoBoxSSStartUp As ComboBox
     Private WithEvents LblSSStartupMode As Label
     Private WithEvents ChkBoxSSEnableOnActivate As CheckBox
@@ -2179,11 +2228,8 @@
     Private WithEvents checkboxWLShowFolderPathToolTips As CheckBox
     Private WithEvents lblWLAutoRefresh As Label
     Private WithEvents btnWLRefresh As Button
-    Private WithEvents lblACAlarmChime As Label
     Private WithEvents lblACOffHourChimePath As Label
-    Private WithEvents lblACOffHourChime As Label
     Private WithEvents btnACOffHourChimeManual As Button
-    Private WithEvents lblACTopHourChime As Label
     Private WithEvents btnACAlarmCancel As Button
     Private WithEvents lblACTopHourChimePath As Label
     Private WithEvents lblACAlarmChimePath As Label
@@ -2215,12 +2261,23 @@
     Private WithEvents radiobtnACAlarmChimeExtended As RadioButton
     Private WithEvents btnACAlarmSet As Button
     Private WithEvents checkboxACAlarmRecurring As CheckBox
-    Private WithEvents LblACTimer As Label
     Private WithEvents btnACTopHourChimePlay As Button
     Private WithEvents btnACOffHourChimePlay As Button
-    Private WithEvents LblACTime As Label
     Private WithEvents picboxACClock As PictureBox
     Private WithEvents btnACAlarmChimeDefault As Button
     Private WithEvents btnACAlarmChimePlay As Button
     Private WithEvents btnACAlarmChimeManual As Button
+    Friend WithEvents BtnSSEnabled As Button
+    Friend WithEvents LblACOffHourChime As Skye.UI.Label
+    Friend WithEvents LblACTopHourChime As Skye.UI.Label
+    Friend WithEvents LblACAlarmChime As Skye.UI.Label
+    Friend WithEvents LblACTimer As Skye.UI.Label
+    Friend WithEvents LblACTime As Skye.UI.Label
+    Private WithEvents cmlistviewWL As ContextMenuStrip
+    Private WithEvents cmiWLMoveUp As ToolStripMenuItem
+    Private WithEvents cmiWLMoveDown As ToolStripMenuItem
+    Private WithEvents toolStripSeparator11 As ToolStripSeparator
+    Private WithEvents cmiWLNew As ToolStripMenuItem
+    Private WithEvents toolStripSeparator6 As ToolStripSeparator
+    Private WithEvents cmiWLDelete As ToolStripMenuItem
 End Class

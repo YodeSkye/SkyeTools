@@ -13,6 +13,7 @@ Partial Friend Class Settings
     Private suppressPageSelection As Boolean = False
     Private OFDLoadOnOSStartup As New OpenFileDialog
     Private OFDACSelectWAV As New OpenFileDialog
+    Private FBDWLFolderBrowser As New FolderBrowserDialog
 
     ' FORM EVENTS
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
@@ -56,6 +57,8 @@ Partial Friend Class Settings
         OFDACSelectWAV.Filter = "WAV Files|*.wav"
         OFDACSelectWAV.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
         OFDACSelectWAV.Title = "Select a WAV File..."
+        FBDWLFolderBrowser.Description = "Select a Folder with ShortCuts or Programs..."
+        FBDWLFolderBrowser.ShowNewFolderButton = False
         For Each thm As Skye.UI.SkyeTheme In Skye.UI.SkyeThemes.AllThemes
             CoBoxTheme.Items.Add(thm.Name)
         Next
@@ -66,10 +69,11 @@ Partial Friend Class Settings
     End Sub
     Private Sub Settings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         ShowSettings()
-        ACUpdateMute()
         SetSS()
         SetAC()
+        ACUpdateMute()
         SetWL()
+        WLShowAutoRefreshState()
     End Sub
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
@@ -80,6 +84,7 @@ Partial Friend Class Settings
         LVPageSelector.Focus()
         Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
         Skye.UI.ThemeManager.ApplyTheme(Me)
+        App.HookListViewForCMTooltip(listviewWL, TipInfoEX)
         ShowSave()
     End Sub
     Private Sub Settings_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown, PanelApp.MouseDown, PanelWST.MouseDown, PanelSS.MouseDown, PanelAC.MouseDown, PanelWL.MouseDown, PanelHC.MouseDown, PanelHK.MouseDown, PanelActions.MouseDown
@@ -203,7 +208,7 @@ Partial Friend Class Settings
             tb?.FindForm()?.ValidateChildren()
         End If
     End Sub
-    Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown
         nonNumberEntered = False
         If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
             If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
@@ -213,7 +218,7 @@ Partial Friend Class Settings
             End If
         End If
     End Sub
-    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxACAlarmTime.KeyPress, textboxACAlarmTimer.KeyPress
+    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxACAlarmTime.KeyPress, textboxACAlarmTimer.KeyPress, textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress
         If nonNumberEntered Then e.Handled = True
     End Sub
 
@@ -330,9 +335,9 @@ Partial Friend Class Settings
     Private Sub BtnSSEnabled_MouseUp(sender As Object, e As MouseEventArgs) Handles BtnSSEnabled.MouseUp
         Select Case e.Button
             Case MouseButtons.Left
-                App.FrmMain.WSTSSEnabled = Not App.FrmMain.WSTSSEnabled
+                FrmMain.WSTSSEnabled = Not FrmMain.WSTSSEnabled
             Case MouseButtons.Right
-                App.SSActivate()
+                SSActivate()
         End Select
     End Sub
     Private Sub ChkBoxSSShowIcon_Click(sender As Object, e As EventArgs) Handles ChkBoxSSShowIcon.Click
@@ -399,18 +404,18 @@ Partial Friend Class Settings
         Dim chime As String = ""
         Dim chimecount As Byte = 0
         If sender Is Me.btnACAlarmChimePlay Then
-            Me.lblACAlarmChime.ForeColor = Color.Maroon
-            Me.lblACAlarmChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
-            Me.lblACAlarmChime.Refresh()
+            Me.LblACAlarmChime.ForeColor = Color.Maroon
+            Me.LblACAlarmChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.LblACAlarmChime.Refresh()
             chime = My.App.ACAlarmChimePath
             Select Case My.App.ACAlarmChimeType
                 Case My.App.ACChimeType.Simple : chimecount = 1
                 Case Else : chimecount = 4
             End Select
         ElseIf sender Is Me.btnACTopHourChimePlay Then
-            Me.lblACTopHourChime.ForeColor = Color.Maroon
-            Me.lblACTopHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
-            Me.lblACTopHourChime.Refresh()
+            Me.LblACTopHourChime.ForeColor = Color.Maroon
+            Me.LblACTopHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.LblACTopHourChime.Refresh()
             chime = My.App.ACTopHourChimePath
             Select Case My.App.ACTopHourChimeType
                 Case My.App.ACChimeType.Simple : chimecount = 1
@@ -422,9 +427,9 @@ Partial Friend Class Settings
                     End If
             End Select
         ElseIf sender Is Me.btnACOffHourChimePlay Then
-            Me.lblACOffHourChime.ForeColor = Color.Maroon
-            Me.lblACOffHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
-            Me.lblACOffHourChime.Refresh()
+            Me.LblACOffHourChime.ForeColor = Color.Maroon
+            Me.LblACOffHourChime.Font = New Font(Me.Font, Drawing.FontStyle.Bold)
+            Me.LblACOffHourChime.Refresh()
             chime = My.App.ACOffHourChimePath
             chimecount = 1
         End If
@@ -443,15 +448,15 @@ Partial Friend Class Settings
             If sender Is Me.btnACAlarmChimePlay And My.App.ACAlarmChimeType = My.App.ACChimeType.Forever Then chimecount = Byte.MaxValue
             App.ShowMessage(My.App.Tools.AlarmChime, "** CHIME IS SOUNDING **", Nothing)
         End If
-        Me.lblACAlarmChime.ResetForeColor()
-        Me.lblACAlarmChime.ResetFont()
-        Me.lblACAlarmChime.Refresh()
-        Me.lblACTopHourChime.ResetForeColor()
-        Me.lblACTopHourChime.ResetFont()
-        Me.lblACTopHourChime.Refresh()
-        Me.lblACOffHourChime.ResetForeColor()
-        Me.lblACOffHourChime.ResetFont()
-        Me.lblACOffHourChime.Refresh()
+        Me.LblACAlarmChime.ResetForeColor()
+        Me.LblACAlarmChime.ResetFont()
+        Me.LblACAlarmChime.Refresh()
+        Me.LblACTopHourChime.ResetForeColor()
+        Me.LblACTopHourChime.ResetFont()
+        Me.LblACTopHourChime.Refresh()
+        Me.LblACOffHourChime.ResetForeColor()
+        Me.LblACOffHourChime.ResetFont()
+        Me.LblACOffHourChime.Refresh()
         Me.BtnClose.Select()
     End Sub
     Private Sub BtnACMuteClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnACMute.Click
@@ -557,6 +562,223 @@ Partial Friend Class Settings
     End Sub
 
     ' WinLinks
+    Private Sub CMlistviewWLOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmlistviewWL.Opening
+        If Me.listviewWL.SelectedIndices.Count > 0 Then
+            If Me.listviewWL.SelectedIndices(0) = 0 Then : Me.cmiWLMoveUp.Enabled = False
+            Else : Me.cmiWLMoveUp.Enabled = True
+            End If
+            If Me.listviewWL.SelectedIndices(0) = My.App.WLData.Count - 1 Then : Me.cmiWLMoveDown.Enabled = False
+            Else : Me.cmiWLMoveDown.Enabled = True
+            End If
+            Me.cmiWLNew.Text = "New (Insert Above)"
+            Me.cmiWLDelete.Enabled = True
+        Else
+            Me.cmiWLMoveUp.Enabled = False
+            Me.cmiWLMoveDown.Enabled = False
+            Me.cmiWLNew.Text = "New (Insert Last)"
+            Me.cmiWLDelete.Enabled = False
+        End If
+    End Sub
+    Private Sub CMIWLMoveMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLMoveUp.MouseUp, cmiWLMoveDown.MouseUp
+        If e.Button = MouseButtons.Left And Me.listviewWL.SelectedIndices.Count > 0 Then
+            Dim link As My.App.WLItemType = My.App.WLData(Me.listviewWL.SelectedIndices(0))
+            My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
+            Select Case CType(sender, ToolStripItem).Name
+                Case Me.cmiWLMoveUp.Name : My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0) - 1, link)
+                Case Me.cmiWLMoveDown.Name : My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0) + 1, link)
+            End Select
+            App.FrmMain.WLSetManualRefresh()
+            ShowSettingsWL()
+            SetPage("WL")
+            App.SetSave()
+        End If
+    End Sub
+    Private Sub CMIWLNewMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLNew.MouseUp
+        If e.Button = MouseButtons.Left Then WLSetNew()
+    End Sub
+    Private Sub CMIWLDeleteMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLDelete.MouseUp
+        If e.Button = MouseButtons.Left And Me.listviewWL.SelectedIndices.Count > 0 Then
+            App.FrmMain.WLSetAutoRefresh(True)
+            My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
+            App.FrmMain.WLSetManualRefresh()
+            ShowSettingsWL()
+            SetPage("WL")
+            App.SetSave()
+        End If
+    End Sub
+    Private Sub ListviewWLSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles listviewWL.SelectedIndexChanged
+        If Me.listviewWL.SelectedIndices.Count > 0 Then
+            Dim link As My.App.WLItemType = My.App.WLData(Me.listviewWL.SelectedIndices(0))
+            Me.lblWLRoot.Font = New Font(Me.Font, FontStyle.Regular)
+            If Me.listviewWL.SelectedIndices(0) = My.App.WLData.Count - 1 And My.App.WLAutoRefresh Then : Me.lblWLRoot.Text = "Root Folder (AutoRefresh Enabled)"
+            Else : Me.lblWLRoot.Text = "Root Folder"
+            End If
+            Me.textboxWLRoot.Text = link.Root
+            Me.textboxWLName.Text = link.Name
+            Me.comboboxWLSort.SelectedIndex = link.Sort - 1
+            Me.comboboxWLFolderMode.SelectedIndex = link.FolderMode
+            Me.comboboxWLFolderPlacement.SelectedIndex = link.FolderPlacement
+            If link.UseDefaultIcon Then : Me.checkboxWLUseDefaultIcon.Checked = True
+            Else : Me.checkboxWLUseDefaultIcon.Checked = False
+            End If
+            If link.ShowInMenu Then : Me.checkboxWLShowInMenu.Checked = True
+            Else : Me.checkboxWLShowInMenu.Checked = False
+            End If
+            If link.ShowInTray Then : Me.checkboxWLShowInTray.Checked = True
+            Else : Me.checkboxWLShowInTray.Checked = False
+            End If
+            If link.ShowNoMenu Then : Me.checkboxWLShowNoMenu.Checked = True
+            Else : Me.checkboxWLShowNoMenu.Checked = False
+            End If
+            If link.ShowMenuIcons Then : Me.checkboxWLShowMenuIcons.Checked = True
+            Else : Me.checkboxWLShowMenuIcons.Checked = False
+            End If
+            Me.PanelWL.Show()
+        ElseIf Me.listviewWL.FocusedItem IsNot Nothing Then : ShowSettingsWL()
+        End If
+    End Sub
+    Private Sub BtnWLRefreshClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLRefresh.Click
+        If Me.btnWLRefresh.Text = "CANCEL" Then
+            Me.btnWLRefresh.Enabled = False
+            Me.btnWLRefresh.Text = "PENDING..."
+            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Stopping File Search, Please Wait...")
+            App.FrmMain.CancelBackgroundworkerWL()
+        Else
+            App.FrmMain.WLClose(True)
+            App.FrmMain.ShowWL()
+        End If
+    End Sub
+    Private Sub BtnWLSelectFolderClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSelectFolder.Click
+        If Not String.IsNullOrEmpty(Me.textboxWLRoot.Text) Then Me.FBDWLFolderBrowser.SelectedPath = Me.textboxWLRoot.Text
+        Dim r As DialogResult = Me.FBDWLFolderBrowser.ShowDialog(Me)
+        If r = System.Windows.Forms.DialogResult.OK And Not Me.FBDWLFolderBrowser.SelectedPath = "" Then
+            Me.textboxWLRoot.Text = Me.FBDWLFolderBrowser.SelectedPath
+        ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then
+            Me.textboxWLRoot.Text = ""
+        End If
+        App.SetSave()
+        Me.textboxWLRoot.Select(Me.textboxWLRoot.Text.Length, 0)
+        Me.textboxWLRoot.Focus()
+    End Sub
+    Private Sub BtnWLSelectFolderEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSelectFolder.Enter
+        Me.textboxWLRoot.Focus()
+    End Sub
+    Private Sub BtnWLSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSet.Click
+        If String.IsNullOrEmpty(Me.textboxWLRoot.Text) Or Me.textboxWLRoot.Text.Length < 4 Then
+            Me.lblWLRoot.Font = New Font(Me.Font, FontStyle.Bold)
+            Me.textboxWLRoot.Select()
+        Else
+            Dim link As New My.App.WLItemType With {
+                .Root = Me.textboxWLRoot.Text,
+                .Name = Me.textboxWLName.Text}
+            'Edit
+            If Me.listviewWL.SelectedIndices.Count > 0 Then
+                If Me.comboboxWLSort.SelectedIndex = -1 Then Me.comboboxWLSort.SelectedIndex = 0
+                link.Sort = CType(Me.comboboxWLSort.SelectedIndex + 1, SortOrder)
+                If Me.comboboxWLFolderMode.SelectedIndex = -1 Then Me.comboboxWLFolderMode.SelectedIndex = 0
+                link.FolderMode = CType(Me.comboboxWLFolderMode.SelectedIndex, My.App.WLFolderMode)
+                If Me.comboboxWLFolderPlacement.SelectedIndex = -1 Then Me.comboboxWLFolderPlacement.SelectedIndex = 0
+                link.FolderPlacement = CType(Me.comboboxWLFolderPlacement.SelectedIndex, My.App.WLFolderPlacement)
+                link.UseDefaultIcon = Me.checkboxWLUseDefaultIcon.Checked
+                link.ShowInMenu = Me.checkboxWLShowInMenu.Checked
+                link.ShowInTray = Me.checkboxWLShowInTray.Checked
+                link.ShowNoMenu = Me.checkboxWLShowNoMenu.Checked
+                link.ShowMenuIcons = Me.checkboxWLShowMenuIcons.Checked
+                link.RefreshData = True
+                link.RefreshMenu = True
+                If Not (link.ShowInMenu = My.App.WLData(Me.listviewWL.SelectedIndices(0)).ShowInMenu And link.ShowInTray = My.App.WLData(Me.listviewWL.SelectedIndices(0)).ShowInTray And link.Root = My.App.WLData(Me.listviewWL.SelectedIndices(0)).Root And link.Name = My.App.WLData(Me.listviewWL.SelectedIndices(0)).Name) Then App.FrmMain.WLClose(True)
+                My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
+                My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0), link)
+                If App.FrmMain.WLMenuDataCount = 0 Then
+                    App.FrmMain.WLSetManualRefresh()
+                Else
+                    App.FrmMain.ShowWL()
+                End If
+
+                'New
+            Else
+                If Me.comboboxWLSort.SelectedIndex = -1 Then Me.comboboxWLSort.SelectedIndex = 0
+                link.Sort = CType(Me.comboboxWLSort.SelectedIndex + 1, SortOrder)
+                If Me.comboboxWLFolderMode.SelectedIndex = -1 Then Me.comboboxWLFolderMode.SelectedIndex = 0
+                link.FolderMode = CType(Me.comboboxWLFolderMode.SelectedIndex, My.App.WLFolderMode)
+                If Me.comboboxWLFolderPlacement.SelectedIndex = -1 Then Me.comboboxWLFolderPlacement.SelectedIndex = 0
+                link.FolderPlacement = CType(Me.comboboxWLFolderPlacement.SelectedIndex, My.App.WLFolderPlacement)
+                If App.FrmMain.WLInsertIndex = -1 Then App.FrmMain.WLInsertIndex = My.App.WLData.Count
+                link.UseDefaultIcon = Me.checkboxWLUseDefaultIcon.Checked
+                link.ShowInMenu = Me.checkboxWLShowInMenu.Checked
+                link.ShowInTray = Me.checkboxWLShowInTray.Checked
+                link.ShowNoMenu = Me.checkboxWLShowNoMenu.Checked
+                link.ShowMenuIcons = Me.checkboxWLShowMenuIcons.Checked
+                My.App.WLData.Insert(App.FrmMain.WLInsertIndex, link)
+                App.FrmMain.WLSetManualRefresh()
+            End If
+            App.SetSave()
+        End If
+    End Sub
+    Private Sub BtnWLCancelClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLCancel.Click
+        ShowSettingsWL()
+    End Sub
+    Private Sub CheckboxWLShowFileInfoToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFileInfoToolTips.Click
+        My.App.WLShowFileInfoToolTips = Not My.App.WLShowFileInfoToolTips
+        App.SetSave()
+    End Sub
+    Private Sub CheckboxWLShowFilePathToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFilePathToolTips.Click
+        My.App.WLShowFilePathToolTips = Not My.App.WLShowFilePathToolTips
+        App.SetSave()
+    End Sub
+    Private Sub CheckboxWLShowFolderPathToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFolderPathToolTips.Click
+        My.App.WLShowFolderPathToolTips = Not My.App.WLShowFolderPathToolTips
+        App.SetSave()
+    End Sub
+    Private Sub CheckboxWLAutoRefreshClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLAutoRefresh.Click
+        My.App.WLAutoRefresh = Not My.App.WLAutoRefresh
+        App.FrmMain.WLSetAutoRefresh()
+        ShowSettingsWL()
+        App.SetSave()
+    End Sub
+    Private Sub TextboxWLStartUpDelayValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLStartUpDelay.Validating
+        If Int(Val(Me.textboxWLStartUpDelay.Text)) < 5 And Int(Val(Me.textboxWLStartUpDelay.Text)) <> 0 Then Me.textboxWLStartUpDelay.Text = "5"
+        If Int(Val(Me.textboxWLStartUpDelay.Text)) > 300 Then Me.textboxWLStartUpDelay.Text = "300"
+    End Sub
+    Private Sub TextboxWLStartUpDelayValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLStartUpDelay.Validated
+        My.App.WLStartUpDelay = CShort(Val(Me.textboxWLStartUpDelay.Text))
+        Me.textboxWLStartUpDelay.SelectAll()
+        App.SetSave()
+    End Sub
+    Private Sub TextboxWLMaxLinksPerFolderValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLMaxLinksPerFolder.Validating
+        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) < 1 Then Me.textboxWLMaxLinksPerFolder.Text = "1"
+        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) > 100 Then Me.textboxWLMaxLinksPerFolder.Text = "100"
+    End Sub
+    Private Sub TextboxWLMaxLinksPerFolderValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLMaxLinksPerFolder.Validated
+        My.App.WLMaxLinksPerFolder = CByte(Val(Me.textboxWLMaxLinksPerFolder.Text))
+        Me.textboxWLMaxLinksPerFolder.SelectAll()
+        App.SetSave()
+    End Sub
+    Private Sub TextboxWLAutoRefreshIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshInterval.Validating
+        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) < 1 Then Me.textboxWLAutoRefreshInterval.Text = "1"
+        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) > 90 Then Me.textboxWLAutoRefreshInterval.Text = "90"
+    End Sub
+    Private Sub TextboxWLAutoRefreshIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshInterval.Validated
+        If Not My.App.WLAutoRefreshInterval = Int(Val(Me.textboxWLAutoRefreshInterval.Text)) Then
+            My.App.WLAutoRefreshInterval = CByte(Val(Me.textboxWLAutoRefreshInterval.Text))
+            Me.textboxWLAutoRefreshInterval.SelectAll()
+            App.FrmMain.WLSetAutoRefresh()
+            App.SetSave()
+        End If
+    End Sub
+    Private Sub TextboxWLAutoRefreshIdleIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshIdleInterval.Validating
+        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) < 20 Then Me.textboxWLAutoRefreshIdleInterval.Text = "20"
+        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) > 240 Then Me.textboxWLAutoRefreshIdleInterval.Text = "240"
+    End Sub
+    Private Sub TextboxWLAutoRefreshIdleIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshIdleInterval.Validated
+        If Not My.App.WLAutoRefreshIdleInterval = Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) Then
+            My.App.WLAutoRefreshIdleInterval = CByte(Val(Me.textboxWLAutoRefreshIdleInterval.Text))
+            Me.textboxWLAutoRefreshIdleInterval.SelectAll()
+            App.FrmMain.WLSetAutoRefresh()
+            App.SetSave()
+        End If
+    End Sub
+
     ' HotClicks
     ' HotKeys
 
@@ -629,10 +851,10 @@ Partial Friend Class Settings
     Friend Sub UpdateSettings() 'Settings that can change on other forms
         If My.App.WSTSSToolEnabled Then
             If App.FrmMain.WSTSSEnabled Then
-                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSS16
+                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSS48
                 Me.TipInfoEX.SetText(Me.BtnSSEnabled, "Screen Saver ENABLED")
             Else
-                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled16
+                Me.BtnSSEnabled.Image = My.Resources.Resources.ImageWSTSSDisabled48
                 Me.TipInfoEX.SetText(Me.BtnSSEnabled, "Screen Saver DISABLED")
             End If
             Me.TipInfoEX.SetText(Me.BtnSSEnabled, Me.TipInfoEX.GetText(Me.BtnSSEnabled) + vbCr + "RightClick = Activate")
@@ -801,6 +1023,48 @@ Partial Friend Class Settings
         End If
     End Sub
     Private Sub ShowSettingsWL()
+        Me.PanelWL.Hide()
+        Me.listviewWL.Clear()
+        Me.lblWLRoot.ResetFont()
+        Me.textboxWLRoot.ResetText()
+        Me.textboxWLRoot.Select()
+        Me.textboxWLName.ResetText()
+        Me.comboboxWLSort.SelectedIndex = -1
+        Me.comboboxWLFolderMode.SelectedIndex = -1
+        Me.comboboxWLFolderPlacement.SelectedIndex = -1
+        Me.checkboxWLUseDefaultIcon.Checked = False
+        Me.checkboxWLShowInMenu.Checked = False
+        Me.checkboxWLShowInTray.Checked = False
+        Me.checkboxWLShowFilePathToolTips.Checked = My.App.WLShowFilePathToolTips
+        Me.checkboxWLShowFileInfoToolTips.Checked = My.App.WLShowFileInfoToolTips
+        Me.checkboxWLShowFolderPathToolTips.Checked = My.App.WLShowFolderPathToolTips
+        Me.textboxWLStartUpDelay.Text = My.App.WLStartUpDelay.ToString
+        Me.textboxWLMaxLinksPerFolder.Text = My.App.WLMaxLinksPerFolder.ToString
+        Me.checkboxWLAutoRefresh.Checked = My.App.WLAutoRefresh
+        Me.textboxWLAutoRefreshInterval.Text = My.App.WLAutoRefreshInterval.ToString
+        Me.textboxWLAutoRefreshIdleInterval.Text = My.App.WLAutoRefreshIdleInterval.ToString
+        Me.listviewWL.Columns.Add("Path", 331) '354 = Full ListView Width
+        For index As Integer = 0 To My.App.WLData.Count - 1
+            Dim link As My.App.WLItemType = My.App.WLData(index)
+            Dim split As String() = link.Root.Split(CChar("\"))
+            Dim item As New ListViewItem With {.Font = App.MenuFont}
+            If link.Root.Length > 60 Then
+                item.Text = "...\" + split(split.Length - 1)
+                item.ToolTipText = link.Root
+            Else : item.Text = link.Root
+            End If
+            If index = My.App.WLData.Count - 1 And My.App.WLAutoRefresh And (link.ShowInMenu Or link.ShowInTray) Then
+                item.Font = New Font(item.Font, FontStyle.Bold)
+                If Not String.IsNullOrEmpty(item.ToolTipText) Then item.ToolTipText &= Environment.NewLine & Environment.NewLine
+                item.ToolTipText &= "AutoRefresh Enabled"
+            End If
+            If Not link.ShowInMenu And Not link.ShowInTray Then
+                item.ForeColor = SystemColors.GrayText
+                If Not String.IsNullOrEmpty(item.ToolTipText) Then item.ToolTipText &= Environment.NewLine & Environment.NewLine
+                item.ToolTipText &= "WinLink InActive on both Menu & Tray"
+            End If
+            Me.listviewWL.Items.Add(item)
+        Next
     End Sub
     Private Sub ShowSettingsHC()
     End Sub
@@ -858,6 +1122,23 @@ Partial Friend Class Settings
         If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.PanelWL.Enabled = True
         Else : Me.PanelWL.Enabled = False
         End If
+    End Sub
+    Friend Sub WLShowAutoRefreshState()
+        Me.lblWLAutoRefresh.Visible = App.FrmMain.WLShowAutoRefresh
+    End Sub
+    Private Sub WLSetNew()
+        If Me.listviewWL.SelectedIndices.Count = 0 Then : App.FrmMain.WLInsertIndex = -1
+        Else : App.FrmMain.WLInsertIndex = Me.listviewWL.SelectedIndices(0)
+        End If
+        ShowSettingsWL()
+        Me.PanelWL.Show()
+        Me.checkboxWLShowInMenu.Checked = True
+        Me.checkboxWLShowInTray.Checked = True
+        Me.checkboxWLShowNoMenu.Checked = False
+        Me.checkboxWLShowMenuIcons.Checked = True
+        Me.lblWLRoot.ResetFont()
+        Me.lblWLRoot.Text = "Root Folder"
+        Me.textboxWLRoot.Select()
     End Sub
     Private Sub CheckMove(ByRef location As Point)
         Dim screen As Rectangle = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
