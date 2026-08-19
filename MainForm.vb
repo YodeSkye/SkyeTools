@@ -1051,6 +1051,12 @@ Partial Friend Class MainForm
     Private WithEvents TimerWLAutoRefreshIdle As New Timer
     Private WithEvents WatcherWLAutoRefresh As New IO.FileSystemWatcher
     Private WithEvents BackgroundworkerWL As New System.ComponentModel.BackgroundWorker
+    Friend ReadOnly Property IsWLBackgroundWorkerBusy As Boolean
+        Get
+            Return BackgroundworkerWL.IsBusy
+        End Get
+    End Property
+
     Private Const WLMaxItems As Integer = 2000
     Private Structure WLMenuDataItem
         Public Text As String
@@ -1060,7 +1066,7 @@ Partial Friend Class MainForm
         Public SubMenu As Collections.Generic.List(Of WLMenuDataItem)
     End Structure
     Private WLMenuData As New Collections.Generic.List(Of Collections.Generic.List(Of WLMenuDataItem))
-    Public ReadOnly Property WLMenuDataCount As Integer
+    Friend ReadOnly Property WLMenuDataCount As Integer
         Get
             Return WLMenuData.Count
         End Get
@@ -1086,7 +1092,7 @@ Partial Friend Class MainForm
 
     Private _WLInsertIndex As Integer
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
-    Public Property WLInsertIndex As Integer
+    Friend Property WLInsertIndex As Integer
         Get
             Return _WLInsertIndex
         End Get
@@ -1104,6 +1110,7 @@ Partial Friend Class MainForm
             Return _WLShowAutoRefresh
         End Get
     End Property
+
     ' Control Events
     Private Sub ListviewWLSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles listviewWL.SelectedIndexChanged
         If Me.listviewWL.SelectedIndices.Count > 0 Then
@@ -1969,14 +1976,7 @@ Partial Friend Class MainForm
     End Sub
     Friend Sub WLSetManualRefresh()
         WLClose(True)
-        ShowSettings(My.App.Tools.WinLinks)
-        If My.App.WLData.Count > 0 Then
-            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
-            Me.btnWLRefresh.Enabled = True
-        Else
-            Me.btnWLRefresh.Enabled = False
-            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
-        End If
+        App.FrmSettings?.WLSetManualRefresh()
     End Sub
     Private Sub WLSetNew()
         If Me.listviewWL.SelectedIndices.Count = 0 Then : WLInsertIndex = -1
@@ -1993,7 +1993,6 @@ Partial Friend Class MainForm
         Me.textboxWLRoot.Select()
     End Sub
     Private Sub WLSetSettingsState(state As Boolean)
-        Me.listviewWL.Enabled = state
         For Each cmi As ToolStripMenuItem In WLMenus
             For Each mi As ToolStripItem In cmi.DropDown.Items
                 If mi.Text = cmi.Text + " Menu" Then
@@ -2012,22 +2011,7 @@ Partial Friend Class MainForm
                 End If
             Next
         Next
-        If WLStartUp Then : Me.btnWLRefresh.Enabled = False
-        Else : Me.btnWLRefresh.Enabled = True
-        End If
-        If state Then
-            Me.btnSettingsRestore.Enabled = True
-            Me.btnWLRefresh.Text = "Full Refresh"
-            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Refresh ALL Data & Menus")
-            Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap
-            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
-        Else
-            Me.btnSettingsRestore.Enabled = False
-            Me.btnWLRefresh.Text = "CANCEL"
-            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Cancel File Search")
-            Me.btnWLRefresh.Image = My.Resources.Resources.imageClose
-            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
-        End If
+        App.FrmSettings?.WLSetSettingsState(state)
     End Sub
     Private Sub WLFindMenuDataItem(dataset As Collections.Generic.List(Of WLMenuDataItem), file As String, WinLinkIndex As Integer, FoundWinLinkIndices As Collections.Generic.List(Of Integer))
         For Each dataitem As WLMenuDataItem In dataset

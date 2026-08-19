@@ -1595,7 +1595,7 @@
         TipInfoEX.SetImage(PanelWLItem, Nothing)
         PanelWLItem.Location = New Point(13, 318)
         PanelWLItem.Name = "PanelWLItem"
-        PanelWLItem.Size = New Size(693, 205)
+        PanelWLItem.Size = New Size(706, 205)
         PanelWLItem.TabIndex = 181
         TipInfoEX.SetText(PanelWLItem, Nothing)
         PanelWLItem.Visible = False
@@ -1604,7 +1604,7 @@
         ' 
         checkboxWLShowNoMenu.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Location = New Point(500, 117)
+        checkboxWLShowNoMenu.Location = New Point(546, 107)
         checkboxWLShowNoMenu.Name = "checkboxWLShowNoMenu"
         checkboxWLShowNoMenu.Size = New Size(136, 25)
         checkboxWLShowNoMenu.TabIndex = 66
@@ -1626,7 +1626,7 @@
         ' 
         checkboxWLShowMenuIcons.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Location = New Point(500, 93)
+        checkboxWLShowMenuIcons.Location = New Point(546, 88)
         checkboxWLShowMenuIcons.Name = "checkboxWLShowMenuIcons"
         checkboxWLShowMenuIcons.Size = New Size(152, 25)
         checkboxWLShowMenuIcons.TabIndex = 64
@@ -1638,7 +1638,7 @@
         ' 
         checkboxWLShowInTray.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Location = New Point(500, 56)
+        checkboxWLShowInTray.Location = New Point(546, 57)
         checkboxWLShowInTray.Name = "checkboxWLShowInTray"
         checkboxWLShowInTray.Size = New Size(118, 25)
         checkboxWLShowInTray.TabIndex = 62
@@ -1650,7 +1650,7 @@
         ' 
         checkboxWLShowInMenu.AutoSize = True
         TipInfoEX.SetImage(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Location = New Point(533, 37)
+        checkboxWLShowInMenu.Location = New Point(546, 37)
         checkboxWLShowInMenu.Name = "checkboxWLShowInMenu"
         checkboxWLShowInMenu.Size = New Size(129, 25)
         checkboxWLShowInMenu.TabIndex = 60

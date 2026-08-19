@@ -74,6 +74,7 @@ Partial Friend Class Settings
         ACUpdateMute()
         SetWL()
         WLShowAutoRefreshState()
+        WLSetSettingsState(Not App.FrmMain.IsWLBackgroundWorkerBusy)
     End Sub
     Private Sub Settings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
 #If DEBUG Then
@@ -588,7 +589,6 @@ Partial Friend Class Settings
                 Case Me.cmiWLMoveDown.Name : My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0) + 1, link)
             End Select
             App.FrmMain.WLSetManualRefresh()
-            ShowSettingsWL()
             App.SetSave()
         End If
     End Sub
@@ -600,7 +600,6 @@ Partial Friend Class Settings
             App.FrmMain.WLSetAutoRefresh(True)
             My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
             App.FrmMain.WLSetManualRefresh()
-            ShowSettingsWL()
             App.SetSave()
         End If
     End Sub
@@ -1123,6 +1122,35 @@ Partial Friend Class Settings
     End Sub
     Friend Sub WLShowAutoRefreshState()
         Me.lblWLAutoRefresh.Visible = App.FrmMain.WLShowAutoRefresh
+    End Sub
+    Friend Sub WLSetSettingsState(state As Boolean)
+        Me.listviewWL.Enabled = state
+        If App.FrmMain.WLStartUp Then : Me.btnWLRefresh.Enabled = False
+        Else : Me.btnWLRefresh.Enabled = True
+        End If
+        If state Then
+            Me.BtnRestoreSettings.Enabled = True
+            Me.btnWLRefresh.Text = "Full Refresh"
+            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Refresh ALL Data & Menus")
+            Me.btnWLRefresh.Image = My.Resources.Resources.imageSwap
+            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
+        Else
+            Me.BtnRestoreSettings.Enabled = False
+            Me.btnWLRefresh.Text = "CANCEL"
+            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Cancel File Search")
+            Me.btnWLRefresh.Image = My.Resources.Resources.imageClose
+            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
+        End If
+    End Sub
+    Friend Sub WLSetManualRefresh()
+        ShowSettingsWL()
+        If App.WLData.Count > 0 Then
+            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
+            Me.btnWLRefresh.Enabled = True
+        Else
+            Me.btnWLRefresh.Enabled = False
+            Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Regular)
+        End If
     End Sub
     Private Sub WLSetNew()
         If Me.listviewWL.SelectedIndices.Count = 0 Then : App.FrmMain.WLInsertIndex = -1
