@@ -1,10 +1,6 @@
 
 Imports System.ComponentModel
-Imports System.Data.Common
 Imports System.IO
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
-Imports Microsoft.VisualBasic.Devices
 Imports SkyeTools.My
 
 Partial Friend Class MainForm
