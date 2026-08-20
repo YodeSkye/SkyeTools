@@ -1819,7 +1819,7 @@ Partial Friend Class MainForm
 #If DEBUG Then
                         Me.Close()
 #Else
-						HideForm()
+                        Me.Hide()
 #End If
                     Case Else : MyBase.WndProc(m)
                 End Select
