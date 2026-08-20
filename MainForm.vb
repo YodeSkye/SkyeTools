@@ -23,7 +23,6 @@ Partial Friend Class MainForm
     Private Overloads Sub ShowSettings()
         UpdateWST()
         Me.SuspendLayout()
-        ShowSettingsHC()
         ShowSettingsHK()
         Me.ResumeLayout()
         Me.btnClose.Select()
@@ -35,27 +34,11 @@ Partial Friend Class MainForm
             Me.SuspendLayout()
 
             Select Case tool
-                Case My.App.Tools.HotClicks : ShowSettingsHC()
                 Case My.App.Tools.HotKeys : ShowSettingsHK()
             End Select
             Me.ResumeLayout()
             Me.btnClose.Select()
         End If
-    End Sub
-    Private Sub ShowSettingsHC()
-        Me.comboboxHCLeft.Items.Clear()
-        Me.comboboxHCDouble.Items.Clear()
-        Me.comboboxHCMiddle.Items.Clear()
-        Me.comboboxHCRight.Items.Clear()
-
-        For Each action As My.App.HCActionType In My.App.HCActions
-            If Not action.Name = My.App.HCAction.Menu Then Me.comboboxHCLeft.Items.Add(action.Description)
-            If Not action.Name = My.App.HCAction.Menu Then Me.comboboxHCDouble.Items.Add(action.Description)
-            If Not action.Name = My.App.HCAction.Menu Then Me.comboboxHCMiddle.Items.Add(action.Description)
-            Me.comboboxHCRight.Items.Add(action.Description)
-        Next
-        Me.radiobtnHCWST.Checked = True
-        HCShowActions(My.App.TrayTools.WorkSpaceTools)
     End Sub
     Private Sub ShowSettingsHK()
         Me.lblHKWSTLockWorkSpace.Text = My.App.HKWSTLockWorkSpace.Description
@@ -172,7 +155,7 @@ Partial Friend Class MainForm
         If e.Button = MouseButtons.Left Then App.ShowClock()
     End Sub
     Private Sub CMIWSTLockMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLock.MouseUp
-        If e.Button = MouseButtons.Left Then WSTLockWorkSpace()
+        If e.Button = MouseButtons.Left Then App.LockWorkSpace()
     End Sub
     Private Sub CMIWSTLogOffMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLogOff.MouseUp
         If e.Button = MouseButtons.Left Then
@@ -351,28 +334,20 @@ Partial Friend Class MainForm
         Else : Me.cmseparatorWSTSettings.Visible = False
         End If
     End Sub
-    Private Sub WSTLockWorkSpace(Optional hcmode As Boolean = False)
-        If My.App.WSTShowLockWorkSpace Then
-            If hcmode AndAlso My.App.WSTSSEnableOnActivate Then
-                WSTSSEnabled = True
-            End If
-            Skye.WinAPI.LockWorkStation()
-        End If
-    End Sub
 
 #End Region
 #Region "ScreenSaver (SS)"
 
     ' Declarations
-    Private _wSTSSEnabled As Boolean? = Nothing
+    Private _WSTSSEnabled As Boolean? = Nothing
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend Property WSTSSEnabled As Boolean
         Get
-            Return _wSTSSEnabled.GetValueOrDefault(False)
+            Return _WSTSSEnabled.GetValueOrDefault(False)
         End Get
         Set(value As Boolean)
-            If Not _wSTSSEnabled.HasValue OrElse _wSTSSEnabled.Value <> value Then
-                _wSTSSEnabled = value
+            If Not _WSTSSEnabled.HasValue OrElse _WSTSSEnabled.Value <> value Then
+                _WSTSSEnabled = value
                 WSTSSSet()
             End If
         End Set
@@ -682,18 +657,18 @@ Partial Friend Class MainForm
     Private Sub CMIWLMenusMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
         Dim senderCMI As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Select Case e.Button
-            Case MouseButtons.Left : HCPerformAction(My.App.HCWLLeft, senderCMI.Tag)
+            Case MouseButtons.Left : App.HCPerformAction(My.App.HCWLLeft, senderCMI.Tag)
             Case MouseButtons.Right : WLShowItemSubMenu(senderCMI.Text, My.App.WLData(CInt(senderCMI.Tag)).Root)
         End Select
     End Sub
     Private Sub CMIWLRootMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-        If e.Button = MouseButtons.Left Then WLStartLink(My.App.WLData(CInt(CType(sender, ToolStripMenuItem).Tag)).Root)
+        If e.Button = MouseButtons.Left Then App.StartLink(My.App.WLData(CInt(CType(sender, ToolStripMenuItem).Tag)).Root)
     End Sub
     Private Sub CMIWLMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
         Dim senderCMI As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Select Case e.Button
             Case MouseButtons.Left
-                WLStartLink(senderCMI.Tag.ToString)
+                App.StartLink(senderCMI.Tag.ToString)
             Case MouseButtons.Right : WLShowItemSubMenu(senderCMI.Text, senderCMI.Tag.ToString)
         End Select
     End Sub
@@ -1259,30 +1234,6 @@ Partial Friend Class MainForm
             End If
         End Try
     End Sub
-    Private Sub WLStartLink(ByRef link As String)
-        If App.WSTShowWLMenu Or App.WSTShowWLTray Then
-            Try
-                Dim p As Diagnostics.Process
-                Dim pi As New Diagnostics.ProcessStartInfo
-                If IO.Directory.Exists(link) Then
-                    pi.UseShellExecute = True
-                    pi.FileName = "EXPLORER.EXE"
-                    pi.Arguments = "/ROOT," + """" + link + """"
-                    p = Diagnostics.Process.Start(pi)
-                Else
-                    pi.UseShellExecute = True
-                    pi.FileName = link
-                    p = Diagnostics.Process.Start(pi)
-                End If
-                p?.Dispose()
-                p = Nothing
-                pi = Nothing
-            Catch ex As Exception
-                App.ShowMessage(App.Tools.WinLinks, Nothing, "Cannot Start " & link.ToUpper & ", Please Check Your Settings And Try Again.")
-                App.WriteToLog(App.Tools.WinLinks, "Unable to start " + link.ToUpper + Environment.NewLine + ex.ToString)
-            End Try
-        End If
-    End Sub
     Private Sub WLWatcher(root As String, refreshdata As Boolean)
         Try
             TimerWLAutoRefreshIdle.Stop()
@@ -1505,15 +1456,15 @@ Partial Friend Class MainForm
                 End If
             Case MouseButtons.Middle
                 Select Case senderName
-                    Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTMiddle)
-                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverMiddle)
-                    Case Else : HCPerformAction(My.App.HCWLMiddle, CType(sender, NotifyIcon).Tag)
+                    Case Me.notifyiconWST.Tag.ToString : App.HCPerformAction(My.App.HCWSTMiddle)
+                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : App.HCPerformAction(My.App.HCWSTScreenSaverMiddle)
+                    Case Else : App.HCPerformAction(My.App.HCWLMiddle, CType(sender, NotifyIcon).Tag)
                 End Select
             Case MouseButtons.Right
                 Select Case senderName
-                    Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTRight)
-                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverRight)
-                    Case Else : HCPerformAction(My.App.HCWLRight)
+                    Case Me.notifyiconWST.Tag.ToString : App.HCPerformAction(My.App.HCWSTRight)
+                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : App.HCPerformAction(My.App.HCWSTScreenSaverRight)
+                    Case Else : App.HCPerformAction(My.App.HCWLRight)
                 End Select
         End Select
     End Sub
@@ -1523,53 +1474,23 @@ Partial Friend Class MainForm
     Private Sub CMWSTSSOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmWSTScreenSaver.Opening
         If Not My.App.HCWSTScreenSaverRight = My.App.HCAction.Menu Then e.Cancel = True
     End Sub
-    Private Sub RadiobtnHCSettingsClick(ByVal sender As Object, ByVal e As EventArgs) Handles radiobtnHCWSTSS.Click, radiobtnHCWST.Click, radiobtnHCWL.Click
-        If radiobtnHCWST.Checked Then : HCShowActions(TrayTools.WorkSpaceTools)
-        ElseIf radiobtnHCWL.Checked Then : HCShowActions(TrayTools.WinLinks)
-        ElseIf radiobtnHCWSTSS.Checked Then : HCShowActions(TrayTools.ScreenSaver)
-        End If
-    End Sub
-    Private Sub ComboboxHCSettingsSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles comboboxHCRight.SelectedIndexChanged, comboboxHCMiddle.SelectedIndexChanged, comboboxHCLeft.SelectedIndexChanged, comboboxHCDouble.SelectedIndexChanged
-        Select Case CType(sender, System.Windows.Forms.ComboBox).Name
-            Case Me.comboboxHCLeft.Name
-                If Me.radiobtnHCWST.Checked Then : My.App.HCWSTLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
-                End If
-            Case Me.comboboxHCDouble.Name
-                If Me.radiobtnHCWST.Checked Then : My.App.HCWSTDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverDouble = CType(HCFindActionIndex(Me.comboboxHCDouble.SelectedItem.ToString), My.App.HCAction)
-                End If
-            Case Me.comboboxHCMiddle.Name
-                If Me.radiobtnHCWST.Checked Then : My.App.HCWSTMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverMiddle = CType(HCFindActionIndex(Me.comboboxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-                End If
-            Case Me.comboboxHCRight.Name
-                If Me.radiobtnHCWST.Checked Then : My.App.HCWSTRight = CType(HCFindActionIndex(Me.comboboxHCRight.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.radiobtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverRight = CType(HCFindActionIndex(Me.comboboxHCRight.SelectedItem.ToString), My.App.HCAction)
-                End If
-        End Select
-    End Sub
 
     'Handlers
     Private Sub TimerHCTick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerHC.Tick
         HCInterval += 100
         If HCInterval >= SystemInformation.DoubleClickTime Then
             TimerHC.Stop()
-
             If HCDoubleClick Then
                 Select Case HCSender
-                    Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTDouble)
-                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverDouble)
-                    Case Else : Try : HCPerformAction(My.App.HCWLDouble, CType(HCSender, Integer)) : Catch : End Try
+                    Case Me.notifyiconWST.Tag.ToString : App.HCPerformAction(My.App.HCWSTDouble)
+                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : App.HCPerformAction(My.App.HCWSTScreenSaverDouble)
+                    Case Else : Try : App.HCPerformAction(My.App.HCWLDouble, CType(HCSender, Integer)) : Catch : End Try
                 End Select
             Else
                 Select Case HCSender
-                    Case Me.notifyiconWST.Tag.ToString : HCPerformAction(My.App.HCWSTLeft)
-                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : HCPerformAction(My.App.HCWSTScreenSaverLeft)
-                    Case Else : Try : HCPerformAction(My.App.HCWLLeft, CType(HCSender, Integer)) : Catch : End Try
+                    Case Me.notifyiconWST.Tag.ToString : App.HCPerformAction(My.App.HCWSTLeft)
+                    Case Me.notifyiconWSTScreenSaver.Tag.ToString : App.HCPerformAction(My.App.HCWSTScreenSaverLeft)
+                    Case Else : Try : App.HCPerformAction(My.App.HCWLLeft, CType(HCSender, Integer)) : Catch : End Try
                 End Select
             End If
             HCResetTimer()
@@ -1577,85 +1498,12 @@ Partial Friend Class MainForm
     End Sub
 
     'Procedures
-    Private Sub HCPerformAction(action As My.App.HCAction, Optional argument As Object = Nothing)
-        Select Case action
-            Case My.App.HCAction.WLNew
-                If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
-                    App.ShowSettings("WL")
-                    App.FrmSettings.WLSetNew()
-                End If
-            Case My.App.HCAction.WLEdit
-                If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
-                    If argument Is Nothing Then argument = 0
-                    App.ShowSettings("WL")
-                    App.FrmSettings.WLEdit(CInt(argument))
-                End If
-            Case My.App.HCAction.WLOpenRoot
-                If argument Is Nothing Then argument = 0
-                WLStartLink(My.App.WLData(CInt(argument)).Root)
-            Case My.App.HCAction.WLRefresh
-                If argument Is Nothing Then argument = My.App.WLData.Count - 1
-                Dim link As My.App.WLItemType = My.App.WLData(CInt(argument))
-                link.RefreshData = True
-                link.RefreshMenu = True
-                My.App.WLData(CInt(argument)) = link
-                ShowWL()
-            Case My.App.HCAction.WSTLockWorkSpace
-                WSTLockWorkSpace(True)
-            Case My.App.HCAction.WSTScreenSaverActivate
-                App.SSActivate()
-            Case My.App.HCAction.WSTScreenSaverDisable
-                WSTSSEnabled = Not WSTSSEnabled
-            Case My.App.HCAction.WSTClock
-                App.ShowClock()
-            Case My.App.HCAction.ShowSettings
-                App.ShowSettings()
-            Case My.App.HCAction.ShowSettingsWST
-                App.ShowSettings("WST")
-            Case My.App.HCAction.ShowSettingsWSTSS
-                App.ShowSettings("SS")
-            Case My.App.HCAction.ShowSettingsWL
-                App.ShowSettings("WL")
-            Case My.App.HCAction.ShowSettingsAC
-                App.ShowSettings("AC")
-            Case My.App.HCAction.ShowSettingsHC
-                App.ShowSettings("HC")
-            Case My.App.HCAction.ShowSettingsHK
-                App.ShowSettings("HK")
-        End Select
-    End Sub
-    Private Sub HCShowActions(tool As My.App.TrayTools)
-        Me.comboboxHCRight.Enabled = True
-        Select Case tool
-            Case My.App.TrayTools.WorkSpaceTools
-                Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWSTLeft).Description)
-                Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTDouble).Description)
-                Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTMiddle).Description)
-                Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTRight).Description)
-            Case My.App.TrayTools.WinLinks
-                Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWLLeft).Description)
-                Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWLDouble).Description)
-                Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWLMiddle).Description)
-                Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCWLRight).Description)
-                Me.comboboxHCRight.Enabled = False
-            Case My.App.TrayTools.ScreenSaver
-                Me.comboboxHCLeft.SelectedIndex = Me.comboboxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverLeft).Description)
-                Me.comboboxHCDouble.SelectedIndex = Me.comboboxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverDouble).Description)
-                Me.comboboxHCMiddle.SelectedIndex = Me.comboboxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverMiddle).Description)
-                Me.comboboxHCRight.SelectedIndex = Me.comboboxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverRight).Description)
-        End Select
-    End Sub
     Private Sub HCResetTimer()
         HCSender = ""
         HCInterval = 0
         HCFirstClick = True
         HCDoubleClick = False
     End Sub
-    Private Function HCFindActionIndex(description As String) As Integer
-        For index As Integer = 0 To My.App.HCActions.Count - 1 : If My.App.HCActions(index).Description = description Then Return index
-        Next
-        Return 0
-    End Function
 
 #End Region
 #Region "HotKeys(HK)"
@@ -1782,10 +1630,10 @@ Partial Friend Class MainForm
     End Sub
     Private Sub HKPerformAction(hotkey As Integer)
         Select Case hotkey
-            Case My.App.HKWSTLockWorkSpace.WinID : WSTLockWorkSpace()
+            Case My.App.HKWSTLockWorkSpace.WinID : App.LockWorkSpace()
             Case My.App.HKWSTScreenSaver.WinID : App.SSActivate(True)
             Case My.App.HKWSTClock.WinID : App.ShowClock()
-            Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then WLStartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
+            Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then App.StartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
         End Select
     End Sub
     Private Sub HKGenerateUsedKeyList()
@@ -1860,19 +1708,10 @@ Partial Friend Class MainForm
             .ColorDepth = ColorDepth.Depth32Bit,
             .ImageSize = New Size(16, 16),
             .TransparentColor = System.Drawing.Color.Transparent}
-        Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.ImageHC16)
         Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
         Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
-        Me.tabpageAC.Text = My.App.ToolToString(My.App.Tools.AlarmChime)
-        Me.tabpageAC.ImageKey = "imageAC"
-        Me.tabpageHC.Text = My.App.ToolToString(My.App.Tools.HotClicks)
-        Me.tabpageHC.ImageKey = "imageHC"
         Me.tabpageHK.Text = My.App.ToolToString(My.App.Tools.HotKeys)
         Me.tabpageHK.ImageKey = "imageHK"
-        Me.tabpageWL.Text = My.App.ToolToString(My.App.Tools.WinLinks)
-        Me.tabpageWL.ImageKey = "imageWL"
-        Me.tabpageWST.Text = My.App.ToolToString(My.App.Tools.WorkSpaceTools)
-        Me.tabpageWST.ImageKey = "imageWST"
 
         'Initialize Form
         Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText

@@ -41,18 +41,6 @@
         tabpageAC = New TabPage()
         tabpageWL = New TabPage()
         tabpageHC = New TabPage()
-        comboboxHCRight = New ComboBox()
-        comboboxHCMiddle = New ComboBox()
-        comboboxHCDouble = New ComboBox()
-        comboboxHCLeft = New ComboBox()
-        groupBox2 = New GroupBox()
-        radiobtnHCWL = New RadioButton()
-        radiobtnHCWSTSS = New RadioButton()
-        radiobtnHCWST = New RadioButton()
-        label17 = New Label()
-        label12 = New Label()
-        label16 = New Label()
-        label15 = New Label()
         tabpageHK = New TabPage()
         textboxHKWL = New TextBox()
         textboxHKWSTClock = New TextBox()
@@ -84,8 +72,6 @@
         TipHCEX = New Skye.UI.ToolTipEX(components)
         cmWST.SuspendLayout()
         tabcontrolSettings.SuspendLayout()
-        tabpageHC.SuspendLayout()
-        groupBox2.SuspendLayout()
         tabpageHK.SuspendLayout()
         cmWSTScreenSaver.SuspendLayout()
         SuspendLayout()
@@ -98,7 +84,7 @@
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
         cmWST.ShowItemToolTips = False
-        cmWST.Size = New Size(240, 492)
+        cmWST.Size = New Size(240, 470)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -386,15 +372,6 @@
         ' 
         ' tabpageHC
         ' 
-        tabpageHC.Controls.Add(comboboxHCRight)
-        tabpageHC.Controls.Add(comboboxHCMiddle)
-        tabpageHC.Controls.Add(comboboxHCDouble)
-        tabpageHC.Controls.Add(comboboxHCLeft)
-        tabpageHC.Controls.Add(groupBox2)
-        tabpageHC.Controls.Add(label17)
-        tabpageHC.Controls.Add(label12)
-        tabpageHC.Controls.Add(label16)
-        tabpageHC.Controls.Add(label15)
         TipHCEX.SetImage(tabpageHC, Nothing)
         TipInfoEX.SetImage(tabpageHC, Nothing)
         tabpageHC.Location = New Point(4, 24)
@@ -406,186 +383,6 @@
         TipInfoEX.SetText(tabpageHC, Nothing)
         tabpageHC.Text = """HotClicks"""
         tabpageHC.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxHCRight
-        ' 
-        comboboxHCRight.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHCRight.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxHCRight, Nothing)
-        TipHCEX.SetImage(comboboxHCRight, Nothing)
-        comboboxHCRight.Location = New Point(210, 167)
-        comboboxHCRight.Name = "comboboxHCRight"
-        comboboxHCRight.Size = New Size(258, 23)
-        comboboxHCRight.Sorted = True
-        comboboxHCRight.TabIndex = 50
-        TipInfoEX.SetText(comboboxHCRight, Nothing)
-        TipHCEX.SetText(comboboxHCRight, Nothing)
-        ' 
-        ' comboboxHCMiddle
-        ' 
-        comboboxHCMiddle.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHCMiddle.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxHCMiddle, Nothing)
-        TipHCEX.SetImage(comboboxHCMiddle, Nothing)
-        comboboxHCMiddle.Location = New Point(210, 139)
-        comboboxHCMiddle.Name = "comboboxHCMiddle"
-        comboboxHCMiddle.Size = New Size(258, 23)
-        comboboxHCMiddle.Sorted = True
-        comboboxHCMiddle.TabIndex = 40
-        TipInfoEX.SetText(comboboxHCMiddle, Nothing)
-        TipHCEX.SetText(comboboxHCMiddle, Nothing)
-        ' 
-        ' comboboxHCDouble
-        ' 
-        comboboxHCDouble.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHCDouble.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxHCDouble, Nothing)
-        TipHCEX.SetImage(comboboxHCDouble, Nothing)
-        comboboxHCDouble.Location = New Point(210, 111)
-        comboboxHCDouble.Name = "comboboxHCDouble"
-        comboboxHCDouble.Size = New Size(258, 23)
-        comboboxHCDouble.Sorted = True
-        comboboxHCDouble.TabIndex = 30
-        TipInfoEX.SetText(comboboxHCDouble, Nothing)
-        TipHCEX.SetText(comboboxHCDouble, Nothing)
-        ' 
-        ' comboboxHCLeft
-        ' 
-        comboboxHCLeft.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxHCLeft.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxHCLeft, Nothing)
-        TipHCEX.SetImage(comboboxHCLeft, Nothing)
-        comboboxHCLeft.Location = New Point(210, 83)
-        comboboxHCLeft.Name = "comboboxHCLeft"
-        comboboxHCLeft.Size = New Size(258, 23)
-        comboboxHCLeft.Sorted = True
-        comboboxHCLeft.TabIndex = 20
-        TipInfoEX.SetText(comboboxHCLeft, Nothing)
-        TipHCEX.SetText(comboboxHCLeft, Nothing)
-        ' 
-        ' groupBox2
-        ' 
-        groupBox2.Controls.Add(radiobtnHCWL)
-        groupBox2.Controls.Add(radiobtnHCWSTSS)
-        groupBox2.Controls.Add(radiobtnHCWST)
-        TipHCEX.SetImage(groupBox2, Nothing)
-        TipInfoEX.SetImage(groupBox2, Nothing)
-        groupBox2.Location = New Point(172, 28)
-        groupBox2.Name = "groupBox2"
-        groupBox2.Size = New Size(296, 38)
-        groupBox2.TabIndex = 10
-        groupBox2.TabStop = False
-        TipHCEX.SetText(groupBox2, Nothing)
-        TipInfoEX.SetText(groupBox2, Nothing)
-        ' 
-        ' radiobtnHCWL
-        ' 
-        TipInfoEX.SetImage(radiobtnHCWL, Nothing)
-        radiobtnHCWL.Image = My.Resources.Resources.imageWL
-        TipHCEX.SetImage(radiobtnHCWL, Nothing)
-        radiobtnHCWL.ImageAlign = ContentAlignment.MiddleLeft
-        radiobtnHCWL.Location = New Point(205, 11)
-        radiobtnHCWL.Name = "radiobtnHCWL"
-        radiobtnHCWL.Size = New Size(40, 24)
-        radiobtnHCWL.TabIndex = 4
-        radiobtnHCWL.TabStop = True
-        TipHCEX.SetText(radiobtnHCWL, "WinLinks")
-        TipInfoEX.SetText(radiobtnHCWL, Nothing)
-        radiobtnHCWL.TextAlign = ContentAlignment.MiddleCenter
-        radiobtnHCWL.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnHCWSTSS
-        ' 
-        TipInfoEX.SetImage(radiobtnHCWSTSS, Nothing)
-        radiobtnHCWSTSS.Image = My.Resources.Resources.ImageWSTSS16
-        TipHCEX.SetImage(radiobtnHCWSTSS, Nothing)
-        radiobtnHCWSTSS.ImageAlign = ContentAlignment.MiddleLeft
-        radiobtnHCWSTSS.Location = New Point(107, 11)
-        radiobtnHCWSTSS.Name = "radiobtnHCWSTSS"
-        radiobtnHCWSTSS.Size = New Size(40, 24)
-        radiobtnHCWSTSS.TabIndex = 1
-        radiobtnHCWSTSS.TabStop = True
-        TipHCEX.SetText(radiobtnHCWSTSS, "Screen Saver")
-        TipInfoEX.SetText(radiobtnHCWSTSS, Nothing)
-        radiobtnHCWSTSS.TextAlign = ContentAlignment.MiddleCenter
-        radiobtnHCWSTSS.UseVisualStyleBackColor = True
-        ' 
-        ' radiobtnHCWST
-        ' 
-        TipInfoEX.SetImage(radiobtnHCWST, Nothing)
-        radiobtnHCWST.Image = My.Resources.Resources.imageWST
-        TipHCEX.SetImage(radiobtnHCWST, Nothing)
-        radiobtnHCWST.ImageAlign = ContentAlignment.MiddleLeft
-        radiobtnHCWST.Location = New Point(59, 11)
-        radiobtnHCWST.Name = "radiobtnHCWST"
-        radiobtnHCWST.Size = New Size(40, 24)
-        radiobtnHCWST.TabIndex = 0
-        radiobtnHCWST.TabStop = True
-        TipHCEX.SetText(radiobtnHCWST, "WorkSpace Tools")
-        TipInfoEX.SetText(radiobtnHCWST, Nothing)
-        radiobtnHCWST.TextAlign = ContentAlignment.MiddleCenter
-        radiobtnHCWST.UseMnemonic = False
-        radiobtnHCWST.UseVisualStyleBackColor = False
-        ' 
-        ' label17
-        ' 
-        label17.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        label17.ForeColor = Color.Navy
-        TipHCEX.SetImage(label17, Nothing)
-        TipInfoEX.SetImage(label17, Nothing)
-        label17.Location = New Point(142, 114)
-        label17.Name = "label17"
-        label17.Size = New Size(64, 18)
-        label17.TabIndex = 29
-        TipHCEX.SetText(label17, Nothing)
-        label17.Text = "DOUBLE"
-        TipInfoEX.SetText(label17, Nothing)
-        label17.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' label12
-        ' 
-        label12.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        label12.ForeColor = Color.Navy
-        TipHCEX.SetImage(label12, Nothing)
-        TipInfoEX.SetImage(label12, Nothing)
-        label12.Location = New Point(142, 86)
-        label12.Name = "label12"
-        label12.Size = New Size(64, 18)
-        label12.TabIndex = 19
-        TipHCEX.SetText(label12, Nothing)
-        label12.Text = "LEFT"
-        TipInfoEX.SetText(label12, Nothing)
-        label12.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' label16
-        ' 
-        label16.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        label16.ForeColor = Color.Navy
-        TipHCEX.SetImage(label16, Nothing)
-        TipInfoEX.SetImage(label16, Nothing)
-        label16.Location = New Point(142, 142)
-        label16.Name = "label16"
-        label16.Size = New Size(64, 18)
-        label16.TabIndex = 39
-        TipHCEX.SetText(label16, Nothing)
-        label16.Text = "MIDDLE"
-        TipInfoEX.SetText(label16, Nothing)
-        label16.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' label15
-        ' 
-        label15.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        label15.ForeColor = Color.Navy
-        TipHCEX.SetImage(label15, Nothing)
-        TipInfoEX.SetImage(label15, Nothing)
-        label15.Location = New Point(142, 170)
-        label15.Name = "label15"
-        label15.Size = New Size(64, 18)
-        label15.TabIndex = 49
-        TipHCEX.SetText(label15, Nothing)
-        label15.Text = "RIGHT"
-        TipInfoEX.SetText(label15, Nothing)
-        label15.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' tabpageHK
         ' 
@@ -987,8 +784,6 @@
         TipHCEX.SetText(Me, Nothing)
         cmWST.ResumeLayout(False)
         tabcontrolSettings.ResumeLayout(False)
-        tabpageHC.ResumeLayout(False)
-        groupBox2.ResumeLayout(False)
         tabpageHK.ResumeLayout(False)
         tabpageHK.PerformLayout()
         cmWSTScreenSaver.ResumeLayout(False)
@@ -1040,24 +835,12 @@
     Private WithEvents btnHKWSTClockDisable As System.Windows.Forms.Button
     Private WithEvents btnSettingsSave As System.Windows.Forms.Button
     Private WithEvents tabpageHC As System.Windows.Forms.TabPage
-    Private WithEvents comboboxHCLeft As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHCDouble As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHCMiddle As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxHCRight As System.Windows.Forms.ComboBox
-    Private WithEvents radiobtnHCWST As System.Windows.Forms.RadioButton
-    Private WithEvents radiobtnHCWSTSS As System.Windows.Forms.RadioButton
-    Private WithEvents radiobtnHCWL As System.Windows.Forms.RadioButton
     Private WithEvents cmWST As System.Windows.Forms.ContextMenuStrip
     Private toolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents btnHKWLDisable As System.Windows.Forms.Button
     Private WithEvents textboxHKWL As System.Windows.Forms.TextBox
     Private WithEvents lblHKWL As System.Windows.Forms.Label
-    Private WithEvents groupBox2 As System.Windows.Forms.GroupBox
     Private WithEvents tableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-    Private label12 As System.Windows.Forms.Label
-    Private label15 As System.Windows.Forms.Label
-    Private label16 As System.Windows.Forms.Label
-    Private label17 As System.Windows.Forms.Label
     Private WithEvents btnHKEnabled As System.Windows.Forms.Button
     Private WithEvents btnHKReset As System.Windows.Forms.Button
     Private WithEvents btnHKSet As System.Windows.Forms.Button

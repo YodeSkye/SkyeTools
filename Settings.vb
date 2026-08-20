@@ -777,6 +777,37 @@ Partial Friend Class Settings
     End Sub
 
     ' HotClicks
+    Private Sub RadBtnHCSettings_Click(ByVal sender As Object, ByVal e As EventArgs) Handles RadBtnHCWSTSS.Click, RadBtnHCWST.Click, RadBtnHCWL.Click
+        If RadBtnHCWST.Checked Then : HCShowActions(TrayTools.WorkSpaceTools)
+        ElseIf RadBtnHCWL.Checked Then : HCShowActions(TrayTools.WinLinks)
+        ElseIf RadBtnHCWSTSS.Checked Then : HCShowActions(TrayTools.ScreenSaver)
+        End If
+    End Sub
+    Private Sub CoBoxHCSettings_SelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles CoBoxHCRight.SelectionChangeCommitted, CoBoxHCMiddle.SelectionChangeCommitted, CoBoxHCLeft.SelectionChangeCommitted, CoBoxHCDouble.SelectionChangeCommitted
+        Select Case CType(sender, System.Windows.Forms.ComboBox).Name
+            Case Me.CoBoxHCLeft.Name
+                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
+                End If
+            Case Me.CoBoxHCDouble.Name
+                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
+                End If
+            Case Me.CoBoxHCMiddle.Name
+                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
+                End If
+            Case Me.CoBoxHCRight.Name
+                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTRight = CType(HCFindActionIndex(Me.CoBoxHCRight.SelectedItem.ToString), My.App.HCAction)
+                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverRight = CType(HCFindActionIndex(Me.CoBoxHCRight.SelectedItem.ToString), My.App.HCAction)
+                End If
+        End Select
+        App.SetSave()
+    End Sub
+
     ' HotKeys
 
     ' METHODS
@@ -1067,6 +1098,20 @@ Partial Friend Class Settings
         App.AutoFitLVColumn(LVWL)
     End Sub
     Private Sub ShowSettingsHC()
+        Me.CoBoxHCLeft.Items.Clear()
+        Me.CoBoxHCDouble.Items.Clear()
+        Me.CoBoxHCMiddle.Items.Clear()
+        Me.CoBoxHCRight.Items.Clear()
+
+        For Each action As My.App.HCActionType In My.App.HCActions
+            If Not action.Name = My.App.HCAction.Menu Then Me.CoBoxHCLeft.Items.Add(action.Description)
+            If Not action.Name = My.App.HCAction.Menu Then Me.CoBoxHCDouble.Items.Add(action.Description)
+            If Not action.Name = My.App.HCAction.Menu Then Me.CoBoxHCMiddle.Items.Add(action.Description)
+            Me.CoBoxHCRight.Items.Add(action.Description)
+        Next
+        Me.RadBtnHCWST.Checked = True
+        HCShowActions(My.App.TrayTools.WorkSpaceTools)
+
     End Sub
     Private Sub ShowSettingsHK()
     End Sub
@@ -1177,6 +1222,34 @@ Partial Friend Class Settings
         Me.LVWL.Items(index).Selected = True
         Me.TxtBoxWLRoot.Select()
     End Sub
+    Private Sub HCShowActions(tool As App.TrayTools)
+        Me.CoBoxHCRight.Enabled = True
+        Select Case tool
+            Case App.TrayTools.WorkSpaceTools
+                Me.CoBoxHCLeft.SelectedIndex = Me.CoBoxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWSTLeft).Description)
+                Me.CoBoxHCDouble.SelectedIndex = Me.CoBoxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTDouble).Description)
+                Me.CoBoxHCMiddle.SelectedIndex = Me.CoBoxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTMiddle).Description)
+                Me.CoBoxHCRight.SelectedIndex = Me.CoBoxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTRight).Description)
+            Case App.TrayTools.WinLinks
+                Me.CoBoxHCLeft.SelectedIndex = Me.CoBoxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWLLeft).Description)
+                Me.CoBoxHCDouble.SelectedIndex = Me.CoBoxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWLDouble).Description)
+                Me.CoBoxHCMiddle.SelectedIndex = Me.CoBoxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWLMiddle).Description)
+                Me.CoBoxHCRight.SelectedIndex = Me.CoBoxHCRight.FindStringExact(My.App.HCActions(My.App.HCWLRight).Description)
+                Me.CoBoxHCRight.Enabled = False
+            Case App.TrayTools.ScreenSaver
+                Me.CoBoxHCLeft.SelectedIndex = Me.CoBoxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverLeft).Description)
+                Me.CoBoxHCDouble.SelectedIndex = Me.CoBoxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverDouble).Description)
+                Me.CoBoxHCMiddle.SelectedIndex = Me.CoBoxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverMiddle).Description)
+                Me.CoBoxHCRight.SelectedIndex = Me.CoBoxHCRight.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverRight).Description)
+        End Select
+    End Sub
+    Private Function HCFindActionIndex(description As String) As Integer
+        For index As Integer = 0 To App.HCActions.Count - 1
+            If App.HCActions(index).Description = description Then Return index
+        Next
+        Return 0
+    End Function
+
     Private Sub CheckMove(ByRef location As Point)
         Dim screen As Rectangle = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
         If location.X + Width > screen.Right Then location.X = screen.Right - Width + App.AdjustScreenBoundsNormalWindow

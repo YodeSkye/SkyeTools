@@ -446,6 +446,53 @@ Namespace My
 		Friend Sub ErrorNotify()
 			FrmMain.UpdateWST()
 		End Sub
+		Friend Sub HCPerformAction(action As HCAction, Optional argument As Object = Nothing)
+			Select Case action
+				Case HCAction.WLNew
+					If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
+						ShowSettings("WL")
+						FrmSettings.WLSetNew()
+					End If
+				Case HCAction.WLEdit
+					If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then
+						If argument Is Nothing Then argument = 0
+						ShowSettings("WL")
+						FrmSettings.WLEdit(CInt(argument))
+					End If
+				Case HCAction.WLOpenRoot
+					If argument Is Nothing Then argument = 0
+					StartLink(My.App.WLData(CInt(argument)).Root)
+				Case HCAction.WLRefresh
+					If argument Is Nothing Then argument = My.App.WLData.Count - 1
+					Dim link As My.App.WLItemType = My.App.WLData(CInt(argument))
+					link.RefreshData = True
+					link.RefreshMenu = True
+					My.App.WLData(CInt(argument)) = link
+					FrmMain.ShowWL()
+				Case HCAction.WSTLockWorkSpace
+					LockWorkSpace(True)
+				Case HCAction.WSTScreenSaverActivate
+					SSActivate()
+				Case HCAction.WSTScreenSaverDisable
+					FrmMain.WSTSSEnabled = Not FrmMain.WSTSSEnabled
+				Case HCAction.WSTClock
+					ShowClock()
+				Case HCAction.ShowSettings
+					ShowSettings()
+				Case HCAction.ShowSettingsWST
+					ShowSettings("WST")
+				Case HCAction.ShowSettingsWSTSS
+					ShowSettings("SS")
+				Case HCAction.ShowSettingsWL
+					ShowSettings("WL")
+				Case HCAction.ShowSettingsAC
+					ShowSettings("AC")
+				Case HCAction.ShowSettingsHC
+					ShowSettings("HC")
+				Case HCAction.ShowSettingsHK
+					ShowSettings("HK")
+			End Select
+		End Sub
 		Friend Sub ShowMessage(tool As Tools, title As String, message As String, Optional icon As Icon = Nothing, Optional addtolog As Boolean = False)
 			Dim t As New Skye.UI.ToastOptions With {
 				.Title = title,
@@ -559,6 +606,38 @@ Namespace My
 			Dim logentry As String = $"{tool} --> {text}"
 			Skye.Common.Log.Write(logentry)
 			Debug.Print("WriteToLog: " & logentry)
+		End Sub
+		Friend Sub LockWorkSpace(Optional hcmode As Boolean = False)
+			If My.App.WSTShowLockWorkSpace Then
+				If hcmode AndAlso My.App.WSTSSEnableOnActivate Then
+					FrmMain.WSTSSEnabled = True
+				End If
+				Skye.WinAPI.LockWorkStation()
+			End If
+		End Sub
+		Friend Sub StartLink(ByRef link As String)
+			If App.WSTShowWLMenu Or App.WSTShowWLTray Then
+				Try
+					Dim p As Diagnostics.Process
+					Dim pi As New Diagnostics.ProcessStartInfo
+					If IO.Directory.Exists(link) Then
+						pi.UseShellExecute = True
+						pi.FileName = "EXPLORER.EXE"
+						pi.Arguments = "/ROOT," + """" + link + """"
+						p = Diagnostics.Process.Start(pi)
+					Else
+						pi.UseShellExecute = True
+						pi.FileName = link
+						p = Diagnostics.Process.Start(pi)
+					End If
+					p?.Dispose()
+					p = Nothing
+					pi = Nothing
+				Catch ex As Exception
+					App.ShowMessage(App.Tools.WinLinks, Nothing, "Cannot Start " & link.ToUpper & ", Please Check Your Settings And Try Again.")
+					App.WriteToLog(App.Tools.WinLinks, "Unable to start " + link.ToUpper + Environment.NewLine + ex.ToString)
+				End Try
+			End If
 		End Sub
 		Friend Function FixAmpersand(source As String, x As Integer) As String '
 			Try
@@ -782,8 +861,8 @@ Namespace My
 			WSTShowAC = True
 			ACAlarmRecurring = False
 			'WinLinks (WL)
-			WSTShowWLMenu = True
-			WSTShowWLTray = True
+			WSTShowWLMenu = False
+			WSTShowWLTray = False
 			WLStartUpDelay = 0 '0 = Disable Delay, Load Immediately
 			'GetSettingsDebugWL()
 		End Sub

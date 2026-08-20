@@ -160,6 +160,18 @@
         LblWLAutoRefreshInterval = New Skye.UI.Label()
         LblWLMaxLinksPerFolder = New Skye.UI.Label()
         PanelHC = New Panel()
+        CoBoxHCRight = New ComboBox()
+        CoBoxHCMiddle = New ComboBox()
+        CoBoxHCDouble = New ComboBox()
+        CoBoxHCLeft = New ComboBox()
+        GrpBoxHC = New GroupBox()
+        RadBtnHCWL = New RadioButton()
+        RadBtnHCWSTSS = New RadioButton()
+        RadBtnHCWST = New RadioButton()
+        LblHCDouble = New Label()
+        LblHCLeft = New Label()
+        LblHCMiddle = New Label()
+        LblHCRight = New Label()
         PanelHK = New Panel()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
@@ -173,6 +185,8 @@
         PanelWL.SuspendLayout()
         PanelWLItem.SuspendLayout()
         CMLVWL.SuspendLayout()
+        PanelHC.SuspendLayout()
+        GrpBoxHC.SuspendLayout()
         SuspendLayout()
         ' 
         ' BtnClose
@@ -1863,44 +1877,44 @@
         TipInfoEX.SetImage(CMLVWL, Nothing)
         CMLVWL.Items.AddRange(New ToolStripItem() {CMIWLMoveUp, CMIWLMoveDown, TSSWL1, CMIWLNew, TSSWL2, CMIWLDelete})
         CMLVWL.Name = "contextmenulistviewHotLinks"
-        CMLVWL.Size = New Size(181, 142)
+        CMLVWL.Size = New Size(125, 120)
         TipInfoEX.SetText(CMLVWL, Nothing)
         ' 
         ' CMIWLMoveUp
         ' 
         CMIWLMoveUp.Image = My.Resources.Resources.imageMoveUp
         CMIWLMoveUp.Name = "CMIWLMoveUp"
-        CMIWLMoveUp.Size = New Size(180, 26)
+        CMIWLMoveUp.Size = New Size(124, 26)
         CMIWLMoveUp.Text = "Up"
         ' 
         ' CMIWLMoveDown
         ' 
         CMIWLMoveDown.Image = My.Resources.Resources.imageMoveDown
         CMIWLMoveDown.Name = "CMIWLMoveDown"
-        CMIWLMoveDown.Size = New Size(180, 26)
+        CMIWLMoveDown.Size = New Size(124, 26)
         CMIWLMoveDown.Text = "Down"
         ' 
         ' TSSWL1
         ' 
         TSSWL1.Name = "TSSWL1"
-        TSSWL1.Size = New Size(177, 6)
+        TSSWL1.Size = New Size(121, 6)
         ' 
         ' CMIWLNew
         ' 
         CMIWLNew.Image = My.Resources.Resources.imageWLNew
         CMIWLNew.Name = "CMIWLNew"
-        CMIWLNew.Size = New Size(180, 26)
+        CMIWLNew.Size = New Size(124, 26)
         ' 
         ' TSSWL2
         ' 
         TSSWL2.Name = "TSSWL2"
-        TSSWL2.Size = New Size(177, 6)
+        TSSWL2.Size = New Size(121, 6)
         ' 
         ' CMIWLDelete
         ' 
         CMIWLDelete.Image = My.Resources.Resources.imageRemove
         CMIWLDelete.Name = "CMIWLDelete"
-        CMIWLDelete.Size = New Size(180, 26)
+        CMIWLDelete.Size = New Size(124, 26)
         CMIWLDelete.Text = "Delete"
         ' 
         ' TxtBoxWLAutoRefreshIdleInterval
@@ -2043,6 +2057,15 @@
         ' 
         ' PanelHC
         ' 
+        PanelHC.Controls.Add(CoBoxHCRight)
+        PanelHC.Controls.Add(CoBoxHCMiddle)
+        PanelHC.Controls.Add(CoBoxHCDouble)
+        PanelHC.Controls.Add(CoBoxHCLeft)
+        PanelHC.Controls.Add(GrpBoxHC)
+        PanelHC.Controls.Add(LblHCDouble)
+        PanelHC.Controls.Add(LblHCLeft)
+        PanelHC.Controls.Add(LblHCMiddle)
+        PanelHC.Controls.Add(LblHCRight)
         PanelHC.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelHC, Nothing)
         PanelHC.Location = New Point(187, 0)
@@ -2050,6 +2073,166 @@
         PanelHC.Size = New Size(730, 534)
         PanelHC.TabIndex = 113
         TipInfoEX.SetText(PanelHC, Nothing)
+        ' 
+        ' CoBoxHCRight
+        ' 
+        CoBoxHCRight.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxHCRight.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxHCRight, Nothing)
+        CoBoxHCRight.Location = New Point(236, 232)
+        CoBoxHCRight.Name = "CoBoxHCRight"
+        CoBoxHCRight.Size = New Size(258, 29)
+        CoBoxHCRight.Sorted = True
+        CoBoxHCRight.TabIndex = 59
+        TipInfoEX.SetText(CoBoxHCRight, Nothing)
+        ' 
+        ' CoBoxHCMiddle
+        ' 
+        CoBoxHCMiddle.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxHCMiddle.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxHCMiddle, Nothing)
+        CoBoxHCMiddle.Location = New Point(236, 204)
+        CoBoxHCMiddle.Name = "CoBoxHCMiddle"
+        CoBoxHCMiddle.Size = New Size(258, 29)
+        CoBoxHCMiddle.Sorted = True
+        CoBoxHCMiddle.TabIndex = 57
+        TipInfoEX.SetText(CoBoxHCMiddle, Nothing)
+        ' 
+        ' CoBoxHCDouble
+        ' 
+        CoBoxHCDouble.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxHCDouble.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxHCDouble, Nothing)
+        CoBoxHCDouble.Location = New Point(236, 176)
+        CoBoxHCDouble.Name = "CoBoxHCDouble"
+        CoBoxHCDouble.Size = New Size(258, 29)
+        CoBoxHCDouble.Sorted = True
+        CoBoxHCDouble.TabIndex = 55
+        TipInfoEX.SetText(CoBoxHCDouble, Nothing)
+        ' 
+        ' CoBoxHCLeft
+        ' 
+        CoBoxHCLeft.DropDownStyle = ComboBoxStyle.DropDownList
+        CoBoxHCLeft.FormattingEnabled = True
+        TipInfoEX.SetImage(CoBoxHCLeft, Nothing)
+        CoBoxHCLeft.Location = New Point(236, 148)
+        CoBoxHCLeft.Name = "CoBoxHCLeft"
+        CoBoxHCLeft.Size = New Size(258, 29)
+        CoBoxHCLeft.Sorted = True
+        CoBoxHCLeft.TabIndex = 53
+        TipInfoEX.SetText(CoBoxHCLeft, Nothing)
+        ' 
+        ' GrpBoxHC
+        ' 
+        GrpBoxHC.Controls.Add(RadBtnHCWL)
+        GrpBoxHC.Controls.Add(RadBtnHCWSTSS)
+        GrpBoxHC.Controls.Add(RadBtnHCWST)
+        TipInfoEX.SetImage(GrpBoxHC, Nothing)
+        GrpBoxHC.Location = New Point(236, 52)
+        GrpBoxHC.Name = "GrpBoxHC"
+        GrpBoxHC.Size = New Size(258, 86)
+        GrpBoxHC.TabIndex = 51
+        GrpBoxHC.TabStop = False
+        TipInfoEX.SetText(GrpBoxHC, Nothing)
+        ' 
+        ' RadBtnHCWL
+        ' 
+        RadBtnHCWL.Image = My.Resources.Resources.ImageWL48
+        TipInfoEX.SetImage(RadBtnHCWL, Nothing)
+        RadBtnHCWL.ImageAlign = ContentAlignment.MiddleLeft
+        RadBtnHCWL.Location = New Point(186, 16)
+        RadBtnHCWL.Name = "RadBtnHCWL"
+        RadBtnHCWL.Size = New Size(70, 64)
+        RadBtnHCWL.TabIndex = 4
+        RadBtnHCWL.TabStop = True
+        TipInfoEX.SetText(RadBtnHCWL, Nothing)
+        RadBtnHCWL.TextAlign = ContentAlignment.MiddleCenter
+        RadBtnHCWL.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnHCWSTSS
+        ' 
+        RadBtnHCWSTSS.Image = My.Resources.Resources.ImageWSTSS48
+        TipInfoEX.SetImage(RadBtnHCWSTSS, Nothing)
+        RadBtnHCWSTSS.ImageAlign = ContentAlignment.MiddleLeft
+        RadBtnHCWSTSS.Location = New Point(99, 16)
+        RadBtnHCWSTSS.Name = "RadBtnHCWSTSS"
+        RadBtnHCWSTSS.Size = New Size(70, 64)
+        RadBtnHCWSTSS.TabIndex = 1
+        RadBtnHCWSTSS.TabStop = True
+        TipInfoEX.SetText(RadBtnHCWSTSS, Nothing)
+        RadBtnHCWSTSS.TextAlign = ContentAlignment.MiddleCenter
+        RadBtnHCWSTSS.UseVisualStyleBackColor = True
+        ' 
+        ' RadBtnHCWST
+        ' 
+        RadBtnHCWST.Image = My.Resources.Resources.ImageWST48
+        TipInfoEX.SetImage(RadBtnHCWST, Nothing)
+        RadBtnHCWST.ImageAlign = ContentAlignment.MiddleLeft
+        RadBtnHCWST.Location = New Point(12, 16)
+        RadBtnHCWST.Name = "RadBtnHCWST"
+        RadBtnHCWST.Size = New Size(70, 64)
+        RadBtnHCWST.TabIndex = 0
+        RadBtnHCWST.TabStop = True
+        TipInfoEX.SetText(RadBtnHCWST, Nothing)
+        RadBtnHCWST.TextAlign = ContentAlignment.MiddleCenter
+        RadBtnHCWST.UseMnemonic = False
+        RadBtnHCWST.UseVisualStyleBackColor = False
+        ' 
+        ' LblHCDouble
+        ' 
+        LblHCDouble.AutoSize = True
+        LblHCDouble.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        LblHCDouble.ForeColor = Color.Navy
+        TipInfoEX.SetImage(LblHCDouble, Nothing)
+        LblHCDouble.Location = New Point(163, 179)
+        LblHCDouble.Name = "LblHCDouble"
+        LblHCDouble.Size = New Size(73, 21)
+        LblHCDouble.TabIndex = 54
+        LblHCDouble.Text = "DOUBLE"
+        TipInfoEX.SetText(LblHCDouble, Nothing)
+        LblHCDouble.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' LblHCLeft
+        ' 
+        LblHCLeft.AutoSize = True
+        LblHCLeft.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        LblHCLeft.ForeColor = Color.Navy
+        TipInfoEX.SetImage(LblHCLeft, Nothing)
+        LblHCLeft.Location = New Point(192, 152)
+        LblHCLeft.Name = "LblHCLeft"
+        LblHCLeft.Size = New Size(44, 21)
+        LblHCLeft.TabIndex = 52
+        LblHCLeft.Text = "LEFT"
+        TipInfoEX.SetText(LblHCLeft, Nothing)
+        LblHCLeft.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' LblHCMiddle
+        ' 
+        LblHCMiddle.AutoSize = True
+        LblHCMiddle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        LblHCMiddle.ForeColor = Color.Navy
+        TipInfoEX.SetImage(LblHCMiddle, Nothing)
+        LblHCMiddle.Location = New Point(165, 208)
+        LblHCMiddle.Name = "LblHCMiddle"
+        LblHCMiddle.Size = New Size(71, 21)
+        LblHCMiddle.TabIndex = 56
+        LblHCMiddle.Text = "MIDDLE"
+        TipInfoEX.SetText(LblHCMiddle, Nothing)
+        LblHCMiddle.TextAlign = ContentAlignment.MiddleRight
+        ' 
+        ' LblHCRight
+        ' 
+        LblHCRight.AutoSize = True
+        LblHCRight.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
+        LblHCRight.ForeColor = Color.Navy
+        TipInfoEX.SetImage(LblHCRight, Nothing)
+        LblHCRight.Location = New Point(179, 235)
+        LblHCRight.Name = "LblHCRight"
+        LblHCRight.Size = New Size(57, 21)
+        LblHCRight.TabIndex = 58
+        LblHCRight.Text = "RIGHT"
+        TipInfoEX.SetText(LblHCRight, Nothing)
+        LblHCRight.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' PanelHK
         ' 
@@ -2067,13 +2250,13 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
+        Controls.Add(PanelHC)
         Controls.Add(PanelWL)
         Controls.Add(PanelAC)
         Controls.Add(PanelSS)
         Controls.Add(PanelApp)
         Controls.Add(PanelWST)
         Controls.Add(PanelHK)
-        Controls.Add(PanelHC)
         Controls.Add(PanelPageSelector)
         Controls.Add(PanelActions)
         DoubleBuffered = True
@@ -2106,6 +2289,9 @@
         PanelWLItem.ResumeLayout(False)
         PanelWLItem.PerformLayout()
         CMLVWL.ResumeLayout(False)
+        PanelHC.ResumeLayout(False)
+        PanelHC.PerformLayout()
+        GrpBoxHC.ResumeLayout(False)
         ResumeLayout(False)
 
     End Sub
@@ -2258,4 +2444,16 @@
     Friend WithEvents LblWLSortOrder As Skye.UI.Label
     Friend WithEvents LblWLDisplayName As Skye.UI.Label
     Friend WithEvents LblWLRoot As Skye.UI.Label
+    Private WithEvents CoBoxHCRight As ComboBox
+    Private WithEvents CoBoxHCMiddle As ComboBox
+    Private WithEvents CoBoxHCDouble As ComboBox
+    Private WithEvents CoBoxHCLeft As ComboBox
+    Private WithEvents GrpBoxHC As GroupBox
+    Private WithEvents RadBtnHCWL As RadioButton
+    Private WithEvents RadBtnHCWSTSS As RadioButton
+    Private WithEvents RadBtnHCWST As RadioButton
+    Private WithEvents LblHCDouble As Label
+    Private WithEvents LblHCLeft As Label
+    Private WithEvents LblHCMiddle As Label
+    Private WithEvents LblHCRight As Label
 End Class
