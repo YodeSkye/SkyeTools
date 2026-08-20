@@ -2,6 +2,7 @@
 Imports System.ComponentModel
 Imports System.Data.Common
 Imports System.IO
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports Microsoft.VisualBasic.Devices
 Imports SkyeTools.My
@@ -1477,7 +1478,7 @@ Partial Friend Class MainForm
             End If
             If My.App.WLShowFolderPathToolTips And mi.IsFolder Then cmi.ToolTipText = mi.File
             cmi.Tag = mi.File
-            AddHandler cmi.MouseUp, AddressOf Me.cmiWLMouseUp
+            AddHandler cmi.MouseUp, AddressOf Me.CMIWLMouseUp
             If mi.SubMenu.Count > 0 Then cmi.DropDown = WLGenerateMenu(mi.SubMenu, includeicons)
             cm.Items.Add(cmi)
         Next
@@ -1533,7 +1534,7 @@ Partial Friend Class MainForm
         End If
     End Sub
     Private Sub ComboboxHCSettingsSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles comboboxHCRight.SelectedIndexChanged, comboboxHCMiddle.SelectedIndexChanged, comboboxHCLeft.SelectedIndexChanged, comboboxHCDouble.SelectedIndexChanged
-        Select Case CType(sender, ComboBox).Name
+        Select Case CType(sender, System.Windows.Forms.ComboBox).Name
             Case Me.comboboxHCLeft.Name
                 If Me.radiobtnHCWST.Checked Then : My.App.HCWSTLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
                 ElseIf Me.radiobtnHCWL.Checked Then : My.App.HCWLLeft = CType(HCFindActionIndex(Me.comboboxHCLeft.SelectedItem.ToString), My.App.HCAction)
@@ -1668,7 +1669,7 @@ Partial Friend Class MainForm
 
     'Control Events
     Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown
-        Dim senderTextBox = CType(sender, TextBox)
+        Dim senderTextBox = CType(sender, System.Windows.Forms.TextBox)
         Dim senderTag = CType(senderTextBox.Tag, HKType)
         If e.KeyData <> senderTag.Key Then
 
@@ -1709,9 +1710,9 @@ Partial Friend Class MainForm
         e.Handled = True
     End Sub
     Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click
-        Dim senderTextBox As New TextBox
+        Dim senderTextBox As New System.Windows.Forms.TextBox
         Dim senderTag As New HKType
-        Select Case CType(sender, Button).Name
+        Select Case CType(sender, System.Windows.Forms.Button).Name
             Case btnHKWSTLockWorkSpaceDisable.Name
                 senderTextBox = textboxHKWSTLockWorkSpace
                 senderTag = CType(textboxHKWSTLockWorkSpace.Tag, HKType)
@@ -1765,17 +1766,19 @@ Partial Friend Class MainForm
 
     'Procedures
     Private Sub HKRegister(Optional UnRegisterONLY As Boolean = False)
+        Dim status As Boolean
 
         'UnRegister All HotKeys First
-        For Each key As My.App.HKType In My.App.HKKeys : Skye.WinAPI.UnregisterHotKey(Me.Handle, key.WinID) : Next
+        For Each key As App.HKType In App.HKKeys
+            status = Skye.WinAPI.UnregisterHotKey(Me.Handle, key.WinID)
+        Next
 
         'Register All HotKeys Where Key Is Not 'NONE'
-        If My.App.HKEnabled And Not UnRegisterONLY Then
-            Dim status As Boolean
-            For Each key As My.App.HKType In My.App.HKKeys
+        If App.HKEnabled And Not UnRegisterONLY Then
+            For Each key As App.HKType In App.HKKeys
                 If Not key.Key = Keys.None Then
                     status = Skye.WinAPI.RegisterHotKey(Me.Handle, key.WinID, key.KeyMod, key.KeyCode)
-                    If Not status Then My.App.WriteToLog(My.App.Tools.HotKeys, "RegisterHotKey : " + key.Description + " (" + key.WinID.ToString + ") (" + key.Key.ToString + ") (" + key.KeyCode.ToString + " mod " + key.KeyMod.ToString + ") : " + IIf(status, "Succeeded", "Failed").ToString)
+                    App.WriteToLog(App.Tools.HotKeys, "RegisterHotKey : " + key.Description + " (" + key.WinID.ToString + ") (" + key.Key.ToString + ") (" + key.KeyCode.ToString + " mod " + key.KeyMod.ToString + ") : " + IIf(status, "Succeeded", "Failed").ToString)
                 End If
             Next
         End If
