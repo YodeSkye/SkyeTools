@@ -2182,7 +2182,6 @@
         ' 
         LblHCDouble.AutoSize = True
         LblHCDouble.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        LblHCDouble.ForeColor = Color.Navy
         TipInfoEX.SetImage(LblHCDouble, Nothing)
         LblHCDouble.Location = New Point(163, 179)
         LblHCDouble.Name = "LblHCDouble"
@@ -2196,7 +2195,6 @@
         ' 
         LblHCLeft.AutoSize = True
         LblHCLeft.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        LblHCLeft.ForeColor = Color.Navy
         TipInfoEX.SetImage(LblHCLeft, Nothing)
         LblHCLeft.Location = New Point(192, 152)
         LblHCLeft.Name = "LblHCLeft"
@@ -2210,7 +2208,6 @@
         ' 
         LblHCMiddle.AutoSize = True
         LblHCMiddle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        LblHCMiddle.ForeColor = Color.Navy
         TipInfoEX.SetImage(LblHCMiddle, Nothing)
         LblHCMiddle.Location = New Point(165, 208)
         LblHCMiddle.Name = "LblHCMiddle"
@@ -2224,7 +2221,6 @@
         ' 
         LblHCRight.AutoSize = True
         LblHCRight.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
-        LblHCRight.ForeColor = Color.Navy
         TipInfoEX.SetImage(LblHCRight, Nothing)
         LblHCRight.Location = New Point(179, 235)
         LblHCRight.Name = "LblHCRight"

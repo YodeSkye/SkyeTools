@@ -1,6 +1,7 @@
 
 Imports System.Text.Json
 Imports System.Text.Json.Serialization
+Imports System.Windows.Forms.LinkLabel
 Imports Skye.Common
 Imports Skye.UI
 
@@ -311,9 +312,9 @@ Namespace My
 			AlarmChime
 			WinLinks
 		End Enum
-        Friend ToolToImage(7) As Image
-        Friend ToolToImageLarge(7) As Image
-        Friend Function ToolToString(tool As Tools) As String '
+		Friend ToolToImage(7) As Image
+		Friend ToolToImageLarge(7) As Image
+		Friend Function ToolToString(tool As Tools) As String '
 			Select Case tool
 				Case Tools.SkyeTools : Return "SkyeTools"
 				Case Tools.WorkSpaceTools : Return "WorkSpace Tools"
@@ -386,7 +387,7 @@ Namespace My
 				ToolToImage(Tools.SkyeTools) = My.Resources.Resources.imageApp
 				ToolToImage(Tools.HotClicks) = My.Resources.Resources.ImageHC16
 				ToolToImage(Tools.HotKeys) = My.Resources.Resources.imageHK
-				ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.iconWST.ToBitmap
+				ToolToImage(Tools.WorkSpaceTools) = My.Resources.Resources.IconWST.ToBitmap
 				ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
 				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS16
 				ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
@@ -613,6 +614,7 @@ Namespace My
 					FrmMain.WSTSSEnabled = True
 				End If
 				Skye.WinAPI.LockWorkStation()
+				App.WriteToLog(App.Tools.SkyeTools, "WorkSpace Locked")
 			End If
 		End Sub
 		Friend Sub StartLink(ByRef link As String)
@@ -633,9 +635,10 @@ Namespace My
 					p?.Dispose()
 					p = Nothing
 					pi = Nothing
+					App.WriteToLog(App.Tools.SkyeTools, "Link Opened: " + link.ToUpper)
 				Catch ex As Exception
-					App.ShowMessage(App.Tools.WinLinks, Nothing, "Cannot Start " & link.ToUpper & ", Please Check Your Settings And Try Again.")
-					App.WriteToLog(App.Tools.WinLinks, "Unable to start " + link.ToUpper + Environment.NewLine + ex.ToString)
+					App.ShowMessage(App.Tools.SkyeTools, Nothing, "Cannot Start " & link.ToUpper & ", Please Check Your Settings And Try Again.")
+					App.WriteToLog(App.Tools.SkyeTools, "Unable to start " + link.ToUpper + Environment.NewLine + ex.ToString)
 				End Try
 			End If
 		End Sub
@@ -835,7 +838,7 @@ Namespace My
 
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
 			WSTLoadOnOSStartup = False
-			HKEnabled = False
+			HKEnabled = True
 			GetSettingsDebugHK()
 			'WorkSpace Tools (WST)
 			'WSTLoadOnOSStartup = True
