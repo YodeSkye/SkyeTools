@@ -2138,42 +2138,42 @@
         ' RadBtnHCWL
         ' 
         RadBtnHCWL.Image = My.Resources.Resources.ImageWL48
-        TipInfoEX.SetImage(RadBtnHCWL, Nothing)
+        TipInfoEX.SetImage(RadBtnHCWL, My.Resources.Resources.imageWL)
         RadBtnHCWL.ImageAlign = ContentAlignment.MiddleLeft
         RadBtnHCWL.Location = New Point(186, 16)
         RadBtnHCWL.Name = "RadBtnHCWL"
         RadBtnHCWL.Size = New Size(70, 64)
         RadBtnHCWL.TabIndex = 4
         RadBtnHCWL.TabStop = True
-        TipInfoEX.SetText(RadBtnHCWL, Nothing)
+        TipInfoEX.SetText(RadBtnHCWL, "WinLinks")
         RadBtnHCWL.TextAlign = ContentAlignment.MiddleCenter
         RadBtnHCWL.UseVisualStyleBackColor = True
         ' 
         ' RadBtnHCWSTSS
         ' 
         RadBtnHCWSTSS.Image = My.Resources.Resources.ImageWSTSS48
-        TipInfoEX.SetImage(RadBtnHCWSTSS, Nothing)
+        TipInfoEX.SetImage(RadBtnHCWSTSS, My.Resources.Resources.ImageWSTSS16)
         RadBtnHCWSTSS.ImageAlign = ContentAlignment.MiddleLeft
         RadBtnHCWSTSS.Location = New Point(99, 16)
         RadBtnHCWSTSS.Name = "RadBtnHCWSTSS"
         RadBtnHCWSTSS.Size = New Size(70, 64)
         RadBtnHCWSTSS.TabIndex = 1
         RadBtnHCWSTSS.TabStop = True
-        TipInfoEX.SetText(RadBtnHCWSTSS, Nothing)
+        TipInfoEX.SetText(RadBtnHCWSTSS, "Screen Saver")
         RadBtnHCWSTSS.TextAlign = ContentAlignment.MiddleCenter
         RadBtnHCWSTSS.UseVisualStyleBackColor = True
         ' 
         ' RadBtnHCWST
         ' 
         RadBtnHCWST.Image = My.Resources.Resources.ImageWST48
-        TipInfoEX.SetImage(RadBtnHCWST, Nothing)
+        TipInfoEX.SetImage(RadBtnHCWST, My.Resources.Resources.ImageWST16)
         RadBtnHCWST.ImageAlign = ContentAlignment.MiddleLeft
         RadBtnHCWST.Location = New Point(12, 16)
         RadBtnHCWST.Name = "RadBtnHCWST"
         RadBtnHCWST.Size = New Size(70, 64)
         RadBtnHCWST.TabIndex = 0
         RadBtnHCWST.TabStop = True
-        TipInfoEX.SetText(RadBtnHCWST, Nothing)
+        TipInfoEX.SetText(RadBtnHCWST, "WorkSpace Tools")
         RadBtnHCWST.TextAlign = ContentAlignment.MiddleCenter
         RadBtnHCWST.UseMnemonic = False
         RadBtnHCWST.UseVisualStyleBackColor = False
