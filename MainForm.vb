@@ -8,377 +8,6 @@ Imports SkyeTools.My
 
 Partial Friend Class MainForm
 
-#Region "MAIN"
-
-    ' Declarations
-    Private Structure ProcessListType
-        Dim ProcessName As String
-        Dim FileName As String
-        Dim Icon As Icon
-    End Structure
-    Private Class ProcessListComparer
-        Implements Collections.Generic.IComparer(Of ProcessListType)
-        Private Function Compare(ByVal x As ProcessListType, ByVal y As ProcessListType) As Integer Implements Collections.Generic.IComparer(Of ProcessListType).Compare '
-            If x.ProcessName Is Nothing Then
-                If y.ProcessName Is Nothing Then : Return 0
-                Else : Return -1
-                End If
-            Else
-                If y.ProcessName Is Nothing Then : Return 1
-                Else : Return x.ProcessName.CompareTo(y.ProcessName)
-                End If
-            End If
-        End Function
-    End Class
-    Private mMove As Boolean = False
-    Private mOffset, mPosition As Point
-    Private nonNumberEntered As Boolean
-    Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
-
-    ' Form Events
-    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
-        Select Case m.Msg
-            Case Skye.WinAPI.WM_SYSCOMMAND
-                Select Case CInt(m.WParam)
-                    Case Skye.WinAPI.SC_CLOSE
-#If DEBUG Then
-                        Me.Close()
-#Else
-						HideForm()
-#End If
-                    Case Else : MyBase.WndProc(m)
-                End Select
-            Case Skye.WinAPI.WM_HOTKEY
-                Try
-                    HKPerformAction(m.WParam.ToInt32)
-                Catch ex As Exception
-                    App.WriteToLog(App.Tools.SkyeTools, "HotKey Failed --> " + ex.Message)
-                Finally
-                    MyBase.WndProc(m)
-                End Try
-            Case Else : MyBase.WndProc(m)
-        End Select
-    End Sub
-    Friend Sub New()
-
-        'Initialize Locals
-        InitializeComponent()
-        TimerAC.Interval = 1000
-        BackgroundworkerWL.WorkerSupportsCancellation = True
-        BackgroundworkerAC.WorkerSupportsCancellation = True
-        uiACOpenFile.DefaultExt = "wav"
-        uiACOpenFile.Filter = "WAV Files|*.wav"
-        uiACOpenFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows) & "\Media"
-        uiACOpenFile.Title = "Select a WAV File..."
-        uiWLFolderBrowser.Description = "Select a Folder with ShortCuts or Programs..."
-        uiWLFolderBrowser.ShowNewFolderButton = False
-        cmWLItem.Font = App.MenuFont
-        cmWLItem.ShowItemToolTips = False
-        Me.imagelisttabcontrolSettings = New ImageList(Me.components) With {
-            .ColorDepth = ColorDepth.Depth32Bit,
-            .ImageSize = New Size(16, 16),
-            .TransparentColor = System.Drawing.Color.Transparent}
-        Me.imagelisttabcontrolSettings.Images.Add("imageAC", My.Resources.Resources.imageAC)
-        Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.ImageHC16)
-        Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
-        Me.imagelisttabcontrolSettings.Images.Add("imageWL", My.Resources.Resources.imageWL)
-        Me.imagelisttabcontrolSettings.Images.Add("imageWST", My.Resources.Resources.imageWST)
-        Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
-        Me.tabpageAC.Text = My.App.ToolToString(My.App.Tools.AlarmChime)
-        Me.tabpageAC.ImageKey = "imageAC"
-        Me.tabpageHC.Text = My.App.ToolToString(My.App.Tools.HotClicks)
-        Me.tabpageHC.ImageKey = "imageHC"
-        Me.tabpageHK.Text = My.App.ToolToString(My.App.Tools.HotKeys)
-        Me.tabpageHK.ImageKey = "imageHK"
-        Me.tabpageWL.Text = My.App.ToolToString(My.App.Tools.WinLinks)
-        Me.tabpageWL.ImageKey = "imageWL"
-        Me.tabpageWST.Text = My.App.ToolToString(My.App.Tools.WorkSpaceTools)
-        Me.tabpageWST.ImageKey = "imageWST"
-
-        'Initialize Globals
-        Using ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
-            Dim audioBytes(CInt(ums.Length) - 1) As Byte
-            ums.Read(audioBytes, 0, audioBytes.Length)
-            My.App.ACChime = audioBytes
-            audioBytes = Nothing
-        End Using
-        'Initialize Form
-        Me.Text = "Settings For " + My.Application.Info.ProductName + " v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
-        Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText
-        Me.cmiScreenSaverCloseAll.ToolTipText = My.App.CloseAllToolTipText
-        Me.notifyiconWST = New NotifyIcon(Me.components) With {
-            .Tag = "notifyiconWST",
-            .ContextMenuStrip = cmWST}
-        Me.notifyiconWSTScreenSaver = New NotifyIcon(Me.components) With {
-            .Tag = "notifyiconWSTScreenSaver",
-            .ContextMenuStrip = cmWSTScreenSaver}
-        Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
-        Me.cmiScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
-        AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
-        AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
-        WLSetSettingsState(True)
-#If DEBUG Then
-        BackgroundworkerWL.WorkerReportsProgress = True
-#End If
-
-    End Sub
-    Private Sub FrmLoad(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-#If DEBUG Then
-#Else
-		My.App.SetLoadOnOSStartup()
-#End If
-        If sender Is Me.btnSettingsRestore Then My.App.WriteToLog(My.App.Tools.SkyeTools, "Settings Restored...") 'This must be here because it is called by btnRestoreSettings.
-        ShowSettings()
-        ACSet()
-        HKRegister()
-        TipCM = New Skye.UI.ToolTipEX() With {
-            .Font = App.MenuFont,
-            .ShadowAlpha = 0,
-            .ShadowThickness = 0,
-            .FadeInRate = 25,
-            .FadeOutRate = 25,
-            .HideDelay = 5000,
-            .ShowDelay = 250
-        }
-        App.HookTSItemsForCMTooltip(cmWST, TipCM)
-        App.HookTSItemsForCMTooltip(cmWSTScreenSaver, TipCM)
-        Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
-        Skye.UI.ThemeManager.RegisterComponent(TipHCEX)
-        Skye.UI.ThemeManager.RegisterComponent(TipCM)
-        Skye.UI.ThemeManager.ApplyTheme(Me)
-        cmWST.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmWSTScreenSaver.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmWLItem.Renderer = New Skye.UI.SkyeMenuRenderer
-        cmlistviewWL.Renderer = New Skye.UI.SkyeMenuRenderer
-    End Sub
-    Private Sub FrmShown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
-        Me.Hide()
-        Me.Opacity = 1
-        If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then WLStartUp = True
-        If Not My.Application.AlternateStart AndAlso (My.App.WSTShowWLMenu And Not My.App.WSTShowWLTray) Then ShowWL()
-        Select Case My.App.WSTSSStartUp
-            Case My.App.WSTSSStartUpMode.Enabled
-                WSTSSEnabled = True
-            Case My.App.WSTSSStartUpMode.Disabled
-                WSTSSEnabled = False
-        End Select
-        ShowTools()
-
-        If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then
-            TimerWLStartUp.Interval = My.App.WLStartUpDelay * 1000
-            TimerWLStartUp.Start()
-        End If
-        If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) AndAlso sender IsNot Me.btnSettingsRestore Then
-            Me.cmiWSTCancelStartUp.Visible = True
-            Me.cmseparatorWSTCancel.Visible = True
-        End If
-        UpdateWST()
-#If DEBUG Then
-        Me.Left = 0
-        Me.Top = CInt(My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2)
-        Me.btnErrorTest.Show()
-        Me.btnClockTest.Show()
-        Me.Show()
-#Else
-#End If
-    End Sub
-    Private Sub FrmVisibleChanged(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.VisibleChanged
-        UpdateWST()
-    End Sub
-    Private Sub FrmClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
-        FrmClosingTasks()
-        My.App.Finalize()
-    End Sub
-    Private Sub FrmClosingTasks()
-        ' Dispose of the clock so the form closes
-        If App.FrmClock IsNot Nothing Then
-            App.FrmClock.Hide()
-            App.FrmClock.Dispose()
-        End If
-        ' Unregister hotkeys so they don't trigger after the form closes
-        HKRegister(True)
-        ' Disposing timers purges queued callbacks from the Windows message queue
-        Try
-            TimerWLAutoRefresh?.Stop()
-            TimerWLAutoRefresh?.Dispose()
-            TimerWLAutoRefreshIdle?.Stop()
-            TimerWLAutoRefreshIdle?.Dispose()
-        Catch
-        End Try
-        ' Disable the FileSystemWatcher explicitly before disposing UI components
-        Try
-            WatcherWLAutoRefresh.EnableRaisingEvents = False
-            WatcherWLAutoRefresh.Dispose()
-        Catch
-            ' Suppress teardown exceptions
-        End Try
-        ' If the worker is running during shutdown/refresh, cancel it cleanly
-        If BackgroundworkerWL.IsBusy Then
-            If BackgroundworkerWL.WorkerSupportsCancellation Then
-                BackgroundworkerWL.CancelAsync()
-            End If
-        End If
-        ' Close WinLinks
-        WLClose(True)
-    End Sub
-    Private Sub FrmMouseDown(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseDown, tabpageWL.MouseDown, tabpageHK.MouseDown, tabpageHC.MouseDown, tabpageAC.MouseDown, MyBase.MouseDown
-        If e.Button = MouseButtons.Left AndAlso WindowState = FormWindowState.Normal Then
-            mMove = True
-            Dim ctrl As Control = DirectCast(sender, Control)
-            If TypeOf ctrl Is TabPage Then
-                mOffset = New Point(-e.X - 4 - tabcontrolSettings.Left - ctrl.Left - SystemInformation.FrameBorderSize.Width, -e.Y - 4 - tabcontrolSettings.Top - ctrl.Top - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
-            Else
-                mOffset = New Point(-e.X - 4 - SystemInformation.FrameBorderSize.Width, -e.Y - 4 - SystemInformation.FrameBorderSize.Height - SystemInformation.CaptionHeight)
-            End If
-        End If
-    End Sub
-    Private Sub FrmMouseMove(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseMove, tabpageWL.MouseMove, tabpageHK.MouseMove, tabpageHC.MouseMove, tabpageAC.MouseMove, MyBase.MouseMove
-        If mMove Then
-            mPosition = MousePosition
-            mPosition.Offset(mOffset.X, mOffset.Y)
-            CheckMove(mPosition)
-            Location = mPosition
-        End If
-    End Sub
-    Private Sub FrmMouseUp(sender As Object, e As MouseEventArgs) Handles tabpageWST.MouseUp, tabpageWL.MouseUp, tabpageHK.MouseUp, tabpageHC.MouseUp, tabpageAC.MouseUp, MyBase.MouseUp
-        mMove = False
-    End Sub
-    Private Sub FrmMove(sender As Object, e As EventArgs) Handles MyBase.Move
-        If Not mMove AndAlso WindowState = FormWindowState.Normal Then CheckMove(Me.Location)
-    End Sub
-
-    ' Control Events
-    Private Sub CMICloseAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCloseAll.MouseUp, cmiScreenSaverCloseAll.MouseUp
-        Me.Close()
-        If e.Button = MouseButtons.Right Then
-            Select Case My.Computer.Keyboard.CtrlKeyDown
-                Case True : System.Windows.Forms.Application.Restart()
-                Case False : Diagnostics.Process.Start(My.Computer.FileSystem.CombinePath(My.Application.Info.DirectoryPath, My.Application.Info.AssemblyName + ".exe"))
-            End Select
-        End If
-    End Sub
-    Private Sub BtnEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLRefresh.Enter, btnSettingsSave.Enter, btnSettingsRestore.Enter, btnLog.Enter, btnInfo.Enter, btnErrorTest.Enter, btnClockTest.Enter
-        btnClose.Focus()
-    End Sub
-    Private Sub BtnInfoMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTHelp.MouseUp, btnInfo.MouseUp
-        If sender Is Me.cmiWSTHelp Or (sender Is Me.btnInfo AndAlso (e.X >= 0 And e.X <= Me.btnInfo.Width And e.Y >= 0 And e.Y <= Me.btnInfo.Height)) Then
-            Select Case e.Button
-                Case MouseButtons.Left : My.App.ShowHelp(False)
-                Case MouseButtons.Right : My.App.ShowHelp(True)
-            End Select
-        End If
-    End Sub
-    Private Sub BtnLogMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTLog.MouseUp, btnLog.MouseUp
-        If sender Is Me.cmiWSTLog Or (sender Is Me.btnLog AndAlso (e.X >= 0 And e.X <= Me.btnLog.Width And e.Y >= 0 And e.Y <= Me.btnLog.Height)) Then
-            Select Case e.Button
-                Case MouseButtons.Left : My.App.ShowLog(False)
-                Case MouseButtons.Right : My.App.ShowLog(True)
-            End Select
-        End If
-        App.ClearErrorAlert()
-        ' UpdateWST()
-    End Sub
-    Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
-        HideForm()
-    End Sub
-    Private Sub BtnErrorTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnErrorTest.MouseUp
-        If e.X >= 0 And e.X <= btnErrorTest.Width And e.Y >= 0 And e.Y <= btnErrorTest.Height Then
-            Select Case e.Button
-                Case MouseButtons.Left
-                    App.SetErrorAlert()
-                    App.ShowMessage(My.App.Tools.SkyeTools, "ERROR!", "Test Error - DO NOT PANIC!!", SystemIcons.Error, True)
-                Case MouseButtons.Right
-                    Throw New Exception("Test Exception - DO NOT PANIC!!")
-            End Select
-        End If
-    End Sub
-    Private Sub BtnClockTestMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles btnClockTest.MouseUp
-        If e.X >= 0 And e.X <= Me.btnClockTest.Width And e.Y >= 0 And e.Y <= Me.btnClockTest.Height Then
-            Select Case e.Button
-                Case MouseButtons.Left : App.ShowClock()
-                Case MouseButtons.Right
-            End Select
-        End If
-    End Sub
-    Private Sub BtnSettings_Click(sender As Object, e As EventArgs) Handles BtnSettings.Click
-        App.ShowSettings()
-    End Sub
-
-    ' Methods
-    Friend Sub ShowTools()
-        If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then : Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
-        Else 'Any One or More Tools Running(That Have A Tray Icon)
-            If My.App.WSTEnabled Then
-                UpdateWST()
-                ShowWST()
-                Me.notifyiconWST.Visible = True
-            Else : Me.notifyiconWST.Visible = False
-            End If
-            If App.WSTSSToolEnabled Then
-                'WSTSSSet()
-                If App.WSTSSToolEnabled AndAlso App.WSTShowSSIcon Then
-                    Me.notifyiconWSTScreenSaver.Visible = True
-                Else
-                    Me.notifyiconWSTScreenSaver.Visible = False
-                End If
-            Else
-                Me.notifyiconWSTScreenSaver.Visible = False
-            End If
-            If Not My.Application.AlternateStart AndAlso My.App.WSTShowWLTray Then : If WLTrayIcons.Count = 0 Then ShowWL()
-            Else : If WLTrayIcons.Count > 0 Then WLClose()
-            End If
-        End If
-    End Sub
-    Private Function IconToHighQualityImage(ic As Icon) As Image
-        Dim bmp As Bitmap = ic.ToBitmap()
-        Return CType(bmp.Clone(), Image)
-    End Function
-    Private Sub HideForm()
-        Me.Hide()
-        If Me.listviewWL.SelectedIndices.Count > 0 Then ShowSettings(My.App.Tools.WinLinks)
-    End Sub
-    Private Sub CheckMove(ByRef location As Point)
-        Dim screen As Rectangle = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
-        If location.X + Me.Width > screen.Right Then location.X = screen.Right - Me.Width + App.AdjustScreenBoundsNormalWindow
-        If location.Y + Me.Height > screen.Bottom Then location.Y = screen.Bottom - Me.Height + App.AdjustScreenBoundsNormalWindow
-        If location.X < screen.Left Then location.X = screen.Left - App.AdjustScreenBoundsNormalWindow
-        If location.Y < screen.Top Then location.Y = screen.Top
-    End Sub
-    Private Function CloseApplications(tool As My.App.Tools, closelist As Collections.Generic.List(Of String), Optional timeout As Byte = 60, Optional generateOArestartlist As Boolean = False) As Boolean '
-        Try
-            For Each i As String In closelist
-                App.ShowMessage(tool, "Closing " + i.ToUpper, Nothing)
-                Dim plist As Diagnostics.Process() = Diagnostics.Process.GetProcessesByName(i)
-                For Each p As Diagnostics.Process In plist
-                    If p.CloseMainWindow Then
-                        If Not p.WaitForExit(timeout * 1000) Then p.Kill()
-                    Else
-                        p.Kill()
-                    End If
-                    'If usealt Then
-                    '	If p.CloseMainWindow Then : If Not p.WaitForExit(timeout * 1000) Then p.Kill()
-                    '	Else : p.Kill()
-                    '	End If
-                    'Else
-                    '	Dim pcloseappinfo As New Diagnostics.ProcessStartInfo
-                    '	pcloseappinfo.FileName = "PROCESS.EXE"
-                    '	pcloseappinfo.Arguments = "-q " + p.Id.ToString + " " + timeout.ToString
-                    '	pcloseappinfo.WindowStyle = Diagnostics.ProcessWindowStyle.Hidden
-                    '	Dim pcloseapp As Diagnostics.Process = Diagnostics.Process.Start(pcloseappinfo)
-                    '	pcloseapp.WaitForExit()
-                    '	pcloseapp.Dispose()
-                    'End If
-                Next
-            Next
-            If closelist.Count > 0 Then My.App.WriteToLog(tool, "Application Closure Completed")
-            CloseApplications = True 'DO NOT use RETURN here because SMStandByEnd will not execute if you do!!
-        Catch ex As Exception
-            My.App.WriteToLog(tool, "Application Closure FAILED! " + ex.Message)
-            CloseApplications = False 'DO NOT use RETURN here because SMStandByEnd will not execute if you do!!
-        End Try
-    End Function
-
-#End Region
 #Region "Settings"
 
     ' Declarations
@@ -390,25 +19,7 @@ Partial Friend Class MainForm
     End Sub
     Private Sub BtnSettingsSaveClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnSettingsSave.Click
         My.App.SaveSettings()
-        HideForm()
-    End Sub
-    Private Sub BtnSettingsRestoreClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnSettingsRestore.Click
-        FrmClosingTasks()
-        ACMute = False
-        My.App.GetSettings()
-        FrmLoad(btnSettingsRestore, New EventArgs)
-        FrmShown(btnSettingsRestore, New EventArgs)
-    End Sub
-    Private Sub TextboxNumbersOnlyKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles textboxWLStartUpDelay.KeyDown, textboxWLMaxLinksPerFolder.KeyDown, textboxWLAutoRefreshInterval.KeyDown, textboxWLAutoRefreshIdleInterval.KeyDown
-        nonNumberEntered = False
-        If (e.KeyCode < Keys.D0 Or e.KeyCode > Keys.D9) And (e.KeyCode < Keys.NumPad0 Or e.KeyCode > Keys.NumPad9) Then
-            If e.KeyCode <> Keys.Delete And e.KeyCode <> Keys.Back And e.KeyCode <> Keys.Enter Then : nonNumberEntered = True
-            ElseIf e.KeyCode = Keys.Enter Then : Validate()
-            End If
-        End If
-    End Sub
-    Private Sub TextboxNumbersOnlyKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxWLStartUpDelay.KeyPress, textboxWLMaxLinksPerFolder.KeyPress, textboxWLAutoRefreshInterval.KeyPress, textboxWLAutoRefreshIdleInterval.KeyPress
-        If nonNumberEntered Then e.Handled = True
+        Me.Hide()
     End Sub
 
     ' Methods
@@ -417,7 +28,6 @@ Partial Friend Class MainForm
         Me.SuspendLayout()
         ShowSettingsHC()
         ShowSettingsHK()
-        ShowSettingsWL()
         Me.ResumeLayout()
         Me.btnClose.Select()
     End Sub
@@ -430,7 +40,6 @@ Partial Friend Class MainForm
             Select Case tool
                 Case My.App.Tools.HotClicks : ShowSettingsHC()
                 Case My.App.Tools.HotKeys : ShowSettingsHK()
-                Case My.App.Tools.WinLinks : ShowSettingsWL()
             End Select
             Me.ResumeLayout()
             Me.btnClose.Select()
@@ -515,61 +124,17 @@ Partial Friend Class MainForm
             Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
         End If
     End Sub
-    Private Sub ShowSettingsWL()
-        Me.panelWL.Hide()
-        Me.listviewWL.Clear()
-        Me.lblWLRoot.ResetFont()
-        Me.textboxWLRoot.ResetText()
-        Me.textboxWLRoot.Select()
-        Me.textboxWLName.ResetText()
-        Me.comboboxWLSort.SelectedIndex = -1
-        Me.comboboxWLFolderMode.SelectedIndex = -1
-        Me.comboboxWLFolderPlacement.SelectedIndex = -1
-        Me.checkboxWLUseDefaultIcon.Checked = False
-        Me.checkboxWLShowInMenu.Checked = False
-        Me.checkboxWLShowInTray.Checked = False
-        Me.checkboxWLShowFilePathToolTips.Checked = My.App.WLShowFilePathToolTips
-        Me.checkboxWLShowFileInfoToolTips.Checked = My.App.WLShowFileInfoToolTips
-        Me.checkboxWLShowFolderPathToolTips.Checked = My.App.WLShowFolderPathToolTips
-        Me.textboxWLStartUpDelay.Text = My.App.WLStartUpDelay.ToString
-        Me.textboxWLMaxLinksPerFolder.Text = My.App.WLMaxLinksPerFolder.ToString
-        Me.checkboxWLAutoRefresh.Checked = My.App.WLAutoRefresh
-        Me.textboxWLAutoRefreshInterval.Text = My.App.WLAutoRefreshInterval.ToString
-        Me.textboxWLAutoRefreshIdleInterval.Text = My.App.WLAutoRefreshIdleInterval.ToString
-        Me.listviewWL.Columns.Add("Path", 331) '354 = Full ListView Width
-        For index As Integer = 0 To My.App.WLData.Count - 1
-            Dim link As My.App.WLItemType = My.App.WLData(index)
-            Dim split As String() = link.Root.Split(CChar("\"))
-            Dim item As New ListViewItem
-            If link.Root.Length > 60 Then
-                item.Text = "...\" + split(split.Length - 1)
-                item.ToolTipText = link.Root
-            Else : item.Text = link.Root
-            End If
-            If index = My.App.WLData.Count - 1 And My.App.WLAutoRefresh And (link.ShowInMenu Or link.ShowInTray) Then
-                item.Font = New Font(item.Font, FontStyle.Bold)
-                If Not String.IsNullOrEmpty(item.ToolTipText) Then item.ToolTipText += Chr(13) + Chr(13)
-                item.ToolTipText += "AutoRefresh Enabled"
-            End If
-            If Not link.ShowInMenu And Not link.ShowInTray Then
-                item.ForeColor = SystemColors.GrayText
-                If Not String.IsNullOrEmpty(item.ToolTipText) Then item.ToolTipText += Chr(13) + Chr(13)
-                item.ToolTipText += "WinLink InActive on both Menu & Tray"
-            End If
-            Me.listviewWL.Items.Add(item)
-        Next
-    End Sub
     Private Sub SelectTab(ByRef tabpage As System.Windows.Forms.TabPage, Optional forcevisible As Boolean = False)
         If tabpage Is Nothing Then
             If Me.Visible Then
                 If Me.WindowState = FormWindowState.Minimized Then : Me.WindowState = FormWindowState.Normal
-                Else : If Not forcevisible Then HideForm()
+                Else : If Not forcevisible Then Me.Hide()
                 End If
             Else : Me.Show()
             End If
         Else
             If Me.Visible Then
-                If Me.tabcontrolSettings.SelectedTab.Equals(tabpage) AndAlso Me.WindowState = FormWindowState.Normal AndAlso Not forcevisible Then : HideForm()
+                If Me.tabcontrolSettings.SelectedTab.Equals(tabpage) AndAlso Me.WindowState = FormWindowState.Normal AndAlso Not forcevisible Then : Me.Hide()
                 Else
                     If Not Me.WindowState = FormWindowState.Normal Then Me.WindowState = FormWindowState.Normal
                     UpdateWST()
@@ -588,7 +153,6 @@ Partial Friend Class MainForm
     End Sub
 
 #End Region
-
 #Region "WorkSpace Tools (WST)"
 
     ' Declarations
@@ -659,10 +223,6 @@ Partial Friend Class MainForm
 
     ' Methods
     Friend Sub UpdateWST()
-        'Settings Window
-        Me.TipInfoEX.SetText(Me.btnLog, "Log" & Environment.NewLine & "RightClick = Show Maximized")
-        If App.ErrorAlert Then Me.TipInfoEX.SetText(Me.btnLog, Me.TipInfoEX.GetText(Me.btnLog) & Environment.NewLine & "An Application Error Has Occured. View Log For Details.")
-        'WorkSpace Tools
         If My.App.WSTEnabled Then
             Me.notifyiconWST.Icon = My.Resources.Resources.IconWST
             Me.notifyiconWST.Text = My.App.WSTName
@@ -784,7 +344,6 @@ Partial Friend Class MainForm
         If My.App.WSTShowLockWorkSpace Then
             If hcmode AndAlso My.App.WSTSSEnableOnActivate Then
                 WSTSSEnabled = True
-                'WSTSSSet()
             End If
             Skye.WinAPI.LockWorkStation()
         End If
@@ -859,7 +418,6 @@ Partial Friend Class MainForm
     'Declarations
     Private WithEvents TimerAC As New Timer
     Private WithEvents BackgroundworkerAC As New System.ComponentModel.BackgroundWorker
-    Private uiACOpenFile As New OpenFileDialog
     Private _ACAlarmActive As Boolean
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend Property ACAlarmActive As Boolean
@@ -1042,6 +600,7 @@ Partial Friend Class MainForm
     Friend Sub CancelBackgroundworkerAC()
         If Me.BackgroundworkerAC.IsBusy Then Me.BackgroundworkerAC.CancelAsync()
     End Sub
+
 #End Region
 #Region "WinLinks(WL)"
 
@@ -1056,7 +615,6 @@ Partial Friend Class MainForm
             Return BackgroundworkerWL.IsBusy
         End Get
     End Property
-
     Private Const WLMaxItems As Integer = 2000
     Private Structure WLMenuDataItem
         Public Text As String
@@ -1073,6 +631,10 @@ Partial Friend Class MainForm
     End Property
     Private WLMenus As New Collections.Generic.List(Of ToolStripMenuItem)
     Private WLTrayIcons As New Collections.Generic.List(Of NotifyIcon)
+    Private WLAutoRefreshUpdate As Boolean = False
+    Private WLLoadStartTime As TimeSpan
+    Private WLMenuItemCount As Integer
+    Private cmWLItem As New ContextMenuStrip
     Private _WLStartUp As Boolean
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend Property WLStartUp As Boolean
@@ -1085,11 +647,6 @@ Partial Friend Class MainForm
             End If
         End Set
     End Property
-    Private WLAutoRefreshUpdate As Boolean = False
-    Private WLLoadStartTime As TimeSpan
-    Private WLMenuItemCount As Integer
-    Private cmWLItem As New ContextMenuStrip
-
     Private _WLInsertIndex As Integer
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend Property WLInsertIndex As Integer
@@ -1102,7 +659,6 @@ Partial Friend Class MainForm
             End If
         End Set
     End Property
-    Private uiWLFolderBrowser As New FolderBrowserDialog
     Private _WLShowAutoRefresh As Boolean
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Friend ReadOnly Property WLShowAutoRefresh As Boolean
@@ -1112,54 +668,6 @@ Partial Friend Class MainForm
     End Property
 
     ' Control Events
-    Private Sub ListviewWLSelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles listviewWL.SelectedIndexChanged
-        If Me.listviewWL.SelectedIndices.Count > 0 Then
-            Dim link As My.App.WLItemType = My.App.WLData(Me.listviewWL.SelectedIndices(0))
-            Me.lblWLRoot.Font = New Font(Me.Font, FontStyle.Regular)
-            If Me.listviewWL.SelectedIndices(0) = My.App.WLData.Count - 1 And My.App.WLAutoRefresh Then : Me.lblWLRoot.Text = "Root Folder (AutoRefresh Enabled)"
-            Else : Me.lblWLRoot.Text = "Root Folder"
-            End If
-            Me.textboxWLRoot.Text = link.Root
-            Me.textboxWLName.Text = link.Name
-            Me.comboboxWLSort.SelectedIndex = link.Sort - 1
-            Me.comboboxWLFolderMode.SelectedIndex = link.FolderMode
-            Me.comboboxWLFolderPlacement.SelectedIndex = link.FolderPlacement
-            If link.UseDefaultIcon Then : Me.checkboxWLUseDefaultIcon.Checked = True
-            Else : Me.checkboxWLUseDefaultIcon.Checked = False
-            End If
-            If link.ShowInMenu Then : Me.checkboxWLShowInMenu.Checked = True
-            Else : Me.checkboxWLShowInMenu.Checked = False
-            End If
-            If link.ShowInTray Then : Me.checkboxWLShowInTray.Checked = True
-            Else : Me.checkboxWLShowInTray.Checked = False
-            End If
-            If link.ShowNoMenu Then : Me.checkboxWLShowNoMenu.Checked = True
-            Else : Me.checkboxWLShowNoMenu.Checked = False
-            End If
-            If link.ShowMenuIcons Then : Me.checkboxWLShowMenuIcons.Checked = True
-            Else : Me.checkboxWLShowMenuIcons.Checked = False
-            End If
-            Me.panelWL.Show()
-        ElseIf Me.listviewWL.FocusedItem IsNot Nothing Then : ShowSettings(My.App.Tools.WinLinks)
-        End If
-    End Sub
-    Private Sub CMlistviewWLOpening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmlistviewWL.Opening
-        If Me.listviewWL.SelectedIndices.Count > 0 Then
-            If Me.listviewWL.SelectedIndices(0) = 0 Then : Me.cmiWLMoveUp.Enabled = False
-            Else : Me.cmiWLMoveUp.Enabled = True
-            End If
-            If Me.listviewWL.SelectedIndices(0) = My.App.WLData.Count - 1 Then : Me.cmiWLMoveDown.Enabled = False
-            Else : Me.cmiWLMoveDown.Enabled = True
-            End If
-            Me.cmiWLNew.Text = "New (Insert Above)"
-            Me.cmiWLDelete.Enabled = True
-        Else
-            Me.cmiWLMoveUp.Enabled = False
-            Me.cmiWLMoveDown.Enabled = False
-            Me.cmiWLNew.Text = "New (Insert Last)"
-            Me.cmiWLDelete.Enabled = False
-        End If
-    End Sub
     Private Sub CMIWLMenusMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
         Dim senderCMI As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Select Case e.Button
@@ -1242,156 +750,6 @@ Partial Friend Class MainForm
             Next
             ShowWL()
             senderCMI = Nothing
-        End If
-    End Sub
-    Private Sub CMIWLMoveMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLMoveUp.MouseUp, cmiWLMoveDown.MouseUp
-        If e.Button = MouseButtons.Left And Me.listviewWL.SelectedIndices.Count > 0 Then
-            Debug.Print("cmiWinLinksMoveClick: " + Me.listviewWL.SelectedIndices(0).ToString)
-            Dim link As My.App.WLItemType = My.App.WLData(Me.listviewWL.SelectedIndices(0))
-            My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
-            Select Case CType(sender, ToolStripItem).Name
-                Case Me.cmiWLMoveUp.Name : My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0) - 1, link)
-                Case Me.cmiWLMoveDown.Name : My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0) + 1, link)
-            End Select
-            WLSetManualRefresh()
-        End If
-    End Sub
-    Private Sub CMIWLNewMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLNew.MouseUp
-        If e.Button = MouseButtons.Left Then WLSetNew()
-    End Sub
-    Private Sub CMIWLDeleteMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWLDelete.MouseUp
-        If e.Button = MouseButtons.Left And Me.listviewWL.SelectedIndices.Count > 0 Then
-            WLSetAutoRefresh(True)
-            My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
-            ShowSettings(My.App.Tools.WinLinks)
-            WLSetManualRefresh()
-        End If
-    End Sub
-    Private Sub BtnWLRefreshClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLRefresh.Click
-        If Me.btnWLRefresh.Text = "CANCEL" Then
-            Me.btnWLRefresh.Enabled = False
-            Me.btnWLRefresh.Text = "PENDING..."
-            Me.TipInfoEX.SetText(Me.btnWLRefresh, "Stopping File Search, Please Wait...")
-            BackgroundworkerWL.CancelAsync()
-        Else
-            WLClose(True)
-            ShowWL()
-        End If
-    End Sub
-    Private Sub BtnWLSelectFolderClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSelectFolder.Click
-        If Not String.IsNullOrEmpty(Me.textboxWLRoot.Text) Then Me.uiWLFolderBrowser.SelectedPath = Me.textboxWLRoot.Text
-        Dim r As DialogResult = Me.uiWLFolderBrowser.ShowDialog(Me)
-        If r = System.Windows.Forms.DialogResult.OK And Not Me.uiWLFolderBrowser.SelectedPath = "" Then : Me.textboxWLRoot.Text = Me.uiWLFolderBrowser.SelectedPath
-        ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then : Me.textboxWLRoot.Text = ""
-        End If
-        Me.textboxWLRoot.Select(Me.textboxWLRoot.Text.Length, 0)
-        Me.textboxWLRoot.Focus()
-    End Sub
-    Private Sub BtnWLSelectFolderEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSelectFolder.Enter
-        Me.textboxWLRoot.Focus()
-    End Sub
-    Private Sub BtnWLSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLSet.Click
-        If String.IsNullOrEmpty(Me.textboxWLRoot.Text) Or Me.textboxWLRoot.Text.Length < 4 Then
-            Me.lblWLRoot.Font = New Font(Me.Font, FontStyle.Bold)
-            Me.textboxWLRoot.Select()
-        Else
-            Dim link As New My.App.WLItemType With {
-                .Root = Me.textboxWLRoot.Text,
-                .Name = Me.textboxWLName.Text}
-            'Edit
-            If Me.listviewWL.SelectedIndices.Count > 0 Then
-                If Me.comboboxWLSort.SelectedIndex = -1 Then Me.comboboxWLSort.SelectedIndex = 0
-                link.Sort = CType(Me.comboboxWLSort.SelectedIndex + 1, SortOrder)
-                If Me.comboboxWLFolderMode.SelectedIndex = -1 Then Me.comboboxWLFolderMode.SelectedIndex = 0
-                link.FolderMode = CType(Me.comboboxWLFolderMode.SelectedIndex, My.App.WLFolderMode)
-                If Me.comboboxWLFolderPlacement.SelectedIndex = -1 Then Me.comboboxWLFolderPlacement.SelectedIndex = 0
-                link.FolderPlacement = CType(Me.comboboxWLFolderPlacement.SelectedIndex, My.App.WLFolderPlacement)
-                link.UseDefaultIcon = Me.checkboxWLUseDefaultIcon.Checked
-                link.ShowInMenu = Me.checkboxWLShowInMenu.Checked
-                link.ShowInTray = Me.checkboxWLShowInTray.Checked
-                link.ShowNoMenu = Me.checkboxWLShowNoMenu.Checked
-                link.ShowMenuIcons = Me.checkboxWLShowMenuIcons.Checked
-                link.RefreshData = True
-                link.RefreshMenu = True
-                If Not (link.ShowInMenu = My.App.WLData(Me.listviewWL.SelectedIndices(0)).ShowInMenu And link.ShowInTray = My.App.WLData(Me.listviewWL.SelectedIndices(0)).ShowInTray And link.Root = My.App.WLData(Me.listviewWL.SelectedIndices(0)).Root And link.Name = My.App.WLData(Me.listviewWL.SelectedIndices(0)).Name) Then WLClose(True)
-                My.App.WLData.RemoveAt(Me.listviewWL.SelectedIndices(0))
-                My.App.WLData.Insert(Me.listviewWL.SelectedIndices(0), link)
-                If WLMenuData.Count = 0 Then : WLSetManualRefresh()
-                Else : ShowWL()
-                End If
-
-                'New
-            Else
-                If Me.comboboxWLSort.SelectedIndex = -1 Then Me.comboboxWLSort.SelectedIndex = 0
-                link.Sort = CType(Me.comboboxWLSort.SelectedIndex + 1, SortOrder)
-                If Me.comboboxWLFolderMode.SelectedIndex = -1 Then Me.comboboxWLFolderMode.SelectedIndex = 0
-                link.FolderMode = CType(Me.comboboxWLFolderMode.SelectedIndex, My.App.WLFolderMode)
-                If Me.comboboxWLFolderPlacement.SelectedIndex = -1 Then Me.comboboxWLFolderPlacement.SelectedIndex = 0
-                link.FolderPlacement = CType(Me.comboboxWLFolderPlacement.SelectedIndex, My.App.WLFolderPlacement)
-                If WLInsertIndex = -1 Then WLInsertIndex = My.App.WLData.Count
-                link.UseDefaultIcon = Me.checkboxWLUseDefaultIcon.Checked
-                link.ShowInMenu = Me.checkboxWLShowInMenu.Checked
-                link.ShowInTray = Me.checkboxWLShowInTray.Checked
-                link.ShowNoMenu = Me.checkboxWLShowNoMenu.Checked
-                link.ShowMenuIcons = Me.checkboxWLShowMenuIcons.Checked
-                My.App.WLData.Insert(WLInsertIndex, link)
-                WLSetManualRefresh()
-            End If
-        End If
-    End Sub
-    Private Sub BtnWLCancelClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnWLCancel.Click
-        ShowSettings(My.App.Tools.WinLinks)
-    End Sub
-    Private Sub CheckboxWLShowFileInfoToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFileInfoToolTips.Click
-        My.App.WLShowFileInfoToolTips = Not My.App.WLShowFileInfoToolTips
-    End Sub
-    Private Sub CheckboxWLShowFilePathToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFilePathToolTips.Click
-        My.App.WLShowFilePathToolTips = Not My.App.WLShowFilePathToolTips
-    End Sub
-    Private Sub CheckboxWLShowFolderPathToolTipsClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLShowFolderPathToolTips.Click
-        My.App.WLShowFolderPathToolTips = Not My.App.WLShowFolderPathToolTips
-    End Sub
-    Private Sub CheckboxWLAutoRefreshClick(ByVal sender As Object, ByVal e As EventArgs) Handles checkboxWLAutoRefresh.Click
-        My.App.WLAutoRefresh = Not My.App.WLAutoRefresh
-        WLSetAutoRefresh()
-        ShowSettings(My.App.Tools.WinLinks)
-    End Sub
-    Private Sub TextboxWLStartUpDelayValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLStartUpDelay.Validating
-        If Int(Val(Me.textboxWLStartUpDelay.Text)) < 5 And Int(Val(Me.textboxWLStartUpDelay.Text)) <> 0 Then Me.textboxWLStartUpDelay.Text = "5"
-        If Int(Val(Me.textboxWLStartUpDelay.Text)) > 300 Then Me.textboxWLStartUpDelay.Text = "300"
-    End Sub
-    Private Sub TextboxWLStartUpDelayValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLStartUpDelay.Validated
-        My.App.WLStartUpDelay = CShort(Val(Me.textboxWLStartUpDelay.Text))
-        Me.textboxWLStartUpDelay.SelectAll()
-    End Sub
-    Private Sub TextboxWLMaxLinksPerFolderValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLMaxLinksPerFolder.Validating
-        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) < 1 Then Me.textboxWLMaxLinksPerFolder.Text = "1"
-        If Int(Val(Me.textboxWLMaxLinksPerFolder.Text)) > 100 Then Me.textboxWLMaxLinksPerFolder.Text = "100"
-    End Sub
-    Private Sub TextboxWLMaxLinksPerFolderValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLMaxLinksPerFolder.Validated
-        My.App.WLMaxLinksPerFolder = CByte(Val(Me.textboxWLMaxLinksPerFolder.Text))
-        Me.textboxWLMaxLinksPerFolder.SelectAll()
-    End Sub
-    Private Sub TextboxWLAutoRefreshIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshInterval.Validating
-        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) < 1 Then Me.textboxWLAutoRefreshInterval.Text = "1"
-        If Int(Val(Me.textboxWLAutoRefreshInterval.Text)) > 90 Then Me.textboxWLAutoRefreshInterval.Text = "90"
-    End Sub
-    Private Sub TextboxWLAutoRefreshIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshInterval.Validated
-        If Not My.App.WLAutoRefreshInterval = Int(Val(Me.textboxWLAutoRefreshInterval.Text)) Then
-            My.App.WLAutoRefreshInterval = CByte(Val(Me.textboxWLAutoRefreshInterval.Text))
-            Me.textboxWLAutoRefreshInterval.SelectAll()
-            WLSetAutoRefresh()
-        End If
-    End Sub
-    Private Sub TextboxWLAutoRefreshIdleIntervalValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles textboxWLAutoRefreshIdleInterval.Validating
-        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) < 20 Then Me.textboxWLAutoRefreshIdleInterval.Text = "20"
-        If Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) > 240 Then Me.textboxWLAutoRefreshIdleInterval.Text = "240"
-    End Sub
-    Private Sub TextboxWLAutoRefreshIdleIntervalValidated(ByVal sender As Object, ByVal e As EventArgs) Handles textboxWLAutoRefreshIdleInterval.Validated
-        If Not My.App.WLAutoRefreshIdleInterval = Int(Val(Me.textboxWLAutoRefreshIdleInterval.Text)) Then
-            My.App.WLAutoRefreshIdleInterval = CByte(Val(Me.textboxWLAutoRefreshIdleInterval.Text))
-            Me.textboxWLAutoRefreshIdleInterval.SelectAll()
-            WLSetAutoRefresh()
         End If
     End Sub
 
@@ -1660,7 +1018,6 @@ Partial Friend Class MainForm
             My.App.WriteToLog(My.App.Tools.WinLinks, IIf(WLAutoRefreshUpdate, "WinLinks AutoRefreshed (", "WinLinks Loaded (").ToString + Skye.Common.GenerateLogTime(WLLoadStartTime, My.Computer.Clock.LocalTime.TimeOfDay) + ")")
             If Not e.Cancelled Then WLSetAutoRefresh()
             WLSetSettingsState(True)
-            If e.Cancelled Then Me.btnWLRefresh.Font = New Font(Me.btnWLRefresh.Font, FontStyle.Bold)
             WLLoadStartTime = TimeSpan.Zero
             If Not WLAutoRefreshUpdate Then App.ShowMessage(My.App.Tools.WinLinks, App.ToolToString(App.Tools.WinLinks), "All WinLinks Loaded")
             WLAutoRefreshUpdate = False
@@ -1671,7 +1028,6 @@ Partial Friend Class MainForm
     ' Methods
     Friend Sub ShowWL()
         Try
-            ShowSettings(My.App.Tools.WinLinks)
             If (My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLData.Count > 0 And Not BackgroundworkerWL.IsBusy Then
                 WLLoadStartTime = My.Computer.Clock.LocalTime.TimeOfDay
                 WLSetAutoRefresh(True)
@@ -1786,7 +1142,7 @@ Partial Friend Class MainForm
                     If Not BackgroundworkerWL.IsBusy Then BackgroundworkerWL.RunWorkerAsync()
                 End If
             End If
-        Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "Error In ShowWinLinks" + Chr(13) + ex.ToString)
+        Catch ex As Exception : App.WriteToLog(App.Tools.WinLinks, "Error In ShowWL" & Environment.NewLine & ex.ToString)
         End Try
     End Sub
     Private Sub WLShowItemSubMenu(text As String, tag As String)
@@ -1881,7 +1237,6 @@ Partial Friend Class MainForm
         Finally
             If forcecloseall Or (Not My.App.WSTShowWLMenu And Not My.App.WSTShowWLTray) Then
                 WLMenuData.Clear()
-
                 For index As Integer = 0 To My.App.WLData.Count - 1
                     Dim link As My.App.WLItemType = My.App.WLData(index)
                     link.RefreshData = True
@@ -1920,7 +1275,6 @@ Partial Friend Class MainForm
     Private Sub WLWatcher(root As String, refreshdata As Boolean)
         Try
             TimerWLAutoRefreshIdle.Stop()
-
             For index As Integer = 0 To My.App.WLData.Count - 1
                 Dim link As My.App.WLItemType = My.App.WLData(index)
                 If link.Root = root Then
@@ -1941,7 +1295,6 @@ Partial Friend Class MainForm
                     WatcherWLAutoRefresh.EnableRaisingEvents = False
                     TimerWLAutoRefresh.Stop()
                     TimerWLAutoRefreshIdle.Stop()
-                    Me.lblWLAutoRefresh.Visible = False
                     _WLShowAutoRefresh = False
                     Debug.Print("SetWinLinksAutoRefresh :Watcher Terminated")
                 Catch ex As Exception
@@ -1964,7 +1317,6 @@ Partial Friend Class MainForm
                         TimerWLAutoRefreshIdle.Interval = My.App.WLAutoRefreshIdleInterval * 1000
                         WatcherWLAutoRefresh.EnableRaisingEvents = True
                         TimerWLAutoRefresh.Start()
-                        Me.lblWLAutoRefresh.Visible = True
                         _WLShowAutoRefresh = True
                         Debug.Print("SetWinLinksAutoRefresh: Watcher Activated")
                     Catch ex As Exception : My.App.WriteToLog(My.App.Tools.WinLinks, "AutoRefresh could not be Activated." & Environment.NewLine & ex.ToString)
@@ -1977,20 +1329,6 @@ Partial Friend Class MainForm
     Friend Sub WLSetManualRefresh()
         WLClose(True)
         App.FrmSettings?.WLSetManualRefresh()
-    End Sub
-    Private Sub WLSetNew()
-        If Me.listviewWL.SelectedIndices.Count = 0 Then : WLInsertIndex = -1
-        Else : WLInsertIndex = Me.listviewWL.SelectedIndices(0)
-        End If
-        ShowSettings(My.App.Tools.WinLinks)
-        Me.panelWL.Show()
-        Me.checkboxWLShowInMenu.Checked = True
-        Me.checkboxWLShowInTray.Checked = True
-        Me.checkboxWLShowNoMenu.Checked = False
-        Me.checkboxWLShowMenuIcons.Checked = True
-        Me.lblWLRoot.ResetFont()
-        Me.lblWLRoot.Text = "Root Folder"
-        Me.textboxWLRoot.Select()
     End Sub
     Private Sub WLSetSettingsState(state As Boolean)
         For Each cmi As ToolStripMenuItem In WLMenus
@@ -2449,5 +1787,267 @@ Partial Friend Class MainForm
     End Sub
 
 #End Region
+
+    ' Declarations
+    Private Structure ProcessListType
+        Dim ProcessName As String
+        Dim FileName As String
+        Dim Icon As Icon
+    End Structure
+    Private Class ProcessListComparer
+        Implements Collections.Generic.IComparer(Of ProcessListType)
+        Private Function Compare(ByVal x As ProcessListType, ByVal y As ProcessListType) As Integer Implements Collections.Generic.IComparer(Of ProcessListType).Compare '
+            If x.ProcessName Is Nothing Then
+                If y.ProcessName Is Nothing Then : Return 0
+                Else : Return -1
+                End If
+            Else
+                If y.ProcessName Is Nothing Then : Return 1
+                Else : Return x.ProcessName.CompareTo(y.ProcessName)
+                End If
+            End If
+        End Function
+    End Class
+    Private TipCM As Skye.UI.ToolTipEX ' Tooltip for Context Menu Items
+
+    ' Form Events
+    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        Select Case m.Msg
+            Case Skye.WinAPI.WM_SYSCOMMAND
+                Select Case CInt(m.WParam)
+                    Case Skye.WinAPI.SC_CLOSE
+#If DEBUG Then
+                        Me.Close()
+#Else
+						HideForm()
+#End If
+                    Case Else : MyBase.WndProc(m)
+                End Select
+            Case Skye.WinAPI.WM_HOTKEY
+                Try
+                    HKPerformAction(m.WParam.ToInt32)
+                Catch ex As Exception
+                    App.WriteToLog(App.Tools.SkyeTools, "HotKey Failed --> " + ex.Message)
+                Finally
+                    MyBase.WndProc(m)
+                End Try
+            Case Else : MyBase.WndProc(m)
+        End Select
+    End Sub
+    Friend Sub New()
+
+        'Initialize Locals
+        InitializeComponent()
+        TimerAC.Interval = 1000
+        BackgroundworkerWL.WorkerSupportsCancellation = True
+        BackgroundworkerAC.WorkerSupportsCancellation = True
+        cmWLItem.Font = App.MenuFont
+        cmWLItem.ShowItemToolTips = False
+        Me.imagelisttabcontrolSettings = New ImageList(Me.components) With {
+            .ColorDepth = ColorDepth.Depth32Bit,
+            .ImageSize = New Size(16, 16),
+            .TransparentColor = System.Drawing.Color.Transparent}
+        Me.imagelisttabcontrolSettings.Images.Add("imageHC", My.Resources.Resources.ImageHC16)
+        Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
+        Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
+        Me.tabpageAC.Text = My.App.ToolToString(My.App.Tools.AlarmChime)
+        Me.tabpageAC.ImageKey = "imageAC"
+        Me.tabpageHC.Text = My.App.ToolToString(My.App.Tools.HotClicks)
+        Me.tabpageHC.ImageKey = "imageHC"
+        Me.tabpageHK.Text = My.App.ToolToString(My.App.Tools.HotKeys)
+        Me.tabpageHK.ImageKey = "imageHK"
+        Me.tabpageWL.Text = My.App.ToolToString(My.App.Tools.WinLinks)
+        Me.tabpageWL.ImageKey = "imageWL"
+        Me.tabpageWST.Text = My.App.ToolToString(My.App.Tools.WorkSpaceTools)
+        Me.tabpageWST.ImageKey = "imageWST"
+
+        'Initialize Form
+        Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText
+        Me.cmiScreenSaverCloseAll.ToolTipText = My.App.CloseAllToolTipText
+        Me.notifyiconWST = New NotifyIcon(Me.components) With {
+            .Tag = "notifyiconWST",
+            .ContextMenuStrip = cmWST}
+        Me.notifyiconWSTScreenSaver = New NotifyIcon(Me.components) With {
+            .Tag = "notifyiconWSTScreenSaver",
+            .ContextMenuStrip = cmWSTScreenSaver}
+        Me.cmiWSTScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
+        Me.cmiScreenSaverActivate.Image = My.Resources.Resources.ImageWSTSS16
+        AddHandler Me.notifyiconWST.MouseDown, AddressOf NotifyiconMouseDown
+        AddHandler Me.notifyiconWSTScreenSaver.MouseDown, AddressOf NotifyiconMouseDown
+        WLSetSettingsState(True)
+#If DEBUG Then
+        BackgroundworkerWL.WorkerReportsProgress = True
+#End If
+
+    End Sub
+    Private Sub FrmLoad(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+#If DEBUG Then
+#Else
+		My.App.SetLoadOnOSStartup()
+#End If
+        ShowSettings()
+        ACSet()
+        HKRegister()
+        TipCM = New Skye.UI.ToolTipEX() With {
+            .Font = App.MenuFont,
+            .ShadowAlpha = 0,
+            .ShadowThickness = 0,
+            .FadeInRate = 25,
+            .FadeOutRate = 25,
+            .HideDelay = 5000,
+            .ShowDelay = 250
+        }
+        App.HookTSItemsForCMTooltip(cmWST, TipCM)
+        App.HookTSItemsForCMTooltip(cmWSTScreenSaver, TipCM)
+        Skye.UI.ThemeManager.RegisterComponent(TipInfoEX)
+        Skye.UI.ThemeManager.RegisterComponent(TipHCEX)
+        Skye.UI.ThemeManager.RegisterComponent(TipCM)
+        Skye.UI.ThemeManager.ApplyTheme(Me)
+        cmWST.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmWSTScreenSaver.Renderer = New Skye.UI.SkyeMenuRenderer
+        cmWLItem.Renderer = New Skye.UI.SkyeMenuRenderer
+    End Sub
+    Private Sub FrmShown(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Shown
+        Me.Hide()
+        Me.Opacity = 1
+        If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then WLStartUp = True
+        If Not My.Application.AlternateStart AndAlso (My.App.WSTShowWLMenu And Not My.App.WSTShowWLTray) Then ShowWL()
+        Select Case My.App.WSTSSStartUp
+            Case My.App.WSTSSStartUpMode.Enabled
+                WSTSSEnabled = True
+            Case My.App.WSTSSStartUpMode.Disabled
+                WSTSSEnabled = False
+        End Select
+        ShowTools()
+        If Not My.Application.AlternateStart AndAlso ((My.App.WSTShowWLMenu Or My.App.WSTShowWLTray) And My.App.WLStartUpDelay > 0) Then
+            TimerWLStartUp.Interval = My.App.WLStartUpDelay * 1000
+            TimerWLStartUp.Start()
+            Me.cmseparatorWSTCancel.Visible = True
+        End If
+        UpdateWST()
+#If DEBUG Then
+        Me.Left = 0
+        Me.Top = CInt(My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2)
+        Me.Show()
+#Else
+#End If
+    End Sub
+    Private Sub FrmClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
+        ' Dispose of the clock so the form closes
+        If App.FrmClock IsNot Nothing Then
+            App.FrmClock.Hide()
+            App.FrmClock.Dispose()
+        End If
+        ' Unregister hotkeys so they don't trigger after the form closes
+        HKRegister(True)
+        ' Disposing timers purges queued callbacks from the Windows message queue
+        Try
+            TimerWLAutoRefresh?.Stop()
+            TimerWLAutoRefresh?.Dispose()
+            TimerWLAutoRefreshIdle?.Stop()
+            TimerWLAutoRefreshIdle?.Dispose()
+        Catch
+        End Try
+        ' Disable the FileSystemWatcher explicitly before disposing UI components
+        Try
+            WatcherWLAutoRefresh.EnableRaisingEvents = False
+            WatcherWLAutoRefresh.Dispose()
+        Catch
+            ' Suppress teardown exceptions
+        End Try
+        ' If the worker is running during shutdown/refresh, cancel it cleanly
+        If BackgroundworkerWL.IsBusy Then
+            If BackgroundworkerWL.WorkerSupportsCancellation Then
+                BackgroundworkerWL.CancelAsync()
+            End If
+        End If
+        ' Close WinLinks
+        WLClose(True)
+        ' Finalize
+        My.App.Finalize()
+    End Sub
+
+    ' Control Events
+    Private Sub CMICloseAllMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTCloseAll.MouseUp, cmiScreenSaverCloseAll.MouseUp
+        Me.Close()
+        If e.Button = MouseButtons.Right Then
+            Select Case My.Computer.Keyboard.CtrlKeyDown
+                Case True : System.Windows.Forms.Application.Restart()
+                Case False : Diagnostics.Process.Start(My.Computer.FileSystem.CombinePath(My.Application.Info.DirectoryPath, My.Application.Info.AssemblyName + ".exe"))
+            End Select
+        End If
+    End Sub
+    Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
+        Me.Hide()
+    End Sub
+    Private Sub BtnSettings_Click(sender As Object, e As EventArgs) Handles BtnSettings.Click
+        App.ShowSettings()
+    End Sub
+
+    ' Methods
+    Friend Sub ShowTools()
+        If Not (My.App.WSTEnabled Or My.App.WSTShowSSIcon Or My.App.WSTShowWLTray) Then
+            Me.Close() 'No Tools Running(That Have A Tray Icon), So Close Application
+        Else 'Any One or More Tools Running(That Have A Tray Icon)
+            If My.App.WSTEnabled Then
+                UpdateWST()
+                ShowWST()
+                Me.notifyiconWST.Visible = True
+            Else
+                Me.notifyiconWST.Visible = False
+            End If
+            If App.WSTSSToolEnabled Then
+                If App.WSTSSToolEnabled AndAlso App.WSTShowSSIcon Then
+                    Me.notifyiconWSTScreenSaver.Visible = True
+                Else
+                    Me.notifyiconWSTScreenSaver.Visible = False
+                End If
+            Else
+                Me.notifyiconWSTScreenSaver.Visible = False
+            End If
+            If Not My.Application.AlternateStart AndAlso My.App.WSTShowWLTray Then
+                If WLTrayIcons.Count = 0 Then ShowWL()
+            Else
+                If WLTrayIcons.Count > 0 Then WLClose()
+            End If
+        End If
+    End Sub
+    Private Function IconToHighQualityImage(ic As Icon) As Image
+        Dim bmp As Bitmap = ic.ToBitmap()
+        Return CType(bmp.Clone(), Image)
+    End Function
+    Private Function CloseApplications(tool As My.App.Tools, closelist As Collections.Generic.List(Of String), Optional timeout As Byte = 60, Optional generateOArestartlist As Boolean = False) As Boolean '
+        Try
+            For Each i As String In closelist
+                App.ShowMessage(tool, "Closing " + i.ToUpper, Nothing)
+                Dim plist As Diagnostics.Process() = Diagnostics.Process.GetProcessesByName(i)
+                For Each p As Diagnostics.Process In plist
+                    If p.CloseMainWindow Then
+                        If Not p.WaitForExit(timeout * 1000) Then p.Kill()
+                    Else
+                        p.Kill()
+                    End If
+                    'If usealt Then
+                    '	If p.CloseMainWindow Then : If Not p.WaitForExit(timeout * 1000) Then p.Kill()
+                    '	Else : p.Kill()
+                    '	End If
+                    'Else
+                    '	Dim pcloseappinfo As New Diagnostics.ProcessStartInfo
+                    '	pcloseappinfo.FileName = "PROCESS.EXE"
+                    '	pcloseappinfo.Arguments = "-q " + p.Id.ToString + " " + timeout.ToString
+                    '	pcloseappinfo.WindowStyle = Diagnostics.ProcessWindowStyle.Hidden
+                    '	Dim pcloseapp As Diagnostics.Process = Diagnostics.Process.Start(pcloseappinfo)
+                    '	pcloseapp.WaitForExit()
+                    '	pcloseapp.Dispose()
+                    'End If
+                Next
+            Next
+            If closelist.Count > 0 Then My.App.WriteToLog(tool, "Application Closure Completed")
+            CloseApplications = True 'DO NOT use RETURN here because SMStandByEnd will not execute if you do!!
+        Catch ex As Exception
+            My.App.WriteToLog(tool, "Application Closure FAILED! " + ex.Message)
+            CloseApplications = False 'DO NOT use RETURN here because SMStandByEnd will not execute if you do!!
+        End Try
+    End Function
 
 End Class

@@ -311,8 +311,9 @@ Namespace My
 			AlarmChime
 			WinLinks
 		End Enum
-		Friend ToolToImage(7) As Image
-		Friend Function ToolToString(tool As Tools) As String '
+        Friend ToolToImage(7) As Image
+        Friend ToolToImageLarge(7) As Image
+        Friend Function ToolToString(tool As Tools) As String '
 			Select Case tool
 				Case Tools.SkyeTools : Return "SkyeTools"
 				Case Tools.WorkSpaceTools : Return "WorkSpace Tools"
@@ -390,6 +391,20 @@ Namespace My
 				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS16
 				ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
 				ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
+				ToolToImageLarge(Tools.SkyeTools) = My.Resources.Resources.ImageApp32
+				ToolToImageLarge(Tools.HotClicks) = My.Resources.Resources.ImageHC48
+				ToolToImageLarge(Tools.HotKeys) = My.Resources.Resources.ImageHK48
+				ToolToImageLarge(Tools.WorkSpaceTools) = My.Resources.Resources.ImageWST48
+				ToolToImageLarge(Tools.WinLinks) = My.Resources.Resources.ImageWL48
+				ToolToImageLarge(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS48
+				ToolToImageLarge(Tools.AlarmChime) = My.Resources.Resources.ImageAC48
+				ToolToImageLarge(Tools.Clock) = My.Resources.Resources.imageWSTClock
+				Using ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
+					Dim audioBytes(CInt(ums.Length) - 1) As Byte
+					ums.Read(audioBytes, 0, audioBytes.Length)
+					My.App.ACChime = audioBytes
+					audioBytes = Nothing
+				End Using
 
 				FrmMain = New MainForm
 
@@ -444,7 +459,7 @@ Namespace My
 				.Location = Skye.UI.ToastLocation.TopRight
 			}
 			If icon Is Nothing Then
-				t.Image = ToolToImage(tool)
+				t.Image = ToolToImageLarge(tool)
 			Else
 				t.Icon = icon
 			End If

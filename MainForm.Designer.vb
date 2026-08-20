@@ -9,10 +9,6 @@
     End Sub
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        lblWLAutoRefreshIdleInterval = New Label()
-        lblWLAutoRefreshInterval = New Label()
-        lblWLMaxLinksPerFolder = New Label()
-        lblWLStartUpDelay = New Label()
         cmWST = New ContextMenuStrip(components)
         cmiWSTCancelStartUp = New ToolStripMenuItem()
         cmiWSTACAlarmCancel = New ToolStripMenuItem()
@@ -40,48 +36,10 @@
         cmiWSTCloseAll = New ToolStripMenuItem()
         btnSettingsSave = New Button()
         btnClose = New Button()
-        btnSettingsRestore = New Button()
         tabcontrolSettings = New TabControl()
         tabpageWST = New TabPage()
         tabpageAC = New TabPage()
         tabpageWL = New TabPage()
-        panelWL = New Panel()
-        checkboxWLShowNoMenu = New CheckBox()
-        textboxWLName = New TextBox()
-        checkboxWLShowMenuIcons = New CheckBox()
-        checkboxWLShowInTray = New CheckBox()
-        checkboxWLShowInMenu = New CheckBox()
-        comboboxWLFolderPlacement = New ComboBox()
-        comboboxWLFolderMode = New ComboBox()
-        comboboxWLSort = New ComboBox()
-        textboxWLRoot = New TextBox()
-        btnWLSelectFolder = New Button()
-        btnWLCancel = New Button()
-        btnWLSet = New Button()
-        checkboxWLUseDefaultIcon = New CheckBox()
-        label28 = New Label()
-        label29 = New Label()
-        label30 = New Label()
-        label2 = New Label()
-        lblWLRoot = New Label()
-        textboxWLMaxLinksPerFolder = New TextBox()
-        textboxWLStartUpDelay = New TextBox()
-        textboxWLAutoRefreshInterval = New TextBox()
-        listviewWL = New ListView()
-        cmlistviewWL = New ContextMenuStrip(components)
-        cmiWLMoveUp = New ToolStripMenuItem()
-        cmiWLMoveDown = New ToolStripMenuItem()
-        toolStripSeparator11 = New ToolStripSeparator()
-        cmiWLNew = New ToolStripMenuItem()
-        toolStripSeparator6 = New ToolStripSeparator()
-        cmiWLDelete = New ToolStripMenuItem()
-        textboxWLAutoRefreshIdleInterval = New TextBox()
-        checkboxWLShowFilePathToolTips = New CheckBox()
-        checkboxWLAutoRefresh = New CheckBox()
-        checkboxWLShowFileInfoToolTips = New CheckBox()
-        checkboxWLShowFolderPathToolTips = New CheckBox()
-        lblWLAutoRefresh = New Label()
-        btnWLRefresh = New Button()
         tabpageHC = New TabPage()
         comboboxHCRight = New ComboBox()
         comboboxHCMiddle = New ComboBox()
@@ -112,10 +70,6 @@
         btnHKWSTClockDisable = New Button()
         btnHKWSTLockWorkSpaceDisable = New Button()
         btnHKWSTScreenSaverDisable = New Button()
-        btnErrorTest = New Button()
-        btnClockTest = New Button()
-        btnInfo = New Button()
-        btnLog = New Button()
         cmWSTScreenSaver = New ContextMenuStrip(components)
         cmiScreenSaverActivate = New ToolStripMenuItem()
         cmiScreenSaverEnabled = New ToolStripMenuItem()
@@ -130,76 +84,11 @@
         TipHCEX = New Skye.UI.ToolTipEX(components)
         cmWST.SuspendLayout()
         tabcontrolSettings.SuspendLayout()
-        tabpageWL.SuspendLayout()
-        panelWL.SuspendLayout()
-        cmlistviewWL.SuspendLayout()
         tabpageHC.SuspendLayout()
         groupBox2.SuspendLayout()
         tabpageHK.SuspendLayout()
         cmWSTScreenSaver.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' lblWLAutoRefreshIdleInterval
-        ' 
-        lblWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefreshIdleInterval.CausesValidation = False
-        TipHCEX.SetImage(lblWLAutoRefreshIdleInterval, Nothing)
-        TipInfoEX.SetImage(lblWLAutoRefreshIdleInterval, Nothing)
-        lblWLAutoRefreshIdleInterval.Location = New Point(418, 36)
-        lblWLAutoRefreshIdleInterval.Name = "lblWLAutoRefreshIdleInterval"
-        lblWLAutoRefreshIdleInterval.RightToLeft = RightToLeft.No
-        lblWLAutoRefreshIdleInterval.Size = New Size(153, 21)
-        lblWLAutoRefreshIdleInterval.TabIndex = 104
-        TipHCEX.SetText(lblWLAutoRefreshIdleInterval, Nothing)
-        lblWLAutoRefreshIdleInterval.Text = "AutoRefresh Idle Interval"
-        TipInfoEX.SetText(lblWLAutoRefreshIdleInterval, "Refresh Only When Folder Idle For 20-240 Seconds")
-        lblWLAutoRefreshIdleInterval.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' lblWLAutoRefreshInterval
-        ' 
-        lblWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefreshInterval.CausesValidation = False
-        TipHCEX.SetImage(lblWLAutoRefreshInterval, Nothing)
-        TipInfoEX.SetImage(lblWLAutoRefreshInterval, Nothing)
-        lblWLAutoRefreshInterval.Location = New Point(445, 11)
-        lblWLAutoRefreshInterval.Name = "lblWLAutoRefreshInterval"
-        lblWLAutoRefreshInterval.RightToLeft = RightToLeft.No
-        lblWLAutoRefreshInterval.Size = New Size(126, 21)
-        lblWLAutoRefreshInterval.TabIndex = 102
-        TipHCEX.SetText(lblWLAutoRefreshInterval, Nothing)
-        lblWLAutoRefreshInterval.Text = "AutoRefresh Interval"
-        TipInfoEX.SetText(lblWLAutoRefreshInterval, "Check For Changes Every 1-90 Minutes")
-        lblWLAutoRefreshInterval.TextAlign = ContentAlignment.MiddleRight
-        ' 
-        ' lblWLMaxLinksPerFolder
-        ' 
-        lblWLMaxLinksPerFolder.CausesValidation = False
-        TipHCEX.SetImage(lblWLMaxLinksPerFolder, Nothing)
-        TipInfoEX.SetImage(lblWLMaxLinksPerFolder, Nothing)
-        lblWLMaxLinksPerFolder.Location = New Point(47, 35)
-        lblWLMaxLinksPerFolder.Name = "lblWLMaxLinksPerFolder"
-        lblWLMaxLinksPerFolder.RightToLeft = RightToLeft.No
-        lblWLMaxLinksPerFolder.Size = New Size(176, 21)
-        lblWLMaxLinksPerFolder.TabIndex = 20
-        TipHCEX.SetText(lblWLMaxLinksPerFolder, Nothing)
-        lblWLMaxLinksPerFolder.Text = "Max Menu Items Per Folder"
-        TipInfoEX.SetText(lblWLMaxLinksPerFolder, "1-100")
-        lblWLMaxLinksPerFolder.TextAlign = ContentAlignment.MiddleLeft
-        ' 
-        ' lblWLStartUpDelay
-        ' 
-        lblWLStartUpDelay.CausesValidation = False
-        TipHCEX.SetImage(lblWLStartUpDelay, Nothing)
-        TipInfoEX.SetImage(lblWLStartUpDelay, Nothing)
-        lblWLStartUpDelay.Location = New Point(47, 10)
-        lblWLStartUpDelay.Name = "lblWLStartUpDelay"
-        lblWLStartUpDelay.RightToLeft = RightToLeft.No
-        lblWLStartUpDelay.Size = New Size(89, 21)
-        lblWLStartUpDelay.TabIndex = 106
-        TipHCEX.SetText(lblWLStartUpDelay, Nothing)
-        lblWLStartUpDelay.Text = "StartUp Delay"
-        TipInfoEX.SetText(lblWLStartUpDelay, "5-300, 0 = No Delay")
-        lblWLStartUpDelay.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' cmWST
         ' 
@@ -431,24 +320,6 @@
         btnClose.TextAlign = ContentAlignment.MiddleRight
         btnClose.UseVisualStyleBackColor = True
         ' 
-        ' btnSettingsRestore
-        ' 
-        btnSettingsRestore.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        TipHCEX.SetImage(btnSettingsRestore, Nothing)
-        btnSettingsRestore.Image = My.Resources.Resources.imageRestore
-        TipInfoEX.SetImage(btnSettingsRestore, Nothing)
-        btnSettingsRestore.ImageAlign = ContentAlignment.TopLeft
-        btnSettingsRestore.Location = New Point(72, 420)
-        btnSettingsRestore.Name = "btnSettingsRestore"
-        btnSettingsRestore.Size = New Size(62, 46)
-        btnSettingsRestore.TabIndex = 5
-        btnSettingsRestore.TabStop = False
-        TipInfoEX.SetText(btnSettingsRestore, "Restore All Settings")
-        TipHCEX.SetText(btnSettingsRestore, Nothing)
-        btnSettingsRestore.Text = "Restore"
-        btnSettingsRestore.TextAlign = ContentAlignment.BottomRight
-        btnSettingsRestore.UseVisualStyleBackColor = True
-        ' 
         ' tabcontrolSettings
         ' 
         tabcontrolSettings.Controls.Add(tabpageWST)
@@ -475,10 +346,10 @@
         ' 
         TipHCEX.SetImage(tabpageWST, Nothing)
         TipInfoEX.SetImage(tabpageWST, Nothing)
-        tabpageWST.Location = New Point(4, 26)
+        tabpageWST.Location = New Point(4, 24)
         tabpageWST.Name = "tabpageWST"
         tabpageWST.Padding = New Padding(3)
-        tabpageWST.Size = New Size(618, 373)
+        tabpageWST.Size = New Size(618, 375)
         tabpageWST.TabIndex = 0
         TipHCEX.SetText(tabpageWST, Nothing)
         TipInfoEX.SetText(tabpageWST, Nothing)
@@ -489,10 +360,10 @@
         ' 
         TipHCEX.SetImage(tabpageAC, Nothing)
         TipInfoEX.SetImage(tabpageAC, Nothing)
-        tabpageAC.Location = New Point(4, 26)
+        tabpageAC.Location = New Point(4, 24)
         tabpageAC.Name = "tabpageAC"
         tabpageAC.Padding = New Padding(3)
-        tabpageAC.Size = New Size(618, 373)
+        tabpageAC.Size = New Size(618, 375)
         tabpageAC.TabIndex = 3
         TipHCEX.SetText(tabpageAC, Nothing)
         TipInfoEX.SetText(tabpageAC, Nothing)
@@ -501,22 +372,6 @@
         ' 
         ' tabpageWL
         ' 
-        tabpageWL.Controls.Add(panelWL)
-        tabpageWL.Controls.Add(textboxWLMaxLinksPerFolder)
-        tabpageWL.Controls.Add(textboxWLStartUpDelay)
-        tabpageWL.Controls.Add(textboxWLAutoRefreshInterval)
-        tabpageWL.Controls.Add(listviewWL)
-        tabpageWL.Controls.Add(textboxWLAutoRefreshIdleInterval)
-        tabpageWL.Controls.Add(lblWLAutoRefreshIdleInterval)
-        tabpageWL.Controls.Add(lblWLAutoRefreshInterval)
-        tabpageWL.Controls.Add(checkboxWLShowFilePathToolTips)
-        tabpageWL.Controls.Add(lblWLMaxLinksPerFolder)
-        tabpageWL.Controls.Add(lblWLStartUpDelay)
-        tabpageWL.Controls.Add(checkboxWLAutoRefresh)
-        tabpageWL.Controls.Add(checkboxWLShowFileInfoToolTips)
-        tabpageWL.Controls.Add(checkboxWLShowFolderPathToolTips)
-        tabpageWL.Controls.Add(lblWLAutoRefresh)
-        tabpageWL.Controls.Add(btnWLRefresh)
         TipHCEX.SetImage(tabpageWL, Nothing)
         TipInfoEX.SetImage(tabpageWL, Nothing)
         tabpageWL.Location = New Point(4, 24)
@@ -528,496 +383,6 @@
         TipInfoEX.SetText(tabpageWL, Nothing)
         tabpageWL.Text = """WinLinks"""
         tabpageWL.UseVisualStyleBackColor = True
-        ' 
-        ' panelWL
-        ' 
-        panelWL.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        panelWL.BorderStyle = BorderStyle.FixedSingle
-        panelWL.Controls.Add(checkboxWLShowNoMenu)
-        panelWL.Controls.Add(textboxWLName)
-        panelWL.Controls.Add(checkboxWLShowMenuIcons)
-        panelWL.Controls.Add(checkboxWLShowInTray)
-        panelWL.Controls.Add(checkboxWLShowInMenu)
-        panelWL.Controls.Add(comboboxWLFolderPlacement)
-        panelWL.Controls.Add(comboboxWLFolderMode)
-        panelWL.Controls.Add(comboboxWLSort)
-        panelWL.Controls.Add(textboxWLRoot)
-        panelWL.Controls.Add(btnWLSelectFolder)
-        panelWL.Controls.Add(btnWLCancel)
-        panelWL.Controls.Add(btnWLSet)
-        panelWL.Controls.Add(checkboxWLUseDefaultIcon)
-        panelWL.Controls.Add(label28)
-        panelWL.Controls.Add(label29)
-        panelWL.Controls.Add(label30)
-        panelWL.Controls.Add(label2)
-        panelWL.Controls.Add(lblWLRoot)
-        TipInfoEX.SetImage(panelWL, Nothing)
-        TipHCEX.SetImage(panelWL, Nothing)
-        panelWL.Location = New Point(5, 215)
-        panelWL.Name = "panelWL"
-        panelWL.Size = New Size(606, 130)
-        panelWL.TabIndex = 100
-        TipHCEX.SetText(panelWL, Nothing)
-        TipInfoEX.SetText(panelWL, Nothing)
-        panelWL.Visible = False
-        ' 
-        ' checkboxWLShowNoMenu
-        ' 
-        checkboxWLShowNoMenu.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWLShowNoMenu, Nothing)
-        TipHCEX.SetImage(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Location = New Point(479, 69)
-        checkboxWLShowNoMenu.Name = "checkboxWLShowNoMenu"
-        checkboxWLShowNoMenu.Size = New Size(124, 21)
-        checkboxWLShowNoMenu.TabIndex = 66
-        TipHCEX.SetText(checkboxWLShowNoMenu, Nothing)
-        TipInfoEX.SetText(checkboxWLShowNoMenu, Nothing)
-        checkboxWLShowNoMenu.Text = "No Menu Items"
-        checkboxWLShowNoMenu.UseVisualStyleBackColor = True
-        ' 
-        ' textboxWLName
-        ' 
-        TipHCEX.SetImage(textboxWLName, Nothing)
-        TipInfoEX.SetImage(textboxWLName, Nothing)
-        textboxWLName.Location = New Point(7, 56)
-        textboxWLName.Name = "textboxWLName"
-        textboxWLName.Size = New Size(388, 25)
-        textboxWLName.TabIndex = 15
-        TipInfoEX.SetText(textboxWLName, Nothing)
-        TipHCEX.SetText(textboxWLName, Nothing)
-        ' 
-        ' checkboxWLShowMenuIcons
-        ' 
-        checkboxWLShowMenuIcons.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWLShowMenuIcons, Nothing)
-        TipHCEX.SetImage(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Location = New Point(479, 53)
-        checkboxWLShowMenuIcons.Name = "checkboxWLShowMenuIcons"
-        checkboxWLShowMenuIcons.Size = New Size(129, 21)
-        checkboxWLShowMenuIcons.TabIndex = 64
-        TipHCEX.SetText(checkboxWLShowMenuIcons, Nothing)
-        TipInfoEX.SetText(checkboxWLShowMenuIcons, Nothing)
-        checkboxWLShowMenuIcons.Text = "Show Menu Icons"
-        checkboxWLShowMenuIcons.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLShowInTray
-        ' 
-        checkboxWLShowInTray.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWLShowInTray, Nothing)
-        TipHCEX.SetImage(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Location = New Point(479, 37)
-        checkboxWLShowInTray.Name = "checkboxWLShowInTray"
-        checkboxWLShowInTray.Size = New Size(109, 21)
-        checkboxWLShowInTray.TabIndex = 62
-        TipHCEX.SetText(checkboxWLShowInTray, Nothing)
-        TipInfoEX.SetText(checkboxWLShowInTray, Nothing)
-        checkboxWLShowInTray.Text = "Show In Tray"
-        checkboxWLShowInTray.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLShowInMenu
-        ' 
-        checkboxWLShowInMenu.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipInfoEX.SetImage(checkboxWLShowInMenu, Nothing)
-        TipHCEX.SetImage(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Location = New Point(479, 21)
-        checkboxWLShowInMenu.Name = "checkboxWLShowInMenu"
-        checkboxWLShowInMenu.Size = New Size(109, 21)
-        checkboxWLShowInMenu.TabIndex = 60
-        TipHCEX.SetText(checkboxWLShowInMenu, Nothing)
-        TipInfoEX.SetText(checkboxWLShowInMenu, Nothing)
-        checkboxWLShowInMenu.Text = "Show In Menu"
-        checkboxWLShowInMenu.UseVisualStyleBackColor = True
-        ' 
-        ' comboboxWLFolderPlacement
-        ' 
-        comboboxWLFolderPlacement.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLFolderPlacement.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLFolderPlacement, Nothing)
-        TipHCEX.SetImage(comboboxWLFolderPlacement, Nothing)
-        comboboxWLFolderPlacement.Items.AddRange(New Object() {"Top", "Bottom", "Merged"})
-        comboboxWLFolderPlacement.Location = New Point(253, 96)
-        comboboxWLFolderPlacement.Name = "comboboxWLFolderPlacement"
-        comboboxWLFolderPlacement.Size = New Size(85, 25)
-        comboboxWLFolderPlacement.TabIndex = 40
-        TipInfoEX.SetText(comboboxWLFolderPlacement, Nothing)
-        TipHCEX.SetText(comboboxWLFolderPlacement, Nothing)
-        ' 
-        ' comboboxWLFolderMode
-        ' 
-        comboboxWLFolderMode.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLFolderMode.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLFolderMode, Nothing)
-        TipHCEX.SetImage(comboboxWLFolderMode, Nothing)
-        comboboxWLFolderMode.Items.AddRange(New Object() {"No Folders", "Show As Link", "Show As Link Menu", "Show As Menu", "Folders Only"})
-        comboboxWLFolderMode.Location = New Point(106, 96)
-        comboboxWLFolderMode.Name = "comboboxWLFolderMode"
-        comboboxWLFolderMode.Size = New Size(142, 25)
-        comboboxWLFolderMode.TabIndex = 30
-        TipInfoEX.SetText(comboboxWLFolderMode, Nothing)
-        TipHCEX.SetText(comboboxWLFolderMode, Nothing)
-        ' 
-        ' comboboxWLSort
-        ' 
-        comboboxWLSort.DropDownStyle = ComboBoxStyle.DropDownList
-        comboboxWLSort.FormattingEnabled = True
-        TipInfoEX.SetImage(comboboxWLSort, Nothing)
-        TipHCEX.SetImage(comboboxWLSort, Nothing)
-        comboboxWLSort.Items.AddRange(New Object() {"Ascending", "Descending"})
-        comboboxWLSort.Location = New Point(7, 96)
-        comboboxWLSort.Name = "comboboxWLSort"
-        comboboxWLSort.Size = New Size(94, 25)
-        comboboxWLSort.TabIndex = 20
-        TipInfoEX.SetText(comboboxWLSort, Nothing)
-        TipHCEX.SetText(comboboxWLSort, Nothing)
-        ' 
-        ' textboxWLRoot
-        ' 
-        TipHCEX.SetImage(textboxWLRoot, Nothing)
-        TipInfoEX.SetImage(textboxWLRoot, Nothing)
-        textboxWLRoot.Location = New Point(7, 19)
-        textboxWLRoot.Name = "textboxWLRoot"
-        textboxWLRoot.Size = New Size(388, 25)
-        textboxWLRoot.TabIndex = 10
-        TipInfoEX.SetText(textboxWLRoot, Nothing)
-        TipHCEX.SetText(textboxWLRoot, Nothing)
-        ' 
-        ' btnWLSelectFolder
-        ' 
-        btnWLSelectFolder.FlatAppearance.BorderSize = 0
-        btnWLSelectFolder.FlatStyle = FlatStyle.Flat
-        TipHCEX.SetImage(btnWLSelectFolder, Nothing)
-        btnWLSelectFolder.Image = My.Resources.Resources.imageRestore
-        TipInfoEX.SetImage(btnWLSelectFolder, Nothing)
-        btnWLSelectFolder.Location = New Point(393, 21)
-        btnWLSelectFolder.Name = "btnWLSelectFolder"
-        btnWLSelectFolder.Size = New Size(21, 21)
-        btnWLSelectFolder.TabIndex = 10
-        btnWLSelectFolder.TabStop = False
-        TipInfoEX.SetText(btnWLSelectFolder, Nothing)
-        TipHCEX.SetText(btnWLSelectFolder, Nothing)
-        btnWLSelectFolder.UseVisualStyleBackColor = True
-        ' 
-        ' btnWLCancel
-        ' 
-        btnWLCancel.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnWLCancel.ForeColor = Color.Navy
-        TipHCEX.SetImage(btnWLCancel, Nothing)
-        btnWLCancel.Image = My.Resources.Resources.imageRemove
-        TipInfoEX.SetImage(btnWLCancel, Nothing)
-        btnWLCancel.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLCancel.Location = New Point(401, 96)
-        btnWLCancel.Name = "btnWLCancel"
-        btnWLCancel.Size = New Size(132, 26)
-        btnWLCancel.TabIndex = 156
-        TipInfoEX.SetText(btnWLCancel, Nothing)
-        TipHCEX.SetText(btnWLCancel, Nothing)
-        btnWLCancel.Text = "Cancel"
-        btnWLCancel.TextAlign = ContentAlignment.MiddleRight
-        btnWLCancel.UseVisualStyleBackColor = True
-        ' 
-        ' btnWLSet
-        ' 
-        btnWLSet.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnWLSet.ForeColor = Color.Navy
-        TipHCEX.SetImage(btnWLSet, Nothing)
-        btnWLSet.Image = My.Resources.Resources.imageGoStart
-        TipInfoEX.SetImage(btnWLSet, Nothing)
-        btnWLSet.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLSet.Location = New Point(532, 96)
-        btnWLSet.Name = "btnWLSet"
-        btnWLSet.Size = New Size(66, 26)
-        btnWLSet.TabIndex = 157
-        TipInfoEX.SetText(btnWLSet, Nothing)
-        TipHCEX.SetText(btnWLSet, Nothing)
-        btnWLSet.Text = "Set"
-        btnWLSet.TextAlign = ContentAlignment.MiddleRight
-        btnWLSet.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLUseDefaultIcon
-        ' 
-        TipInfoEX.SetImage(checkboxWLUseDefaultIcon, Nothing)
-        TipHCEX.SetImage(checkboxWLUseDefaultIcon, Nothing)
-        checkboxWLUseDefaultIcon.Location = New Point(479, 5)
-        checkboxWLUseDefaultIcon.Name = "checkboxWLUseDefaultIcon"
-        checkboxWLUseDefaultIcon.Size = New Size(122, 21)
-        checkboxWLUseDefaultIcon.TabIndex = 9
-        TipHCEX.SetText(checkboxWLUseDefaultIcon, Nothing)
-        TipInfoEX.SetText(checkboxWLUseDefaultIcon, Nothing)
-        checkboxWLUseDefaultIcon.Text = "Use Default Icon"
-        checkboxWLUseDefaultIcon.UseVisualStyleBackColor = True
-        ' 
-        ' label28
-        ' 
-        TipHCEX.SetImage(label28, Nothing)
-        TipInfoEX.SetImage(label28, Nothing)
-        label28.Location = New Point(5, 81)
-        label28.Name = "label28"
-        label28.Size = New Size(58, 21)
-        label28.TabIndex = 165
-        TipHCEX.SetText(label28, Nothing)
-        label28.Text = "Sort Order"
-        TipInfoEX.SetText(label28, Nothing)
-        ' 
-        ' label29
-        ' 
-        TipHCEX.SetImage(label29, Nothing)
-        TipInfoEX.SetImage(label29, Nothing)
-        label29.Location = New Point(104, 81)
-        label29.Name = "label29"
-        label29.Size = New Size(74, 21)
-        label29.TabIndex = 161
-        TipHCEX.SetText(label29, Nothing)
-        label29.Text = "Folder Mode"
-        TipInfoEX.SetText(label29, Nothing)
-        ' 
-        ' label30
-        ' 
-        TipHCEX.SetImage(label30, Nothing)
-        TipInfoEX.SetImage(label30, Nothing)
-        label30.Location = New Point(251, 81)
-        label30.Name = "label30"
-        label30.Size = New Size(89, 21)
-        label30.TabIndex = 166
-        TipHCEX.SetText(label30, Nothing)
-        label30.Text = "Folder Placement"
-        TipInfoEX.SetText(label30, Nothing)
-        ' 
-        ' label2
-        ' 
-        TipHCEX.SetImage(label2, Nothing)
-        TipInfoEX.SetImage(label2, Nothing)
-        label2.Location = New Point(5, 41)
-        label2.Name = "label2"
-        label2.Size = New Size(95, 21)
-        label2.TabIndex = 168
-        TipHCEX.SetText(label2, Nothing)
-        label2.Text = "Display Name"
-        TipInfoEX.SetText(label2, "Leave Blank To Use FolderName")
-        ' 
-        ' lblWLRoot
-        ' 
-        TipHCEX.SetImage(lblWLRoot, Nothing)
-        TipInfoEX.SetImage(lblWLRoot, Nothing)
-        lblWLRoot.Location = New Point(5, 4)
-        lblWLRoot.Name = "lblWLRoot"
-        lblWLRoot.Size = New Size(322, 21)
-        lblWLRoot.TabIndex = 160
-        TipHCEX.SetText(lblWLRoot, Nothing)
-        lblWLRoot.Text = "SAMPLE"
-        TipInfoEX.SetText(lblWLRoot, Nothing)
-        ' 
-        ' textboxWLMaxLinksPerFolder
-        ' 
-        TipHCEX.SetImage(textboxWLMaxLinksPerFolder, Nothing)
-        TipInfoEX.SetImage(textboxWLMaxLinksPerFolder, Nothing)
-        textboxWLMaxLinksPerFolder.Location = New Point(5, 34)
-        textboxWLMaxLinksPerFolder.MaxLength = 3
-        textboxWLMaxLinksPerFolder.Name = "textboxWLMaxLinksPerFolder"
-        textboxWLMaxLinksPerFolder.Size = New Size(44, 25)
-        textboxWLMaxLinksPerFolder.TabIndex = 5
-        TipInfoEX.SetText(textboxWLMaxLinksPerFolder, Nothing)
-        TipHCEX.SetText(textboxWLMaxLinksPerFolder, Nothing)
-        textboxWLMaxLinksPerFolder.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' textboxWLStartUpDelay
-        ' 
-        TipHCEX.SetImage(textboxWLStartUpDelay, Nothing)
-        TipInfoEX.SetImage(textboxWLStartUpDelay, Nothing)
-        textboxWLStartUpDelay.Location = New Point(5, 8)
-        textboxWLStartUpDelay.MaxLength = 3
-        textboxWLStartUpDelay.Name = "textboxWLStartUpDelay"
-        textboxWLStartUpDelay.Size = New Size(44, 25)
-        textboxWLStartUpDelay.TabIndex = 4
-        TipInfoEX.SetText(textboxWLStartUpDelay, Nothing)
-        TipHCEX.SetText(textboxWLStartUpDelay, Nothing)
-        textboxWLStartUpDelay.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' textboxWLAutoRefreshInterval
-        ' 
-        textboxWLAutoRefreshInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipHCEX.SetImage(textboxWLAutoRefreshInterval, Nothing)
-        TipInfoEX.SetImage(textboxWLAutoRefreshInterval, Nothing)
-        textboxWLAutoRefreshInterval.Location = New Point(567, 8)
-        textboxWLAutoRefreshInterval.MaxLength = 2
-        textboxWLAutoRefreshInterval.Name = "textboxWLAutoRefreshInterval"
-        textboxWLAutoRefreshInterval.Size = New Size(44, 25)
-        textboxWLAutoRefreshInterval.TabIndex = 20
-        TipInfoEX.SetText(textboxWLAutoRefreshInterval, Nothing)
-        TipHCEX.SetText(textboxWLAutoRefreshInterval, Nothing)
-        textboxWLAutoRefreshInterval.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' listviewWL
-        ' 
-        listviewWL.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        listviewWL.BorderStyle = BorderStyle.FixedSingle
-        listviewWL.ContextMenuStrip = cmlistviewWL
-        listviewWL.FullRowSelect = True
-        listviewWL.HeaderStyle = ColumnHeaderStyle.None
-        TipHCEX.SetImage(listviewWL, Nothing)
-        TipInfoEX.SetImage(listviewWL, Nothing)
-        listviewWL.LabelWrap = False
-        listviewWL.Location = New Point(5, 105)
-        listviewWL.MultiSelect = False
-        listviewWL.Name = "listviewWL"
-        listviewWL.ShowGroups = False
-        listviewWL.ShowItemToolTips = True
-        listviewWL.Size = New Size(606, 111)
-        listviewWL.TabIndex = 50
-        TipHCEX.SetText(listviewWL, Nothing)
-        TipInfoEX.SetText(listviewWL, Nothing)
-        listviewWL.UseCompatibleStateImageBehavior = False
-        listviewWL.View = View.Details
-        ' 
-        ' cmlistviewWL
-        ' 
-        cmlistviewWL.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipInfoEX.SetImage(cmlistviewWL, Nothing)
-        TipHCEX.SetImage(cmlistviewWL, Nothing)
-        cmlistviewWL.Items.AddRange(New ToolStripItem() {cmiWLMoveUp, cmiWLMoveDown, toolStripSeparator11, cmiWLNew, toolStripSeparator6, cmiWLDelete})
-        cmlistviewWL.Name = "contextmenulistviewHotLinks"
-        cmlistviewWL.Size = New Size(125, 120)
-        TipInfoEX.SetText(cmlistviewWL, Nothing)
-        TipHCEX.SetText(cmlistviewWL, Nothing)
-        ' 
-        ' cmiWLMoveUp
-        ' 
-        cmiWLMoveUp.Image = My.Resources.Resources.imageMoveUp
-        cmiWLMoveUp.Name = "cmiWLMoveUp"
-        cmiWLMoveUp.Size = New Size(124, 26)
-        cmiWLMoveUp.Text = "Up"
-        ' 
-        ' cmiWLMoveDown
-        ' 
-        cmiWLMoveDown.Image = My.Resources.Resources.imageMoveDown
-        cmiWLMoveDown.Name = "cmiWLMoveDown"
-        cmiWLMoveDown.Size = New Size(124, 26)
-        cmiWLMoveDown.Text = "Down"
-        ' 
-        ' toolStripSeparator11
-        ' 
-        toolStripSeparator11.Name = "toolStripSeparator11"
-        toolStripSeparator11.Size = New Size(121, 6)
-        ' 
-        ' cmiWLNew
-        ' 
-        cmiWLNew.Image = My.Resources.Resources.imageWLNew
-        cmiWLNew.Name = "cmiWLNew"
-        cmiWLNew.Size = New Size(124, 26)
-        ' 
-        ' toolStripSeparator6
-        ' 
-        toolStripSeparator6.Name = "toolStripSeparator6"
-        toolStripSeparator6.Size = New Size(121, 6)
-        ' 
-        ' cmiWLDelete
-        ' 
-        cmiWLDelete.Image = My.Resources.Resources.imageRemove
-        cmiWLDelete.Name = "cmiWLDelete"
-        cmiWLDelete.Size = New Size(124, 26)
-        cmiWLDelete.Text = "Delete"
-        ' 
-        ' textboxWLAutoRefreshIdleInterval
-        ' 
-        textboxWLAutoRefreshIdleInterval.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipHCEX.SetImage(textboxWLAutoRefreshIdleInterval, Nothing)
-        TipInfoEX.SetImage(textboxWLAutoRefreshIdleInterval, Nothing)
-        textboxWLAutoRefreshIdleInterval.Location = New Point(567, 34)
-        textboxWLAutoRefreshIdleInterval.MaxLength = 3
-        textboxWLAutoRefreshIdleInterval.Name = "textboxWLAutoRefreshIdleInterval"
-        textboxWLAutoRefreshIdleInterval.Size = New Size(44, 25)
-        textboxWLAutoRefreshIdleInterval.TabIndex = 22
-        TipInfoEX.SetText(textboxWLAutoRefreshIdleInterval, Nothing)
-        TipHCEX.SetText(textboxWLAutoRefreshIdleInterval, Nothing)
-        textboxWLAutoRefreshIdleInterval.TextAlign = HorizontalAlignment.Center
-        ' 
-        ' checkboxWLShowFilePathToolTips
-        ' 
-        TipInfoEX.SetImage(checkboxWLShowFilePathToolTips, Nothing)
-        TipHCEX.SetImage(checkboxWLShowFilePathToolTips, Nothing)
-        checkboxWLShowFilePathToolTips.Location = New Point(5, 57)
-        checkboxWLShowFilePathToolTips.Name = "checkboxWLShowFilePathToolTips"
-        checkboxWLShowFilePathToolTips.Size = New Size(172, 21)
-        checkboxWLShowFilePathToolTips.TabIndex = 11
-        TipHCEX.SetText(checkboxWLShowFilePathToolTips, Nothing)
-        TipInfoEX.SetText(checkboxWLShowFilePathToolTips, "Show Full File Path In ToolTip")
-        checkboxWLShowFilePathToolTips.Text = "Show File Path In ToolTip"
-        checkboxWLShowFilePathToolTips.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLAutoRefresh
-        ' 
-        checkboxWLAutoRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        checkboxWLAutoRefresh.CheckAlign = ContentAlignment.MiddleRight
-        TipInfoEX.SetImage(checkboxWLAutoRefresh, Nothing)
-        TipHCEX.SetImage(checkboxWLAutoRefresh, Nothing)
-        checkboxWLAutoRefresh.Location = New Point(471, 57)
-        checkboxWLAutoRefresh.Name = "checkboxWLAutoRefresh"
-        checkboxWLAutoRefresh.Size = New Size(141, 21)
-        checkboxWLAutoRefresh.TabIndex = 24
-        TipHCEX.SetText(checkboxWLAutoRefresh, Nothing)
-        TipInfoEX.SetText(checkboxWLAutoRefresh, "Enable AutoRefresh For Last WinLink")
-        checkboxWLAutoRefresh.Text = "Enable AutoRefresh"
-        checkboxWLAutoRefresh.TextAlign = ContentAlignment.MiddleRight
-        checkboxWLAutoRefresh.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLShowFileInfoToolTips
-        ' 
-        TipInfoEX.SetImage(checkboxWLShowFileInfoToolTips, Nothing)
-        TipHCEX.SetImage(checkboxWLShowFileInfoToolTips, Nothing)
-        checkboxWLShowFileInfoToolTips.Location = New Point(177, 57)
-        checkboxWLShowFileInfoToolTips.Name = "checkboxWLShowFileInfoToolTips"
-        checkboxWLShowFileInfoToolTips.Size = New Size(170, 21)
-        checkboxWLShowFileInfoToolTips.TabIndex = 12
-        TipHCEX.SetText(checkboxWLShowFileInfoToolTips, Nothing)
-        TipInfoEX.SetText(checkboxWLShowFileInfoToolTips, "Show File Details In ToolTip")
-        checkboxWLShowFileInfoToolTips.Text = "Show File Info In ToolTip"
-        checkboxWLShowFileInfoToolTips.UseVisualStyleBackColor = True
-        ' 
-        ' checkboxWLShowFolderPathToolTips
-        ' 
-        TipInfoEX.SetImage(checkboxWLShowFolderPathToolTips, Nothing)
-        TipHCEX.SetImage(checkboxWLShowFolderPathToolTips, Nothing)
-        checkboxWLShowFolderPathToolTips.Location = New Point(5, 75)
-        checkboxWLShowFolderPathToolTips.Name = "checkboxWLShowFolderPathToolTips"
-        checkboxWLShowFolderPathToolTips.Size = New Size(194, 21)
-        checkboxWLShowFolderPathToolTips.TabIndex = 13
-        TipHCEX.SetText(checkboxWLShowFolderPathToolTips, Nothing)
-        TipInfoEX.SetText(checkboxWLShowFolderPathToolTips, "Show Full Directory Path In ToolTip")
-        checkboxWLShowFolderPathToolTips.Text = "Show Folder Path In ToolTip"
-        checkboxWLShowFolderPathToolTips.UseVisualStyleBackColor = True
-        ' 
-        ' lblWLAutoRefresh
-        ' 
-        lblWLAutoRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        lblWLAutoRefresh.Enabled = False
-        lblWLAutoRefresh.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        TipHCEX.SetImage(lblWLAutoRefresh, Nothing)
-        TipInfoEX.SetImage(lblWLAutoRefresh, Nothing)
-        lblWLAutoRefresh.Location = New Point(472, 71)
-        lblWLAutoRefresh.Name = "lblWLAutoRefresh"
-        lblWLAutoRefresh.Size = New Size(141, 21)
-        lblWLAutoRefresh.TabIndex = 26
-        TipHCEX.SetText(lblWLAutoRefresh, Nothing)
-        lblWLAutoRefresh.Text = "AutoRefresh Engaged"
-        TipInfoEX.SetText(lblWLAutoRefresh, Nothing)
-        lblWLAutoRefresh.TextAlign = ContentAlignment.MiddleLeft
-        lblWLAutoRefresh.Visible = False
-        ' 
-        ' btnWLRefresh
-        ' 
-        btnWLRefresh.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        TipHCEX.SetImage(btnWLRefresh, Nothing)
-        TipInfoEX.SetImage(btnWLRefresh, Nothing)
-        btnWLRefresh.ImageAlign = ContentAlignment.MiddleLeft
-        btnWLRefresh.Location = New Point(232, 79)
-        btnWLRefresh.Name = "btnWLRefresh"
-        btnWLRefresh.Size = New Size(153, 26)
-        btnWLRefresh.TabIndex = 1
-        btnWLRefresh.TabStop = False
-        TipInfoEX.SetText(btnWLRefresh, "Refresh")
-        TipHCEX.SetText(btnWLRefresh, Nothing)
-        btnWLRefresh.Text = "FULL REFRESH"
-        btnWLRefresh.TextAlign = ContentAlignment.MiddleRight
-        btnWLRefresh.UseVisualStyleBackColor = True
         ' 
         ' tabpageHC
         ' 
@@ -1050,7 +415,7 @@
         TipHCEX.SetImage(comboboxHCRight, Nothing)
         comboboxHCRight.Location = New Point(210, 167)
         comboboxHCRight.Name = "comboboxHCRight"
-        comboboxHCRight.Size = New Size(258, 25)
+        comboboxHCRight.Size = New Size(258, 23)
         comboboxHCRight.Sorted = True
         comboboxHCRight.TabIndex = 50
         TipInfoEX.SetText(comboboxHCRight, Nothing)
@@ -1064,7 +429,7 @@
         TipHCEX.SetImage(comboboxHCMiddle, Nothing)
         comboboxHCMiddle.Location = New Point(210, 139)
         comboboxHCMiddle.Name = "comboboxHCMiddle"
-        comboboxHCMiddle.Size = New Size(258, 25)
+        comboboxHCMiddle.Size = New Size(258, 23)
         comboboxHCMiddle.Sorted = True
         comboboxHCMiddle.TabIndex = 40
         TipInfoEX.SetText(comboboxHCMiddle, Nothing)
@@ -1078,7 +443,7 @@
         TipHCEX.SetImage(comboboxHCDouble, Nothing)
         comboboxHCDouble.Location = New Point(210, 111)
         comboboxHCDouble.Name = "comboboxHCDouble"
-        comboboxHCDouble.Size = New Size(258, 25)
+        comboboxHCDouble.Size = New Size(258, 23)
         comboboxHCDouble.Sorted = True
         comboboxHCDouble.TabIndex = 30
         TipInfoEX.SetText(comboboxHCDouble, Nothing)
@@ -1092,7 +457,7 @@
         TipHCEX.SetImage(comboboxHCLeft, Nothing)
         comboboxHCLeft.Location = New Point(210, 83)
         comboboxHCLeft.Name = "comboboxHCLeft"
-        comboboxHCLeft.Size = New Size(258, 25)
+        comboboxHCLeft.Size = New Size(258, 23)
         comboboxHCLeft.Sorted = True
         comboboxHCLeft.TabIndex = 20
         TipInfoEX.SetText(comboboxHCLeft, Nothing)
@@ -1260,7 +625,7 @@
         textboxHKWL.Location = New Point(449, 24)
         textboxHKWL.Name = "textboxHKWL"
         textboxHKWL.ShortcutsEnabled = False
-        textboxHKWL.Size = New Size(143, 25)
+        textboxHKWL.Size = New Size(143, 23)
         textboxHKWL.TabIndex = 118
         textboxHKWL.TabStop = False
         TipInfoEX.SetText(textboxHKWL, Nothing)
@@ -1275,7 +640,7 @@
         textboxHKWSTClock.Location = New Point(9, 65)
         textboxHKWSTClock.Name = "textboxHKWSTClock"
         textboxHKWSTClock.ShortcutsEnabled = False
-        textboxHKWSTClock.Size = New Size(143, 25)
+        textboxHKWSTClock.Size = New Size(143, 23)
         textboxHKWSTClock.TabIndex = 41
         textboxHKWSTClock.TabStop = False
         TipInfoEX.SetText(textboxHKWSTClock, Nothing)
@@ -1290,7 +655,7 @@
         textboxHKWSTLockWorkSpace.Location = New Point(9, 147)
         textboxHKWSTLockWorkSpace.Name = "textboxHKWSTLockWorkSpace"
         textboxHKWSTLockWorkSpace.ShortcutsEnabled = False
-        textboxHKWSTLockWorkSpace.Size = New Size(143, 25)
+        textboxHKWSTLockWorkSpace.Size = New Size(143, 23)
         textboxHKWSTLockWorkSpace.TabIndex = 12
         textboxHKWSTLockWorkSpace.TabStop = False
         TipInfoEX.SetText(textboxHKWSTLockWorkSpace, Nothing)
@@ -1342,7 +707,7 @@
         textboxHKWSTScreenSaver.Location = New Point(9, 24)
         textboxHKWSTScreenSaver.Name = "textboxHKWSTScreenSaver"
         textboxHKWSTScreenSaver.ShortcutsEnabled = False
-        textboxHKWSTScreenSaver.Size = New Size(143, 25)
+        textboxHKWSTScreenSaver.Size = New Size(143, 23)
         textboxHKWSTScreenSaver.TabIndex = 28
         textboxHKWSTScreenSaver.TabStop = False
         TipInfoEX.SetText(textboxHKWSTScreenSaver, Nothing)
@@ -1497,87 +862,6 @@
         TipHCEX.SetText(btnHKWSTScreenSaverDisable, Nothing)
         btnHKWSTScreenSaverDisable.UseVisualStyleBackColor = True
         ' 
-        ' btnErrorTest
-        ' 
-        btnErrorTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnErrorTest.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnErrorTest.FlatAppearance.BorderSize = 0
-        btnErrorTest.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnErrorTest.FlatAppearance.MouseOverBackColor = Color.Transparent
-        TipHCEX.SetImage(btnErrorTest, Nothing)
-        btnErrorTest.Image = My.Resources.Resources.ImageError16
-        TipInfoEX.SetImage(btnErrorTest, Nothing)
-        btnErrorTest.Location = New Point(368, 432)
-        btnErrorTest.Name = "btnErrorTest"
-        btnErrorTest.Size = New Size(24, 24)
-        btnErrorTest.TabIndex = 0
-        btnErrorTest.TabStop = False
-        TipInfoEX.SetText(btnErrorTest, Nothing)
-        TipHCEX.SetText(btnErrorTest, Nothing)
-        btnErrorTest.Visible = False
-        ' 
-        ' btnClockTest
-        ' 
-        btnClockTest.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        btnClockTest.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnClockTest.FlatAppearance.BorderSize = 0
-        btnClockTest.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnClockTest.FlatAppearance.MouseOverBackColor = Color.Transparent
-        TipHCEX.SetImage(btnClockTest, Nothing)
-        btnClockTest.Image = My.Resources.Resources.imageWSTClock
-        TipInfoEX.SetImage(btnClockTest, Nothing)
-        btnClockTest.Location = New Point(398, 432)
-        btnClockTest.Name = "btnClockTest"
-        btnClockTest.Size = New Size(24, 24)
-        btnClockTest.TabIndex = 0
-        btnClockTest.TabStop = False
-        TipInfoEX.SetText(btnClockTest, Nothing)
-        TipHCEX.SetText(btnClockTest, Nothing)
-        btnClockTest.Visible = False
-        ' 
-        ' btnInfo
-        ' 
-        btnInfo.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnInfo.CausesValidation = False
-        btnInfo.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnInfo.FlatAppearance.BorderSize = 0
-        btnInfo.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnInfo.FlatAppearance.MouseOverBackColor = Color.Transparent
-        TipHCEX.SetImage(btnInfo, Nothing)
-        btnInfo.Image = My.Resources.Resources.ImageInfo16
-        TipInfoEX.SetImage(btnInfo, Nothing)
-        btnInfo.ImageAlign = ContentAlignment.TopLeft
-        btnInfo.Location = New Point(140, 420)
-        btnInfo.Name = "btnInfo"
-        btnInfo.Size = New Size(62, 46)
-        btnInfo.TabIndex = 0
-        btnInfo.TabStop = False
-        TipInfoEX.SetText(btnInfo, "Help & About" & vbCrLf & "RightClick = Show Maximized")
-        TipHCEX.SetText(btnInfo, Nothing)
-        btnInfo.Text = "Help"
-        btnInfo.TextAlign = ContentAlignment.BottomRight
-        ' 
-        ' btnLog
-        ' 
-        btnLog.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
-        btnLog.FlatAppearance.BorderColor = SystemColors.ControlDark
-        btnLog.FlatAppearance.BorderSize = 0
-        btnLog.FlatAppearance.MouseDownBackColor = Color.Transparent
-        btnLog.FlatAppearance.MouseOverBackColor = Color.Transparent
-        TipHCEX.SetImage(btnLog, Nothing)
-        btnLog.Image = My.Resources.Resources.imageLog
-        TipInfoEX.SetImage(btnLog, Nothing)
-        btnLog.ImageAlign = ContentAlignment.TopLeft
-        btnLog.Location = New Point(201, 420)
-        btnLog.Name = "btnLog"
-        btnLog.Size = New Size(62, 46)
-        btnLog.TabIndex = 0
-        btnLog.TabStop = False
-        TipInfoEX.SetText(btnLog, "Show Log")
-        TipHCEX.SetText(btnLog, Nothing)
-        btnLog.Text = "Log"
-        btnLog.TextAlign = ContentAlignment.BottomRight
-        ' 
         ' cmWSTScreenSaver
         ' 
         cmWSTScreenSaver.Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
@@ -1688,37 +972,21 @@
         ' MainForm
         ' 
         AutoScaleMode = AutoScaleMode.None
-        AutoSizeMode = AutoSizeMode.GrowAndShrink
-        AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(638, 477)
         Controls.Add(BtnSettings)
-        Controls.Add(btnInfo)
-        Controls.Add(btnLog)
         Controls.Add(btnSettingsSave)
-        Controls.Add(btnSettingsRestore)
         Controls.Add(btnClose)
         Controls.Add(tabcontrolSettings)
-        Controls.Add(btnClockTest)
-        Controls.Add(btnErrorTest)
-        Font = New Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Icon = My.Resources.Resources.iconSettings
         TipHCEX.SetImage(Me, Nothing)
         TipInfoEX.SetImage(Me, Nothing)
         Location = New Point(0, 186)
-        MaximizeBox = False
         Name = "MainForm"
         Opacity = 0R
-        SizeGripStyle = SizeGripStyle.Hide
-        StartPosition = FormStartPosition.CenterScreen
+        StartPosition = FormStartPosition.Manual
         TipInfoEX.SetText(Me, Nothing)
         TipHCEX.SetText(Me, Nothing)
         cmWST.ResumeLayout(False)
         tabcontrolSettings.ResumeLayout(False)
-        tabpageWL.ResumeLayout(False)
-        tabpageWL.PerformLayout()
-        panelWL.ResumeLayout(False)
-        panelWL.PerformLayout()
-        cmlistviewWL.ResumeLayout(False)
         tabpageHC.ResumeLayout(False)
         groupBox2.ResumeLayout(False)
         tabpageHK.ResumeLayout(False)
@@ -1728,48 +996,12 @@
 
     End Sub
     Private toolStripSeparator12 As System.Windows.Forms.ToolStripSeparator
-    Private toolStripSeparator11 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents btnClose As System.Windows.Forms.Button
-    Private WithEvents btnClockTest As System.Windows.Forms.Button
     Private WithEvents cmiWSTClock As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmseparatorWSTWLBottom As System.Windows.Forms.ToolStripSeparator
     Private WithEvents cmseparatorWSTWLTop As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents lblWLStartUpDelay As System.Windows.Forms.Label
-    Private WithEvents lblWLMaxLinksPerFolder As System.Windows.Forms.Label
-    Private WithEvents lblWLAutoRefreshInterval As System.Windows.Forms.Label
-    Private WithEvents lblWLAutoRefreshIdleInterval As System.Windows.Forms.Label
     Private cmseparatorWSTTopSpacer As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents panelWL As System.Windows.Forms.Panel
-    Private WithEvents cmiWLMoveUp As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWLMoveDown As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWLNew As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmiWLDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents btnWLCancel As System.Windows.Forms.Button
-    Private WithEvents btnWLSet As System.Windows.Forms.Button
-    Private WithEvents textboxWLRoot As System.Windows.Forms.TextBox
-    Private WithEvents btnWLSelectFolder As System.Windows.Forms.Button
-    Private WithEvents checkboxWLUseDefaultIcon As System.Windows.Forms.CheckBox
-    Private WithEvents comboboxWLSort As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxWLFolderMode As System.Windows.Forms.ComboBox
-    Private WithEvents comboboxWLFolderPlacement As System.Windows.Forms.ComboBox
-    Private WithEvents checkboxWLShowInTray As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWLShowInMenu As System.Windows.Forms.CheckBox
-    Private WithEvents lblWLRoot As System.Windows.Forms.Label
-    Private WithEvents listviewWL As System.Windows.Forms.ListView
-    Private WithEvents checkboxWLShowMenuIcons As System.Windows.Forms.CheckBox
-    Private WithEvents textboxWLName As System.Windows.Forms.TextBox
-    Private WithEvents checkboxWLShowNoMenu As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWLShowFolderPathToolTips As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWLShowFilePathToolTips As System.Windows.Forms.CheckBox
     Private WithEvents tabpageWL As System.Windows.Forms.TabPage
-    Private WithEvents btnWLRefresh As System.Windows.Forms.Button
-    Private WithEvents textboxWLMaxLinksPerFolder As System.Windows.Forms.TextBox
-    Private WithEvents checkboxWLShowFileInfoToolTips As System.Windows.Forms.CheckBox
-    Private WithEvents checkboxWLAutoRefresh As System.Windows.Forms.CheckBox
-    Private WithEvents textboxWLAutoRefreshInterval As System.Windows.Forms.TextBox
-    Private WithEvents textboxWLAutoRefreshIdleInterval As System.Windows.Forms.TextBox
-    Private WithEvents lblWLAutoRefresh As System.Windows.Forms.Label
-    Private WithEvents textboxWLStartUpDelay As System.Windows.Forms.TextBox
     Private WithEvents tabpageWST As System.Windows.Forms.TabPage
     Private WithEvents cmiWSTACAlarmCancel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents cmiWSTScreenSaverEnabled As System.Windows.Forms.ToolStripMenuItem
@@ -1807,7 +1039,6 @@
     Private WithEvents lblHKWSTClock As System.Windows.Forms.Label
     Private WithEvents btnHKWSTClockDisable As System.Windows.Forms.Button
     Private WithEvents btnSettingsSave As System.Windows.Forms.Button
-    Private WithEvents btnSettingsRestore As System.Windows.Forms.Button
     Private WithEvents tabpageHC As System.Windows.Forms.TabPage
     Private WithEvents comboboxHCLeft As System.Windows.Forms.ComboBox
     Private WithEvents comboboxHCDouble As System.Windows.Forms.ComboBox
@@ -1816,20 +1047,11 @@
     Private WithEvents radiobtnHCWST As System.Windows.Forms.RadioButton
     Private WithEvents radiobtnHCWSTSS As System.Windows.Forms.RadioButton
     Private WithEvents radiobtnHCWL As System.Windows.Forms.RadioButton
-    Private WithEvents cmlistviewWL As System.Windows.Forms.ContextMenuStrip
     Private WithEvents cmWST As System.Windows.Forms.ContextMenuStrip
     Private toolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents btnHKWLDisable As System.Windows.Forms.Button
     Private WithEvents textboxHKWL As System.Windows.Forms.TextBox
     Private WithEvents lblHKWL As System.Windows.Forms.Label
-    Private label2 As System.Windows.Forms.Label
-    Private WithEvents btnErrorTest As System.Windows.Forms.Button
-    Private WithEvents btnInfo As System.Windows.Forms.Button
-    Private WithEvents btnLog As System.Windows.Forms.Button
-    Private label30 As System.Windows.Forms.Label
-    Private label29 As System.Windows.Forms.Label
-    Private label28 As System.Windows.Forms.Label
-    Private toolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents groupBox2 As System.Windows.Forms.GroupBox
     Private WithEvents tableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private label12 As System.Windows.Forms.Label
