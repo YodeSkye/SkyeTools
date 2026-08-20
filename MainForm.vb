@@ -210,6 +210,20 @@ Partial Friend Class MainForm
             System.Diagnostics.Process.Start("ShutDown", "/s /t 0")
         End If
     End Sub
+    Private Sub CMIWSTHelp_MouseUp(sender As Object, e As MouseEventArgs) Handles cmiWSTHelp.MouseUp
+        Select Case e.Button
+            Case MouseButtons.Left : My.App.ShowHelp(False)
+            Case MouseButtons.Right : My.App.ShowHelp(True)
+        End Select
+    End Sub
+    Private Sub CMIWSTLog_MouseUp(sender As Object, e As MouseEventArgs) Handles cmiWSTLog.MouseUp
+        Select Case e.Button
+            Case MouseButtons.Left : App.ShowLog(False)
+            Case MouseButtons.Right : App.ShowLog(True)
+        End Select
+        If App.ErrorAlert Then App.ClearErrorAlert()
+    End Sub
+
     Private Sub CMIWSTSettingsMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTSettings.MouseUp, cmiScreenSaverSettings.MouseUp
         If e.Button = MouseButtons.Left Then SelectTab(Me.tabpageWST, True)
     End Sub

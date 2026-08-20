@@ -98,7 +98,7 @@
         cmWST.Items.AddRange(New ToolStripItem() {cmiWSTCancelStartUp, cmiWSTACAlarmCancel, cmseparatorWSTCancel, cmseparatorWSTTopSpacer, cmiWSTScreenSaverActivate, cmiWSTScreenSaverEnabled, cmseparatorWSTWLTop, cmseparatorWSTWLBottom, cmiWSTClock, cmiWSTAC, cmseparatorWSTShutDownOptions, cmiWSTShutDown, cmiWSTHibernate, cmiWSTSleep, cmiWSTReStart, cmiWSTLogOff, cmiWSTLock, cmseparatorWSTSettings, cmiWSTHelp, cmiWSTLog, cmiWSTSettings, toolStripSeparator5, cmiWSTClose, cmiWSTCloseAll})
         cmWST.Name = "contextmenuWorkSpaceTools"
         cmWST.ShowItemToolTips = False
-        cmWST.Size = New Size(240, 470)
+        cmWST.Size = New Size(240, 492)
         TipInfoEX.SetText(cmWST, Nothing)
         TipHCEX.SetText(cmWST, Nothing)
         ' 
@@ -156,7 +156,7 @@
         ' 
         ' cmiWSTClock
         ' 
-        cmiWSTClock.Image = My.Resources.Resources.imageWSTClock
+        cmiWSTClock.Image = My.Resources.Resources.ImageWSTClock16
         cmiWSTClock.Name = "cmiWSTClock"
         cmiWSTClock.Size = New Size(239, 26)
         cmiWSTClock.Text = "Clock"

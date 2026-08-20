@@ -767,9 +767,19 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property imageWSTClock() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property ImageWSTClock16() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("imageWSTClock", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("ImageWSTClock16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property ImageWSTClock48() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ImageWSTClock48", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

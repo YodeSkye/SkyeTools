@@ -373,7 +373,7 @@ Namespace My
 			End Try
 			Try
 				Skye.Common.RegistryHelper.BaseKey = System.IO.Path.Combine("Software", baseName)
-				WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName + If(My.Application.AlternateStart, " Started in Alternate Start Mode...", " Started..."))
+				WriteToLog(Tools.SkyeTools, My.Application.Info.ProductName & If(My.Application.AlternateStart, " Started in Alternate Start Mode", " Started"))
 				System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance) 'Allows use of Windows-1252 character encoding, needed for clipboard text manipulation functions & TextboxContextMenu in Skye Library.
 				GetSettings()
 #If DEBUG Then
@@ -390,7 +390,7 @@ Namespace My
 				ToolToImage(Tools.WinLinks) = My.Resources.Resources.iconWL.ToBitmap
 				ToolToImage(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS16
 				ToolToImage(Tools.AlarmChime) = My.Resources.Resources.imageAC
-				ToolToImage(Tools.Clock) = My.Resources.Resources.imageWSTClock
+				ToolToImage(Tools.Clock) = My.Resources.Resources.ImageWSTClock16
 				ToolToImageLarge(Tools.SkyeTools) = My.Resources.Resources.ImageApp32
 				ToolToImageLarge(Tools.HotClicks) = My.Resources.Resources.ImageHC48
 				ToolToImageLarge(Tools.HotKeys) = My.Resources.Resources.ImageHK48
@@ -398,7 +398,7 @@ Namespace My
 				ToolToImageLarge(Tools.WinLinks) = My.Resources.Resources.ImageWL48
 				ToolToImageLarge(Tools.ScreenSaver) = My.Resources.Resources.ImageWSTSS48
 				ToolToImageLarge(Tools.AlarmChime) = My.Resources.Resources.ImageAC48
-				ToolToImageLarge(Tools.Clock) = My.Resources.Resources.imageWSTClock
+				ToolToImageLarge(Tools.Clock) = My.Resources.Resources.ImageWSTClock48
 				Using ums As System.IO.UnmanagedMemoryStream = My.Resources.Resources.soundChime
 					Dim audioBytes(CInt(ums.Length) - 1) As Byte
 					ums.Read(audioBytes, 0, audioBytes.Length)
@@ -414,7 +414,7 @@ Namespace My
 			End Try
 		End Sub
 		Friend Sub Finalize()
-			WriteToLog(My.App.Tools.SkyeTools, "..." + My.Application.Info.ProductName + " Closed")
+			WriteToLog(My.App.Tools.SkyeTools, My.Application.Info.ProductName + " Closed")
 		End Sub
 		Friend Sub SetLoadOnOSStartup()
 			Dim RegKey As Microsoft.Win32.RegistryKey = Nothing
@@ -531,6 +531,9 @@ Namespace My
 				FrmHelp.TxtBoxPostMessage.Text = "v" + My.Application.Info.Version.Major.ToString + "." + My.Application.Info.Version.Minor.ToString
 				FrmHelp.Show()
 			Else
+				If FrmHelp.WindowState = FormWindowState.Minimized Then
+					FrmHelp.WindowState = FormWindowState.Normal
+				End If
 				FrmHelp.BringToFront()
 				FrmHelp.Focus()
 			End If
@@ -543,6 +546,9 @@ Namespace My
 				FrmLog.LogViewer.Tip.Font = MenuFont
 				FrmLog.Show()
 			Else
+				If FrmLog.WindowState = FormWindowState.Minimized Then
+					FrmLog.WindowState = FormWindowState.Normal
+				End If
 				FrmLog.BringToFront()
 				FrmLog.Focus()
 			End If
@@ -593,7 +599,7 @@ Namespace My
 
 			HCGenerateActionList()
 			HKGenerateKeyList()
-			Skye.Common.Log.Write("Settings Loaded (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
+			WriteToLog(Tools.SkyeTools, "Settings Loaded (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
 		End Sub
 		Private Sub GetSettingsHC()
 
@@ -837,7 +843,7 @@ Namespace My
 
 			SetLoadOnOSStartup()
 
-			Skye.Common.Log.Write("Settings Saved (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
+			WriteToLog(Tools.SkyeTools, "Settings Saved (" & Skye.Common.GenerateLogTime(starttime, DateTime.Now.TimeOfDay, True) & ")")
 		End Sub
 		Friend Sub SaveSettingsHC()
 

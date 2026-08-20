@@ -328,8 +328,11 @@
   <data name="ImageWST48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\ImageWST48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imageWSTClock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>My Project\imageWSTClock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageWSTClock16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTClock16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageWSTClock48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>My Project\ImageWSTClock48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="imageWSTSessionKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>My Project\imageWSTSessionKey.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
