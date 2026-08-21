@@ -129,4 +129,10 @@
   <metadata name="cmWSTScreenSaver.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>104, 18</value>
   </metadata>
+  <metadata name="TipInfoEX.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>328, 39</value>
+  </metadata>
+  <metadata name="TipHCEX.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>421, 40</value>
+  </metadata>
 </root>

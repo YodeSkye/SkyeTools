@@ -5,134 +5,6 @@ Imports SkyeTools.My
 
 Partial Friend Class MainForm
 
-#Region "Settings"
-
-    ' Declarations
-    Private imagelisttabcontrolSettings As ImageList
-
-    ' Control Events
-    Private Sub TabcontrolSettingsSelected(ByVal sender As Object, ByVal e As TabControlEventArgs) Handles tabcontrolSettings.Selected
-        If Me.tabcontrolSettings.SelectedTab Is Me.tabpageHK Then ShowSettings(My.App.Tools.HotKeys)
-    End Sub
-    Private Sub BtnSettingsSaveClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnSettingsSave.Click
-        My.App.SaveSettings()
-        Me.Hide()
-    End Sub
-
-    ' Methods
-    Private Overloads Sub ShowSettings()
-        UpdateWST()
-        Me.SuspendLayout()
-        ShowSettingsHK()
-        Me.ResumeLayout()
-        Me.btnClose.Select()
-    End Sub
-    Private Overloads Sub ShowSettings(tool As My.App.Tools)
-        If tool = My.App.Tools.SkyeTools Then : ShowSettings()
-        Else
-            UpdateWST()
-            Me.SuspendLayout()
-
-            Select Case tool
-                Case My.App.Tools.HotKeys : ShowSettingsHK()
-            End Select
-            Me.ResumeLayout()
-            Me.btnClose.Select()
-        End If
-    End Sub
-    Private Sub ShowSettingsHK()
-        Me.lblHKWSTLockWorkSpace.Text = My.App.HKWSTLockWorkSpace.Description
-        Me.textboxHKWSTLockWorkSpace.Text = My.App.HKWSTLockWorkSpace.Key.ToString
-        Me.textboxHKWSTLockWorkSpace.Tag = My.App.HKWSTLockWorkSpace
-        Me.textboxHKWSTLockWorkSpace.Font = New Font(Me.Font, FontStyle.Bold)
-        Me.textboxHKWSTLockWorkSpace.ForeColor = Color.Teal
-        Me.lblHKWSTScreenSaver.Text = My.App.HKWSTScreenSaver.Description
-        Me.textboxHKWSTScreenSaver.Text = My.App.HKWSTScreenSaver.Key.ToString
-        Me.textboxHKWSTScreenSaver.Tag = My.App.HKWSTScreenSaver
-        Me.textboxHKWSTScreenSaver.Font = New Font(Me.Font, FontStyle.Bold)
-        Me.textboxHKWSTScreenSaver.ForeColor = Color.Teal
-        Me.lblHKWSTClock.Text = My.App.HKWSTClock.Description
-        Me.textboxHKWSTClock.Text = My.App.HKWSTClock.Key.ToString
-        Me.textboxHKWSTClock.Tag = My.App.HKWSTClock
-        Me.textboxHKWSTClock.Font = New Font(Me.Font, FontStyle.Bold)
-        Me.textboxHKWSTClock.ForeColor = Color.Teal
-        Me.lblHKWL.Text = My.App.HKWL.Description
-        Me.textboxHKWL.Text = My.App.HKWL.Key.ToString
-        Me.textboxHKWL.Tag = My.App.HKWL
-        Me.textboxHKWL.Font = New Font(Me.Font, FontStyle.Bold)
-        Me.textboxHKWL.ForeColor = Color.Teal
-        Me.btnHKReset.Enabled = False
-        Me.btnHKSet.Enabled = False
-        If My.App.HKEnabled Then
-            If My.App.WSTShowLockWorkSpace Then : Me.lblHKWSTLockWorkSpace.Enabled = True
-            Else : Me.lblHKWSTLockWorkSpace.Enabled = False
-            End If
-            Me.textboxHKWSTLockWorkSpace.Enabled = True
-            Me.btnHKWSTLockWorkSpaceDisable.Enabled = True
-            If My.App.WSTShowSSActivate Or My.App.WSTShowSSEnabled Or My.App.WSTShowSSIcon Then : Me.lblHKWSTScreenSaver.Enabled = True
-            Else : Me.lblHKWSTScreenSaver.Enabled = False
-            End If
-            Me.textboxHKWSTScreenSaver.Enabled = True
-            Me.btnHKWSTScreenSaverDisable.Enabled = True
-            If My.App.WSTShowClock Then : Me.lblHKWSTClock.Enabled = True
-            Else : Me.lblHKWSTClock.Enabled = False
-            End If
-            Me.textboxHKWSTClock.Enabled = True
-            Me.btnHKWSTClockDisable.Enabled = True
-            If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then : Me.lblHKWL.Enabled = True
-            Else : Me.lblHKWL.Enabled = False
-            End If
-            Me.textboxHKWL.Enabled = True
-            Me.btnHKWLDisable.Enabled = True
-            Me.btnHKEnabled.Text = "Disable"
-            Me.btnHKEnabled.Image = My.Resources.Resources.imageHKDisable 'DirectCast(My.App.AppResources.GetObject("imageHKDisable"), Image)
-        Else
-            Me.lblHKWSTLockWorkSpace.Enabled = False
-            Me.textboxHKWSTLockWorkSpace.Enabled = False
-            Me.btnHKWSTLockWorkSpaceDisable.Enabled = False
-            Me.lblHKWSTScreenSaver.Enabled = False
-            Me.textboxHKWSTScreenSaver.Enabled = False
-            Me.btnHKWSTScreenSaverDisable.Enabled = False
-            Me.lblHKWSTStopWatch.Enabled = False
-            Me.lblHKWSTClock.Enabled = False
-            Me.textboxHKWSTClock.Enabled = False
-            Me.btnHKWSTClockDisable.Enabled = False
-            Me.lblHKWL.Enabled = False
-            Me.textboxHKWL.Enabled = False
-            Me.btnHKWLDisable.Enabled = False
-            Me.btnHKEnabled.Text = "Enable"
-            Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable 'DirectCast(My.App.AppResources.GetObject("imageHKEnable"), Image)
-        End If
-    End Sub
-    Private Sub SelectTab(ByRef tabpage As System.Windows.Forms.TabPage, Optional forcevisible As Boolean = False)
-        If tabpage Is Nothing Then
-            If Me.Visible Then
-                If Me.WindowState = FormWindowState.Minimized Then : Me.WindowState = FormWindowState.Normal
-                Else : If Not forcevisible Then Me.Hide()
-                End If
-            Else : Me.Show()
-            End If
-        Else
-            If Me.Visible Then
-                If Me.tabcontrolSettings.SelectedTab.Equals(tabpage) AndAlso Me.WindowState = FormWindowState.Normal AndAlso Not forcevisible Then : Me.Hide()
-                Else
-                    If Not Me.WindowState = FormWindowState.Normal Then Me.WindowState = FormWindowState.Normal
-                    UpdateWST()
-
-                    Try : Me.tabcontrolSettings.SelectTab(tabpage) : Catch : End Try
-                End If
-            Else
-                Try : Me.tabcontrolSettings.SelectTab(tabpage) : Catch : End Try
-                Me.Show()
-            End If
-        End If
-        If Me.Visible Then
-            Me.Activate()
-            Me.btnClose.Focus()
-        End If
-    End Sub
-
-#End Region
 #Region "WorkSpace Tools (WST)"
 
     ' Declarations
@@ -205,7 +77,7 @@ Partial Friend Class MainForm
     End Sub
 
     Private Sub CMIWSTSettingsMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTSettings.MouseUp, cmiScreenSaverSettings.MouseUp
-        If e.Button = MouseButtons.Left Then SelectTab(Me.tabpageWST, True)
+        If e.Button = MouseButtons.Left Then App.ShowSettings()
     End Sub
     Private Sub CMIWSTCloseMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles cmiWSTClose.MouseUp
         If e.Button = MouseButtons.Left Then
@@ -697,17 +569,17 @@ Partial Friend Class MainForm
                     Exit For
                 End If
             Next
-            ShowSettings(My.App.Tools.WinLinks)
+            App.FrmSettings?.ShowSettingsWL()
         End If
     End Sub
     Private Sub CMIWLSettingsMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
-        If e.Button = MouseButtons.Left Then SelectTab(Me.tabpageWL, True)
+        If e.Button = MouseButtons.Left Then App.ShowSettings("WL")
     End Sub
     Private Sub CMIWLCloseMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
         If e.Button = MouseButtons.Left Then
             My.App.WSTShowWLTray = False
             ShowTools()
-            ShowSettings(My.App.Tools.WorkSpaceTools)
+            App.FrmSettings?.ShowSettingsWL()
         End If
     End Sub
     Private Sub CMIWLCopyPathMouseUp(ByVal sender As Object, ByVal e As MouseEventArgs)
@@ -1506,148 +1378,6 @@ Partial Friend Class MainForm
     End Sub
 
 #End Region
-#Region "HotKeys(HK)"
-
-    'Declarations
-    Private HKInUse As New Collections.Generic.List(Of Keys)
-
-    'Control Events
-    Private Sub TextboxHKPreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles textboxHKWSTScreenSaver.PreviewKeyDown, textboxHKWSTLockWorkSpace.PreviewKeyDown, textboxHKWSTClock.PreviewKeyDown, textboxHKWL.PreviewKeyDown
-        Dim senderTextBox = CType(sender, System.Windows.Forms.TextBox)
-        Dim senderTag = CType(senderTextBox.Tag, HKType)
-        If e.KeyData <> senderTag.Key Then
-
-            'Setup New HotKey
-            Dim newhotkey As New HKType
-            Dim modifiers = 0
-            Dim match = False
-            If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
-            If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
-            If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
-            newhotkey.Description = senderTag.Description
-            newhotkey.WinID = senderTag.WinID
-            newhotkey.Key = e.KeyData
-            newhotkey.KeyCode = CByte(e.KeyValue)
-            newhotkey.KeyMod = CByte(modifiers)
-
-            'Check If Already In-Use
-            HKGenerateUsedKeyList()
-            If Not CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(textboxHKWSTLockWorkSpace.Tag, HKType).Key)
-            If Not CType(textboxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(textboxHKWSTScreenSaver.Tag, HKType).Key)
-            If Not CType(textboxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(textboxHKWSTClock.Tag, HKType).Key)
-            If Not CType(textboxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(textboxHKWL.Tag, HKType).Key)
-            For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
-            Next
-
-            'Display New HotKey If Not Already In-Use
-            If Not match Then
-                senderTextBox.Font = New Font(Font, FontStyle.Regular)
-                senderTextBox.ForeColor = Color.Maroon
-                senderTextBox.Text = e.KeyData.ToString
-                senderTextBox.Tag = newhotkey
-                btnHKReset.Enabled = True
-                btnHKSet.Enabled = True
-            End If
-        End If
-    End Sub
-    Private Sub TextboxHKKeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles textboxHKWSTScreenSaver.KeyPress, textboxHKWSTLockWorkSpace.KeyPress, textboxHKWSTClock.KeyPress, textboxHKWL.KeyPress
-        e.Handled = True
-    End Sub
-    Private Sub BtnHKDisableClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, btnHKWSTClockDisable.Click, btnHKWLDisable.Click
-        Dim senderTextBox As New System.Windows.Forms.TextBox
-        Dim senderTag As New HKType
-        Select Case CType(sender, System.Windows.Forms.Button).Name
-            Case btnHKWSTLockWorkSpaceDisable.Name
-                senderTextBox = textboxHKWSTLockWorkSpace
-                senderTag = CType(textboxHKWSTLockWorkSpace.Tag, HKType)
-            Case btnHKWSTScreenSaverDisable.Name
-                senderTextBox = textboxHKWSTScreenSaver
-                senderTag = CType(textboxHKWSTScreenSaver.Tag, HKType)
-            Case btnHKWSTClockDisable.Name
-                senderTextBox = textboxHKWSTClock
-                senderTag = CType(textboxHKWSTClock.Tag, HKType)
-            Case btnHKWLDisable.Name
-                senderTextBox = textboxHKWL
-                senderTag = CType(textboxHKWL.Tag, HKType)
-        End Select
-
-        Dim newhotkey As New HKType With {
-            .Description = senderTag.Description,
-            .WinID = senderTag.WinID,
-            .Key = Keys.None,
-            .KeyCode = 0,
-            .KeyMod = 0}
-        senderTextBox.Font = New Font(Font, FontStyle.Regular)
-        senderTextBox.ForeColor = Color.Maroon
-        senderTextBox.Text = newhotkey.Key.ToString
-        senderTextBox.Tag = newhotkey
-        btnHKReset.Enabled = True
-        btnHKSet.Enabled = True
-        btnHKSet.Focus()
-    End Sub
-    Private Sub BtnHKDisableEnter(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKWSTScreenSaverDisable.Enter, btnHKWSTLockWorkSpaceDisable.Enter, btnHKWSTClockDisable.Enter, btnHKWLDisable.Enter
-        If btnHKSet.Enabled Then : btnHKSet.Focus()
-        Else : btnClose.Focus()
-        End If
-    End Sub
-    Private Sub BtnHKEnabledClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
-        My.App.HKEnabled = Not My.App.HKEnabled
-        HKRegister()
-        ShowSettings(My.App.Tools.HotKeys)
-    End Sub
-    Private Sub BtnHKSetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKSet.Click
-        If Not CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType).Key = My.App.HKWSTLockWorkSpace.Key Then My.App.HKWSTLockWorkSpace = CType(Me.textboxHKWSTLockWorkSpace.Tag, My.App.HKType)
-        If Not CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType).Key = My.App.HKWSTScreenSaver.Key Then My.App.HKWSTScreenSaver = CType(Me.textboxHKWSTScreenSaver.Tag, My.App.HKType)
-        If Not CType(Me.textboxHKWSTClock.Tag, My.App.HKType).Key = My.App.HKWSTClock.Key Then My.App.HKWSTClock = CType(Me.textboxHKWSTClock.Tag, My.App.HKType)
-        If Not CType(Me.textboxHKWL.Tag, My.App.HKType).Key = My.App.HKWL.Key Then My.App.HKWL = CType(Me.textboxHKWL.Tag, My.App.HKType)
-        My.App.HKGenerateKeyList()
-        HKRegister()
-        ShowSettings(My.App.Tools.HotKeys)
-    End Sub
-    Private Sub BtnHKResetClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKReset.Click
-        ShowSettings(My.App.Tools.HotKeys)
-    End Sub
-
-    'Procedures
-    Private Sub HKRegister(Optional UnRegisterONLY As Boolean = False)
-        Dim status As Boolean
-
-        'UnRegister All HotKeys First
-        For Each key As App.HKType In App.HKKeys
-            status = Skye.WinAPI.UnregisterHotKey(Me.Handle, key.WinID)
-        Next
-
-        'Register All HotKeys Where Key Is Not 'NONE'
-        If App.HKEnabled And Not UnRegisterONLY Then
-            For Each key As App.HKType In App.HKKeys
-                If Not key.Key = Keys.None Then
-                    status = Skye.WinAPI.RegisterHotKey(Me.Handle, key.WinID, key.KeyMod, key.KeyCode)
-                    App.WriteToLog(App.Tools.HotKeys, "RegisterHotKey : " + key.Description + " (" + key.WinID.ToString + ") (" + key.Key.ToString + ") (" + key.KeyCode.ToString + " mod " + key.KeyMod.ToString + ") : " + IIf(status, "Succeeded", "Failed").ToString)
-                End If
-            Next
-        End If
-
-    End Sub
-    Private Sub HKPerformAction(hotkey As Integer)
-        Select Case hotkey
-            Case My.App.HKWSTLockWorkSpace.WinID : App.LockWorkSpace()
-            Case My.App.HKWSTScreenSaver.WinID : App.SSActivate(True)
-            Case My.App.HKWSTClock.WinID : App.ShowClock()
-            Case My.App.HKWL.WinID : If My.App.WSTShowWLMenu Or My.App.WSTShowWLTray Then App.StartLink(My.App.WLData(My.App.WLData.Count - 1).Root)
-        End Select
-    End Sub
-    Private Sub HKGenerateUsedKeyList()
-        HKInUse.Clear()
-        HKInUse.Add(CType(131137, Keys)) ' A, Control ' Select All
-        HKInUse.Add(CType(131139, Keys)) ' C, Control ' Copy
-        HKInUse.Add(CType(131160, Keys)) ' X, Control ' Cut / Clear
-        HKInUse.Add(CType(131158, Keys)) ' V, Control ' Paste
-        HKInUse.Add(CType(131155, Keys)) ' S, Control ' Save As
-        For Each key As My.App.HKType In My.App.HKKeys : HKInUse.Add(key.Key)
-        Next
-    End Sub
-
-#End Region
 
     ' Declarations
     Private Structure ProcessListType
@@ -1686,7 +1416,7 @@ Partial Friend Class MainForm
                 End Select
             Case Skye.WinAPI.WM_HOTKEY
                 Try
-                    HKPerformAction(m.WParam.ToInt32)
+                    App.HKPerformAction(m.WParam.ToInt32)
                 Catch ex As Exception
                     App.WriteToLog(App.Tools.SkyeTools, "HotKey Failed --> " + ex.Message)
                 Finally
@@ -1704,14 +1434,6 @@ Partial Friend Class MainForm
         BackgroundworkerAC.WorkerSupportsCancellation = True
         cmWLItem.Font = App.MenuFont
         cmWLItem.ShowItemToolTips = False
-        Me.imagelisttabcontrolSettings = New ImageList(Me.components) With {
-            .ColorDepth = ColorDepth.Depth32Bit,
-            .ImageSize = New Size(16, 16),
-            .TransparentColor = System.Drawing.Color.Transparent}
-        Me.imagelisttabcontrolSettings.Images.Add("imageHK", My.Resources.Resources.imageHK)
-        Me.tabcontrolSettings.ImageList = Me.imagelisttabcontrolSettings
-        Me.tabpageHK.Text = My.App.ToolToString(My.App.Tools.HotKeys)
-        Me.tabpageHK.ImageKey = "imageHK"
 
         'Initialize Form
         Me.cmiWSTCloseAll.ToolTipText = My.App.CloseAllToolTipText
@@ -1737,9 +1459,8 @@ Partial Friend Class MainForm
 #Else
 		My.App.SetLoadOnOSStartup()
 #End If
-        ShowSettings()
         ACSet()
-        HKRegister()
+        App.HKRegister()
         TipCM = New Skye.UI.ToolTipEX() With {
             .Font = App.MenuFont,
             .ShadowAlpha = 0,
@@ -1777,12 +1498,6 @@ Partial Friend Class MainForm
             Me.cmseparatorWSTCancel.Visible = True
         End If
         UpdateWST()
-#If DEBUG Then
-        Me.Left = 0
-        Me.Top = CInt(My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2)
-        Me.Show()
-#Else
-#End If
     End Sub
     Private Sub FrmClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles MyBase.FormClosing
         ' Dispose of the clock so the form closes
@@ -1791,7 +1506,7 @@ Partial Friend Class MainForm
             App.FrmClock.Dispose()
         End If
         ' Unregister hotkeys so they don't trigger after the form closes
-        HKRegister(True)
+        App.HKRegister(True)
         ' Disposing timers purges queued callbacks from the Windows message queue
         Try
             TimerWLAutoRefresh?.Stop()
@@ -1828,12 +1543,6 @@ Partial Friend Class MainForm
                 Case False : Diagnostics.Process.Start(My.Computer.FileSystem.CombinePath(My.Application.Info.DirectoryPath, My.Application.Info.AssemblyName + ".exe"))
             End Select
         End If
-    End Sub
-    Private Sub BtnCloseClick(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
-        Me.Hide()
-    End Sub
-    Private Sub BtnSettings_Click(sender As Object, e As EventArgs) Handles BtnSettings.Click
-        App.ShowSettings()
     End Sub
 
     ' Methods

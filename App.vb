@@ -240,13 +240,6 @@ Namespace My
 			Dim KeyCode As Byte
 			Dim KeyMod As Byte
 		End Structure
-		Friend Sub HKGenerateKeyList()
-			HKKeys.Clear()
-			HKKeys.Add(HKWSTLockWorkSpace)
-			HKKeys.Add(HKWSTScreenSaver)
-			HKKeys.Add(HKWSTClock)
-			HKKeys.Add(HKWL)
-		End Sub
 
 		'Saved Settings
 		Friend HKWSTLockWorkSpace As New HKType
@@ -255,6 +248,42 @@ Namespace My
 		Friend HKWL As New HKType
 		Friend HKKeys As New Collections.Generic.List(Of HKType)
 		Friend HKEnabled As Boolean
+
+		' METHODS
+		Friend Sub HKGenerateKeyList()
+			HKKeys.Clear()
+			HKKeys.Add(HKWSTLockWorkSpace)
+			HKKeys.Add(HKWSTScreenSaver)
+			HKKeys.Add(HKWSTClock)
+			HKKeys.Add(HKWL)
+		End Sub
+		Friend Sub HKRegister(Optional UnRegisterONLY As Boolean = False)
+			Dim status As Boolean
+
+			'UnRegister All HotKeys First
+			For Each key As HKType In HKKeys
+				status = Skye.WinAPI.UnregisterHotKey(FrmMain.Handle, key.WinID)
+			Next
+
+			'Register All HotKeys Where Key Is Not 'NONE'
+			If HKEnabled And Not UnRegisterONLY Then
+				For Each key As HKType In HKKeys
+					If Not key.Key = Keys.None Then
+						status = Skye.WinAPI.RegisterHotKey(FrmMain.Handle, key.WinID, key.KeyMod, key.KeyCode)
+						App.WriteToLog(Tools.HotKeys, "RegisterHotKey : " + key.Description + " (" + key.WinID.ToString + ") (" + key.Key.ToString + ") (" + key.KeyCode.ToString + " mod " + key.KeyMod.ToString + ") : " + IIf(status, "Succeeded", "Failed").ToString)
+					End If
+				Next
+			End If
+
+		End Sub
+		Friend Sub HKPerformAction(hotkey As Integer)
+			Select Case hotkey
+				Case My.App.HKWSTLockWorkSpace.WinID : LockWorkSpace()
+				Case My.App.HKWSTScreenSaver.WinID : SSActivate(True)
+				Case My.App.HKWSTClock.WinID : ShowClock()
+				Case My.App.HKWL.WinID : If WSTShowWLMenu Or WSTShowWLTray Then StartLink(WLData(WLData.Count - 1).Root)
+			End Select
+		End Sub
 
 #End Region
 

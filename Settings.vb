@@ -14,6 +14,7 @@ Partial Friend Class Settings
     Private OFDLoadOnOSStartup As New OpenFileDialog
     Private OFDACSelectWAV As New OpenFileDialog
     Private FBDWLFolderBrowser As New FolderBrowserDialog
+    Private HKInUse As New Collections.Generic.List(Of Keys)
 
     ' FORM EVENTS
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
@@ -783,32 +784,123 @@ Partial Friend Class Settings
         ElseIf RadBtnHCWSTSS.Checked Then : HCShowActions(TrayTools.ScreenSaver)
         End If
     End Sub
-    Private Sub CoBoxHCSettings_SelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles CoBoxHCRight.SelectionChangeCommitted, CoBoxHCMiddle.SelectionChangeCommitted, CoBoxHCLeft.SelectionChangeCommitted, CoBoxHCDouble.SelectionChangeCommitted
+    Private Sub CoBoxHCSettings_SelectionChangeCommitted(ByVal sender As Object, ByVal e As EventArgs) Handles CoBoxHCLeft.SelectionChangeCommitted
         Select Case CType(sender, System.Windows.Forms.ComboBox).Name
-            Case Me.CoBoxHCLeft.Name
-                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverLeft = CType(HCFindActionIndex(Me.CoBoxHCLeft.SelectedItem.ToString), My.App.HCAction)
+            Case CoBoxHCLeft.Name
+                If RadBtnHCWST.Checked Then : HCWSTLeft = CType(HCFindActionIndex(CoBoxHCLeft.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWL.Checked Then : HCWLLeft = CType(HCFindActionIndex(CoBoxHCLeft.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWSTSS.Checked Then : HCWSTScreenSaverLeft = CType(HCFindActionIndex(CoBoxHCLeft.SelectedItem.ToString), HCAction)
                 End If
-            Case Me.CoBoxHCDouble.Name
-                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverDouble = CType(HCFindActionIndex(Me.CoBoxHCDouble.SelectedItem.ToString), My.App.HCAction)
+            Case CoBoxHCDouble.Name
+                If RadBtnHCWST.Checked Then : HCWSTDouble = CType(HCFindActionIndex(CoBoxHCDouble.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWL.Checked Then : HCWLDouble = CType(HCFindActionIndex(CoBoxHCDouble.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWSTSS.Checked Then : HCWSTScreenSaverDouble = CType(HCFindActionIndex(CoBoxHCDouble.SelectedItem.ToString), HCAction)
                 End If
-            Case Me.CoBoxHCMiddle.Name
-                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWL.Checked Then : My.App.HCWLMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverMiddle = CType(HCFindActionIndex(Me.CoBoxHCMiddle.SelectedItem.ToString), My.App.HCAction)
+            Case CoBoxHCMiddle.Name
+                If RadBtnHCWST.Checked Then : HCWSTMiddle = CType(HCFindActionIndex(CoBoxHCMiddle.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWL.Checked Then : HCWLMiddle = CType(HCFindActionIndex(CoBoxHCMiddle.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWSTSS.Checked Then : HCWSTScreenSaverMiddle = CType(HCFindActionIndex(CoBoxHCMiddle.SelectedItem.ToString), HCAction)
                 End If
-            Case Me.CoBoxHCRight.Name
-                If Me.RadBtnHCWST.Checked Then : My.App.HCWSTRight = CType(HCFindActionIndex(Me.CoBoxHCRight.SelectedItem.ToString), My.App.HCAction)
-                ElseIf Me.RadBtnHCWSTSS.Checked Then : My.App.HCWSTScreenSaverRight = CType(HCFindActionIndex(Me.CoBoxHCRight.SelectedItem.ToString), My.App.HCAction)
+            Case CoBoxHCRight.Name
+                If RadBtnHCWST.Checked Then : HCWSTRight = CType(HCFindActionIndex(CoBoxHCRight.SelectedItem.ToString), HCAction)
+                ElseIf RadBtnHCWSTSS.Checked Then : HCWSTScreenSaverRight = CType(HCFindActionIndex(CoBoxHCRight.SelectedItem.ToString), HCAction)
                 End If
         End Select
-        App.SetSave()
+        SetSave()
     End Sub
 
     ' HotKeys
+    Private Sub TxtBoxHK_PreviewKeyDown(ByVal sender As Object, ByVal e As PreviewKeyDownEventArgs) Handles TxtBoxHKWSTScreenSaver.PreviewKeyDown, TxtBoxHKWSTLockWorkSpace.PreviewKeyDown, TxtBoxHKWSTClock.PreviewKeyDown, TxtBoxHKWL.PreviewKeyDown
+        Dim senderTextBox = CType(sender, System.Windows.Forms.TextBox)
+        Dim senderTag = CType(senderTextBox.Tag, HKType)
+        If e.KeyData <> senderTag.Key Then
+
+            'Setup New HotKey
+            Dim newhotkey As New HKType
+            Dim modifiers = 0
+            Dim match = False
+            If e.Shift Then modifiers += Skye.WinAPI.MOD_SHIFT
+            If e.Control Then modifiers += Skye.WinAPI.MOD_CONTROL
+            If e.Alt Then modifiers += Skye.WinAPI.MOD_ALT
+            newhotkey.Description = senderTag.Description
+            newhotkey.WinID = senderTag.WinID
+            newhotkey.Key = e.KeyData
+            newhotkey.KeyCode = CByte(e.KeyValue)
+            newhotkey.KeyMod = CByte(modifiers)
+
+            'Check If Already In-Use
+            HKGenerateUsedKeyList()
+            If Not CType(TxtBoxHKWSTLockWorkSpace.Tag, HKType).Key = HKWSTLockWorkSpace.Key Then HKInUse.Add(CType(TxtBoxHKWSTLockWorkSpace.Tag, HKType).Key)
+            If Not CType(TxtBoxHKWSTScreenSaver.Tag, HKType).Key = HKWSTScreenSaver.Key Then HKInUse.Add(CType(TxtBoxHKWSTScreenSaver.Tag, HKType).Key)
+            If Not CType(TxtBoxHKWSTClock.Tag, HKType).Key = HKWSTClock.Key Then HKInUse.Add(CType(TxtBoxHKWSTClock.Tag, HKType).Key)
+            If Not CType(TxtBoxHKWL.Tag, HKType).Key = HKWL.Key Then HKInUse.Add(CType(TxtBoxHKWL.Tag, HKType).Key)
+            For Each usedkey In HKInUse : If usedkey = newhotkey.Key Then match = True
+            Next
+
+            'Display New HotKey If Not Already In-Use
+            If Not match Then
+                senderTextBox.Font = New Font(Font, FontStyle.Regular)
+                senderTextBox.ForeColor = Skye.UI.ThemeManager.CurrentTheme.TextFore
+                senderTextBox.Text = e.KeyData.ToString
+                senderTextBox.Tag = newhotkey
+                BtnHKReset.Enabled = True
+                BtnHKSet.Enabled = True
+            End If
+        End If
+    End Sub
+    Private Sub TxtBoxHK_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TxtBoxHKWSTScreenSaver.KeyPress, TxtBoxHKWSTLockWorkSpace.KeyPress, TxtBoxHKWSTClock.KeyPress, TxtBoxHKWL.KeyPress
+        e.Handled = True
+    End Sub
+    Private Sub BtnHKDisable_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnHKWSTScreenSaverDisable.Click, btnHKWSTLockWorkSpaceDisable.Click, BtnHKWSTClockDisable.Click, BtnHKWLDisable.Click
+        Dim senderTextBox As New System.Windows.Forms.TextBox
+        Dim senderTag As New HKType
+        Select Case CType(sender, System.Windows.Forms.Button).Name
+            Case btnHKWSTLockWorkSpaceDisable.Name
+                senderTextBox = TxtBoxHKWSTLockWorkSpace
+                senderTag = CType(TxtBoxHKWSTLockWorkSpace.Tag, HKType)
+            Case BtnHKWSTScreenSaverDisable.Name
+                senderTextBox = TxtBoxHKWSTScreenSaver
+                senderTag = CType(TxtBoxHKWSTScreenSaver.Tag, HKType)
+            Case BtnHKWSTClockDisable.Name
+                senderTextBox = TxtBoxHKWSTClock
+                senderTag = CType(TxtBoxHKWSTClock.Tag, HKType)
+            Case BtnHKWLDisable.Name
+                senderTextBox = TxtBoxHKWL
+                senderTag = CType(TxtBoxHKWL.Tag, HKType)
+        End Select
+
+        Dim newhotkey As New HKType With {
+            .Description = senderTag.Description,
+            .WinID = senderTag.WinID,
+            .Key = Keys.None,
+            .KeyCode = 0,
+            .KeyMod = 0}
+        senderTextBox.Font = New Font(Font, FontStyle.Regular)
+        senderTextBox.ForeColor = Color.Maroon
+        senderTextBox.Text = newhotkey.Key.ToString
+        senderTextBox.Tag = newhotkey
+        BtnHKReset.Enabled = True
+        BtnHKSet.Enabled = True
+        BtnHKSet.Focus()
+    End Sub
+    Private Sub BtnHKEnabled_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnHKEnabled.Click
+        My.App.HKEnabled = Not My.App.HKEnabled
+        App.HKRegister()
+        ShowSettingsHK()
+    End Sub
+    Private Sub BtnHKSet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnHKSet.Click
+        If Not CType(Me.TxtBoxHKWSTLockWorkSpace.Tag, App.HKType).Key = App.HKWSTLockWorkSpace.Key Then App.HKWSTLockWorkSpace = CType(Me.TxtBoxHKWSTLockWorkSpace.Tag, App.HKType)
+        If Not CType(Me.TxtBoxHKWSTScreenSaver.Tag, App.HKType).Key = App.HKWSTScreenSaver.Key Then App.HKWSTScreenSaver = CType(Me.TxtBoxHKWSTScreenSaver.Tag, App.HKType)
+        If Not CType(Me.TxtBoxHKWSTClock.Tag, App.HKType).Key = App.HKWSTClock.Key Then App.HKWSTClock = CType(Me.TxtBoxHKWSTClock.Tag, App.HKType)
+        If Not CType(Me.TxtBoxHKWL.Tag, App.HKType).Key = App.HKWL.Key Then App.HKWL = CType(Me.TxtBoxHKWL.Tag, App.HKType)
+        App.HKGenerateKeyList()
+        App.HKRegister()
+        ShowSettingsHK()
+        App.SetSave()
+    End Sub
+    Private Sub BtnHKReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnHKReset.Click
+        ShowSettingsHK()
+    End Sub
 
     ' METHODS
     Friend Sub SetPage(page As String)
@@ -839,6 +931,7 @@ Partial Friend Class Settings
                 PanelHC.Visible = True
                 PanelHC.BringToFront()
             Case "HK"
+                ShowSettingsHK()
                 PanelHK.Visible = True
                 PanelHK.BringToFront()
         End Select
@@ -1050,7 +1143,7 @@ Partial Friend Class Settings
             Me.TipInfoEX.SetText(Me.LblACOffHourChimePath, My.App.ACOffHourChimePath)
         End If
     End Sub
-    Private Sub ShowSettingsWL()
+    Friend Sub ShowSettingsWL()
         Me.PanelWLItem.Hide()
         Me.LVWL.Clear()
         Me.LblWLRoot.ResetFont()
@@ -1114,10 +1207,74 @@ Partial Friend Class Settings
 
     End Sub
     Private Sub ShowSettingsHK()
+        Me.LblHKWSTLockWorkSpace.Text = App.HKWSTLockWorkSpace.Description
+        Me.TxtBoxHKWSTLockWorkSpace.Text = App.HKWSTLockWorkSpace.Key.ToString
+        Me.TxtBoxHKWSTLockWorkSpace.Tag = App.HKWSTLockWorkSpace
+        Me.TxtBoxHKWSTLockWorkSpace.Font = New Font(Me.Font, FontStyle.Bold)
+        Me.TxtBoxHKWSTLockWorkSpace.ForeColor = Color.Teal
+        Me.LblHKWSTScreenSaver.Text = App.HKWSTScreenSaver.Description
+        Me.TxtBoxHKWSTScreenSaver.Text = App.HKWSTScreenSaver.Key.ToString
+        Me.TxtBoxHKWSTScreenSaver.Tag = App.HKWSTScreenSaver
+        Me.TxtBoxHKWSTScreenSaver.Font = New Font(Me.Font, FontStyle.Bold)
+        Me.TxtBoxHKWSTScreenSaver.ForeColor = Color.Teal
+        Me.LblHKWSTClock.Text = App.HKWSTClock.Description
+        Me.TxtBoxHKWSTClock.Text = App.HKWSTClock.Key.ToString
+        Me.TxtBoxHKWSTClock.Tag = App.HKWSTClock
+        Me.TxtBoxHKWSTClock.Font = New Font(Me.Font, FontStyle.Bold)
+        Me.TxtBoxHKWSTClock.ForeColor = Color.Teal
+        Me.LblHKWL.Text = App.HKWL.Description
+        Me.TxtBoxHKWL.Text = App.HKWL.Key.ToString
+        Me.TxtBoxHKWL.Tag = App.HKWL
+        Me.TxtBoxHKWL.Font = New Font(Me.Font, FontStyle.Bold)
+        Me.TxtBoxHKWL.ForeColor = Color.Teal
+        Me.BtnHKReset.Enabled = False
+        Me.BtnHKSet.Enabled = False
+        If App.HKEnabled Then
+            If App.WSTShowLockWorkSpace Then : Me.LblHKWSTLockWorkSpace.Enabled = True
+            Else : Me.LblHKWSTLockWorkSpace.Enabled = False
+            End If
+            Me.TxtBoxHKWSTLockWorkSpace.Enabled = True
+            Me.btnHKWSTLockWorkSpaceDisable.Enabled = True
+            If App.WSTSSToolEnabled AndAlso (App.WSTShowSSActivate Or App.WSTShowSSEnabled Or App.WSTShowSSIcon) Then : Me.LblHKWSTScreenSaver.Enabled = True
+            Else : Me.LblHKWSTScreenSaver.Enabled = False
+            End If
+            Me.TxtBoxHKWSTScreenSaver.Enabled = True
+            Me.BtnHKWSTScreenSaverDisable.Enabled = True
+            If App.WSTShowClock Then : Me.LblHKWSTClock.Enabled = True
+            Else : Me.LblHKWSTClock.Enabled = False
+            End If
+            Me.TxtBoxHKWSTClock.Enabled = True
+            Me.BtnHKWSTClockDisable.Enabled = True
+            If App.WSTShowWLMenu Or App.WSTShowWLTray Then : Me.LblHKWL.Enabled = True
+            Else : Me.LblHKWL.Enabled = False
+            End If
+            Me.TxtBoxHKWL.Enabled = True
+            Me.BtnHKWLDisable.Enabled = True
+            Me.btnHKEnabled.Text = "Disable"
+            Me.btnHKEnabled.Image = My.Resources.Resources.imageHKDisable
+        Else
+            Me.LblHKWSTLockWorkSpace.Enabled = False
+            Me.TxtBoxHKWSTLockWorkSpace.Enabled = False
+            Me.btnHKWSTLockWorkSpaceDisable.Enabled = False
+            Me.LblHKWSTScreenSaver.Enabled = False
+            Me.TxtBoxHKWSTScreenSaver.Enabled = False
+            Me.BtnHKWSTScreenSaverDisable.Enabled = False
+            Me.LblHKWSTClock.Enabled = False
+            Me.TxtBoxHKWSTClock.Enabled = False
+            Me.BtnHKWSTClockDisable.Enabled = False
+            Me.LblHKWL.Enabled = False
+            Me.TxtBoxHKWL.Enabled = False
+            Me.BtnHKWLDisable.Enabled = False
+            Me.btnHKEnabled.Text = "Enable"
+            Me.btnHKEnabled.Image = My.Resources.Resources.imageHKEnable
+        End If
     End Sub
     Private Sub RestoreSettings()
-        My.App.GetSettings()
+        App.GetSettings()
         ShowSettings()
+        SetSS()
+        SetAC()
+        SetWL()
         Dim selectedTheme As Skye.UI.SkyeTheme = If(App.ThemeAuto, Skye.UI.ThemeManager.DetectWindowsTheme(), App.Theme)
         Skye.UI.ThemeManager.SetTheme(selectedTheme)
         App.NeedsSaved = False
@@ -1223,6 +1380,7 @@ Partial Friend Class Settings
         Me.TxtBoxWLRoot.Select()
     End Sub
     Private Sub HCShowActions(tool As App.TrayTools)
+        Me.LblHCRight.Enabled = True
         Me.CoBoxHCRight.Enabled = True
         Select Case tool
             Case App.TrayTools.WorkSpaceTools
@@ -1235,6 +1393,7 @@ Partial Friend Class Settings
                 Me.CoBoxHCDouble.SelectedIndex = Me.CoBoxHCDouble.FindStringExact(My.App.HCActions(My.App.HCWLDouble).Description)
                 Me.CoBoxHCMiddle.SelectedIndex = Me.CoBoxHCMiddle.FindStringExact(My.App.HCActions(My.App.HCWLMiddle).Description)
                 Me.CoBoxHCRight.SelectedIndex = Me.CoBoxHCRight.FindStringExact(My.App.HCActions(My.App.HCWLRight).Description)
+                Me.LblHCRight.Enabled = False
                 Me.CoBoxHCRight.Enabled = False
             Case App.TrayTools.ScreenSaver
                 Me.CoBoxHCLeft.SelectedIndex = Me.CoBoxHCLeft.FindStringExact(My.App.HCActions(My.App.HCWSTScreenSaverLeft).Description)
@@ -1249,7 +1408,19 @@ Partial Friend Class Settings
         Next
         Return 0
     End Function
-
+    Private Sub HKGenerateUsedKeyList()
+        HKInUse = New List(Of Keys) From {
+            Keys.Control Or Keys.A, ' Select All
+            Keys.Control Or Keys.C, ' Copy
+            Keys.Control Or Keys.X, ' Cut / Clear
+            Keys.Control Or Keys.V, ' Paste
+            Keys.Control Or Keys.S  ' Save As
+        }
+        ' Append application shortcuts
+        For Each key As App.HKType In App.HKKeys
+            HKInUse.Add(key.Key)
+        Next
+    End Sub
     Private Sub CheckMove(ByRef location As Point)
         Dim screen As Rectangle = System.Windows.Forms.Screen.FromControl(Me).WorkingArea
         If location.X + Width > screen.Right Then location.X = screen.Right - Width + App.AdjustScreenBoundsNormalWindow

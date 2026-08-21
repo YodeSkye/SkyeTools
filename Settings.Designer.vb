@@ -160,10 +160,10 @@
         LblWLAutoRefreshInterval = New Skye.UI.Label()
         LblWLMaxLinksPerFolder = New Skye.UI.Label()
         PanelHC = New Panel()
-        CoBoxHCRight = New ComboBox()
-        CoBoxHCMiddle = New ComboBox()
-        CoBoxHCDouble = New ComboBox()
-        CoBoxHCLeft = New ComboBox()
+        CoBoxHCRight = New Skye.UI.ComboBox()
+        CoBoxHCMiddle = New Skye.UI.ComboBox()
+        CoBoxHCDouble = New Skye.UI.ComboBox()
+        CoBoxHCLeft = New Skye.UI.ComboBox()
         GrpBoxHC = New GroupBox()
         RadBtnHCWL = New RadioButton()
         RadBtnHCWSTSS = New RadioButton()
@@ -173,6 +173,21 @@
         LblHCMiddle = New Label()
         LblHCRight = New Label()
         PanelHK = New Panel()
+        TxtBoxHKWL = New TextBox()
+        TxtBoxHKWSTClock = New TextBox()
+        TxtBoxHKWSTLockWorkSpace = New TextBox()
+        BtnHKSet = New Button()
+        BtnHKReset = New Button()
+        TxtBoxHKWSTScreenSaver = New TextBox()
+        btnHKEnabled = New Button()
+        LblHKWL = New Label()
+        LblHKWSTClock = New Label()
+        LblHKWSTLockWorkSpace = New Label()
+        LblHKWSTScreenSaver = New Label()
+        BtnHKWLDisable = New Button()
+        BtnHKWSTClockDisable = New Button()
+        btnHKWSTLockWorkSpaceDisable = New Button()
+        BtnHKWSTScreenSaverDisable = New Button()
         PanelApp.SuspendLayout()
         PanelWST.SuspendLayout()
         PanelSS.SuspendLayout()
@@ -187,6 +202,7 @@
         CMLVWL.SuspendLayout()
         PanelHC.SuspendLayout()
         GrpBoxHC.SuspendLayout()
+        PanelHK.SuspendLayout()
         SuspendLayout()
         ' 
         ' BtnClose
@@ -2076,48 +2092,44 @@
         ' 
         ' CoBoxHCRight
         ' 
-        CoBoxHCRight.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxHCRight.FormattingEnabled = True
         TipInfoEX.SetImage(CoBoxHCRight, Nothing)
-        CoBoxHCRight.Location = New Point(236, 232)
+        CoBoxHCRight.Location = New Point(236, 262)
         CoBoxHCRight.Name = "CoBoxHCRight"
-        CoBoxHCRight.Size = New Size(258, 29)
+        CoBoxHCRight.Size = New Size(258, 30)
         CoBoxHCRight.Sorted = True
         CoBoxHCRight.TabIndex = 59
         TipInfoEX.SetText(CoBoxHCRight, Nothing)
         ' 
         ' CoBoxHCMiddle
         ' 
-        CoBoxHCMiddle.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxHCMiddle.FormattingEnabled = True
         TipInfoEX.SetImage(CoBoxHCMiddle, Nothing)
-        CoBoxHCMiddle.Location = New Point(236, 204)
+        CoBoxHCMiddle.Location = New Point(236, 224)
         CoBoxHCMiddle.Name = "CoBoxHCMiddle"
-        CoBoxHCMiddle.Size = New Size(258, 29)
+        CoBoxHCMiddle.Size = New Size(258, 30)
         CoBoxHCMiddle.Sorted = True
         CoBoxHCMiddle.TabIndex = 57
         TipInfoEX.SetText(CoBoxHCMiddle, Nothing)
         ' 
         ' CoBoxHCDouble
         ' 
-        CoBoxHCDouble.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxHCDouble.FormattingEnabled = True
         TipInfoEX.SetImage(CoBoxHCDouble, Nothing)
-        CoBoxHCDouble.Location = New Point(236, 176)
+        CoBoxHCDouble.Location = New Point(236, 186)
         CoBoxHCDouble.Name = "CoBoxHCDouble"
-        CoBoxHCDouble.Size = New Size(258, 29)
+        CoBoxHCDouble.Size = New Size(258, 30)
         CoBoxHCDouble.Sorted = True
         CoBoxHCDouble.TabIndex = 55
         TipInfoEX.SetText(CoBoxHCDouble, Nothing)
         ' 
         ' CoBoxHCLeft
         ' 
-        CoBoxHCLeft.DropDownStyle = ComboBoxStyle.DropDownList
         CoBoxHCLeft.FormattingEnabled = True
         TipInfoEX.SetImage(CoBoxHCLeft, Nothing)
         CoBoxHCLeft.Location = New Point(236, 148)
         CoBoxHCLeft.Name = "CoBoxHCLeft"
-        CoBoxHCLeft.Size = New Size(258, 29)
+        CoBoxHCLeft.Size = New Size(258, 30)
         CoBoxHCLeft.Sorted = True
         CoBoxHCLeft.TabIndex = 53
         TipInfoEX.SetText(CoBoxHCLeft, Nothing)
@@ -2183,7 +2195,7 @@
         LblHCDouble.AutoSize = True
         LblHCDouble.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         TipInfoEX.SetImage(LblHCDouble, Nothing)
-        LblHCDouble.Location = New Point(163, 179)
+        LblHCDouble.Location = New Point(163, 190)
         LblHCDouble.Name = "LblHCDouble"
         LblHCDouble.Size = New Size(73, 21)
         LblHCDouble.TabIndex = 54
@@ -2209,7 +2221,7 @@
         LblHCMiddle.AutoSize = True
         LblHCMiddle.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         TipInfoEX.SetImage(LblHCMiddle, Nothing)
-        LblHCMiddle.Location = New Point(165, 208)
+        LblHCMiddle.Location = New Point(165, 228)
         LblHCMiddle.Name = "LblHCMiddle"
         LblHCMiddle.Size = New Size(71, 21)
         LblHCMiddle.TabIndex = 56
@@ -2222,7 +2234,7 @@
         LblHCRight.AutoSize = True
         LblHCRight.Font = New Font("Segoe UI", 12F, FontStyle.Bold)
         TipInfoEX.SetImage(LblHCRight, Nothing)
-        LblHCRight.Location = New Point(179, 235)
+        LblHCRight.Location = New Point(179, 265)
         LblHCRight.Name = "LblHCRight"
         LblHCRight.Size = New Size(57, 21)
         LblHCRight.TabIndex = 58
@@ -2232,6 +2244,21 @@
         ' 
         ' PanelHK
         ' 
+        PanelHK.Controls.Add(TxtBoxHKWL)
+        PanelHK.Controls.Add(TxtBoxHKWSTClock)
+        PanelHK.Controls.Add(TxtBoxHKWSTLockWorkSpace)
+        PanelHK.Controls.Add(BtnHKSet)
+        PanelHK.Controls.Add(BtnHKReset)
+        PanelHK.Controls.Add(TxtBoxHKWSTScreenSaver)
+        PanelHK.Controls.Add(btnHKEnabled)
+        PanelHK.Controls.Add(LblHKWL)
+        PanelHK.Controls.Add(LblHKWSTClock)
+        PanelHK.Controls.Add(LblHKWSTLockWorkSpace)
+        PanelHK.Controls.Add(LblHKWSTScreenSaver)
+        PanelHK.Controls.Add(BtnHKWLDisable)
+        PanelHK.Controls.Add(BtnHKWSTClockDisable)
+        PanelHK.Controls.Add(btnHKWSTLockWorkSpaceDisable)
+        PanelHK.Controls.Add(BtnHKWSTScreenSaverDisable)
         PanelHK.Dock = DockStyle.Fill
         TipInfoEX.SetImage(PanelHK, Nothing)
         PanelHK.Location = New Point(187, 0)
@@ -2240,6 +2267,195 @@
         PanelHK.TabIndex = 114
         TipInfoEX.SetText(PanelHK, Nothing)
         ' 
+        ' TxtBoxHKWL
+        ' 
+        TipInfoEX.SetImage(TxtBoxHKWL, Nothing)
+        TxtBoxHKWL.Location = New Point(278, 266)
+        TxtBoxHKWL.Name = "TxtBoxHKWL"
+        TxtBoxHKWL.ShortcutsEnabled = False
+        TxtBoxHKWL.Size = New Size(143, 29)
+        TxtBoxHKWL.TabIndex = 40
+        TxtBoxHKWL.TabStop = False
+        TipInfoEX.SetText(TxtBoxHKWL, Nothing)
+        TxtBoxHKWL.TextAlign = HorizontalAlignment.Center
+        TxtBoxHKWL.WordWrap = False
+        ' 
+        ' TxtBoxHKWSTClock
+        ' 
+        TipInfoEX.SetImage(TxtBoxHKWSTClock, Nothing)
+        TxtBoxHKWSTClock.Location = New Point(278, 188)
+        TxtBoxHKWSTClock.Name = "TxtBoxHKWSTClock"
+        TxtBoxHKWSTClock.ShortcutsEnabled = False
+        TxtBoxHKWSTClock.Size = New Size(143, 29)
+        TxtBoxHKWSTClock.TabIndex = 30
+        TxtBoxHKWSTClock.TabStop = False
+        TipInfoEX.SetText(TxtBoxHKWSTClock, Nothing)
+        TxtBoxHKWSTClock.TextAlign = HorizontalAlignment.Center
+        TxtBoxHKWSTClock.WordWrap = False
+        ' 
+        ' TxtBoxHKWSTLockWorkSpace
+        ' 
+        TipInfoEX.SetImage(TxtBoxHKWSTLockWorkSpace, Nothing)
+        TxtBoxHKWSTLockWorkSpace.Location = New Point(278, 36)
+        TxtBoxHKWSTLockWorkSpace.Name = "TxtBoxHKWSTLockWorkSpace"
+        TxtBoxHKWSTLockWorkSpace.ShortcutsEnabled = False
+        TxtBoxHKWSTLockWorkSpace.Size = New Size(143, 29)
+        TxtBoxHKWSTLockWorkSpace.TabIndex = 10
+        TxtBoxHKWSTLockWorkSpace.TabStop = False
+        TipInfoEX.SetText(TxtBoxHKWSTLockWorkSpace, Nothing)
+        TxtBoxHKWSTLockWorkSpace.TextAlign = HorizontalAlignment.Center
+        TxtBoxHKWSTLockWorkSpace.WordWrap = False
+        ' 
+        ' BtnHKSet
+        ' 
+        BtnHKSet.Enabled = False
+        BtnHKSet.ForeColor = Color.Navy
+        BtnHKSet.Image = My.Resources.Resources.imageGoStart
+        TipInfoEX.SetImage(BtnHKSet, Nothing)
+        BtnHKSet.ImageAlign = ContentAlignment.MiddleLeft
+        BtnHKSet.Location = New Point(278, 364)
+        BtnHKSet.Name = "BtnHKSet"
+        BtnHKSet.Size = New Size(143, 32)
+        BtnHKSet.TabIndex = 110
+        TipInfoEX.SetText(BtnHKSet, Nothing)
+        BtnHKSet.Text = "Set"
+        BtnHKSet.TextAlign = ContentAlignment.MiddleRight
+        BtnHKSet.UseVisualStyleBackColor = True
+        ' 
+        ' BtnHKReset
+        ' 
+        BtnHKReset.Enabled = False
+        BtnHKReset.ForeColor = Color.Navy
+        BtnHKReset.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(BtnHKReset, Nothing)
+        BtnHKReset.ImageAlign = ContentAlignment.MiddleLeft
+        BtnHKReset.Location = New Point(278, 331)
+        BtnHKReset.Name = "BtnHKReset"
+        BtnHKReset.Size = New Size(143, 32)
+        BtnHKReset.TabIndex = 100
+        TipInfoEX.SetText(BtnHKReset, Nothing)
+        BtnHKReset.Text = "Undo"
+        BtnHKReset.TextAlign = ContentAlignment.MiddleRight
+        BtnHKReset.UseVisualStyleBackColor = True
+        ' 
+        ' TxtBoxHKWSTScreenSaver
+        ' 
+        TipInfoEX.SetImage(TxtBoxHKWSTScreenSaver, Nothing)
+        TxtBoxHKWSTScreenSaver.Location = New Point(278, 113)
+        TxtBoxHKWSTScreenSaver.Name = "TxtBoxHKWSTScreenSaver"
+        TxtBoxHKWSTScreenSaver.ShortcutsEnabled = False
+        TxtBoxHKWSTScreenSaver.Size = New Size(143, 29)
+        TxtBoxHKWSTScreenSaver.TabIndex = 20
+        TxtBoxHKWSTScreenSaver.TabStop = False
+        TipInfoEX.SetText(TxtBoxHKWSTScreenSaver, Nothing)
+        TxtBoxHKWSTScreenSaver.TextAlign = HorizontalAlignment.Center
+        TxtBoxHKWSTScreenSaver.WordWrap = False
+        ' 
+        ' btnHKEnabled
+        ' 
+        btnHKEnabled.ForeColor = Color.Navy
+        TipInfoEX.SetImage(btnHKEnabled, Nothing)
+        btnHKEnabled.ImageAlign = ContentAlignment.MiddleLeft
+        btnHKEnabled.Location = New Point(278, 487)
+        btnHKEnabled.Name = "btnHKEnabled"
+        btnHKEnabled.Size = New Size(143, 32)
+        btnHKEnabled.TabIndex = 200
+        TipInfoEX.SetText(btnHKEnabled, Nothing)
+        btnHKEnabled.TextAlign = ContentAlignment.MiddleRight
+        btnHKEnabled.UseVisualStyleBackColor = True
+        ' 
+        ' LblHKWL
+        ' 
+        TipInfoEX.SetImage(LblHKWL, Nothing)
+        LblHKWL.Location = New Point(278, 244)
+        LblHKWL.Name = "LblHKWL"
+        LblHKWL.Size = New Size(143, 24)
+        LblHKWL.TabIndex = 1031
+        LblHKWL.Text = "SAMPLE"
+        TipInfoEX.SetText(LblHKWL, Nothing)
+        LblHKWL.TextAlign = ContentAlignment.BottomLeft
+        ' 
+        ' LblHKWSTClock
+        ' 
+        TipInfoEX.SetImage(LblHKWSTClock, Nothing)
+        LblHKWSTClock.Location = New Point(278, 166)
+        LblHKWSTClock.Name = "LblHKWSTClock"
+        LblHKWSTClock.Size = New Size(143, 24)
+        LblHKWSTClock.TabIndex = 1028
+        LblHKWSTClock.Text = "SAMPLE"
+        TipInfoEX.SetText(LblHKWSTClock, Nothing)
+        LblHKWSTClock.TextAlign = ContentAlignment.BottomLeft
+        ' 
+        ' LblHKWSTLockWorkSpace
+        ' 
+        TipInfoEX.SetImage(LblHKWSTLockWorkSpace, Nothing)
+        LblHKWSTLockWorkSpace.Location = New Point(278, 13)
+        LblHKWSTLockWorkSpace.Name = "LblHKWSTLockWorkSpace"
+        LblHKWSTLockWorkSpace.Size = New Size(143, 24)
+        LblHKWSTLockWorkSpace.TabIndex = 1021
+        LblHKWSTLockWorkSpace.Text = "SAMPLE"
+        TipInfoEX.SetText(LblHKWSTLockWorkSpace, Nothing)
+        LblHKWSTLockWorkSpace.TextAlign = ContentAlignment.BottomLeft
+        ' 
+        ' LblHKWSTScreenSaver
+        ' 
+        TipInfoEX.SetImage(LblHKWSTScreenSaver, Nothing)
+        LblHKWSTScreenSaver.Location = New Point(278, 89)
+        LblHKWSTScreenSaver.Name = "LblHKWSTScreenSaver"
+        LblHKWSTScreenSaver.Size = New Size(175, 24)
+        LblHKWSTScreenSaver.TabIndex = 1025
+        LblHKWSTScreenSaver.Text = "SAMPLE"
+        TipInfoEX.SetText(LblHKWSTScreenSaver, Nothing)
+        LblHKWSTScreenSaver.TextAlign = ContentAlignment.BottomLeft
+        ' 
+        ' BtnHKWLDisable
+        ' 
+        BtnHKWLDisable.ForeColor = Color.Transparent
+        BtnHKWLDisable.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(BtnHKWLDisable, Nothing)
+        BtnHKWLDisable.Location = New Point(421, 265)
+        BtnHKWLDisable.Name = "BtnHKWLDisable"
+        BtnHKWLDisable.Size = New Size(32, 31)
+        BtnHKWLDisable.TabIndex = 41
+        TipInfoEX.SetText(BtnHKWLDisable, Nothing)
+        BtnHKWLDisable.UseVisualStyleBackColor = True
+        ' 
+        ' BtnHKWSTClockDisable
+        ' 
+        BtnHKWSTClockDisable.ForeColor = Color.Transparent
+        BtnHKWSTClockDisable.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(BtnHKWSTClockDisable, Nothing)
+        BtnHKWSTClockDisable.Location = New Point(421, 187)
+        BtnHKWSTClockDisable.Name = "BtnHKWSTClockDisable"
+        BtnHKWSTClockDisable.Size = New Size(32, 31)
+        BtnHKWSTClockDisable.TabIndex = 31
+        TipInfoEX.SetText(BtnHKWSTClockDisable, Nothing)
+        BtnHKWSTClockDisable.UseVisualStyleBackColor = True
+        ' 
+        ' btnHKWSTLockWorkSpaceDisable
+        ' 
+        btnHKWSTLockWorkSpaceDisable.ForeColor = Color.Transparent
+        btnHKWSTLockWorkSpaceDisable.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(btnHKWSTLockWorkSpaceDisable, Nothing)
+        btnHKWSTLockWorkSpaceDisable.Location = New Point(421, 35)
+        btnHKWSTLockWorkSpaceDisable.Name = "btnHKWSTLockWorkSpaceDisable"
+        btnHKWSTLockWorkSpaceDisable.Size = New Size(32, 31)
+        btnHKWSTLockWorkSpaceDisable.TabIndex = 11
+        TipInfoEX.SetText(btnHKWSTLockWorkSpaceDisable, Nothing)
+        btnHKWSTLockWorkSpaceDisable.UseVisualStyleBackColor = True
+        ' 
+        ' BtnHKWSTScreenSaverDisable
+        ' 
+        BtnHKWSTScreenSaverDisable.ForeColor = Color.Transparent
+        BtnHKWSTScreenSaverDisable.Image = My.Resources.Resources.imageRemove
+        TipInfoEX.SetImage(BtnHKWSTScreenSaverDisable, Nothing)
+        BtnHKWSTScreenSaverDisable.Location = New Point(421, 112)
+        BtnHKWSTScreenSaverDisable.Name = "BtnHKWSTScreenSaverDisable"
+        BtnHKWSTScreenSaverDisable.Size = New Size(32, 31)
+        BtnHKWSTScreenSaverDisable.TabIndex = 21
+        TipInfoEX.SetText(BtnHKWSTScreenSaverDisable, Nothing)
+        BtnHKWSTScreenSaverDisable.UseVisualStyleBackColor = True
+        ' 
         ' Settings
         ' 
         AutoScaleMode = AutoScaleMode.None
@@ -2247,12 +2463,12 @@
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
         Controls.Add(PanelHC)
+        Controls.Add(PanelHK)
         Controls.Add(PanelWL)
         Controls.Add(PanelAC)
         Controls.Add(PanelSS)
         Controls.Add(PanelApp)
         Controls.Add(PanelWST)
-        Controls.Add(PanelHK)
         Controls.Add(PanelPageSelector)
         Controls.Add(PanelActions)
         DoubleBuffered = True
@@ -2288,6 +2504,8 @@
         PanelHC.ResumeLayout(False)
         PanelHC.PerformLayout()
         GrpBoxHC.ResumeLayout(False)
+        PanelHK.ResumeLayout(False)
+        PanelHK.PerformLayout()
         ResumeLayout(False)
 
     End Sub
@@ -2440,10 +2658,6 @@
     Friend WithEvents LblWLSortOrder As Skye.UI.Label
     Friend WithEvents LblWLDisplayName As Skye.UI.Label
     Friend WithEvents LblWLRoot As Skye.UI.Label
-    Private WithEvents CoBoxHCRight As ComboBox
-    Private WithEvents CoBoxHCMiddle As ComboBox
-    Private WithEvents CoBoxHCDouble As ComboBox
-    Private WithEvents CoBoxHCLeft As ComboBox
     Private WithEvents GrpBoxHC As GroupBox
     Private WithEvents RadBtnHCWL As RadioButton
     Private WithEvents RadBtnHCWSTSS As RadioButton
@@ -2452,4 +2666,23 @@
     Private WithEvents LblHCLeft As Label
     Private WithEvents LblHCMiddle As Label
     Private WithEvents LblHCRight As Label
+    Private WithEvents TxtBoxHKWL As TextBox
+    Private WithEvents TxtBoxHKWSTClock As TextBox
+    Private WithEvents TxtBoxHKWSTLockWorkSpace As TextBox
+    Private WithEvents BtnHKSet As Button
+    Private WithEvents BtnHKReset As Button
+    Private WithEvents TxtBoxHKWSTScreenSaver As TextBox
+    Private WithEvents btnHKEnabled As Button
+    Private WithEvents LblHKWL As Label
+    Private WithEvents LblHKWSTClock As Label
+    Private WithEvents LblHKWSTLockWorkSpace As Label
+    Private WithEvents LblHKWSTScreenSaver As Label
+    Private WithEvents BtnHKWLDisable As Button
+    Private WithEvents BtnHKWSTClockDisable As Button
+    Private WithEvents btnHKWSTLockWorkSpaceDisable As Button
+    Private WithEvents BtnHKWSTScreenSaverDisable As Button
+    Friend WithEvents CoBoxHCRight As Skye.UI.ComboBox
+    Friend WithEvents CoBoxHCMiddle As Skye.UI.ComboBox
+    Friend WithEvents CoBoxHCDouble As Skye.UI.ComboBox
+    Friend WithEvents CoBoxHCLeft As Skye.UI.ComboBox
 End Class
