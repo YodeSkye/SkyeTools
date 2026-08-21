@@ -2313,9 +2313,9 @@
         BtnHKSet.Image = My.Resources.Resources.imageGoStart
         TipInfoEX.SetImage(BtnHKSet, Nothing)
         BtnHKSet.ImageAlign = ContentAlignment.MiddleLeft
-        BtnHKSet.Location = New Point(278, 364)
+        BtnHKSet.Location = New Point(277, 364)
         BtnHKSet.Name = "BtnHKSet"
-        BtnHKSet.Size = New Size(143, 32)
+        BtnHKSet.Size = New Size(176, 32)
         BtnHKSet.TabIndex = 110
         TipInfoEX.SetText(BtnHKSet, Nothing)
         BtnHKSet.Text = "Set"
@@ -2329,9 +2329,9 @@
         BtnHKReset.Image = My.Resources.Resources.imageRemove
         TipInfoEX.SetImage(BtnHKReset, Nothing)
         BtnHKReset.ImageAlign = ContentAlignment.MiddleLeft
-        BtnHKReset.Location = New Point(278, 331)
+        BtnHKReset.Location = New Point(277, 331)
         BtnHKReset.Name = "BtnHKReset"
-        BtnHKReset.Size = New Size(143, 32)
+        BtnHKReset.Size = New Size(176, 32)
         BtnHKReset.TabIndex = 100
         TipInfoEX.SetText(BtnHKReset, Nothing)
         BtnHKReset.Text = "Undo"
@@ -2356,9 +2356,9 @@
         btnHKEnabled.ForeColor = Color.Navy
         TipInfoEX.SetImage(btnHKEnabled, Nothing)
         btnHKEnabled.ImageAlign = ContentAlignment.MiddleLeft
-        btnHKEnabled.Location = New Point(278, 487)
+        btnHKEnabled.Location = New Point(277, 487)
         btnHKEnabled.Name = "btnHKEnabled"
-        btnHKEnabled.Size = New Size(143, 32)
+        btnHKEnabled.Size = New Size(176, 32)
         btnHKEnabled.TabIndex = 200
         TipInfoEX.SetText(btnHKEnabled, Nothing)
         btnHKEnabled.TextAlign = ContentAlignment.MiddleRight
@@ -2462,8 +2462,8 @@
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         AutoValidate = AutoValidate.EnableAllowFocusChange
         ClientSize = New Size(917, 630)
-        Controls.Add(PanelHC)
         Controls.Add(PanelHK)
+        Controls.Add(PanelHC)
         Controls.Add(PanelWL)
         Controls.Add(PanelAC)
         Controls.Add(PanelSS)
