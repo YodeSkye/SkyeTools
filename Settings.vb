@@ -243,26 +243,26 @@ Partial Friend Class Settings
         App.SetSave()
     End Sub
     Private Sub BtnLoadOnOSStartupPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnLoadOnOSStartupPath.Click
-        If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then OFDLoadOnOSStartup.InitialDirectory = WSTLoadOnOSStartupPath.Path
+        If Not String.IsNullOrEmpty(LoadOnOSStartupPath.Path) Then OFDLoadOnOSStartup.InitialDirectory = LoadOnOSStartupPath.Path
         Dim r = OFDLoadOnOSStartup.ShowDialog(Me)
         If r = System.Windows.Forms.DialogResult.OK And Not OFDLoadOnOSStartup.FileName = "" Then
-            WSTLoadOnOSStartupPath.Path = OFDLoadOnOSStartup.FileName
+            LoadOnOSStartupPath.Path = OFDLoadOnOSStartup.FileName
             App.SetSave()
         ElseIf Not r = System.Windows.Forms.DialogResult.Cancel Then
-            WSTLoadOnOSStartupPath = Nothing
+            LoadOnOSStartupPath = Nothing
         End If
         If Not r = System.Windows.Forms.DialogResult.Cancel Then ShowSettingsApp()
     End Sub
     Private Sub CheckboxLoadOnOSStartup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ChkBoxLoadOnOSStartup.Click
-        WSTLoadOnOSStartup = Not WSTLoadOnOSStartup
+        LoadOnOSStartup = Not LoadOnOSStartup
         ShowSettingsApp()
         App.SetSave()
     End Sub
     Private Sub TxbxLoadOnOSStartupArgs_Validated(sender As Object, e As EventArgs) Handles TxtBoxLoadOnOSStartupArgs.Validated
         If String.IsNullOrEmpty(Me.TxtBoxLoadOnOSStartupArgs.Text) Then
-            App.WSTLoadOnOSStartupPath.Arguments = String.Empty
+            App.LoadOnOSStartupPath.Arguments = String.Empty
         Else
-            App.WSTLoadOnOSStartupPath.Arguments = Me.TxtBoxLoadOnOSStartupArgs.Text
+            App.LoadOnOSStartupPath.Arguments = Me.TxtBoxLoadOnOSStartupArgs.Text
         End If
         ShowSettingsApp()
         App.SetSave()
@@ -270,9 +270,9 @@ Partial Friend Class Settings
     End Sub
     Private Sub LoadOnOSStartupCopy_DoubleClick(sender As Object, e As EventArgs) Handles LblLoadOnOSStartupPath.DoubleClick, TxtBoxLoadOnOSStartupArgs.DoubleClick
         If sender Is LblLoadOnOSStartupPath Then
-            If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Path)
+            If Not String.IsNullOrEmpty(LoadOnOSStartupPath.Path) Then My.Computer.Clipboard.SetText(LoadOnOSStartupPath.Path)
         ElseIf sender Is TxtBoxLoadOnOSStartupArgs Then
-            If Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(WSTLoadOnOSStartupPath.Arguments)
+            If Not String.IsNullOrEmpty(LoadOnOSStartupPath.Arguments) Then My.Computer.Clipboard.SetText(LoadOnOSStartupPath.Arguments)
         End If
     End Sub
 
@@ -985,13 +985,13 @@ Partial Friend Class Settings
     Private Sub ShowSettingsApp()
         CoBoxTheme.SelectedItem = App.Theme.Name
         ChkBoxThemeAuto.Checked = App.ThemeAuto
-        If My.App.WSTLoadOnOSStartup Then
+        If My.App.LoadOnOSStartup Then
             Me.ChkBoxLoadOnOSStartup.Checked = True
             Me.BtnLoadOnOSStartupPath.Enabled = True
             Me.LblLoadOnOSStartupPath.Enabled = True
             Me.TxtBoxLoadOnOSStartupArgs.Enabled = True
-            Me.TipInfoEX.SetText(Me.LblLoadOnOSStartupPath, If(String.IsNullOrWhiteSpace(App.WSTLoadOnOSStartupPath.Path), "Path", App.WSTLoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path"))
-            Me.TipInfoEX.SetText(Me.TxtBoxLoadOnOSStartupArgs, If(String.IsNullOrEmpty(App.WSTLoadOnOSStartupPath.Arguments), "Arguments", App.WSTLoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
+            Me.TipInfoEX.SetText(Me.LblLoadOnOSStartupPath, If(String.IsNullOrWhiteSpace(App.LoadOnOSStartupPath.Path), "Path", App.LoadOnOSStartupPath.Path + Chr(13) + "DoubleClick To Copy Full Path"))
+            Me.TipInfoEX.SetText(Me.TxtBoxLoadOnOSStartupArgs, If(String.IsNullOrEmpty(App.LoadOnOSStartupPath.Arguments), "Arguments", App.LoadOnOSStartupPath.Arguments + Chr(13) + "DoubleClick To Copy Arguments").ToString)
         Else
             Me.ChkBoxLoadOnOSStartup.Checked = False
             Me.BtnLoadOnOSStartupPath.Enabled = False
@@ -1000,11 +1000,11 @@ Partial Friend Class Settings
             Me.TipInfoEX.SetText(Me.LblLoadOnOSStartupPath, Nothing)
             Me.TipInfoEX.SetText(Me.TxtBoxLoadOnOSStartupArgs, Nothing)
         End If
-        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Path) Then : Me.LblLoadOnOSStartupPath.Text = String.Empty
-        Else : Me.LblLoadOnOSStartupPath.Text = IIf(My.App.WSTLoadOnOSStartupPath.Path.Contains("\"c), "...\", Nothing).ToString + My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).GetValue(My.App.WSTLoadOnOSStartupPath.Path.Split(CChar("\")).Length - 1).ToString
+        If String.IsNullOrEmpty(My.App.LoadOnOSStartupPath.Path) Then : Me.LblLoadOnOSStartupPath.Text = String.Empty
+        Else : Me.LblLoadOnOSStartupPath.Text = IIf(My.App.LoadOnOSStartupPath.Path.Contains("\"c), "...\", Nothing).ToString + My.App.LoadOnOSStartupPath.Path.Split(CChar("\")).GetValue(My.App.LoadOnOSStartupPath.Path.Split(CChar("\")).Length - 1).ToString
         End If
-        If String.IsNullOrEmpty(My.App.WSTLoadOnOSStartupPath.Arguments) Then : Me.TxtBoxLoadOnOSStartupArgs.Text = String.Empty
-        Else : Me.TxtBoxLoadOnOSStartupArgs.Text = My.App.WSTLoadOnOSStartupPath.Arguments
+        If String.IsNullOrEmpty(My.App.LoadOnOSStartupPath.Arguments) Then : Me.TxtBoxLoadOnOSStartupArgs.Text = String.Empty
+        Else : Me.TxtBoxLoadOnOSStartupArgs.Text = My.App.LoadOnOSStartupPath.Arguments
         End If
     End Sub
     Private Sub ShowSettingsWST()

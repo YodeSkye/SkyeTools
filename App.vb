@@ -17,25 +17,9 @@ Namespace My
 			Medium
 			Large
 		End Enum
-		Friend Structure FileType
-			Dim Path As String
-			Dim Arguments As String
-			Sub New(path As String, args As String)
-				Me.Path = path
-				If String.IsNullOrEmpty(args) Then : Me.Arguments = String.Empty
-				Else : Me.Arguments = args
-				End If
-			End Sub
-			Overrides Function ToString() As String
-				Return If(String.IsNullOrEmpty(Me.Arguments), Me.Path, Me.Path & " (" & Me.Arguments & ")")
-			End Function
-		End Structure
 		Friend Const WSTName As String = "WorkSpace Tools"
-		Friend ReadOnly WSTLoadOnOSStartupPathDefault As New FileType(String.Empty, String.Empty)
 
 		' Saved Settings
-		Friend WSTLoadOnOSStartup As Boolean
-		Friend WSTLoadOnOSStartupPath As FileType
 		Friend WSTEnabled As Boolean
 		Friend WSTShowClock As Boolean
 		Friend WSTClockLocation As Point
@@ -129,11 +113,6 @@ Namespace My
 			Bottom
 			Merged
 		End Enum
-		Friend Enum WLYMFMMode
-			Files
-			FilesWithSubFolders
-			Folders
-		End Enum
 		Public Class WLItemType
 			Public Property Root As String = String.Empty
 			Public Property Name As String = String.Empty
@@ -202,6 +181,14 @@ Namespace My
 				Description = text
 			End Sub
 		End Structure
+
+		'Saved Settings
+		Friend HCActions As New Collections.Generic.List(Of HCActionType)
+		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
+		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
+		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
+
+		' METHODS
 		Private Sub HCGenerateActionList() 'MUST KEEP SAME ORDER AS HCAction ENUM
 			HCActions.Clear()
 			HCActions.Add(New HCActionType(HCAction.NoAction, "No Action"))
@@ -222,12 +209,6 @@ Namespace My
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsWSTSS, "Show Screen Saver Settings"))
 			HCActions.Add(New HCActionType(HCAction.ShowSettingsAC, "Show Alarm & Chime Settings"))
 		End Sub
-
-		'Saved Settings
-		Friend HCActions As New Collections.Generic.List(Of HCActionType)
-		Friend HCWSTLeft, HCWSTDouble, HCWSTMiddle, HCWSTRight As HCAction
-		Friend HCWSTScreenSaverLeft, HCWSTScreenSaverDouble, HCWSTScreenSaverMiddle, HCWSTScreenSaverRight As HCAction
-		Friend HCWLLeft, HCWLDouble, HCWLMiddle, HCWLRight As HCAction
 
 #End Region
 #Region "HotKeys (HK)"
@@ -288,49 +269,6 @@ Namespace My
 #End Region
 
 		' DECLARATIONS
-		Friend Enum NotifyInterval
-			[Short]
-			[Medium]
-			[Long]
-		End Enum
-		Friend Enum NotifyIntervalFormat
-			MilliSeconds
-			Seconds
-		End Enum
-		Friend Function NotifyDelay(interval As NotifyInterval, format As NotifyIntervalFormat) As UInt16 '
-			Select Case interval
-				Case NotifyInterval.Short
-					Select Case format
-						Case NotifyIntervalFormat.MilliSeconds : Return 4000
-						Case NotifyIntervalFormat.Seconds : Return 4
-					End Select
-				Case NotifyInterval.Medium
-					Select Case format
-						Case NotifyIntervalFormat.MilliSeconds : Return 10000
-						Case NotifyIntervalFormat.Seconds : Return 10
-					End Select
-				Case NotifyInterval.Long
-					Select Case format
-						Case NotifyIntervalFormat.MilliSeconds : Return 20000
-						Case NotifyIntervalFormat.Seconds : Return 20
-					End Select
-			End Select
-			Return 0
-		End Function
-		Friend Enum BalloonDelay
-			[Short]
-			[Medium]
-			[Long]
-			WaitForUser
-			WaitForEver
-		End Enum
-		Friend Enum FormatFileSizeUnits
-			Auto
-			Bytes
-			KiloBytes
-			MegaBytes
-			GigaBytes
-		End Enum
 		Friend Enum Tools 'Modify ToolToImage capacity, ToolToString, & MainForm.New when changing this Enum
 			SkyeTools
 			HotClicks
@@ -355,17 +293,22 @@ Namespace My
 		Friend Enum TrayTools
 			WorkSpaceTools
 			ScreenSaver
-			HotLinks
 			WinLinks
-			OnlineAlerter
 		End Enum
-		Friend Function GetEnumMembers(ByRef enummember As System.Enum) As Collections.Generic.List(Of String)
-			Dim list As New Collections.Generic.List(Of String)
-			Dim names() As String = System.Enum.GetNames(enummember.GetType)
-			For Each s As String In names : list.Add(s)
-			Next
-			Return list
-		End Function
+		Friend Structure FileType
+			Dim Path As String
+			Dim Arguments As String
+			Sub New(path As String, args As String)
+				Me.Path = path
+				If String.IsNullOrEmpty(args) Then : Me.Arguments = String.Empty
+				Else : Me.Arguments = args
+				End If
+			End Sub
+			Overrides Function ToString() As String
+				Return If(String.IsNullOrEmpty(Me.Arguments), Me.Path, Me.Path & " (" & Me.Arguments & ")")
+			End Function
+		End Structure
+		Friend ReadOnly LoadOnOSStartupPathDefault As New FileType(String.Empty, String.Empty)
 		Friend Const CloseAllToolTipText As String = "RightClick = ReStart SkyeTools" + vbCr + "CtrlRightClick = ReStart In Current Context"
 		Friend ReadOnly AdjustScreenBoundsNormalWindow As Byte = 8 ' The number of pixels to adjust the screen bounds for normal windows.
 		Friend ReadOnly AdjustScreenBoundsDialogWindow As Byte = 10 ' The number of pixels to adjust the screen bounds for dialog windows.
@@ -383,6 +326,8 @@ Namespace My
 		' Saved Settings
 		Friend Theme As Skye.UI.SkyeTheme
 		Friend ThemeAuto As Boolean
+		Friend LoadOnOSStartup As Boolean
+		Friend LoadOnOSStartupPath As FileType
 
 		' HANDLERS
 		Private Sub OnThemeChanged(sender As Object, e As EventArgs)
@@ -450,8 +395,8 @@ Namespace My
 			Dim RegKey As Microsoft.Win32.RegistryKey = Nothing
 			Try
 				RegKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\", True)
-				If WSTLoadOnOSStartup And Not String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Path) Then
-					RegKey.SetValue("SkyeTools", IIf(String.IsNullOrEmpty(WSTLoadOnOSStartupPath.Arguments), WSTLoadOnOSStartupPath.Path, WSTLoadOnOSStartupPath.Path + " " + WSTLoadOnOSStartupPath.Arguments).ToString, Microsoft.Win32.RegistryValueKind.String)
+				If LoadOnOSStartup And Not String.IsNullOrEmpty(LoadOnOSStartupPath.Path) Then
+					RegKey.SetValue("SkyeTools", IIf(String.IsNullOrEmpty(LoadOnOSStartupPath.Arguments), LoadOnOSStartupPath.Path, LoadOnOSStartupPath.Path + " " + LoadOnOSStartupPath.Arguments).ToString, Microsoft.Win32.RegistryValueKind.String)
 				Else
 					RegKey.DeleteValue("SkyeTools", False)
 				End If
@@ -702,6 +647,13 @@ Namespace My
 			Theme = Skye.UI.SkyeThemes.GetTheme(themeName)
 			ThemeAuto = Skye.Common.RegistryHelper.GetBool("ThemeAuto", True)
 
+			' Startup
+			LoadOnOSStartup = RegistryHelper.GetBool("LoadOnOSStartup", False)
+			LoadOnOSStartupPath = New FileType(
+				RegistryHelper.GetString("LoadOnOSStartupPath", LoadOnOSStartupPathDefault.Path),
+				RegistryHelper.GetString("LoadOnOSStartupArgs", LoadOnOSStartupPathDefault.Arguments)
+			)
+
 			GetSettingsHC()
 			GetSettingsHK()
 			GetSettingsWST()
@@ -760,12 +712,7 @@ Namespace My
 		End Sub
 		Private Sub GetSettingsWST()
 
-			' Startup & Feature Flags
-			WSTLoadOnOSStartup = RegistryHelper.GetBool("WSTLoadOnOSStartup", False)
-			WSTLoadOnOSStartupPath = New FileType(
-				RegistryHelper.GetString("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPathDefault.Path),
-				RegistryHelper.GetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPathDefault.Arguments)
-			)
+			' Feature Flag
 			WSTEnabled = RegistryHelper.GetBool("WSTEnabled", True)
 
 			' Screensaver Tool Options
@@ -838,7 +785,6 @@ Namespace My
 
 		End Sub
 		Private Sub GetSettingsWL()
-			UpgradeLegacyWLSettings()
 
 			WLShowFilePathToolTips = RegistryHelper.GetBool("WLShowFilePathToolTips", False)
 			WLShowFileInfoToolTips = RegistryHelper.GetBool("WLShowFileInfoToolTips", False)
@@ -866,7 +812,7 @@ Namespace My
 		End Sub
 
 		<Diagnostics.ConditionalAttribute("DEBUG")> Private Sub GetSettingsDebug()
-			WSTLoadOnOSStartup = False
+			LoadOnOSStartup = False
 			HKEnabled = True
 			GetSettingsDebugHK()
 			'WorkSpace Tools (WST)
@@ -946,6 +892,11 @@ Namespace My
 			Skye.Common.RegistryHelper.SetString("Theme", Theme.Name)
 			Skye.Common.RegistryHelper.SetBool("ThemeAuto", ThemeAuto)
 
+			' Startup
+			RegistryHelper.SetBool("LoadOnOSStartup", LoadOnOSStartup)
+			RegistryHelper.SetString("LoadOnOSStartupPath", LoadOnOSStartupPath.Path)
+			RegistryHelper.SetString("LoadOnOSStartupArgs", LoadOnOSStartupPath.Arguments)
+
 			SaveSettingsHC()
 			SaveSettingsHK()
 			SaveSettingsWST()
@@ -993,10 +944,7 @@ Namespace My
 		End Sub
 		Friend Sub SaveSettingsWST()
 
-			' Startup & Feature Flags
-			RegistryHelper.SetBool("WSTLoadOnOSStartup", WSTLoadOnOSStartup)
-			RegistryHelper.SetString("WSTLoadOnOSStartupPath", WSTLoadOnOSStartupPath.Path)
-			RegistryHelper.SetString("WSTLoadOnOSStartupArgs", WSTLoadOnOSStartupPath.Arguments)
+			' Feature Flag
 			RegistryHelper.SetBool("WSTEnabled", WSTEnabled)
 
 			' Screensaver Tool Options
@@ -1055,50 +1003,6 @@ Namespace My
 			' Enums
 			RegistryHelper.SetString("ACAlarmChimeType", ACAlarmChimeType.ToString())
 			RegistryHelper.SetString("ACTopHourChimeType", ACTopHourChimeType.ToString())
-
-		End Sub
-		Private Sub UpgradeLegacyWLSettings()
-			' Check if legacy "WL" subkey exists under BaseKey
-			Dim legacySubKey = $"{RegistryHelper.BaseKey}\WL"
-			Using key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-				If key Is Nothing Then Return ' No legacy settings to migrate
-			End Using
-			Dim legacyLinks As New List(Of WLItemType)()
-
-			' Read old format
-			Using wlKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(legacySubKey, False)
-				For Each subKeyName In wlKey.GetSubKeyNames()
-					Using itemKey = wlKey.OpenSubKey(subKeyName)
-						If itemKey Is Nothing Then Continue For
-
-						Dim rootPath = itemKey.GetValue("", "").ToString()
-						If String.IsNullOrEmpty(rootPath) Then Continue For
-						Dim link As New WLItemType(rootPath) With {
-							.Name = itemKey.GetValue("Name", "").ToString(),
-							.UseDefaultIcon = itemKey.GetValue("UseDefaultIcon", "False").ToString() = "True",
-							.ShowInMenu = itemKey.GetValue("ShowInMenu", "True").ToString() <> "False",
-							.ShowInTray = itemKey.GetValue("ShowInTray", "True").ToString() <> "False",
-							.ShowNoMenu = itemKey.GetValue("ShowNoMenu", "False").ToString() = "True",
-							.ShowMenuIcons = itemKey.GetValue("ShowMenuIcons", "True").ToString() <> "False"
-						}
-						Dim result As Boolean
-						result = [Enum].TryParse(itemKey.GetValue("Sort", "Ascending").ToString(), link.Sort)
-						result = [Enum].TryParse(itemKey.GetValue("FolderMode", "NoFolders").ToString(), link.FolderMode)
-						result = [Enum].TryParse(itemKey.GetValue("FolderPlacement", "Top").ToString(), link.FolderPlacement)
-
-						legacyLinks.Add(link)
-					End Using
-				Next
-			End Using
-
-			' Save in new JSON format
-			Dim json = JsonSerializer.Serialize(legacyLinks)
-			RegistryHelper.SetString("WLData", json)
-
-			' Remove legacy registry tree
-			'Using baseKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(RegistryHelper.BaseKey, True)
-			'	baseKey?.DeleteSubKeyTree("WL", False)
-			'End Using
 
 		End Sub
 		Private Sub SaveSettingsWL()
